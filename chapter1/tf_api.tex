@@ -1,0 +1,12 @@
+\chapter{Tensorflow API}
+\sectioon{tf}
+tf.squeeze(input,axis=None,name=None,squeeze_dims=None)
+说明:从指定的Tensor中移除1维度。
+\begin{itemize}
+\item input:tensor,输入Tensor。
+\item axis:列表，指定需要移除的位置的列表，默认为空列表[],索引从0开始squeeze不为1的索引会报错。
+\item name:caozuoide名字
+\item squeeze_dims:否决当前轴的参数。
+\item 返回一个Tensor，形状和input相同，包含和input相同的数据，但是不包含有1的元素。
+\item 异常：squeeze\_dims和axis同时指定时会有ValueError。
+\end{itemize}

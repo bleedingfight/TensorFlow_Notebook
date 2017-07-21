@@ -1,0 +1,8 @@
+\section{模型存储和加载}
+\begin{itemize}
+\item 生成checkpoint文件，扩展名一般为.ckpt,通过在tf.train.Saver对象上调用Saver.saver()生成。它包含权重和其他程序中定义的变量，不包含
+图的结构。如果需要在另一个程序中十一哦嗯，需要吃哦嗯见图形结构，并告诉Tensorflow如何处理这些权重。
+\item 生成(graph proto file)，这是一个二进制文件，扩展名一般是.pb,用tf.train.write\_graph()保存每，只包含图形结构，不包含全职哦嗯，然后使用tf.import\_graph\_def()加载
+图形。
+\end{itemize}
+
