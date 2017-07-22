@@ -115,12 +115,12 @@ plt.savefig('relu6.png',dpi = 600)
 \end{python}
 \begin{figure}[H]
 \centering
-\includegraphics[scale=0.8]{relu.png}
+\includegraphics[scale=0.8]{./pic/chapter1/relu.png}
 \caption{relu}
 \end{figure}
 \begin{figure}[H]
 \centering
-\includegraphics[scale=0.8]{relu6.png}
+\includegraphics[scale=0.8]{./pic/chapter1/relu6.png}
 \caption{relu6}
 \end{figure}
 
@@ -157,7 +157,7 @@ plt.savefig('activate.png',dpi=600)
 \end{python}
 \begin{figure}[H]
 \centering
-\includegraphics[scale=0.8]{activate_fun.png}
+\includegraphics[scale=0.8]{./pic/chapter1/activate_fun.png}
 \caption{activate\_fun}
 \end{figure}
 \subsection{relu和softplus}
@@ -194,7 +194,7 @@ plt.savefig('relu_softplus.png',dpi=600)
 \end{python}
 \begin{figure}[H]
 \centering
-\includegraphics[scale=0.8]{relu_softplus.png}
+\includegraphics[scale=0.8]{./pic/chapter1/relu_softplus.png}
 \end{figure}
 \subsection{dropout}
 将神经元以概率keepi\_prob绝对是否被抑制。如果被抑制该神经元的输出为0如果不被抑制，该神经元的输出将被放大到原来的1/keep\_prop。
@@ -308,6 +308,53 @@ Adagrade能够自适应的为哥哥参数分配不同的学习率，能够控制
 和Momentum类似，通过引入衰减系数使得每个回合都衰减一定比例。在实践中，对循环神经网络效果很好。
 \subsection{Adam}
 名称来自自适应矩阵(adaptive moment estimation).Adam更均损失函数针对每个参数的一阶矩，二阶矩估计动态调整每个参数的学习率。
+\begin{python}
+import numpy as np
+import tensorflow as tf
+import matplotlib.pyplot as plt
+tf.set_random_seed(0)
+np.random.seed(0)
+LR = 0.01
+BATCH_SIZE = 32
+x = np.linspace(-1,1,100).reshape(-1,1)
+noise = np.random.normal(0,0.1,size=x.shape)
+y = np.power(x,2)+noise
+class Net:
+    def __init__(self,opt,**kwargs):
+        self.x = tf.placeholder(tf.float32,[None,1])
+        self.y = tf.placeholder(tf.float32,[None,1])
+        l = tf.layers.dense(self.x,20,tf.nn.relu)
+        out = tf.layers.dense(l,1)
+        self.loss = tf.losses.mean_squared_error(self.y,out)
+        self.train = opt(LR,**kwargs).minimize(self.loss)
+net_SGD = Net(tf.train.GradientDescentOptimizer)
+net_momentum = Net(tf.train.MomentumOptimizer,momentum=0.9)
+net_RMSprop = Net(tf.train.RMSPropOptimizer)
+net_Adam = Net(tf.train.AdamOptimizer)
+nets = [net_SGD,net_momentum,net_RMSprop,net_Adam]
+sess = tf.Session()
+sess.run(tf.global_variables_initializer())
+losses_his = [[],[],[]]
+for step in range(300):
+    index = np.random.randint(0,x.shape[0],BATCH_SIZE)
+    b_x = x[index]
+    b_y = y[index]
+    for net,l_his in zip(nets,losses_his):
+        _,l = sess.run([net.train,net.loss],{net.x:b_x,net.y:b_y})
+        l_his.append(l)
+labels = ['SGD','Momentum','RMSprop','Adam']
+for i,l_his in enumerate(losses_his):
+    plt.plot(l_his,label=labels[i])
+plt.legend(loc='best')
+plt.xlabel('Step')
+plt.ylabel('Loss')
+plt.ylim(0,0.2)
+plt.savefig('Opt.png',dpi=600)
+\end{python}
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=0.6]{./pic/chapter1/Opt.png}
+\end{figure}
 \subsection{常用的度量函数tf.metrics}
 accuracy(labels,predictions,weights=None,metrics\_collections,updates\_collections=None,name=None)
 \begin{itemize}
@@ -323,7 +370,7 @@ accuracy(labels,predictions,weights=None,metrics\_collections,updates\_collectio
 \end{itemize}
 \subsection{构造简单的神经网络拟合数据}
 原始数据为$y=x^2$的基础上添加随机噪声。原始数据的散点图如下
-\includegraphics[scale=0.6]{origin.png}
+\includegraphics[scale=0.6]{./pic/chapter1/origin.png}
 \begin{python}
 #tensorflow 1.2.1
 import tensorflow as tf
@@ -365,8 +412,58 @@ plt.show()
 \end{python}
 最终拟合数据:
 \begin{figure}[H]
-\includegraphics[scale=0.4]{final.png}
+\includegraphics[scale=0.4]{./pic/chapter1/final.png}
 \end{figure}
 \chapter{数据的存储和加载}
-
+\begin{python}
+import tensorflow as tf
+import matplotlib.pyplot as plt
+import numpy as np
+tf.set_random_seed(0)
+np.random.seed(0)
+x = np.linspace(-1,1,100).reshape(-1,1)
+noise = np.random.normal(0,0.1,size=x.shape)
+y = np.power(x,2)+noise
+def gendata():
+    t = np.linspace(-1,1,100).reshape(-1,1)
+def save():
+    print('This is save')
+    tf_x = tf.placeholder(tf.float32,x.shape)
+    tf_y = tf.placeholder(tf.float32,y.shape)
+    l = tf.layers.dense(tf_x,10,tf.nn.relu)
+    o = tf.layers.dense(l,1)
+    loss = tf.losses.mean_squared_error(tf_y,o)
+    train_op = tf.train.GradientDescentOptimizer(learning_rate=0.5).minimize(loss)
+    sess = tf.Session()
+    sess.run(tf.global_variables_initializer())
+    saver = tf.train.Saver()
+    for step in range(100):
+        sess.run(train_op,{tf_x:x,tf_y:y})
+    saver.save(sess,'params',write_meta_graph=False)
+    pred,l = sess.run([o,loss],{tf_x:x,tf_y:y})
+    plt.figure(1,figsize=(10,5))
+    plt.subplot(121)
+    plt.scatter(x,y)
+    plt.plot(x,pred,'r-',lw=5)
+    plt.text(-1,1.2,'save loss=%.4f'%l,fontdict={'size':15,'color':'red'})
+def reload():
+    print('This is reload')
+    tf_x = tf.placeholder(tf.float32,x.shape)
+    tf_y = tf.placeholder(tf.float32,y.shape)
+    l_ = tf.layers.dense(tf_x,10,tf.nn.relu)
+    o_ = tf.layers.dense(l_,1)
+    loss_ = tf.losses.mean_squared_error(tf_y,o_)
+    sess = tf.Session()
+    saver = tf.train.Saver()
+    saver.restore(sess,'params')
+    pred,l = sess.run([o_,loss_],{tf_x:x,tf_y:y})
+    plt.subplot(122)
+    plt.scatter(x,y)
+    plt.plot(x,pred,'r-',lw=5)
+    plt.text(-1,1.2,'Reload Loss=%.4f'%l,fontdict={'size':15,'color':'red'})
+    plt.show()
+save()
+tf.reset_default_graph()
+reload()
+\end{python}
 

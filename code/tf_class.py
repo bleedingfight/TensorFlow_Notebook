@@ -23,7 +23,6 @@ output = tf.layers.dense(l1,2)
 loss = tf.losses.sparse_softmax_cross_entropy(labels=tf_y,logits=output)
 accuracy = tf.metrics.accuracy(          # return (acc, update_op), and create 2 local variables
             labels=tf.squeeze(tf_y), predictions=tf.argmax(output, axis=1),)[1]
-#accuracy = tf.metrics.accuracy(labels=tf.squeeze(tf_y),predictions=tf.argmax(output,axis=1),)[1]
 optimizer = tf.train.GradientDescentOptimizer(learning_rate=0.05)
 train_op = optimizer.minimize(loss)
 sess = tf.Session()
