@@ -1,12 +1,30 @@
-\documentclass{book}
+\documentclass[a4paper,12pt]{book}
 \usepackage[space]{ctex}
 \usepackage{amsmath}
 \usepackage{times}
-\graphicspath{{/home/hpc/文档/Tensorflow/pic}}
+\usepackage{titlesec}
+\usepackage{titlesec}
+\graphicspath{{./pic/chapter1}}
 \usepackage{graphicx}
 \usepackage{float}
 \usepackage{pythonhighlight}
+\titleformat
+{\chapter} % command
+[display] % shape
+{\bfseries\Large\itshape} % format
+{Tensorflow No. \ \thechapter} % label
+{0.5ex} % sep
+{\rule{\textwidth}{1pt}
+\vspace{1ex}
+\centering
+}
+[\vspace{-0.5ex}%
+\rule{\textwidth}{0.3pt}
+] % after-code
 \begin{document}
+\date{\today}
+\tableofcontents
+\newpage
 \include{./chapter1/tf_chapter1}
 \include{./chapter2/tf_chapter2}
 \include{./chapter3/tf_api}
