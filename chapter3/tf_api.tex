@@ -14,3 +14,32 @@ tf.squeeze(input,axis=None,name=None,squeeze\_dims=None)
 shape(squeeze(t)) ==> [2, 3]\newline
 \# 't' is a tensor of shape [1, 2, 1, 3, 1, 1]\newline
 shape(squeeze(t, [2, 4])) ==> [1, 2, 3, 1]\newline
+\section{stack}
+stack(values,axis=0,name='stack')：stack一个n维tensor为n+1维tensor。
+给定一个长度为N的形状为(A,B,C)的tensor，如果axis==0输出tensor的形状为(N,A,B,C),如果axis==1,输出tensor的形状为(A,N,B,C)
+\# 'x' is [1,4]\newline
+\# 'y' is [3,6]\newline
+\# 'z' is [3,6]\newline
+stack([x,y,z])==>[[1,4],[2,5],[3,6]]\newline
+stack(x,y,z,axis=1)==>[[1,2,3],[4,5,6]]\newline
+tf.stack([x,y,z]) = np.asarray([x,y,z])\newline
+参数:
+\begin{itemize}
+	\item 一个Tensor列表。
+	\item 整数，默认为0,支持负坐标。
+	\item 操作的名字。
+	\item[S] 一个stack的Tensor。
+	\item[S] ValueError:如果axis超过[-(R+1),R+1)
+\end{itemize}
+\textsl{Example}
+\begin{python}
+import tensorflow as tf
+x = tf.constant([1,4])
+y = tf.constant([2,5])
+z = tf.constant([3,6])
+r1 = tf.stack([x,y,z])
+r2 = tf.stack([x,y,z],axis=1)
+with tf.Session() as sess:
+    print(sess.run(r1).shape)
+    print(sess.run(r2).shape)
+\end{python}

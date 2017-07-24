@@ -13,7 +13,7 @@ with tf.Session() as sess:
         sess.run(update_operation)
         print(sess.run(var))
 \end{python}
-\subsection{placeholder使用}
+\subsection{placeholder}
 \begin{python}
 #tensorflow 1.2
 import tensorflow as tf
@@ -32,7 +32,7 @@ with tf.Session() as sess:
 \subsection{batch normalization}
 
 \begin{itemize}
-\item 数据x为Tensor。
+	\item[\S] 数据x为Tensor。
 \item mean:为x的均值，也是一个Tensor。
 \item var:为x的方差，也为一个Tensor。
 \item offset:一个偏移，也是一个Tensor。
@@ -197,7 +197,7 @@ plt.savefig('relu_softplus.png',dpi=600)
 \includegraphics[scale=0.8]{./pic/chapter1/relu_softplus.png}
 \end{figure}
 \subsection{dropout}
-将神经元以概率keepi\_prob绝对是否被抑制。如果被抑制该神经元的输出为0如果不被抑制，该神经元的输出将被放大到原来的1/keep\_prop。
+将神经元以概率keep\_prob绝对是否被抑制。如果被抑制该神经元的输出为0如果不被抑制，该神经元的输出将被放大到原来的1/keep\_prop。
 默认情况下，每个神经元是否被抑制是相互独立的。但是是否被抑制也可以通过noise\_shape来调节。当noise\_shape[i]=shape(x)[i]时,x中的元素相互独立。如果shape(x)=[k,1,1,n],那么每个批通道都是相互独立的，但是每行每列的数据都是关联的，也就是说要么都为0,要么还是原来的值。
 \begin{python}
 import tensorflow as tf
@@ -414,6 +414,45 @@ plt.show()
 \begin{figure}[H]
 \includegraphics[scale=0.4]{./pic/chapter1/final.png}
 \end{figure}
+\section{TensorBoard}
+\begin{python}
+import tensorflow as tf
+import numpy as np
+
+tf.set_random_seed(1)
+np.random.seed(1)
+
+# fake data
+x = np.linspace(-1, 1, 100)[:, np.newaxis]          # shape (100, 1)
+noise = np.random.normal(0, 0.1, size=x.shape)
+y = np.power(x, 2) + noise                          # shape (100, 1) + some noise
+
+with tf.variable_scope('Inputs'):
+        tf_x = tf.placeholder(tf.float32, x.shape, name='x')
+        tf_y = tf.placeholder(tf.float32, y.shape, name='y')
+with tf.variable_scope('Net'):
+    l1 = tf.layers.dense(tf_x, 10, tf.nn.relu, name='hidden_layer')
+    output = tf.layers.dense(l1, 1, name='output_layer')
+    tf.summary.histogram('h_out', l1)
+    tf.summary.histogram('pred', output)
+    loss = tf.losses.mean_squared_error(tf_y, output, scope='loss')
+    train_op = tf.train.GradientDescentOptimizer(learning_rate=0.5).minimize(loss)
+    tf.summary.scalar('loss', loss)     # add loss to scalar summary
+
+    sess = tf.Session()
+    sess.run(tf.global_variables_initializer())
+
+    writer = tf.summary.FileWriter('./log', sess.graph)     # write to file
+    merge_op = tf.summary.merge_all()                       # operation to merge all summary
+
+    for step in range(100):
+        _, result = sess.run([train_op, merge_op], {tf_x: x, tf_y: y})
+        writer.add_summary(result, step)
+\end{python}
+\begin{figure}[H]
+	\includegraphics[scale=0.4]{./pic/chapter1/tenbor1.png}
+\end{figure}
+
 \chapter{数据的存储和加载}
 \begin{python}
 import tensorflow as tf
@@ -466,4 +505,83 @@ save()
 tf.reset_default_graph()
 reload()
 \end{python}
+\section{CNN手写体数据识别}
+\subsection{mnist数据集}
+手写体数据训练集有55000张手写体数据图片。测试集有10000张图片。每张图片是大小为32*32的灰度图片。
+卷积神经网络结构：
+\begin{itemize}
+	\item 第一层卷积层：卷积核16个，卷积核大小为$5\times5$,strides=1,padding为SAME，激活函数为relu(输出大小为$28\times28\times16$)。
+	\item 第一层池化层:池化层大小为2,strides为2($14\times14\times16$)。
+第二层卷积层:卷积核32,大小为$5\times5$,strides=1,padding为SAME，激活函数为relu。($14\times14\times32$)
+	\item 第二层池化层:池化层大小为2,strides为2($7\times7\times32$)。
+	\item flatten:1568。
+\end{itemize}
+\begin{figure}[H]
+	\includegraphics[scale=0.4]{./pic/chapter1/mnist_cnn.png}
+\end{figure}
+\begin{python}
+import tensorflow as tf
+import matplotlib.pyplot as plt
+import numpy as np
+from tensorflow.examples.tutorials.mnist import input_data
 
+tf.set_random_seed(0)
+np.random.seed(0)
+
+BATCH_SIZE = 50
+LR = 0.001
+mnist = input_data.read_data_sets('/home/hpc/文档/mnist_tutorial/mnist',one_hot = True)
+test_x = mnist.test.images[:2000]
+test_y = mnist.test.labels[:2000]
+
+tf_x = tf.placeholder(tf.float32,[None,28*28])
+images = tf.reshape(tf_x,[-1,28,28,1])
+tf_y = tf.placeholder(tf.int32,[None,10])
+with tf.variable_scope('Conv1'):
+    conv1 = tf.layers.conv2d(
+            inputs = images,
+            filters = 16,
+            kernel_size = 5,
+            strides = 1,
+            padding = 'same',
+            activation = tf.nn.relu
+        )
+    tf.summary.histogram('conv1',conv1)
+with tf.variable_scope('pool1'):
+    pool1 = tf.layers.max_pooling2d(
+            conv1,
+            pool_size=2,
+            strides =2
+        )
+    tf.summary.histogram('max_pool1',pool1)
+with tf.variable_scope('conv2'):
+    conv2 = tf.layers.conv2d(pool1,32,5,1,'SAME',activation=tf.nn.relu)
+    tf.summary.histogram('conv2',conv2)
+with tf.variable_scope('pool2'):
+    pool2 = tf.layers.max_pooling2d(conv2,2,2)
+    tf.summary.histogram('max_pool',pool2)
+with tf.variable_scope('flatten'):
+    flat = tf.reshape(pool2,[-1,7*7*32])
+with tf.variable_scope('output'):
+    output = tf.layers.dense(flat,10)
+with tf.variable_scope('loss_op'):
+    loss = tf.losses.softmax_cross_entropy(onehot_labels=tf_y,logits=output)
+    train_op = tf.train.AdamOptimizer(LR).minimize(loss)
+    accuracy = tf.metrics.accuracy(labels = tf.argmax(tf_y,axis=1),predictions=tf.argmax(output,axis=1),)[1]
+    tf.summary.scalar('loss',loss)
+    tf.summary.scalar('accuracy',accuracy)
+sess = tf.Session()
+merge_op = tf.summary.merge_all()
+init_op = tf.group(tf.global_variables_initializer(),tf.local_variables_initializer())
+sess.run(init_op)
+writer = tf.summary.FileWriter('./log',sess.graph)
+for step in range(600):
+    b_x,b_y = mnist.train.next_batch(BATCH_SIZE)
+    _,loss_,result = sess.run([train_op,loss,merge_op],{tf_x:b_x,tf_y:b_y})
+    writer.add_summary(result,step)
+    if step%50 == 0:
+        accuracy_,flat_representation = sess.run([accuracy,flat],{tf_x:test_x,tf_y:test_y})
+        print('Step:',step,'| train loss:%.4f'%loss_,'|test accuracy:%.2f'%accuracy_)
+test_output = sess.run(output,{tf_x:test_x[:10]})
+pred_y = np.argmax(test_output,1)
+\end{python}
