@@ -1,20 +1,17 @@
 import tensorflow as tf
 import matplotlib.pyplot as plt
-import numpy as np
 
 tf.set_random_seed(1)
-np.random.seed(1)
+x0 = tf.random_normal((100,2),2,2,tf.float32,0)
+y0 = tf.zeros(100)
+x1 = tf.random_normal((100,2),-2,2,tf.float32,0)
+y1 = tf.ones(100)
+x = tf.reshape(tf.stack((x0,x1),axis=1),(200,2))
+y = tf.reshape(tf.stack((y0,y1),axis=1),(200,1))
+with tf.Session() as sess:
+    x = sess.run(x)
+    y = sess.run(y)
 
-# fake data
-n_data = np.ones((100, 2))
-x0 = np.random.normal(2*n_data, 1)      # class0 x shape=(100, 2)
-y0 = np.zeros(100)                      # class0 y shape=(100, 1)
-x1 = np.random.normal(-2*n_data, 1)     # class1 x shape=(100, 2)
-y1 = np.ones(100)                       # class1 y shape=(100, 1)
-x = np.vstack((x0, x1))  # shape (200, 2) + some noise
-y = np.hstack((y0, y1))  # shape (200, )
-
-# plot data
 tf_x = tf.placeholder(tf.float32, x.shape)     # input x
 tf_y = tf.placeholder(tf.int32, y.shape)     # input y
 

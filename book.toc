@@ -21,13 +21,27 @@
 \contentsline {subsection}{\numberline {1.6.5}Adagrad}{16}
 \contentsline {subsection}{\numberline {1.6.6}RMSprop}{16}
 \contentsline {subsection}{\numberline {1.6.7}Adam}{17}
-\contentsline {subsection}{\numberline {1.6.8}常用的度量函数tf.metrics}{18}
-\contentsline {subsection}{\numberline {1.6.9}构造简单的神经网络拟合数据}{19}
+\contentsline {subsection}{\numberline {1.6.8}构造简单的神经网络拟合数据}{19}
 \contentsline {section}{\numberline {1.7}TensorBoard}{21}
-\contentsline {chapter}{\numberline {2}数据的存储和加载}{25}
-\contentsline {section}{\numberline {2.1}CNN手写体数据识别}{26}
-\contentsline {subsection}{\numberline {2.1.1}mnist数据集}{26}
-\contentsline {section}{\numberline {2.2}模型存储和加载}{31}
-\contentsline {chapter}{\numberline {3}Tensorflow API}{33}
-\contentsline {section}{\numberline {3.1}tf}{33}
-\contentsline {section}{\numberline {3.2}stack}{34}
+\contentsline {section}{\numberline {1.8}CNN手写体数据识别}{25}
+\contentsline {subsection}{\numberline {1.8.1}mnist数据集}{25}
+\contentsline {chapter}{\numberline {2}Tensorflow进阶}{29}
+\contentsline {section}{\numberline {2.1}模型存储和加载}{29}
+\contentsline {section}{\numberline {2.2}用GPU}{30}
+\contentsline {subsection}{\numberline {2.2.1}手工配置设备}{30}
+\contentsline {subsection}{\numberline {2.2.2}允许GPU的内存增长}{31}
+\contentsline {chapter}{\numberline {3}常用的python模块}{35}
+\contentsline {section}{\numberline {3.1}Argparse}{35}
+\contentsline {chapter}{\numberline {4}Tensorflow API}{41}
+\contentsline {section}{\numberline {4.1}tf.squeeze}{41}
+\contentsline {section}{\numberline {4.2}tf.stack}{42}
+\contentsline {section}{\numberline {4.3}tf.metrics}{43}
+\contentsline {section}{\numberline {4.4}tf.reshape}{43}
+\contentsline {section}{\numberline {4.5}tf.image}{45}
+\contentsline {subsection}{\numberline {4.5.1}tf.image.decode\_gif}{45}
+\contentsline {subsection}{\numberline {4.5.2}tf.image.decode\_jpeg}{45}
+\contentsline {subsection}{\numberline {4.5.3}tf.image.encode\_jpeg}{46}
+\contentsline {subsection}{\numberline {4.5.4}tf.image.decode\_png}{47}
+\contentsline {subsection}{\numberline {4.5.5}tf.image.encode\_png}{47}
+\contentsline {subsection}{\numberline {4.5.6}tf.image.decode\_image}{47}
+\contentsline {subsection}{\numberline {4.5.7}tf.image.resize\_images}{48}

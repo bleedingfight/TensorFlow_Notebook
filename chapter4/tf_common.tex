@@ -1,5 +1,5 @@
 \chapter{Tensorflow API}
-\section{tf}
+\section{tf.squeeze}
 tf.squeeze(input,axis=None,name=None,squeeze\_dims=None)
 说明:从指定的Tensor中移除1维度。
 \begin{itemize}
@@ -14,7 +14,7 @@ tf.squeeze(input,axis=None,name=None,squeeze\_dims=None)
 shape(squeeze(t)) ==> [2, 3]\newline
 \# 't' is a tensor of shape [1, 2, 1, 3, 1, 1]\newline
 shape(squeeze(t, [2, 4])) ==> [1, 2, 3, 1]\newline
-\section{stack}
+\section{tf.stack}
 stack(values,axis=0,name='stack')：stack一个n维tensor为n+1维tensor。
 给定一个长度为N的形状为(A,B,C)的tensor，如果axis==0输出tensor的形状为(N,A,B,C),如果axis==1,输出tensor的形状为(A,N,B,C)
 \# 'x' is [1,4]\newline
@@ -42,4 +42,35 @@ r2 = tf.stack([x,y,z],axis=1)
 with tf.Session() as sess:
     print(sess.run(r1).shape)
     print(sess.run(r2).shape)
+\end{python}
+\section{tf.metrics}
+accuracy(labels,predictions,weights=none,metrics\_collections,updates\_collections=none,name=none)
+\begin{itemize}
+	\item labels:tensor，和predictions的形状相同，代表真实值。
+	\item predictions:tensor，代表预测值。
+	\item weights:tensor，rank可以为0或者labels的rank，必须能和label广播（所有的维度必须是1,或者和labels维度相同）
+	\item metrics\_collection:accuracy应该被增加的一个collectiobn列表选项。
+	\item update\_collections:update\_op应该添加的选项列表。
+	\item name:variable\_scope名字选项。
+	\item accuracy:返回值tensor，代表精度，总共预测对的和总数的商。
+	\item update\_op:返回值适当增加total和count变量和accuracy匹配。
+	\item valueerror:异常如果predictions和labels有不同的形状，或者weight不是none它的形状不合prediction匹配，或者metrics\_collections会哦这updates\_collections不是一个list或者tuple。
+\end{itemize}
+\section{tf.reshape}
+tf.reshape(tensor,shape,name=None)
+\begin{itemize}
+	\item Tensor:一个Tensor。
+	\item shape:一个列表,数值类型为int32或者时int64
+	\item name:操作的名字。
+	\item[S] 指定形状的Tensor。
+\end{itemize}
+\begin{python}
+import tensorflow as tf
+a = tf.linspace(0.,9.,10)
+b = tf.reshape(a,[2,5])
+with tf.Session() as sess:
+    a = sess.run(a)
+    b = sess.run(b)
+print(a.shape)
+print(b.shape)
 \end{python}

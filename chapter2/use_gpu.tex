@@ -1,0 +1,93 @@
+\section{用GPU}
+在Tensorflow中CPU,GPU用字符串表示
+\begin{itemize}
+\item "cpu:0":机器上的CPU
+\item "gpu:0":机器上的GPU
+\item "gpu:1":机器上的第二块GPU
+\end{itemize}
+ 如果TensorFLow操作有GPU和CPU实现，GPU将被优先指定，例如matmul有CPU和GPU内核，在系统上 有cpu:0和gpu:0,gpu:0将优先运行matmul。
+布置采集设备
+
+找到你的操作和tensor上的设备，创建一个会话log\_device\_placement配置设置为True
+\begin{python}
+import tensorflow as tf
+a = tf.reshape(tf.linspace(-1.,1.,12),(3,4))
+b = tf.reshape(tf.sin(a),(4,3))
+c = tf.matmul(a,b)
+with tf.Session() as sess:
+    print(sess.run(c))
+\end{python}
+输出参数:\newline
+\includegraphics{./pic/chapter2/use_gpu1.png}\newline
+\subsection{手工配置设备}
+如果你想将你的操作运行在指定的设备中而不由tensorflow是自动为你选择，你可以用tf.device 创建一个设备，左右的操作将在同一个设备上指定。
+\begin{python}
+import tensorflow as tf
+with tf.device('/cpu:0'):
+    a = tf.constant([1.,2.,3.,4.,5.,6.],shape = (2,3),name = 'a')
+    b = tf.reshape(a,shape=(3,2))
+    c = tf.matmul(a,b)
+    with tf.Session(config = tf.ConfigProto(log_device_placement=True)) as sess:
+        print(sess.run(c))
+\end{python}
+\includegraphics[scale=0.4]{use_gpu2.png}\newline
+正如你看到的a,b被复制到cpu:0,因为设备没有明确指定，Tensorflow将选择操作和可用的设备(gpu:0)
+
+\subsection{允许GPU的内存增长}
+
+默认情况下Tensorflow将映射所有的CPUs的显存到进程上，用相对精确的GPU内存资源减少内存的碎片化会更高效。 通常有些程序希望分贝可用内存的一部分，或者增加内存的需要两。在会话中tensorflow提供了两个参数 控制它。 第一个参数是allow\_growth选项，根据运行情况分配GPU内存：它开始分配很少的内存，当Session开始运行 需要更多GPU内存是，我们同感Tensorflow程序扩展GPU的内存区域。注意我们不释放内存，因此这可能导致更多的内存碎片。为了开启这个选项，可以通过下面的设置
+\begin{python}
+config = tf.ConfigProto()
+config.gpu_option.allow_growth = True
+sess = tf.Session(config=config,...)
+\end{python}
+第二种方法是per\_process\_gpu\_memory\_fraction选项，决定GPU总体内存中多少应给被分配，例如你可以告诉 Tensorflow分配40\%的GPU总体内存。
+\begin{python}
+config = tf.ConfigProto()
+config.gpu_option.per_process_gpu_memory_fraction = 0.4
+sess = tf.Session(config = config)
+\end{python}
+如果你想限制Tensorflow程序的GPU使用量，这个参数是很有用的。
+
+在多GPU系统是使用GPU
+
+如果你的系统上有超过一个GPU，你的GPU的抵消的ID将被默认选中，如果你想运行在不同的GPU上，你需要指定 你想要执行运算的GPU
+\begin{python}
+import tensorflow as tf
+with tf.device('/gpu2:0'):
+    a = tf.constant([1.,2.,3.,4.,5.,6.],shape = (2,3),name = 'a')
+    b = tf.reshape(a,shape=(3,2))
+    c = tf.matmul(a,b)
+    with tf.Session(config = tf.ConfigProto(log_device_placement=True)) as sess:
+        print(sess.run(c))
+\end{python}
+如果你指定的设备不存在，你将个到一个InvalidArgumentError:\newline
+\includegraphics[scale=0.4]{use_gpu3.png}\newline
+如果你想Tensorflow在万一指定的设备不存在时自动选择一个存在的设备，你可以在创建会话时配置中设置allow\_soft\_placement 为True
+\begin{python}
+with tf.device('/gpu:2'):
+  a = tf.constant([1.,2.,3.,4.,5.,6.],shape= [3,2],name = 'a')
+  b = tf.constant([1.,2.,3.,4.,5.,6.],shape= [2,3],name = 'b')
+  c = tf.matmul(a,b)
+with tf.Session(config = tf.ConfigProto(allow_soft_placement=True,log_device_placement=True)) as sess:
+    print(sess.run(c))
+\end{python}
+\includegraphics[scale=0.4]{use_gpu4.png}\newline
+用多GPU
+
+如果你想在多张GPU上运行Tensorflow，你可以在multi-tower fashion上构造你的模型，每个tower 被指定到不同的GPU上。例如:
+\begin{python}
+c = []
+for d in ['/gpu:0', '/gpu:1']:
+    with tf.device(d):
+        a = tf.constant([1.0, 2.0, 3.0, 4.0, 5.0, 6.0], shape=[2, 3])
+        b = tf.constant([1.0, 2.0, 3.0, 4.0, 5.0, 6.0], shape=[3, 2])
+        c.append(tf.matmul(a, b))
+    with tf.device('/cpu:0'):
+        sum = tf.add_n(c)
+   # Creates a session with log_device_placement set to True.
+sess = tf.Session(config=tf.ConfigProto(allow_soft_placement=True,log_device_placement=True))
+  # Runs the op.
+print(sess.run(sum))
+sess.close()
+\end{python}

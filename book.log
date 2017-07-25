@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.14159265-2.6-0.99998 (TeX Live 2017) (preloaded format=xelatex 2017.7.7)  23 JUL 2017 19:40
+This is XeTeX, Version 3.14159265-2.6-0.99998 (TeX Live 2017) (preloaded format=xelatex 2017.7.7)  25 JUL 2017 19:51
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1267,7 +1267,8 @@ Package: xeCJK-listings 2017/05/15 v3.4.8 xeCJK patch file for listings
 \l__xeCJK_listings_flag_int=\count172
 )
 (./book.aux (./chapter1/tf_chapter1.aux) (./chapter2/tf_chapter2.aux)
-(./chapter3/tf_api.aux))
+(./chapter2/use_gpu.aux) (./chapter3/common_module.aux)
+(./chapter4/tf_common.aux) (./chapter4/tf_image.aux))
 \openout1 = `book.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 24.
@@ -1533,34 +1534,36 @@ Underfull \vbox (badness 1360) has occurred while \output is active []
 File: ./pic/chapter1/Opt.png Graphic file (type QTm)
 
 <use  "./pic/chapter1/Opt.png" >
-Overfull \hbox (162.588pt too wide) in paragraph at lines 359--360
-[]\TU/ptm/m/sl/12 accuracy(labels,predictions,weights=None,metrics_collections,
-updates_collections=None,name=None) 
- []
-
-[18]
 File: ./pic/chapter1/origin.png Graphic file (type QTm)
  <use  "./pic/chapter1/origin.png" >
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [18]
 
 LaTeX Font Warning: Font shape `TU/FandolFang-Regular(0)/m/sl' undefined
 (Font)              using `TU/FandolFang-Regular(0)/m/n' instead on input line 
-381.
+368.
 
 [19]
 File: ./pic/chapter1/final.png Graphic file (type QTm)
  <use  "./pic/chapter1/final.png" >
-Overfull \hbox (146.23499pt too wide) in paragraph at lines 415--416
+Overfull \hbox (146.23499pt too wide) in paragraph at lines 402--403
+[][] 
+ []
+
+[20]
+Overfull \hbox (189.0039pt too wide) in paragraph at lines 433--434
 [][] 
  []
 
 
-Underfull \vbox (badness 10000) has occurred while \output is active []
+Underfull \vbox (badness 2088) has occurred while \output is active []
 
- [20]
-[21]
+ [21]
 File: ./pic/chapter1/tenbor1.png Graphic file (type QTm)
- <use  "./pic/chapter1/tenbor1.png" >
-Overfull \hbox (61.6795pt too wide) in paragraph at lines 453--454
+
+<use  "./pic/chapter1/tenbor1.png" >
+Overfull \hbox (61.6795pt too wide) in paragraph at lines 449--450
 [][] 
  []
 
@@ -1568,58 +1571,199 @@ Overfull \hbox (61.6795pt too wide) in paragraph at lines 453--454
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
  [22]
-[23] [24
+[23]
+Underfull \vbox (badness 10000) has occurred while \output is active []
 
-]
-Chapter 2.
-[25] [26]
+ [24]
 File: ./pic/chapter1/mnist_cnn.png Graphic file (type QTm)
- <use  "./pic/chapter1/mnist_cnn.png" >
-Overfull \hbox (161.65121pt too wide) in paragraph at lines 520--521
+
+<use  "./pic/chapter1/mnist_cnn.png" >
+Overfull \hbox (161.65121pt too wide) in paragraph at lines 515--516
 [][] 
  []
 
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
- [27]
-[28]
+ [25]
+[26]
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
- [29])
-[30]
+ [27])
+[28]
 \openout2 = `./chapter2/tf_chapter2.aux'.
 
- (./chapter2/tf_chapter2.tex) [31
+ (./chapter2/tf_chapter2.tex
+Chapter 2.
+) [29
+
 
 
 ]
-\openout2 = `./chapter3/tf_api.aux'.
+\openout2 = `./chapter2/use_gpu.aux'.
 
- (./chapter3/tf_api.tex [32
+ (./chapter2/use_gpu.tex
+File: ./pic/chapter2/use_gpu1.png Graphic file (type QTm)
+ <use  "./pic/chapter2/use_gpu1.png" >
+Underfull \hbox (badness 10000) in paragraph at lines 20--22
+
+ []
+
+[30
+
+
+]
+File: ./pic/chapter2/use_gpu2.png Graphic file (type QTm)
+ <use  "./pic/chapter2/use_gpu2.png" > [31]
+File: ./pic/chapter2/use_gpu3.png Graphic file (type QTm)
+
+<use  "./pic/chapter2/use_gpu3.png" >
+File: ./pic/chapter2/use_gpu4.png Graphic file (type QTm)
+ <use  "./pic/chapter2/use_gpu4.png" >
+[32]) [33]
+\openout2 = `./chapter3/common_module.aux'.
+
+ (./chapter3/common_module.tex [34
 
 
 
 ]
 Chapter 3.
+File: ./pic/chapter3/arg1.png Graphic file (type QTm)
+<use  "./pic/chapter3/arg1.png" >
+File: ./pic/chapter3/arg2.png Graphic file (type QTm)
+ <use  "./pic/chapter3/arg2.png" > [35]
+File: ./pic/chapter3/arg3.png Graphic file (type QTm)
+
+<use  "./pic/chapter3/arg3.png" >
+File: ./pic/chapter3/arg4.png Graphic file (type QTm)
+ <use  "./pic/chapter3/arg4.png" >
+Underfull \hbox (badness 10000) in paragraph at lines 50--51
+
+ []
+
+[36] [37]
+Underfull \hbox (badness 10000) in paragraph at lines 96--99
+
+ []
+
+[38] [39]) [40]
+\openout2 = `./chapter4/tf_common.aux'.
+
+ (./chapter4/tf_common.tex
+Chapter 4.
 
 Underfull \hbox (badness 10000) in paragraph at lines 13--17
 
  []
 
-[33]) [34] (./book.aux (./chapter1/tf_chapter1.aux) (./chapter2/tf_chapter2.aux
-) (./chapter3/tf_api.aux))
+[41
+
+
+
+]
+Overfull \hbox (155.748pt too wide) in paragraph at lines 47--48
+[]\TU/ptm/m/sl/12 accuracy(labels,predictions,weights=none,metrics_collections,
+updates_collections=none,name=none) 
+ []
+
+[42] [43]) [44]
+\openout2 = `./chapter4/tf_image.aux'.
+
+ (./chapter4/tf_image.tex
+Overfull \hbox (16.16672pt too wide) in paragraph at lines 7--8
+[]\TU/FandolSong-Regular(0)/m/n/12 返 回 一 个 \TU/ptm/m/sl/12 8 \TU/FandolSong-Reg
+ular(0)/m/n/12 位 无 符 号 的 \TU/ptm/m/sl/12 Tensor\TU/FandolSong-Regular(0)/m/n/12
+ ，|  四 维 形 状 为 \TU/ptm/m/sl/12 [num_frames,height,width,3],
+ []
+
+
+Overfull \hbox (62.46pt too wide) in paragraph at lines 10--13
+[]\TU/ptm/m/sl/12 tf.image.decode_jpeg(contents,channels=None,ratio=None,fancy_
+upscaling=None, 
+ []
+
+
+Overfull \hbox (82.65579pt too wide) in paragraph at lines 10--13
+\TU/ptm/m/sl/12 try_recover_truncated=None,acceptable_fraction=None,dct_metched
+=None,name=None)
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 10--13
+
+ []
+
+
+Overfull \hbox (26.34401pt too wide) in paragraph at lines 20--21
+\TU/FandolSong-Regular(0)/m/n/12 统 自 行 指 定。|  可 用 的 值 有 \TU/ptm/m/sl/12 [”INTEG
+ER_FAST”,”INTEGER_ACCURATE”] 
+ []
+
+[45
+
+
+]
+Overfull \hbox (2.70673pt too wide) in paragraph at lines 22--23
+[]\TU/FandolSong-Regular(0)/m/n/12 返 回 值 为 一 个 \TU/ptm/m/sl/12 8 \TU/FandolSong
+-Regular(0)/m/n/12 位 无 符 号 整 型 \TU/ptm/m/sl/12 Tensor\TU/FandolSong-Regular(0)/
+m/n/12 ，| \TU/ptm/m/sl/12 3 \TU/FandolSong-Regular(0)/m/n/12 维 形 状 \TU/ptm/m/sl
+/12 [height,width,channels] 
+ []
+
+
+Overfull \hbox (131.016pt too wide) in paragraph at lines 25--27
+[]\TU/ptm/m/sl/12 tf.image.encode_jpeg(image,format=None,quality=None,progressi
+ve=None,optimize_size=None 
+ []
+
+
+Overfull \hbox (239.94003pt too wide) in paragraph at lines 25--27
+\TU/ptm/m/sl/12 chroma_downsampling=None,density_uint=None,x_density=None,y_den
+sity=None,xmp_metadata=None,name=None) 
+ []
+
+
+Overfull \hbox (29.48001pt too wide) in paragraph at lines 33--34
+[]\TU/ptm/m/sl/12 density_unit: \TU/FandolSong-Regular(0)/m/n/12 一 个 字 符 串，|  可
+ 以 为\TU/ptm/m/sl/12 ”in”,”cm”, \TU/FandolSong-Regular(0)/m/n/12 指 定 \TU/ptm/m/s
+l/12 x_density \TU/FandolSong-Regular(0)/m/n/12 和 \TU/ptm/m/sl/12 y_density.in
+ []
+
+[46]
+Overfull \hbox (9.5158pt too wide) in paragraph at lines 42--44
+[]\TU/ptm/m/sl/12 tf.image.decode_png(contents,channels=None,dtype=None,name=No
+ne)
+ []
+
+
+Overfull \hbox (4.03873pt too wide) in paragraph at lines 66--67
+[]\TU/FandolSong-Regular(0)/m/n/12 返 回 \TU/ptm/m/sl/12 JPEG,PNG \TU/FandolSong-
+Regular(0)/m/n/12 的 \TU/ptm/m/sl/12 8 \TU/FandolSong-Regular(0)/m/n/12 位 无 符 号 
+的 形 状 为 \TU/ptm/m/sl/12 [height,width,num_channels]\TU/FandolSong-Regular(0)/m/
+n/12 ，|
+ []
+
+[47]
+Overfull \hbox (108.024pt too wide) in paragraph at lines 70--71
+[]\TU/ptm/m/sl/12 tf.image.resize_images(images,size,method=ResizeMethed.BILINE
+AR,align_corners=False) 
+ []
+
+) [48] (./book.aux (./chapter1/tf_chapter1.aux) (./chapter2/tf_chapter2.aux)
+(./chapter2/use_gpu.aux) (./chapter3/common_module.aux)
+(./chapter4/tf_common.aux) (./chapter4/tf_image.aux))
 
 LaTeX Font Warning: Some font shapes were not available, defaults substituted.
 
  ) 
 Here is how much of TeX's memory you used:
- 22529 strings out of 493005
- 442429 string characters out of 6134597
- 622881 words of memory out of 5000000
- 26279 multiletter control sequences out of 15000+600000
+ 22659 strings out of 493005
+ 444838 string characters out of 6134597
+ 646880 words of memory out of 5000000
+ 26369 multiletter control sequences out of 15000+600000
  7308 words of font info for 46 fonts, out of 8000000 for 9000
  1348 hyphenation exceptions out of 8191
  57i,13n,69p,10430b,1834s stack positions out of 5000i,500n,10000p,200000b,80000s
 
-Output written on book.pdf (34 pages).
+Output written on book.pdf (48 pages).
