@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.14159265-2.6-0.99998 (TeX Live 2017) (preloaded format=xelatex 2017.7.7)  25 JUL 2017 19:51
+This is XeTeX, Version 3.14159265-2.6-0.99998 (TeX Live 2017) (preloaded format=xelatex 2017.7.26)  27 JUL 2017 14:33
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1629,45 +1629,48 @@ File: ./pic/chapter2/use_gpu4.png Graphic file (type QTm)
 
 ]
 Chapter 3.
+File: ./pic/chapter3/demo1.png Graphic file (type QTm)
+<use  "./pic/chapter3/demo1.png" > [35]
 File: ./pic/chapter3/arg1.png Graphic file (type QTm)
-<use  "./pic/chapter3/arg1.png" >
+ <use  "./pic/chapter3/arg1.png" >
 File: ./pic/chapter3/arg2.png Graphic file (type QTm)
- <use  "./pic/chapter3/arg2.png" > [35]
+
+<use  "./pic/chapter3/arg2.png" >
 File: ./pic/chapter3/arg3.png Graphic file (type QTm)
-
-<use  "./pic/chapter3/arg3.png" >
+ <use  "./pic/chapter3/arg3.png" > [36]
 File: ./pic/chapter3/arg4.png Graphic file (type QTm)
- <use  "./pic/chapter3/arg4.png" >
-Underfull \hbox (badness 10000) in paragraph at lines 50--51
+
+<use  "./pic/chapter3/arg4.png" >
+Underfull \hbox (badness 10000) in paragraph at lines 60--61
 
  []
 
-[36] [37]
-Underfull \hbox (badness 10000) in paragraph at lines 96--99
+[37]
+Underfull \hbox (badness 10000) in paragraph at lines 106--109
 
  []
 
-[38] [39]) [40]
+[38] [39] [40]) [41]
 \openout2 = `./chapter4/tf_common.aux'.
 
- (./chapter4/tf_common.tex
+ (./chapter4/tf_common.tex [42
+
+
+
+]
 Chapter 4.
 
 Underfull \hbox (badness 10000) in paragraph at lines 13--17
 
  []
 
-[41
-
-
-
-]
+[43]
 Overfull \hbox (155.748pt too wide) in paragraph at lines 47--48
 []\TU/ptm/m/sl/12 accuracy(labels,predictions,weights=none,metrics_collections,
 updates_collections=none,name=none) 
  []
 
-[42] [43]) [44]
+[44] [45]) [46]
 \openout2 = `./chapter4/tf_image.aux'.
 
  (./chapter4/tf_image.tex
@@ -1700,7 +1703,7 @@ Overfull \hbox (26.34401pt too wide) in paragraph at lines 20--21
 ER_FAST”,”INTEGER_ACCURATE”] 
  []
 
-[45
+[47
 
 
 ]
@@ -1730,7 +1733,7 @@ Overfull \hbox (29.48001pt too wide) in paragraph at lines 33--34
 l/12 x_density \TU/FandolSong-Regular(0)/m/n/12 和 \TU/ptm/m/sl/12 y_density.in
  []
 
-[46]
+[48]
 Overfull \hbox (9.5158pt too wide) in paragraph at lines 42--44
 []\TU/ptm/m/sl/12 tf.image.decode_png(contents,channels=None,dtype=None,name=No
 ne)
@@ -1744,13 +1747,13 @@ Regular(0)/m/n/12 的 \TU/ptm/m/sl/12 8 \TU/FandolSong-Regular(0)/m/n/12 位 无
 n/12 ，|
  []
 
-[47]
+[49]
 Overfull \hbox (108.024pt too wide) in paragraph at lines 70--71
 []\TU/ptm/m/sl/12 tf.image.resize_images(images,size,method=ResizeMethed.BILINE
 AR,align_corners=False) 
  []
 
-) [48] (./book.aux (./chapter1/tf_chapter1.aux) (./chapter2/tf_chapter2.aux)
+) [50] (./book.aux (./chapter1/tf_chapter1.aux) (./chapter2/tf_chapter2.aux)
 (./chapter2/use_gpu.aux) (./chapter3/common_module.aux)
 (./chapter4/tf_common.aux) (./chapter4/tf_image.aux))
 
@@ -1758,12 +1761,12 @@ LaTeX Font Warning: Some font shapes were not available, defaults substituted.
 
  ) 
 Here is how much of TeX's memory you used:
- 22659 strings out of 493005
- 444838 string characters out of 6134597
+ 22675 strings out of 493005
+ 445041 string characters out of 6134596
  646880 words of memory out of 5000000
- 26369 multiletter control sequences out of 15000+600000
+ 26384 multiletter control sequences out of 15000+600000
  7308 words of font info for 46 fonts, out of 8000000 for 9000
  1348 hyphenation exceptions out of 8191
  57i,13n,69p,10430b,1834s stack positions out of 5000i,500n,10000p,200000b,80000s
 
-Output written on book.pdf (48 pages).
+Output written on book.pdf (50 pages).
