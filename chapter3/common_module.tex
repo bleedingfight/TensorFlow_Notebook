@@ -9,14 +9,15 @@ parser.add_argument('--sum',dest='accumulate',action='store_const',const=sum,def
 args = parser.parse_args()
 print(args.accumulate(args.integers))
 \end{python}
-\includegraphics[scale=0.5]{demo1.png}
-\begin{python}
+\includegraphics[scale=0.5]{demo1.png}\newline
+
 代码能根据传入的参数选择相应的函数计算。
 \begin{itemize}
 \item 创建一个parser
 \item 增加arguments
 \item 解析参数
 \end{itemize}
+
 \subsection{ArgumentParser 对象}
 class argparse.ArgumentParser(prog=None, usage=None, description=None, epilog=None, parents=[], formatter\_class=argparse.HelpFormatter, prefix\_chars='-', fromfile\_prefix\_chars=None, argument\_default=None, conflict\_handler='error', add\_help=True, allow\_abbrev=True)
 \begin{itemize}
@@ -35,7 +36,7 @@ class argparse.ArgumentParser(prog=None, usage=None, description=None, epilog=No
 \end{itemize}
 \subsection{prog}
 默认情况下ArgumentParser对象用sys.argv[0]决定如何显示程序的名字。
-
+\begin{python}
 #filename:arg1.py
 import argparse
 parser = argparse.ArgumentParser()
@@ -43,6 +44,46 @@ parser.add_argument("echo")
 args = parser.parse_args()
 print(args.echo)
 \end{python}
+默认情况下ArgumentParser从包含用法信息的参数计算useage message。
+\begin{python}
+import argparse
+parser = argparse.ArgumentParser()
+parser.add_argument('--foo',help='foo help')
+args = parser.parse_args()
+\end{python}
+
+\begin{figure}[htbp]
+\centering
+\subfigure[name of the subfigure]{
+\begin{minipage}{5cm}
+\centering
+\includegraphics[scale=0.5]{demo2.png}
+\end{minipage}}
+\subfigure[name of the subfigure]{ 
+\begin{minipage}{5cm}
+\centering
+\includegraphics[scale=0.3]{demo3.png}
+\end{minipage}}
+\label{fig:1}
+\end{figure}
+大多数的ArgumentParser构造体用description=关键字，这个参数给出一个简单的程序说明其如何工作的。在帮助信息中表述在命令行和帮助信息之间。
+\begin{python}
+import argparse
+parser = argparse.ArgumentParser(description='A foo that bars')
+parser.print_help()
+\end{python}
+\includegraphics[scale=0.5]{demo4.png}\newline
+一些程序喜欢在参数表述后添加一些额外的信息说明，这些说明可以同感ArgumentParser中的epilog=参数指定。
+\begin{python}
+import argparse
+parser = argparse.ArgumentParser(description='A foo that bars',
+epilog="And that's how you'd foo a bar")
+parser.print_help()
+\end{python}
+\includegraphics[scale=0.5]{demo5.png}
+有时候一些parser共享一些参数，相比于重复定义这些参数，一个单个的parser同感传递parents给ArgumentParser。parents=参数得到一个ArgumentParser对象的列表对象，从中收集所有的位置和选项行为\newline
+\includegraphics[scale=0.4]{demo6.png}\newline
+大多数的parent parser指定add\_help=False，因此ArgumentParser将看到两个帮助选项(一个在parent一个在child)同时报错。你必须在通过parsers=传递前必须完全初始化parser，如果你在child parser改变parent parsers，改变将不被反映到child。
 输入:\newline
 \includegraphics[scale=0.5]{arg1.png}\newline
 \includegraphics[scale=0.5]{arg2.png}\newline
