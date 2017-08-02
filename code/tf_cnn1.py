@@ -7,7 +7,8 @@ np.random.seed(0)
 
 BATCH_SIZE = 50
 LR = 0.001
-mnist = input_data.read_data_sets('/home/hpc/文档/mnist_tutorial/mnist',one_hot = True)
+path = '/home/hpc/文档/mnist_tutorial/'
+mnist = input_data.read_data_sets(path+'mnist',one_hot = True)
 test_x = mnist.test.images[:2000]
 test_y = mnist.test.labels[:2000]
 
@@ -51,7 +52,7 @@ sess = tf.Session()
 merge_op = tf.summary.merge_all()
 init_op = tf.group(tf.global_variables_initializer(),tf.local_variables_initializer())
 sess.run(init_op)
-writer = tf.summary.FileWriter('./log',sess.graph)
+writer = tf.summary.FileWriter(path+'log',sess.graph)
 for step in range(600):
     b_x,b_y = mnist.train.next_batch(BATCH_SIZE)
     _,loss_,result = sess.run([train_op,loss,merge_op],{tf_x:b_x,tf_y:b_y})

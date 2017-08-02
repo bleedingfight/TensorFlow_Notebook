@@ -30,20 +30,20 @@
 \contentsline {section}{\numberline {2.2}用GPU}{30}
 \contentsline {subsection}{\numberline {2.2.1}手工配置设备}{30}
 \contentsline {subsection}{\numberline {2.2.2}允许GPU的内存增长}{31}
-\contentsline {chapter}{\numberline {3}常用的python模块}{35}
-\contentsline {section}{\numberline {3.1}Argparse}{35}
-\contentsline {subsection}{\numberline {3.1.1}ArgumentParser 对象}{36}
-\contentsline {subsection}{\numberline {3.1.2}prog}{37}
-\contentsline {chapter}{\numberline {4}Tensorflow API}{45}
-\contentsline {section}{\numberline {4.1}tf.squeeze}{45}
-\contentsline {section}{\numberline {4.2}tf.stack}{46}
-\contentsline {section}{\numberline {4.3}tf.metrics}{47}
-\contentsline {section}{\numberline {4.4}tf.reshape}{47}
-\contentsline {section}{\numberline {4.5}tf.image}{49}
-\contentsline {subsection}{\numberline {4.5.1}tf.image.decode\_gif}{49}
-\contentsline {subsection}{\numberline {4.5.2}tf.image.decode\_jpeg}{49}
-\contentsline {subsection}{\numberline {4.5.3}tf.image.encode\_jpeg}{50}
-\contentsline {subsection}{\numberline {4.5.4}tf.image.decode\_png}{51}
-\contentsline {subsection}{\numberline {4.5.5}tf.image.encode\_png}{51}
-\contentsline {subsection}{\numberline {4.5.6}tf.image.decode\_image}{51}
-\contentsline {subsection}{\numberline {4.5.7}tf.image.resize\_images}{52}
+\contentsline {section}{\numberline {2.3}Argparse}{34}
+\contentsline {subsection}{\numberline {2.3.1}ArgumentParser 对象}{34}
+\contentsline {subsection}{\numberline {2.3.2}prog}{35}
+\contentsline {subsection}{\numberline {2.3.3}add\_argument()方法}{42}
+\contentsline {chapter}{\numberline {3}Tensorflow API}{69}
+\contentsline {section}{\numberline {3.1}tf.squeeze}{69}
+\contentsline {section}{\numberline {3.2}tf.stack}{70}
+\contentsline {section}{\numberline {3.3}tf.metrics}{71}
+\contentsline {section}{\numberline {3.4}tf.reshape}{71}
+\contentsline {section}{\numberline {3.5}tf.image}{73}
+\contentsline {subsection}{\numberline {3.5.1}tf.image.decode\_gif}{73}
+\contentsline {subsection}{\numberline {3.5.2}tf.image.decode\_jpeg}{73}
+\contentsline {subsection}{\numberline {3.5.3}tf.image.encode\_jpeg}{74}
+\contentsline {subsection}{\numberline {3.5.4}tf.image.decode\_png}{75}
+\contentsline {subsection}{\numberline {3.5.5}tf.image.encode\_png}{75}
+\contentsline {subsection}{\numberline {3.5.6}tf.image.decode\_image}{75}
+\contentsline {subsection}{\numberline {3.5.7}tf.image.resize\_images}{76}
