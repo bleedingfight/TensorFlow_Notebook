@@ -1,0 +1,32 @@
+\section{path}
+\begin{itemize}
+\item os.path.abspath(path):返回path的绝对路径，在多数平台下，相当于调用函数normpath(join(os.getcwd(),path))
+\item os.path.basename(path):返回path的路径base name，第二个元素同感传递path给split(),注意这个结果不同于unix的basename程序，这里basename,'foo/bar'然会bar,而basename()函数返回空字符串('')。
+\item os.path.commonpath(paths):返回paths队列中最长的sub-path，日国路径中包含绝对路径和相对路径的话将报ValueError或者如果paths是空，不想commonprefix(),这个函数返回一个错的路径。
+\item os.path.dirname(path):返回目录的名字，就是path用split分割厚的第一个元素。
+\item os.path.exists(path):如果春在路径path或者一个打开的文件描述返回True。对于破掉的符号链接返回False，在一些平台，如果权限不允许执行os.stat()即使存在物理路径这个函数也返回False。
+\item os.path.lexists(path):如果路径存在返回True，对broken 符号链接返回True，等效与exists()。
+\item os.path.expanduser(path):在Unix和Windows上用~或者~user取代用户路径的值。在unix上一个~被环境变量HOME替代(如果设置了HOME环境变量的话),否则当前用户的home目录通过内建模块pwd查找，一个初始化~user是寻找在password目录里面的目录。\item os.expandvars(path):返回环境变量的值，子字符串形式时${name}或者$name被环境变量名取代，变形的变量名字和参考不存在的变量将不改变。
+\item os.path.getatime(path):返回上次访问路径的时间，返回一个从epoch起经历的秒数，如果文件不存在或不可访问则报OSError。
+\item os.path.getmtime(path):返回最新修改路径的时间，返回值时一个epoch其开始的秒数，文件不存在或者不可范围跟时报OSError。
+\item os.path.getctime:返回系统的ctime，在Unix上时最新的metadata改变的时间，在windows上时path创建的时间，返回一个从epoch起经历的秒数，如果文件不存在或不可访问则报OSError。
+\item os.path.getsize(path):返回字节表示的路径的大小，如果不存在文件或者文件不可范围跟将报出OSError。
+\item os.path.isabs(path):如果路径是绝对路径返回True。
+\item os.path.isfile(path):如果路径是文件将返回True。
+\item os.path.isdir(path):如果存在路径返回True。
+\item os.path.islink(path):如果路径查询一个目录入口时符号链接返回True，如果Python运行时符号链接不支持将返回False。
+\item os.path.ismount(path):如果path是一个挂载点，返回True。
+\item os.path.join(path,*paths):加入一个或者更多的组建，返回值是连接路径和任何成员的路径。
+\item os.path.normcase(path):在Unix，MAX OS上返回路径不变，在一些敏感的文件系统上将转换路径为小写，在windows上将转化斜线为饭斜线，如果path不是str或者bytes将报TypeError。
+\item os.path.normpath(path):删除冗余得分和服，因此A//B,A/B,A/./B,A/foo../B将变为A/B.字符串操作也许改变包含符号链接的意义，在windows上它转化斜线为反斜线。
+\item os.path.realpath(path):返回指定文件名的确定路径，消除路径中出现的任何符号链接。
+\item os.realpath(path,start=os.curdir):从当前路径或者start路径返回相对的文件路径，这是一个路径计算:文件系统不妨问确定的存在的或者自然的路径或者start。
+\item os.path.samefile(path1,path2):如果pathname值访问相同的文件或者目录则返回True，这有device名字和i-node数量决定，如果os.stat()调用pathname失败将报出异常。
+\item os.path.sameopenfile(fp1,fp2):如果fp1和fp2指定的时相同的文件将返回True。
+\item os.path.samestat(stat1,stat2):如果元组stat1和state2查询的时相同的文件，返回True，这个结构可需已经被os.fstate(),os.lstat()或者os.stat()返回，番薯通过samefile()和sameopenfile()实现基本的比较。
+\item os.path.split(path):分割路径为(head,tail)。tail不包含斜线，如果以斜线将诶为，tail将为空，如果没有斜线，头将为空，如果path时空，头尾都为空。后面的斜线从head删除出位它是root(一个或者更多的斜线)，在所有的情况下join(head,tail)返回一个路径到相同位置作为路径。
+
+\item os.path.splitdrive(path):返回pathname到(drive,tail),这里drive可以使挂载点或者空字符串。在系统上没有用驱动器指定，驱动器将为空字符串，在所有的倾向下，drive+tail将时相同的路径。在Windows上，分割pathname成drive/UNC共享点和相对路径，如果路径包含驱动器驱动器将包含冒号(splitdrive("c:/dir"))返回("c:","/dir")，如果路径包含驱动UNC路径，驱动器将包含主机名和share，但是不包含四个分隔符splitdrive("//host/computer/dir")return("//host/computer","/dir")
+\item os.path.split(path):分割路径名为(root,ext)像root+ext == path，ext时空或者以一个周期开头，导致basename被忽略，splitex('.cshrc')返回('.cshrc','')
+\item os.path.supports\_unicode\_filenames():如果文件名时unicode编码的则为True。
+\end{itemize}
