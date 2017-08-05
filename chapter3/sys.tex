@@ -1,0 +1,141 @@
+\chapter{sys}
+\begin{itemize}
+\item sys.abiflags:在POSIX体同上Python用标准的configure脚本编译，包含PEP3149指定的ABI flags。
+\item sys.argv:传递给Python的命令行参数，argv[0]是脚本的名字，在解释器中如果命令行用-c选项，argv[0]被设置为'-c'。如果没有脚本名字被传递给python解释器，argv[0]是空字符串。
+\item sts.base\_exec\_prefix:Python启动时设置，在site.py之前运行前设置为exec\_prefix.如果不运行一个虚拟环境，值保持不变,如果site.py找到的虚拟环境被用了，prefix和exec\_prefix的值将被改变到指向虚拟环境，由于base\_prefix和base\_exec\_prefix将任何指向python安装的base环境（虚拟换将被创建）。
+\item sys.base\_prefix:在site.py运行前python启动中值和prefix相同。如果不运行在虚拟环境中，值将保持不变rugosasite.py找到一个虚拟环境被用，prefix和exec\_prefix()值将被改变到指向虚拟环境，由于base\_prefix和base\_exec\_prefix将保留指向python安装的base环境（虚拟换将被创建）。
+\item byteorder:本地变量的指示器，这将在big-endian平台有一个值'big','title'在little-endian平台。
+\item sys.vuiltin\_module\_name:被编译进Python解释器的模块的字符串元组。（信息在其他方法下不可用-modules.keys()仅仅显示导入的模块）。
+\item sys.call\_tracing(func,args):调用func(*args),当trace使能时。trace状态被后来保存和恢复。从checkpoint文件debug去玄幻调试其它代码。
+\item sys.copyright:包含python解释器版权信息的字符串。
+\item sys.\_clear\_type\_cache():清除内部变量的缓存，类型缓存用来加速属性和方法的查找这个函数用来降低泄漏debug的非比要得查找。
+\item sys.\_current\_fnames():返回映射每个线程的标识符到函数调用时的线程栈的栈顶。注意traceback模块中的函数能编译调用被给定一个帧的栈。在调试线程锁时很有用：这个函数线程锁死操作，这样线程的调用被冻结和特们的死锁一样长。帧返回一个非死锁的线程也许忍受没有关系到当前这次调用的代码激活的线程检查帧。，这个函数仅仅被用在内部或者特殊的目的。
+\item sys.\_debugmallocstats():打印cpython内存分贝其的低级的信息到标准的错误输出。如果python配置了-with-pydebug,它也只行一些开销巨大的内部组成检查。
+\item sys.dllhandle:指定处理python dll的整数，在Windows上可用。
+\item sys.displayhook(value):如果值为None，函数打印rep(value)到sys.stdout,报春之在builtins.\_。如果repr(value)时不可编码的sys.stdout.encoding和sys.stdout.error句柄，解码sys.stdout.encoding和backslashplace错误句柄。
+sys.displayhook被调用在计算输入交互式python会话表达式的结果，显示值能通过指定参数被自定义。
+\begin{python}
+def displayhook(value):
+    if value i None:
+        return 
+    builtins._ = None
+    text = repr(value)
+    try:
+        sys.stdout.writer(text)
+    except UnicodeEncodeError:
+        bytes = text.encode(sys.stdout.encoding,'backslashreplace')
+        if hasattr(sys.stdout,'buffer'):
+            sys.stdout.buffer.writer(bytes)
+        else:
+            text = bytes.decode(sys.stdout.encoding,'strict')
+            sys.stdout.buffer.writer(text)
+    sys.stdout.write("\n")
+    builtins._ = value
+\end{python}
+\item sys.dont\_write\_bytecode:如果为真，python不尝试写.pyc文件到源模块，值依赖-B命令行选项和PYTHONDONTWRITEBYTECODE环境变量通过设置True或者False确定，但是你可以在你自己控制二进制文件生成。
+\item sys.exceptgook(type,value,traceback):这个函数打印出一个给定的traceback和sys.stderr异常。当出现异常时，解释器设置三个参数异常类，异常实例和traceback对象调用sys.execpthook。在交互式会话中这发生在控制被返回到终端前，在Python程序中仅当程序退出时被调用，在处理类似顶级异常可以通过指定另一个三个参数函数它哦sys.exeothook。
+\item sys.\_\_displayhook\_\_
+\item sys.\_\_excepthook\_\_:这个对象在程序的开头包含displayhook和excepthook的初始值，他们被保存以至于他们被异常取代时displayhook和excepthook可以被恢复。
+\item sys.exc\_info:这个函数给出关于当前被处理的异常的信息的元组。信息返回被指定到当前线程和当前栈帧，如果当前栈帧没有处理异常，信息被调用的栈帧得到，或者它的调用器得到，因此直到在处理异常时栈帧被发现，这里处理一个异常被定义为处理一个异常发生。对于任何栈帧，仅仅当前异常信息被处理。如果在栈帧中没有异常被处理，返回包含三个None的元组。否则返回值为(type,value,traceback),他们分别为d得到的被处理异常的类型，异常实例，和traceback对象（压缩调用栈）。
+\item sys.exec\_prefix:一个字符串给site-specofic目录前缀到python文件安装平台之前，默认是'/usr/local',这可以通过设置configure脚本--exec-prefix参数被设置编译时间，特别是所有的配置文件(像pyconfig.h头文件)被安装子啊exec\_prefix/lib/pythonX.Y/config和共享库模块被按转子啊exec\_prefix/lib/pythonX.Y/lib-dynload,这里X,Y代表跑一趟好哦那得版本。
+\item sys.executable:给python解释器一个绝对路径字符串，如果python不能获得真是的执行路径，sys.executable将为None。
+\item sys.exit([arg]):从python推出，SystemExit异常时生成，选项参数可以被给定为整数(默认为0)或者其它对象类型。如果时一个整数，0被认为成功终止，任何非零数值被认为异常终止。多数系统要求值在0-127之间，否则将产生不确定结果，一些系统约定指定推出代码，但是通常不完善，Unix程序生成用2代表命令行语法错误1代表其它错误，如果另一类型的对象被传递，None相当于传递0，其他队像被打印到stderr和推出代码为1,类似的sys.exit("some error message")是当程序出错一个快速退出程序的方法。因此exit()当从主进程退出进程时产生异常。异常不被拦截。
+\item sys.flags结构序列flags暴露命令行状态\par
+\begin{tabular}{cc}
+\hline
+attribute & flag\\
+debug & -d\\
+inspect& -i\\
+interactive&-i\\
+optimize&-O or -OO\\
+dont\_write\_bytecode&-B\\
+no\_user\_site&-s\\
+no\_site&-S\\
+ignore\_environment&-E\\
+verbose&-v\\
+bytes\_warning&-b\\
+quit&-q\\
+hash\_randomization&-R
+\end{tabular}
+\item sys.float\_info:一个结构序列保持float类型的信息，它包含精确度和内部表达式低级信息，值符合在头文件float.h中定义的浮点常数。\par
+\begin{tabular}{lll}
+attribute&float.h macro&explanation\\
+epsilon&DBL\_EPSILON&1和大于1的最新值之间的差作为浮点数\\
+dig&DBL\_DIG&浮点数能带秒的最大精度\\
+mant\_dig&DBL\_MANT\_DIG&浮点精度。base-radix浮点数的精度\\
+max&DBL\_MAX&有限浮点数的最大值\\
+max\_exp&DBL\_MAX\_EXP&radix**(e-1)代表的最大整数e代表无穷浮点数\\
+max\_10\_exp&DBL\_MAX\_10\_EXP&最大e10**2代表的最大浮点\\
+radix&FLT\_RADIX&指数表达式的基数\\
+rounds&FLT\_ROUNDS&整数常数代表round模式，这反映了系统在解释器启动时FLT\_Rounds 宏的值\\
+\end{tabular}
+属性sys.float\_info.dig需要更进一步扩展，如果s时任何字符串表达一个十进制数，然后转换s为浮点数将恢复一个字符串表达式。
+\begin{python}
+mport sys
+ys.float_info.dig
+15
+s = '3.14159265358979'    # decimal string with 15 significant digits
+format(float(s), '.15g')  # convert to float and back -> same value
+'3.14159265358979'
+\end{python}
+但是对于字符串sys/float\_info.dig指定精度，这不总是true。
+\begin{python}
+s = '9876543211234567'    # 16 significant digits is too many!
+format(float(s), '.16g')  # conversion changes value
+'9876543211234568'
+\end{python}
+\item sys.float\_repr\_style:指示repr()函数如何处理入店时的字符串。日国字符串有一个值'short'然后对于一个有限的浮点数x，repr(x)产生一个短字符串float(repr(x)) == x。否则float\_repr\_style有值'legency'和repr(x)行为正如子啊python3.1中的一样。
+\item sys.getalloctedblock():返回解释器当前分配的内存块数量，这个函数在更重和调式内存泄漏时很有用，因为解释器内部换传，结果可能因为调用而不同，你也许可以调用\_clear\_type\_cache()和gc。collect()得到雨鞋结果。如果python编译实现不能合理的计算这些信息，getallocatedbloacks()允许返回0。
+\item sys.getdefaultencoding():返回Unicode实现的字符串的默认编码的名字。
+\item sys.getdlopenflags():同dlopen()返回当前flag的值。flag值的符号名字能被在os模块中找到
+\item sys.getfilesystemencoding():返回用于转换Unicode文件名和bytes文件名的编码名字，为了最好的兼容性，str应该在所有情况下被用在filename，尽管文件名作为bytes被支持，函数接受fanti文件名应该支持str或者butes内部转换系统偏好的表达。编码总是兼容ASCII
+os.fsencode()和os.fsdecode()应该被用于保证正确的编码和错误的模型使用。
+\begin{itemize}
+\item 在MAC OS上编码为utf-8
+\item Unix编码时locale编码
+\item 在windows上编码也许是'utf-8'或者是'mbcs',依赖于用户配置。
+\end{itemize}
+\item sys.getfilesystemencodererrors():返回转换unicode文件名和bytes文件名错误模式的名字，编码名字有getfilesystemencoding()指定的便阿妈名字。os.fsencode()和os.fsdecode()用来确保争取的编码和错误模式使用。
+\item sys.getrecount(onject):返回object对象的引用返回的储量通常高于你认为的呒，因为它包含临时引用作为getrefcount()的参数。
+\item sys.getsizeof(object,[,default]):返回对象的比特大小，对象可以使任何类型的对象，所有内建的多项将返回争取的结果，但是这没有保持新的第三方扩展作为实现。仅仅内存消耗直接属性到对象，对象访问时没有内存消耗。如果内定默认将返回不提供均值到这个值，否则，TypeError将产生。getsizeof()调用对象的\_\_sizeof\_\_方法，如果对象通过垃圾回收器管理增加一个额外的垃圾回收器。
+\item sys.getrecursionlimit():返回循环限制的当前值，最大的python解释器栈深度。这限制阻止由无限循环从c栈移除和python崩溃，它可以被setrecursionlimit()。
+\item sys.getsizeof(object,[,default]):返回对象的比特大小，对象可以使任何类型，所有内建的兑奖将被正确返回，但是不是必须保持true给第三方扩展当它的实现被指定，仅仅对象的直接内存消耗属性，不是独享引用的内存消耗。如果对象没有给定获取大小，默认将被返回，否则TypeError将被报出。
+\item sys.getwitchinterval()返回解释器的线程交换区间。
+\item sys.sys.\_getframe([depth]):从调用的栈返回一个帧对象，如果宣讲整数depth被给定，返回栈顶下的帧对象调用。如果depper比调用的栈深，ValueError被报出。默认深度为0,返回调用栈顶的帧。
+\item sys.getprofile():获取setprofile()设置的profile函数。
+\item sys.gettrace():得到settrace()的trace函数。
+\item sys.getwindowsversion():返回一个描述当前windows版本的描述的名字元组。命名元素时major,minor,build,platform,service\_pack\_minor,service\_pack\_major,suit\_mask,product\_type和platform\_version.service\_pack包含一个字符串，platform\_version 一个三元组和所有其它值。这个组建可以同感name访问，因此sys.getwindowsversion()[0]被等同platform将被2(VER\_PLATFORM\_WIN32\_NI)
+\begin{tabular}{ll}
+(VER\_NT\_WORKSTATION)&系统是工作站\\
+(VER\_NT\_DOMAIN\_CONTROLLER)&是系统是域名控制器\\
+(VER\_NT\_SERVER)&系统是服务器，但是没有域名控制器。
+\end{tabular}
+函数包装WIN32 GetVersionEx()函数，windows可用
+\item sys.get\_asyncgen\_hooks():返回一个类似名称元组的asyncgen\_hooks对象，这里firstier和expected均可设为None或者获取异步生成器作为参数的函数，通过时间循环调度异步生成器终止。
+\item sys.get\_coroutine\_wrapper():返回None或者一个由set\_coroutine\_wrapper包装器.
+\item sys.has\_info:数值hash实现参数给一个结构序列。
+\begin{tabular}{ll}
+width&hash值的位宽\\
+modulus&用于数值hash方案的主要模块P\\
+inf&返回正无穷大的hash值\\
+nan&返回非数的hash值\\
+imag&返回复数的虚部\\
+algorithm&str,bytes和memoryview的hash算法的名字\\
+hash\_bits&hash算法的内部输出大小\\
+seed\_bits&hash算法的种子值
+\end{tabular}
+\item sys.hexversion:单个证书的编码版本。这被保证增加，包括合适的支持non-product release版本，例如。测试Python解释器时最新的版本1.5.2用
+\begin{python}
+if sys.hexversion >= 0x010502F0:
+    # use some advanced feature
+    ...
+else:
+    # use an alternative implementation or warn the user
+    ...
+\end{python}
+\item sys.
+\item sys.
+\item sys.
+\item sys.
+\item sys.
+\end{itemize}

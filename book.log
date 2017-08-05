@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.14159265-2.6-0.99998 (TeX Live 2017) (preloaded format=xelatex 2017.7.26)  3 AUG 2017 16:45
+This is XeTeX, Version 3.14159265-2.6-0.99998 (TeX Live 2017) (preloaded format=xelatex 2017.7.26)  5 AUG 2017 21:50
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -8,8 +8,18 @@ LaTeX2e <2017-04-15>
 Babel <3.10> and hyphenation patterns for 84 language(s) loaded.
 (/usr/local/texlive/2017/texmf-dist/tex/latex/base/book.cls
 Document Class: book 2014/09/29 v1.4h Standard LaTeX document class
-(/usr/local/texlive/2017/texmf-dist/tex/latex/base/bk12.clo
-File: bk12.clo 2014/09/29 v1.4h Standard LaTeX file (size option)
+(/usr/local/texlive/2017/texmf-dist/tex/latex/base/fleqn.clo
+File: fleqn.clo 2016/12/29 v1.2a Standard LaTeX option (flush left equations)
+\mathindent=\dimen102
+Applying: [2015/01/01] Make \[ robust on input line 50.
+LaTeX Info: Redefining \[ on input line 51.
+Already applied: [0000/00/00] Make \[ robust on input line 62.
+Applying: [2015/01/01] Make \] robust on input line 74.
+LaTeX Info: Redefining \] on input line 75.
+Already applied: [0000/00/00] Make \] robust on input line 83.
+)
+(/usr/local/texlive/2017/texmf-dist/tex/latex/base/bk11.clo
+File: bk11.clo 2014/09/29 v1.4h Standard LaTeX file (size option)
 )
 \c@part=\count79
 \c@chapter=\count80
@@ -22,7 +32,37 @@ File: bk12.clo 2014/09/29 v1.4h Standard LaTeX file (size option)
 \c@table=\count87
 \abovecaptionskip=\skip41
 \belowcaptionskip=\skip42
-\bibindent=\dimen102
+\bibindent=\dimen103
+)
+(/usr/local/texlive/2017/texmf-dist/tex/latex/geometry/geometry.sty
+Package: geometry 2010/09/12 v5.6 Page Geometry
+
+(/usr/local/texlive/2017/texmf-dist/tex/latex/graphics/keyval.sty
+Package: keyval 2014/10/28 v1.15 key=value parser (DPC)
+\KV@toks@=\toks14
+)
+(/usr/local/texlive/2017/texmf-dist/tex/generic/oberdiek/ifpdf.sty
+Package: ifpdf 2017/03/15 v3.2 Provides the ifpdf switch
+)
+(/usr/local/texlive/2017/texmf-dist/tex/generic/oberdiek/ifvtex.sty
+Package: ifvtex 2016/05/16 v1.6 Detect VTeX and its facilities (HO)
+Package ifvtex Info: VTeX not detected.
+)
+(/usr/local/texlive/2017/texmf-dist/tex/generic/ifxetex/ifxetex.sty
+Package: ifxetex 2010/09/12 v0.6 Provides ifxetex conditional
+)
+\Gm@cnth=\count88
+\Gm@cntv=\count89
+\c@Gm@tempcnt=\count90
+\Gm@bindingoffset=\dimen104
+\Gm@wd@mp=\dimen105
+\Gm@odd@mp=\dimen106
+\Gm@even@mp=\dimen107
+\Gm@layoutwidth=\dimen108
+\Gm@layoutheight=\dimen109
+\Gm@layouthoffset=\dimen110
+\Gm@layoutvoffset=\dimen111
+\Gm@dimlist=\toks15
 )
 (/usr/local/texlive/2017/texmf-dist/tex/latex/ctex/ctex.sty
 (/usr/local/texlive/2017/texmf-dist/tex/latex/l3kernel/expl3.sty
@@ -30,23 +70,23 @@ Package: expl3 2017/05/13 L3 programming layer (loader)
 
 (/usr/local/texlive/2017/texmf-dist/tex/latex/l3kernel/expl3-code.tex
 Package: expl3 2017/05/13 L3 programming layer (code)
-\c_max_int=\count88
-\l_tmpa_int=\count89
-\l_tmpb_int=\count90
-\g_tmpa_int=\count91
-\g_tmpb_int=\count92
-\g__prg_map_int=\count93
-\c_log_iow=\count94
-\l_iow_line_count_int=\count95
-\l__iow_line_target_int=\count96
-\l__iow_one_indent_int=\count97
-\l__iow_indent_int=\count98
-\c_zero_dim=\dimen103
-\c_max_dim=\dimen104
-\l_tmpa_dim=\dimen105
-\l_tmpb_dim=\dimen106
-\g_tmpa_dim=\dimen107
-\g_tmpb_dim=\dimen108
+\c_max_int=\count91
+\l_tmpa_int=\count92
+\l_tmpb_int=\count93
+\g_tmpa_int=\count94
+\g_tmpb_int=\count95
+\g__prg_map_int=\count96
+\c_log_iow=\count97
+\l_iow_line_count_int=\count98
+\l__iow_line_target_int=\count99
+\l__iow_one_indent_int=\count100
+\l__iow_indent_int=\count101
+\c_zero_dim=\dimen112
+\c_max_dim=\dimen113
+\l_tmpa_dim=\dimen114
+\l_tmpb_dim=\dimen115
+\g_tmpa_dim=\dimen116
+\g_tmpb_dim=\dimen117
 \c_zero_skip=\skip43
 \c_max_skip=\skip44
 \l_tmpa_skip=\skip45
@@ -59,49 +99,49 @@ Package: expl3 2017/05/13 L3 programming layer (code)
 \l_tmpb_muskip=\muskip13
 \g_tmpa_muskip=\muskip14
 \g_tmpb_muskip=\muskip15
-\l_keys_choice_int=\count99
-\c__fp_leading_shift_int=\count100
-\c__fp_middle_shift_int=\count101
-\c__fp_trailing_shift_int=\count102
-\c__fp_big_leading_shift_int=\count103
-\c__fp_big_middle_shift_int=\count104
-\c__fp_big_trailing_shift_int=\count105
-\c__fp_Bigg_leading_shift_int=\count106
-\c__fp_Bigg_middle_shift_int=\count107
-\c__fp_Bigg_trailing_shift_int=\count108
-\l__sort_length_int=\count109
-\l__sort_min_int=\count110
-\l__sort_top_int=\count111
-\l__sort_max_int=\count112
-\l__sort_true_max_int=\count113
-\l__sort_block_int=\count114
-\l__sort_begin_int=\count115
-\l__sort_end_int=\count116
-\l__sort_A_int=\count117
-\l__sort_B_int=\count118
-\l__sort_C_int=\count119
+\l_keys_choice_int=\count102
+\c__fp_leading_shift_int=\count103
+\c__fp_middle_shift_int=\count104
+\c__fp_trailing_shift_int=\count105
+\c__fp_big_leading_shift_int=\count106
+\c__fp_big_middle_shift_int=\count107
+\c__fp_big_trailing_shift_int=\count108
+\c__fp_Bigg_leading_shift_int=\count109
+\c__fp_Bigg_middle_shift_int=\count110
+\c__fp_Bigg_trailing_shift_int=\count111
+\l__sort_length_int=\count112
+\l__sort_min_int=\count113
+\l__sort_top_int=\count114
+\l__sort_max_int=\count115
+\l__sort_true_max_int=\count116
+\l__sort_block_int=\count117
+\l__sort_begin_int=\count118
+\l__sort_end_int=\count119
+\l__sort_A_int=\count120
+\l__sort_B_int=\count121
+\l__sort_C_int=\count122
 \c_empty_box=\box26
 \l_tmpa_box=\box27
 \l_tmpb_box=\box28
 \g_tmpa_box=\box29
 \g_tmpb_box=\box30
-\l__box_top_dim=\dimen109
-\l__box_bottom_dim=\dimen110
-\l__box_left_dim=\dimen111
-\l__box_right_dim=\dimen112
-\l__box_top_new_dim=\dimen113
-\l__box_bottom_new_dim=\dimen114
-\l__box_left_new_dim=\dimen115
-\l__box_right_new_dim=\dimen116
+\l__box_top_dim=\dimen118
+\l__box_bottom_dim=\dimen119
+\l__box_left_dim=\dimen120
+\l__box_right_dim=\dimen121
+\l__box_top_new_dim=\dimen122
+\l__box_bottom_new_dim=\dimen123
+\l__box_left_new_dim=\dimen124
+\l__box_right_new_dim=\dimen125
 \l__box_internal_box=\box31
 \l__coffin_internal_box=\box32
-\l__coffin_internal_dim=\dimen117
-\l__coffin_offset_x_dim=\dimen118
-\l__coffin_offset_y_dim=\dimen119
-\l__coffin_x_dim=\dimen120
-\l__coffin_y_dim=\dimen121
-\l__coffin_x_prime_dim=\dimen122
-\l__coffin_y_prime_dim=\dimen123
+\l__coffin_internal_dim=\dimen126
+\l__coffin_offset_x_dim=\dimen127
+\l__coffin_offset_y_dim=\dimen128
+\l__coffin_x_dim=\dimen129
+\l__coffin_y_dim=\dimen130
+\l__coffin_x_prime_dim=\dimen131
+\l__coffin_y_prime_dim=\dimen132
 \c_empty_coffin=\box33
 \l__coffin_aligned_coffin=\box34
 \l__coffin_aligned_internal_coffin=\box35
@@ -110,16 +150,16 @@ Package: expl3 2017/05/13 L3 programming layer (code)
 \l__coffin_display_coffin=\box38
 \l__coffin_display_coord_coffin=\box39
 \l__coffin_display_pole_coffin=\box40
-\l__coffin_display_offset_dim=\dimen124
-\l__coffin_display_x_dim=\dimen125
-\l__coffin_display_y_dim=\dimen126
-\l__coffin_bounding_shift_dim=\dimen127
-\l__coffin_left_corner_dim=\dimen128
-\l__coffin_right_corner_dim=\dimen129
-\l__coffin_bottom_corner_dim=\dimen130
-\l__coffin_top_corner_dim=\dimen131
-\l__coffin_scaled_total_height_dim=\dimen132
-\l__coffin_scaled_width_dim=\dimen133
+\l__coffin_display_offset_dim=\dimen133
+\l__coffin_display_x_dim=\dimen134
+\l__coffin_display_y_dim=\dimen135
+\l__coffin_bounding_shift_dim=\dimen136
+\l__coffin_left_corner_dim=\dimen137
+\l__coffin_right_corner_dim=\dimen138
+\l__coffin_bottom_corner_dim=\dimen139
+\l__coffin_top_corner_dim=\dimen140
+\l__coffin_scaled_total_height_dim=\dimen141
+\l__coffin_scaled_width_dim=\dimen142
 )
 (/usr/local/texlive/2017/texmf-dist/tex/latex/l3kernel/l3xdvipdfmx.def
 File: l3xdvidpfmx.def 2017/03/18 v L3 Experimental driver: xdvipdfmx
@@ -129,11 +169,11 @@ Package: ctex 2017/04/01 v2.4.9 Chinese adapter in LaTeX (CTEX)
 
 (/usr/local/texlive/2017/texmf-dist/tex/latex/l3packages/xparse/xparse.sty
 Package: xparse 2017/05/13 L3 Experimental document command parser
-\l__xparse_current_arg_int=\count120
-\g__xparse_grabber_int=\count121
-\l__xparse_m_args_int=\count122
-\l__xparse_mandatory_args_int=\count123
-\l__xparse_v_nesting_int=\count124
+\l__xparse_current_arg_int=\count123
+\g__xparse_grabber_int=\count124
+\l__xparse_m_args_int=\count125
+\l__xparse_mandatory_args_int=\count126
+\l__xparse_v_nesting_int=\count127
 )
 (/usr/local/texlive/2017/texmf-dist/tex/latex/l3packages/l3keys2e/l3keys2e.sty
 Package: l3keys2e 2017/05/13 LaTeX2e option processing using LaTeX3 keys
@@ -154,9 +194,9 @@ File: ts1enc.def 2001/06/05 v3.0e (jk/car/fm) Standard LaTeX file
 (/usr/local/texlive/2017/texmf-dist/tex/latex/ms/everysel.sty
 Package: everysel 2011/10/28 v1.2 EverySelectfont Package (MS)
 )
-\l__ctex_tmp_int=\count125
+\l__ctex_tmp_int=\count128
 \l__ctex_tmp_box=\box42
-\l__ctex_tmp_dim=\dimen134
+\l__ctex_tmp_dim=\dimen143
 
 (/usr/local/texlive/2017/texmf-dist/tex/latex/ctex/config/ctexopts.cfg
 File: ctexopts.cfg 2017/04/01 v2.4.9 Option configuration file (CTEX)
@@ -169,23 +209,23 @@ Package: xeCJK 2017/05/15 v3.4.8 Typesetting CJK scripts with XeLaTeX
 (/usr/local/texlive/2017/texmf-dist/tex/latex/l3packages/xtemplate/xtemplate.st
 y
 Package: xtemplate 2017/05/13 L3 Experimental prototype document functions
-\l__xtemplate_tmp_dim=\dimen135
-\l__xtemplate_tmp_int=\count126
+\l__xtemplate_tmp_dim=\dimen144
+\l__xtemplate_tmp_int=\count129
 \l__xtemplate_tmp_muskip=\muskip16
 \l__xtemplate_tmp_skip=\skip49
 )
-\l__xeCJK_tmp_int=\count127
+\l__xeCJK_tmp_int=\count130
 \l__xeCJK_tmp_box=\box43
-\l__xeCJK_tmp_dim=\dimen136
+\l__xeCJK_tmp_dim=\dimen145
 \l__xeCJK_tmp_skip=\skip50
 .................................................
 . LaTeX info: "xparse/define-command"
 . 
 . Defining command \xeCJKShipoutHook with sig. '' on line 148.
 .................................................
-\g__xeCJK_spacefactor_int=\count128
-\l__xeCJK_begin_int=\count129
-\l__xeCJK_end_int=\count130
+\g__xeCJK_spacefactor_int=\count131
+\l__xeCJK_begin_int=\count132
+\l__xeCJK_end_int=\count133
 .................................................
 . LaTeX info: "xparse/define-command"
 . 
@@ -232,13 +272,13 @@ Package: xtemplate 2017/05/13 L3 Experimental prototype document functions
 . Defining command \xeCJKResetCharClass with sig. '' on line 631.
 .................................................
 \l__xeCJK_last_skip=\skip51
-\g__xeCJK_node_int=\count131
-\c__xeCJK_CJK_node_dim=\dimen137
-\c__xeCJK_CJK-space_node_dim=\dimen138
-\c__xeCJK_default_node_dim=\dimen139
-\c__xeCJK_default-space_node_dim=\dimen140
-\c__xeCJK_CJK-widow_node_dim=\dimen141
-\c__xeCJK_normalspace_node_dim=\dimen142
+\g__xeCJK_node_int=\count134
+\c__xeCJK_CJK_node_dim=\dimen146
+\c__xeCJK_CJK-space_node_dim=\dimen147
+\c__xeCJK_default_node_dim=\dimen148
+\c__xeCJK_default-space_node_dim=\dimen149
+\c__xeCJK_CJK-widow_node_dim=\dimen150
+\c__xeCJK_normalspace_node_dim=\dimen151
 \l__xeCJK_ccglue_skip=\skip52
 \l__xeCJK_ecglue_skip=\skip53
 .................................................
@@ -246,7 +286,7 @@ Package: xtemplate 2017/05/13 L3 Experimental prototype document functions
 . 
 . Defining command \xeCJKnobreak with sig. '' on line 1470.
 .................................................
-\l__xeCJK_widow_penalty_int=\count132
+\l__xeCJK_widow_penalty_int=\count135
 .................................................
 . LaTeX info: "xparse/define-command"
 . 
@@ -278,25 +318,25 @@ Package: xtemplate 2017/05/13 L3 Experimental prototype document functions
 . 
 . Declaring object type 'xeCJK/punctuation' taking 0 argument(s) on line 1925.
 .................................................
-\l__xeCJK_fixed_punct_width_dim=\dimen143
-\l__xeCJK_mixed_punct_width_dim=\dimen144
-\l__xeCJK_middle_punct_width_dim=\dimen145
-\l__xeCJK_fixed_margin_width_dim=\dimen146
-\l__xeCJK_mixed_margin_width_dim=\dimen147
-\l__xeCJK_middle_margin_width_dim=\dimen148
-\l__xeCJK_bound_punct_width_dim=\dimen149
-\l__xeCJK_bound_margin_width_dim=\dimen150
-\l__xeCJK_margin_minimum_dim=\dimen151
-\l__xeCJK_kerning_total_width_dim=\dimen152
-\l__xeCJK_same_align_margin_dim=\dimen153
-\l__xeCJK_different_align_margin_dim=\dimen154
-\l__xeCJK_kerning_margin_width_dim=\dimen155
-\l__xeCJK_kerning_margin_minimum_dim=\dimen156
-\l__xeCJK_bound_dim=\dimen157
-\l__xeCJK_reverse_bound_dim=\dimen158
-\l__xeCJK_minimum_bound_dim=\dimen159
-\l__xeCJK_kerning_margin_dim=\dimen160
-\l__xeCJK_original_margin_dim=\dimen161
+\l__xeCJK_fixed_punct_width_dim=\dimen152
+\l__xeCJK_mixed_punct_width_dim=\dimen153
+\l__xeCJK_middle_punct_width_dim=\dimen154
+\l__xeCJK_fixed_margin_width_dim=\dimen155
+\l__xeCJK_mixed_margin_width_dim=\dimen156
+\l__xeCJK_middle_margin_width_dim=\dimen157
+\l__xeCJK_bound_punct_width_dim=\dimen158
+\l__xeCJK_bound_margin_width_dim=\dimen159
+\l__xeCJK_margin_minimum_dim=\dimen160
+\l__xeCJK_kerning_total_width_dim=\dimen161
+\l__xeCJK_same_align_margin_dim=\dimen162
+\l__xeCJK_different_align_margin_dim=\dimen163
+\l__xeCJK_kerning_margin_width_dim=\dimen164
+\l__xeCJK_kerning_margin_minimum_dim=\dimen165
+\l__xeCJK_bound_dim=\dimen166
+\l__xeCJK_reverse_bound_dim=\dimen167
+\l__xeCJK_minimum_bound_dim=\dimen168
+\l__xeCJK_kerning_margin_dim=\dimen169
+\l__xeCJK_original_margin_dim=\dimen170
 .................................................
 . LaTeX info: "xparse/define-command"
 . 
@@ -314,7 +354,7 @@ Package: xtemplate 2017/05/13 L3 Experimental prototype document functions
 . 
 . Defining command \setCJKfallbackfamilyfont with sig. 'mom' on line 2528.
 .................................................
-\g__xeCJK_family_int=\count133
+\g__xeCJK_family_int=\count136
 .................................................
 . LaTeX info: "xparse/define-command"
 . 
@@ -376,9 +416,9 @@ Package: xtemplate 2017/05/13 L3 Experimental prototype document functions
 . 
 . Defining command \setCJKmathfont with sig. 'om' on line 3275.
 .................................................
-\l__xeCJK_fam_int=\count134
-\g__xeCJK_fam_allocation_int=\count135
-\l__xeCJK_verb_case_int=\count136
+\l__xeCJK_fam_int=\count137
+\g__xeCJK_fam_allocation_int=\count138
+\l__xeCJK_verb_case_int=\count139
 .................................................
 . LaTeX info: "xparse/define-command"
 . 
@@ -396,17 +436,17 @@ Package: fontspec 2017/03/31 v2.6a Font selection for XeLaTeX and LuaLaTeX
 (/usr/local/texlive/2017/texmf-dist/tex/latex/fontspec/fontspec-xetex.sty
 Package: fontspec-xetex 2017/03/31 v2.6a Font selection for XeLaTeX and LuaLaTe
 X
-\l__fontspec_script_int=\count137
-\l__fontspec_language_int=\count138
-\l__fontspec_strnum_int=\count139
-\l__fontspec_tmp_int=\count140
-\l__fontspec_em_int=\count141
-\l__fontspec_emdef_int=\count142
-\l__fontspec_strong_int=\count143
-\l__fontspec_strongdef_int=\count144
-\l__fontspec_tmpa_dim=\dimen162
-\l__fontspec_tmpb_dim=\dimen163
-\l__fontspec_tmpc_dim=\dimen164
+\l__fontspec_script_int=\count140
+\l__fontspec_language_int=\count141
+\l__fontspec_strnum_int=\count142
+\l__fontspec_tmp_int=\count143
+\l__fontspec_em_int=\count144
+\l__fontspec_emdef_int=\count145
+\l__fontspec_strong_int=\count146
+\l__fontspec_strongdef_int=\count147
+\l__fontspec_tmpa_dim=\dimen171
+\l__fontspec_tmpb_dim=\dimen172
+\l__fontspec_tmpc_dim=\dimen173
 
 (/usr/local/texlive/2017/texmf-dist/tex/latex/base/fontenc.sty
 Package: fontenc 2017/04/05 v2.0i Standard LaTeX package
@@ -600,17 +640,13 @@ other characters in Unicode lower plane
 (/usr/local/texlive/2017/texmf-dist/tex/latex/tipa/t3enc.def
 File: t3enc.def 2001/12/31 T3 encoding
 )
-\tipaTiiicode=\count145
-\tipasavetokens=\toks14
-\tipachecktokens=\toks15
+\tipaTiiicode=\count148
+\tipasavetokens=\toks16
+\tipachecktokens=\toks17
 
 (/usr/local/texlive/2017/texmf-dist/tex/latex/graphics/graphicx.sty
 Package: graphicx 2014/10/28 v1.0g Enhanced LaTeX Graphics (DPC,SPQR)
 
-(/usr/local/texlive/2017/texmf-dist/tex/latex/graphics/keyval.sty
-Package: keyval 2014/10/28 v1.15 key=value parser (DPC)
-\KV@toks@=\toks16
-)
 (/usr/local/texlive/2017/texmf-dist/tex/latex/graphics/graphics.sty
 Package: graphics 2017/04/14 v1.1b Standard LaTeX Graphics (DPC,SPQR)
 
@@ -626,8 +662,8 @@ Package graphics Info: Driver file: xetex.def on input line 99.
 File: xetex.def 2016/07/11 v4.10 LaTeX color/graphics driver for XeTeX (L3/RRM/
 JK)
 ))
-\Gin@req@height=\dimen165
-\Gin@req@width=\dimen166
+\Gin@req@height=\dimen174
+\Gin@req@width=\dimen175
 ))
 .................................................
 . LaTeX info: "xparse/redefine-command"
@@ -864,13 +900,13 @@ Package: xeCJKfntef 2017/05/15 v3.4.8 xeCJK font effect
 \UL@box=\box46
 \UL@hyphenbox=\box47
 \UL@skip=\skip55
-\UL@hook=\toks17
-\UL@height=\dimen167
-\UL@pe=\count146
-\UL@pixel=\dimen168
+\UL@hook=\toks18
+\UL@height=\dimen176
+\UL@pe=\count149
+\UL@pixel=\dimen177
 \ULC@box=\box48
 Package: ulem 2012/05/18
-\ULdepth=\dimen169
+\ULdepth=\dimen178
 )
 (/usr/local/texlive/2017/texmf-dist/tex/latex/environ/environ.sty
 Package: environ 2014/05/04 v0.3 A new way to define environments
@@ -878,19 +914,19 @@ Package: environ 2014/05/04 v0.3 A new way to define environments
 (/usr/local/texlive/2017/texmf-dist/tex/latex/trimspaces/trimspaces.sty
 Package: trimspaces 2009/09/17 v1.1 Trim spaces around a token list
 )
-\@envbody=\toks18
+\@envbody=\toks19
 )
 (/usr/local/texlive/2017/texmf-dist/tex/latex/cjk/texinput/CJKfntef.sty
 Package: CJKfntef 2015/04/18 4.8.4
 \CJK@fntefSkip=\skip56
-\CJK@nest=\count147
-\CJK@fntefDimen=\dimen170
+\CJK@nest=\count150
+\CJK@fntefDimen=\dimen179
 \CJK@underdotBox=\box49
 \CJK@ULbox=\box50
-\CJK@underanyskip=\dimen171
+\CJK@underanyskip=\dimen180
 )
 \l__xeCJK_space_skip=\skip57
-\c__xeCJK_ulem-begin_node_dim=\dimen172
+\c__xeCJK_ulem-begin_node_dim=\dimen181
 \c__xeCJK_null_box=\box51
 .................................................
 . LaTeX info: "xparse/define-command"
@@ -951,7 +987,7 @@ Package: CJKfntef 2015/04/18 4.8.4
 .................................................
 \c__xeCJK_filll_skip=\skip58
 )
-\ccwd=\dimen173
+\ccwd=\dimen182
 \l__ctex_ccglue_skip=\skip59
 )
 .................................................
@@ -979,7 +1015,7 @@ Package: CJKfntef 2015/04/18 4.8.4
 . 
 . Defining command \ziju with sig. 'm' on line 478.
 .................................................
-\l__ctex_ziju_dim=\dimen174
+\l__ctex_ziju_dim=\dimen183
 .................................................
 . LaTeX info: "xparse/define-command"
 . 
@@ -1038,7 +1074,7 @@ Package: zhnumber 2016/05/14 v2.4 Typesetting numbers with Chinese glyphs
 . 
 . Defining command \zhdate with sig. '+s+m' on line 384.
 .................................................
-\l__zhnum_scale_int=\count148
+\l__zhnum_scale_int=\count151
 .................................................
 . LaTeX info: "xparse/define-command"
 . 
@@ -1094,7 +1130,7 @@ File: ctex-fontset-fandol.def 2017/04/01 v2.4.9 Fandol fonts definition (CTEX)
 * 
 * Font 'FandolSong-Regular' does not contain script 'CJK'.
 *************************************************
-\g__fontspec_family_FandolSong-Regular_int=\count149
+\g__fontspec_family_FandolSong-Regular_int=\count152
 .................................................
 . fontspec info: "defining-font"
 . 
@@ -1145,51 +1181,51 @@ Package: amstext 2000/06/29 v2.01 AMS text
 
 (/usr/local/texlive/2017/texmf-dist/tex/latex/amsmath/amsgen.sty
 File: amsgen.sty 1999/11/30 v2.0 generic functions
-\@emptytoks=\toks19
-\ex@=\dimen175
+\@emptytoks=\toks20
+\ex@=\dimen184
 ))
 (/usr/local/texlive/2017/texmf-dist/tex/latex/amsmath/amsbsy.sty
 Package: amsbsy 1999/11/29 v1.2d Bold Symbols
-\pmbraise@=\dimen176
+\pmbraise@=\dimen185
 )
 (/usr/local/texlive/2017/texmf-dist/tex/latex/amsmath/amsopn.sty
 Package: amsopn 2016/03/08 v2.02 operator names
 )
-\inf@bad=\count150
+\inf@bad=\count153
 LaTeX Info: Redefining \frac on input line 213.
-\uproot@=\count151
-\leftroot@=\count152
+\uproot@=\count154
+\leftroot@=\count155
 LaTeX Info: Redefining \overline on input line 375.
-\classnum@=\count153
-\DOTSCASE@=\count154
+\classnum@=\count156
+\DOTSCASE@=\count157
 LaTeX Info: Redefining \ldots on input line 472.
 LaTeX Info: Redefining \dots on input line 475.
 LaTeX Info: Redefining \cdots on input line 596.
 \Mathstrutbox@=\box54
 \strutbox@=\box55
-\big@size=\dimen177
+\big@size=\dimen186
 LaTeX Font Info:    Redeclaring font encoding OML on input line 712.
 LaTeX Font Info:    Redeclaring font encoding OMS on input line 713.
-\macc@depth=\count155
-\c@MaxMatrixCols=\count156
+\macc@depth=\count158
+\c@MaxMatrixCols=\count159
 \dotsspace@=\muskip17
-\c@parentequation=\count157
-\dspbrk@lvl=\count158
-\tag@help=\toks20
-\row@=\count159
-\column@=\count160
-\maxfields@=\count161
-\andhelp@=\toks21
-\eqnshift@=\dimen178
-\alignsep@=\dimen179
-\tagshift@=\dimen180
-\tagwidth@=\dimen181
-\totwidth@=\dimen182
-\lineht@=\dimen183
-\@envbody=\toks22
+\c@parentequation=\count160
+\dspbrk@lvl=\count161
+\tag@help=\toks21
+\row@=\count162
+\column@=\count163
+\maxfields@=\count164
+\andhelp@=\toks22
+\eqnshift@=\dimen187
+\alignsep@=\dimen188
+\tagshift@=\dimen189
+\tagwidth@=\dimen190
+\totwidth@=\dimen191
+\lineht@=\dimen192
+\@envbody=\toks23
 \multlinegap=\skip61
 \multlinetaggap=\skip62
-\mathdisplay@stack=\toks23
+\mathdisplay@stack=\toks24
 LaTeX Info: Redefining \[ on input line 2817.
 LaTeX Info: Redefining \] on input line 2818.
 )
@@ -1201,19 +1237,19 @@ Package: titlesec 2016/03/21 v2.10.2 Sectioning titles
 \ttl@box=\box56
 \beforetitleunit=\skip63
 \aftertitleunit=\skip64
-\ttl@plus=\dimen184
-\ttl@minus=\dimen185
-\ttl@toksa=\toks24
-\titlewidth=\dimen186
-\titlewidthlast=\dimen187
-\titlewidthfirst=\dimen188
+\ttl@plus=\dimen193
+\ttl@minus=\dimen194
+\ttl@toksa=\toks25
+\titlewidth=\dimen195
+\titlewidthlast=\dimen196
+\titlewidthfirst=\dimen197
 )
 (/usr/local/texlive/2017/texmf-dist/tex/latex/float/float.sty
 Package: float 2001/11/08 v1.3d Float enhancements (AL)
-\c@float@type=\count162
-\float@exts=\toks25
+\c@float@type=\count165
+\float@exts=\toks26
 \float@box=\box57
-\@float@everytoks=\toks26
+\@float@everytoks=\toks27
 \@floatcapt=\box58
 )
 (/usr/local/texlive/2017/texmf-dist/tex/latex/pythonhighlight/pythonhighlight.s
@@ -1221,23 +1257,23 @@ ty
 Package: pythonhighlight 2017/02/09 python code highlighting; provided by Olivi
 er Verdier <olivier.verdier@gmail.com>
  (/usr/local/texlive/2017/texmf-dist/tex/latex/listings/listings.sty
-\lst@mode=\count163
+\lst@mode=\count166
 \lst@gtempboxa=\box59
-\lst@token=\toks27
-\lst@length=\count164
-\lst@currlwidth=\dimen189
-\lst@column=\count165
-\lst@pos=\count166
-\lst@lostspace=\dimen190
-\lst@width=\dimen191
-\lst@newlines=\count167
-\lst@lineno=\count168
-\lst@maxwidth=\dimen192
+\lst@token=\toks28
+\lst@length=\count167
+\lst@currlwidth=\dimen198
+\lst@column=\count168
+\lst@pos=\count169
+\lst@lostspace=\dimen199
+\lst@width=\dimen256
+\lst@newlines=\count170
+\lst@lineno=\count171
+\lst@maxwidth=\dimen257
 
 (/usr/local/texlive/2017/texmf-dist/tex/latex/listings/lstmisc.sty
 File: lstmisc.sty 2015/06/04 1.6 (Carsten Heinz)
-\c@lstnumber=\count169
-\lst@skipnumbers=\count170
+\c@lstnumber=\count172
+\lst@skipnumbers=\count173
 \lst@framebox=\box60
 )
 (/usr/local/texlive/2017/texmf-dist/tex/latex/listings/listings.cfg
@@ -1267,15 +1303,15 @@ Package: caption 2016/02/21 v3.3-144 Customizing captions (AR)
 (/usr/local/texlive/2017/texmf-dist/tex/latex/caption/caption3.sty
 Package: caption3 2016/05/22 v1.7-166 caption3 kernel (AR)
 Package caption3 Info: TeX engine: e-TeX on input line 67.
-\captionmargin=\dimen193
-\captionmargin@=\dimen194
-\captionwidth=\dimen195
-\caption@tempdima=\dimen196
-\caption@indent=\dimen197
-\caption@parindent=\dimen198
-\caption@hangindent=\dimen199
+\captionmargin=\dimen258
+\captionmargin@=\dimen259
+\captionwidth=\dimen260
+\caption@tempdima=\dimen261
+\caption@indent=\dimen262
+\caption@parindent=\dimen263
+\caption@hangindent=\dimen264
 )
-\c@ContinuedFloat=\count171
+\c@ContinuedFloat=\count174
 Package caption Info: float package is loaded.
 Package caption Info: listings package is loaded.
 )
@@ -1283,14 +1319,14 @@ Package caption Info: listings package is loaded.
 Package: subfigure 2002/03/15 v2.1.5 subfigure package
 \subfigtopskip=\skip65
 \subfigcapskip=\skip66
-\subfigcaptopadj=\dimen256
+\subfigcaptopadj=\dimen265
 \subfigbottomskip=\skip67
-\subfigcapmargin=\dimen257
+\subfigcapmargin=\dimen266
 \subfiglabelskip=\skip68
-\c@subfigure=\count172
-\c@lofdepth=\count173
-\c@subtable=\count174
-\c@lotdepth=\count175
+\c@subfigure=\count175
+\c@lofdepth=\count176
+\c@subtable=\count177
+\c@lotdepth=\count178
 
 ****************************************
 * Local config file subfigure.cfg used *
@@ -1299,135 +1335,200 @@ Package: subfigure 2002/03/15 v2.1.5 subfigure package
 \subfig@top=\skip69
 \subfig@bottom=\skip70
 )
+(/usr/local/texlive/2017/texmf-dist/tex/latex/tools/longtable.sty
+Package: longtable 2014/10/28 v4.11 Multi-page Table package (DPC)
+\LTleft=\skip71
+\LTright=\skip72
+\LTpre=\skip73
+\LTpost=\skip74
+\LTchunksize=\count179
+\LTcapwidth=\dimen267
+\LT@head=\box61
+\LT@firsthead=\box62
+\LT@foot=\box63
+\LT@lastfoot=\box64
+\LT@cols=\count180
+\LT@rows=\count181
+\c@LT@tables=\count182
+\c@LT@chunks=\count183
+\LT@p@ftn=\toks29
+)
+(/usr/local/texlive/2017/texmf-dist/tex/latex/psnfss/avant.sty
+Package: avant 2005/04/12 PSNFSS-v9.2a (SPQR) 
+)
+(/usr/local/texlive/2017/texmf-dist/tex/latex/psnfss/mathptmx.sty
+Package: mathptmx 2005/04/12 PSNFSS-v9.2a Times w/ Math, improved (SPQR, WaS) 
+LaTeX Font Info:    Redeclaring symbol font `operators' on input line 28.
+LaTeX Font Info:    Overwriting symbol font `operators' in version `normal'
+(Font)                  OT1/cmr/m/n --> OT1/ztmcm/m/n on input line 28.
+LaTeX Font Info:    Overwriting symbol font `operators' in version `bold'
+(Font)                  OT1/cmr/bx/n --> OT1/ztmcm/m/n on input line 28.
+LaTeX Font Info:    Redeclaring symbol font `letters' on input line 29.
+LaTeX Font Info:    Overwriting symbol font `letters' in version `normal'
+(Font)                  OML/cmm/m/it --> OML/ztmcm/m/it on input line 29.
+LaTeX Font Info:    Overwriting symbol font `letters' in version `bold'
+(Font)                  OML/cmm/b/it --> OML/ztmcm/m/it on input line 29.
+LaTeX Font Info:    Redeclaring symbol font `symbols' on input line 30.
+LaTeX Font Info:    Overwriting symbol font `symbols' in version `normal'
+(Font)                  OMS/cmsy/m/n --> OMS/ztmcm/m/n on input line 30.
+LaTeX Font Info:    Overwriting symbol font `symbols' in version `bold'
+(Font)                  OMS/cmsy/b/n --> OMS/ztmcm/m/n on input line 30.
+LaTeX Font Info:    Redeclaring symbol font `largesymbols' on input line 31.
+LaTeX Font Info:    Overwriting symbol font `largesymbols' in version `normal'
+(Font)                  OMX/cmex/m/n --> OMX/ztmcm/m/n on input line 31.
+LaTeX Font Info:    Overwriting symbol font `largesymbols' in version `bold'
+(Font)                  OMX/cmex/m/n --> OMX/ztmcm/m/n on input line 31.
+\symbold=\mathgroup4
+\symitalic=\mathgroup5
+LaTeX Font Info:    Redeclaring math alphabet \mathbf on input line 34.
+LaTeX Font Info:    Overwriting math alphabet `\mathbf' in version `normal'
+(Font)                  OT1/cmr/bx/n --> OT1/ptm/bx/n on input line 34.
+LaTeX Font Info:    Overwriting math alphabet `\mathbf' in version `bold'
+(Font)                  OT1/cmr/bx/n --> OT1/ptm/bx/n on input line 34.
+LaTeX Font Info:    Redeclaring math alphabet \mathit on input line 35.
+LaTeX Font Info:    Overwriting math alphabet `\mathit' in version `normal'
+(Font)                  OT1/cmr/m/it --> OT1/ptm/m/it on input line 35.
+LaTeX Font Info:    Overwriting math alphabet `\mathit' in version `bold'
+(Font)                  OT1/cmr/bx/it --> OT1/ptm/m/it on input line 35.
+LaTeX Info: Redefining \hbar on input line 50.
+)
 (/usr/local/texlive/2017/texmf-dist/tex/xelatex/xecjk/xeCJK-listings.sty
 Package: xeCJK-listings 2017/05/15 v3.4.8 xeCJK patch file for listings
-\l__xeCJK_listings_max_char_int=\count176
-\l__xeCJK_listings_flag_int=\count177
+\l__xeCJK_listings_max_char_int=\count184
+\l__xeCJK_listings_flag_int=\count185
 )
 (./book.aux (./chapter1/tf_chapter1.aux) (./chapter2/tf_chapter2.aux)
 (./chapter2/use_gpu.aux) (./chapter3/common_module.aux) (./chapter3/path.aux)
-(./chapter4/tf_common.aux) (./chapter4/tf_image.aux))
+(./chapter3/re.aux) (./chapter3/sys.aux) (./chapter3/url.aux)
+(./chapter3/requests.aux) (./chapter4/tf_common.aux) (./chapter4/tf_image.aux))
 \openout1 = `book.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 26.
-LaTeX Font Info:    ... okay on input line 26.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 26.
-LaTeX Font Info:    ... okay on input line 26.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 26.
-LaTeX Font Info:    ... okay on input line 26.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 26.
-LaTeX Font Info:    ... okay on input line 26.
-LaTeX Font Info:    Checking defaults for TU/lmr/m/n on input line 26.
-LaTeX Font Info:    ... okay on input line 26.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 26.
-LaTeX Font Info:    ... okay on input line 26.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 26.
-LaTeX Font Info:    ... okay on input line 26.
-LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 26.
-LaTeX Font Info:    ... okay on input line 26.
-LaTeX Font Info:    Checking defaults for T3/cmr/m/n on input line 26.
-LaTeX Font Info:    Try loading font information for T3+cmr on input line 26.
-
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 37.
+LaTeX Font Info:    ... okay on input line 37.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 37.
+LaTeX Font Info:    ... okay on input line 37.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 37.
+LaTeX Font Info:    ... okay on input line 37.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 37.
+LaTeX Font Info:    ... okay on input line 37.
+LaTeX Font Info:    Checking defaults for TU/lmr/m/n on input line 37.
+LaTeX Font Info:    ... okay on input line 37.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 37.
+LaTeX Font Info:    ... okay on input line 37.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 37.
+LaTeX Font Info:    ... okay on input line 37.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 37.
+LaTeX Font Info:    ... okay on input line 37.
+LaTeX Font Info:    Checking defaults for T3/cmr/m/n on input line 37.
+LaTeX Font Info:    Try loading font information for T3+cmr on input line 37.
 (/usr/local/texlive/2017/texmf-dist/tex/latex/tipa/t3cmr.fd
 File: t3cmr.fd 2001/12/31 TIPA font definitions
 )
-LaTeX Font Info:    ... okay on input line 26.
-LaTeX Font Info:    Try loading font information for TU+ptm on input line 26.
-LaTeX Font Info:    No file TUptm.fd. on input line 26.
+LaTeX Font Info:    ... okay on input line 37.
+LaTeX Font Info:    Try loading font information for TU+ptm on input line 37.
+LaTeX Font Info:    No file TUptm.fd. on input line 37.
 
 
 LaTeX Font Warning: Font shape `TU/ptm/m/n' undefined
-(Font)              using `TU/lmr/m/n' instead on input line 26.
+(Font)              using `TU/lmr/m/n' instead on input line 37.
+
+*geometry* driver: auto-detecting
+*geometry* detected driver: xetex
+*geometry* verbose mode - [ preamble ] result:
+* driver: xetex
+* paper: letterpaper
+* layout: <same size as paper>
+* layoutoffset:(h,v)=(0.0pt,0.0pt)
+* modes: twoside 
+* h-part:(L,W,R)=(91.04872pt, 432.19756pt, 91.04872pt)
+* v-part:(T,H,B)=(85.35826pt, 624.25346pt, 85.35826pt)
+* \paperwidth=614.295pt
+* \paperheight=794.96999pt
+* \textwidth=432.19756pt
+* \textheight=624.25346pt
+* \oddsidemargin=18.77873pt
+* \evensidemargin=18.77873pt
+* \topmargin=-8.91173pt
+* \headheight=12.0pt
+* \headsep=10.0pt
+* \topskip=11.0pt
+* \footskip=27.46295pt
+* \marginparwidth=116.0pt
+* \marginparsep=7.0pt
+* \columnsep=10.0pt
+* \skip\footins=10.0pt plus 4.0pt minus 2.0pt
+* \hoffset=0.0pt
+* \voffset=0.0pt
+* \mag=1000
+* \@twocolumnfalse
+* \@twosidetrue
+* \@mparswitchtrue
+* \@reversemarginfalse
+* (1in=72.27pt=25.4mm, 1cm=28.453pt)
 
 ABD: EverySelectfont initializing macros
-LaTeX Info: Redefining \selectfont on input line 26.
-.................................................
-. fontspec info: "setup-math"
-. 
-. Adjusting the maths setup (use [no-math] to avoid this).
-.................................................
-\symlegacymaths=\mathgroup4
-LaTeX Font Info:    Overwriting symbol font `legacymaths' in version `bold'
-(Font)                  OT1/cmr/m/n --> OT1/cmr/bx/n on input line 26.
-LaTeX Font Info:    Redeclaring math accent \acute on input line 26.
-LaTeX Font Info:    Redeclaring math accent \grave on input line 26.
-LaTeX Font Info:    Redeclaring math accent \ddot on input line 26.
-LaTeX Font Info:    Redeclaring math accent \tilde on input line 26.
-LaTeX Font Info:    Redeclaring math accent \bar on input line 26.
-LaTeX Font Info:    Redeclaring math accent \breve on input line 26.
-LaTeX Font Info:    Redeclaring math accent \check on input line 26.
-LaTeX Font Info:    Redeclaring math accent \hat on input line 26.
-LaTeX Font Info:    Redeclaring math accent \dot on input line 26.
-LaTeX Font Info:    Redeclaring math accent \mathring on input line 26.
-LaTeX Font Info:    Redeclaring math symbol \Gamma on input line 26.
-LaTeX Font Info:    Redeclaring math symbol \Delta on input line 26.
-LaTeX Font Info:    Redeclaring math symbol \Theta on input line 26.
-LaTeX Font Info:    Redeclaring math symbol \Lambda on input line 26.
-LaTeX Font Info:    Redeclaring math symbol \Xi on input line 26.
-LaTeX Font Info:    Redeclaring math symbol \Pi on input line 26.
-LaTeX Font Info:    Redeclaring math symbol \Sigma on input line 26.
-LaTeX Font Info:    Redeclaring math symbol \Upsilon on input line 26.
-LaTeX Font Info:    Redeclaring math symbol \Phi on input line 26.
-LaTeX Font Info:    Redeclaring math symbol \Psi on input line 26.
-LaTeX Font Info:    Redeclaring math symbol \Omega on input line 26.
-LaTeX Font Info:    Redeclaring math symbol \mathdollar on input line 26.
-LaTeX Font Info:    Redeclaring symbol font `operators' on input line 26.
-LaTeX Font Info:    Encoding `OT1' has changed to `TU' for symbol font
-(Font)              `operators' in the math version `normal' on input line 26.
-LaTeX Font Info:    Overwriting symbol font `operators' in version `normal'
-(Font)                  OT1/cmr/m/n --> TU/ptm/m/n on input line 26.
-LaTeX Font Info:    Encoding `OT1' has changed to `TU' for symbol font
-(Font)              `operators' in the math version `bold' on input line 26.
-LaTeX Font Info:    Overwriting symbol font `operators' in version `bold'
-(Font)                  OT1/cmr/bx/n --> TU/ptm/m/n on input line 26.
-LaTeX Font Info:    Overwriting symbol font `operators' in version `normal'
-(Font)                  TU/ptm/m/n --> TU/ptm/m/n on input line 26.
-LaTeX Font Info:    Overwriting math alphabet `\mathit' in version `normal'
-(Font)                  OT1/cmr/m/it --> TU/ptm/m/it on input line 26.
-LaTeX Font Info:    Overwriting math alphabet `\mathbf' in version `normal'
-(Font)                  OT1/cmr/bx/n --> TU/ptm/bx/n on input line 26.
-LaTeX Font Info:    Overwriting math alphabet `\mathsf' in version `normal'
-(Font)                  OT1/cmss/m/n --> TU/phv/m/n on input line 26.
-LaTeX Font Info:    Overwriting math alphabet `\mathtt' in version `normal'
-(Font)                  OT1/cmtt/m/n --> TU/pcr/m/n on input line 26.
-LaTeX Font Info:    Overwriting symbol font `operators' in version `bold'
-(Font)                  TU/ptm/m/n --> TU/ptm/bx/n on input line 26.
-LaTeX Font Info:    Overwriting math alphabet `\mathit' in version `bold'
-(Font)                  OT1/cmr/bx/it --> TU/ptm/bx/it on input line 26.
-LaTeX Font Info:    Overwriting math alphabet `\mathsf' in version `bold'
-(Font)                  OT1/cmss/bx/n --> TU/phv/bx/n on input line 26.
-LaTeX Font Info:    Overwriting math alphabet `\mathtt' in version `bold'
-(Font)                  OT1/cmtt/m/n --> TU/pcr/bx/n on input line 26.
-\c@lstlisting=\count178
+LaTeX Info: Redefining \selectfont on input line 37.
+\c@lstlisting=\count186
 Package caption Info: Begin \AtBeginDocument code.
+Package caption Info: longtable package is loaded.
+
+(/usr/local/texlive/2017/texmf-dist/tex/latex/caption/ltcaption.sty
+Package: ltcaption 2013/06/09 v1.4-94 longtable captions (AR)
+)
 Package caption Info: subfigure package is loaded.
 Package caption Info: End \AtBeginDocument code.
 
 
 LaTeX Font Warning: Font shape `TU/ptm/bx/n' undefined
-(Font)              using `TU/ptm/m/n' instead on input line 28.
+(Font)              using `TU/ptm/m/n' instead on input line 38.
+
+(./book.toc
+LaTeX Font Info:    Try loading font information for OT1+ztmcm on input line 2.
+
+ (/usr/local/texlive/2017/texmf-dist/tex/latex/psnfss/ot1ztmcm.fd
+File: ot1ztmcm.fd 2000/01/03 Fontinst v1.801 font definitions for OT1/ztmcm.
+)
+LaTeX Font Info:    Try loading font information for OML+ztmcm on input line 2.
 
 
-LaTeX Font Warning: Font shape `TU/ptm/bx/it' undefined
-(Font)              using `TU/ptm/bx/n' instead on input line 28.
+(/usr/local/texlive/2017/texmf-dist/tex/latex/psnfss/omlztmcm.fd
+File: omlztmcm.fd 2000/01/03 Fontinst v1.801 font definitions for OML/ztmcm.
+)
+LaTeX Font Info:    Try loading font information for OMS+ztmcm on input line 2.
 
 
-LaTeX Font Warning: Font shape `TU/FandolSong-Regular(0)/bx/it' undefined
-(Font)              using `TU/FandolSong-Regular(0)/bx/n' instead on input line
- 28.
+(/usr/local/texlive/2017/texmf-dist/tex/latex/psnfss/omsztmcm.fd
+File: omsztmcm.fd 2000/01/03 Fontinst v1.801 font definitions for OMS/ztmcm.
+)
+LaTeX Font Info:    Try loading font information for OMX+ztmcm on input line 2.
 
-(./book.toc [1
+
+(/usr/local/texlive/2017/texmf-dist/tex/latex/psnfss/omxztmcm.fd
+File: omxztmcm.fd 2000/01/03 Fontinst v1.801 font definitions for OMX/ztmcm.
+)
+LaTeX Font Info:    Try loading font information for OT1+ptm on input line 2.
+
+(/usr/local/texlive/2017/texmf-dist/tex/latex/psnfss/ot1ptm.fd
+File: ot1ptm.fd 2001/06/04 font definitions for OT1/ptm.
+)
+LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <10.95> not available
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 2.
+LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <8> not available
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 2.
+LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <6> not available
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 2.
+ [1
 
 
 ]
 
 LaTeX Font Warning: Font shape `TU/ptm/m/sl' undefined
-(Font)              using `TU/ptm/m/n' instead on input line 51.
+(Font)              using `TU/ptm/m/n' instead on input line 59.
 
-LaTeX Font Info:    Font shape `TU/FandolSong-Regular(0)/m/sl' in size <12> not
- available
+LaTeX Font Info:    Font shape `TU/FandolSong-Regular(0)/m/sl' in size <10.95> 
+not available
 (Font)              Font shape `TU/FandolSong-Regular(0)/m/it' tried instead on
- input line 51.
+ input line 59.
 [2])
 \tf@toc=\write3
 \openout3 = `book.toc'.
@@ -1448,7 +1549,7 @@ File: lstlang1.sty 2015/06/04 1.6 listings language file
 * 
 * Font 'FandolFang-Regular' does not contain script 'CJK'.
 *************************************************
-\g__fontspec_family_FandolFang-Regular_int=\count179
+\g__fontspec_family_FandolFang-Regular_int=\count187
 LaTeX Font Info:    Try loading font information for TU+pcr on input line 4.
 LaTeX Font Info:    No file TUpcr.fd. on input line 4.
 
@@ -1479,23 +1580,30 @@ File: ./pic/chapter1/relu.png Graphic file (type QTm)
  <use  "./pic/chapter1/relu.png" >
 File: ./pic/chapter1/relu6.png Graphic file (type QTm)
 
-<use  "./pic/chapter1/relu6.png" > [8]
+<use  "./pic/chapter1/relu6.png" >
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
- [9]
-[10]
+ [8]
+[9]
 File: ./pic/chapter1/activate_fun.png Graphic file (type QTm)
- <use  "./pic/chapter1/activate_fun.png" > [11]
+ <use  "./pic/chapter1/activate_fun.png" > [10]
 File: ./pic/chapter1/relu_softplus.png Graphic file (type QTm)
 
 <use  "./pic/chapter1/relu_softplus.png" >
+Overfull \hbox (24.37352pt too wide) in paragraph at lines 200--202
+\TU/FandolSong-Regular(0)/m/n/10.95 制 是 相 互 独 立 的。|  但 是 是 否 被 抑 制 也 可 以 通 过 \T
+U/pcr/m/n/10.95 noise_shape \TU/FandolSong-Regular(0)/m/n/10.95 来 调 节。|  当 \TU/
+pcr/m/n/10.95 noise_shape[i]=shape(x)[i]
+ []
+
+
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
- [12]
-[13]
-Overfull \hbox (20.8158pt too wide) in paragraph at lines 215--216
-[]\TU/pcr/m/n/12 tf.nn.conv2d(input,filter,padding,stride=None,diation_rate=Non
-ei \TU/FandolSong-Regular(0)/m/n/12 每 \TU/pcr/m/n/12 name
+ [11]
+Overfull \hbox (90.05165pt too wide) in paragraph at lines 215--216
+[]\TU/pcr/m/n/10.95 tf.nn.conv2d(input,filter,padding,stride=None,diation_rate=
+Nonei \TU/FandolSong-Regular(0)/m/n/10.95 每 \TU/pcr/m/n/10.95 name = None,data_
+format=None) 
  []
 
 
@@ -1503,137 +1611,146 @@ Underfull \hbox (badness 10000) in paragraph at lines 215--216
 
  []
 
-[14]
+[12]
 LaTeX Font Info:    Try loading font information for OMS+ptm on input line 240.
 
  (/usr/local/texlive/2017/texmf-dist/tex/latex/psnfss/omsptm.fd
 File: omsptm.fd 
 )
-LaTeX Font Info:    Font shape `OMS/ptm/m/n' in size <12> not available
+LaTeX Font Info:    Font shape `OMS/ptm/m/n' in size <10.95> not available
 (Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 240.
 
-Underfull \hbox (badness 10000) in paragraph at lines 240--240
-[][] \TU/pcr/m/n/12 tf.nn.avg_pool(value,ksize,strides,padding,data_format=’NHW
-C’,name
+Underfull \hbox (badness 10000) in paragraph at lines 242--242
+[][] \TU/pcr/m/n/10.95 tf.nn.max_pool_with_argmax(input,ksize,strides,padding,T
+argmax=None,name
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 241--241
-[][] \TU/pcr/m/n/12 tf.nn.max_pool(value,ksize,strides,padding,data_format=’NHW
-C’,name
+Overfull \hbox (139.10435pt too wide) in paragraph at lines 245--245
+[][] \TU/pcr/m/n/10.95 tf.nn.fractionan_avg_pool(value,pooling_ratio,pseudo_ran
+dom=None,overlapping=None,deterministic=None,seed
  []
 
 
-Overfull \hbox (3.23247pt too wide) in paragraph at lines 242--242
-[][] \TU/pcr/m/n/12 tf.nn.max_pool_with_argmax(input,ksize,strides,padding,Targ
-max=None,name
- []
-
-
-Overfull \hbox (180.5085pt too wide) in paragraph at lines 245--245
-[][] \TU/pcr/m/n/12 tf.nn.fractionan_avg_pool(value,pooling_ratio,pseudo_random
-=None,overlapping=None,deterministic=None,seed
- []
-
-
-Overfull \hbox (150.4725pt too wide) in paragraph at lines 246--246
-[][] \TU/pcr/m/n/12 tf.nn.avg_max_pool(value,pooling_ratio,pseudo_random=None,o
-verlapping=None,deterministic=None,seed
+Overfull \hbox (111.07234pt too wide) in paragraph at lines 246--246
+[][] \TU/pcr/m/n/10.95 tf.nn.avg_max_pool(value,pooling_ratio,pseudo_random=Non
+e,overlapping=None,deterministic=None,seed
  []
 
 
 Underfull \hbox (badness 10000) in paragraph at lines 247--247
-[][] \TU/pcr/m/n/12 tf.nn.pool(input,window_shape,pool_typing,padding,dilation_
-rate =
+[][] \TU/pcr/m/n/10.95 tf.nn.pool(input,window_shape,pool_typing,padding,dilati
+on_rate =
  []
 
 
-Overfull \hbox (228.79135pt too wide) in paragraph at lines 237--249
+Overfull \hbox (171.8938pt too wide) in paragraph at lines 237--249
 [][] 
  []
 
-[15]
-Overfull \hbox (79.51202pt too wide) in paragraph at lines 267--271
-\TU/pcr/m/n/12 tf.nn.softmax_cross_entropy_with_logits(_setinel=None,labels=Non
-e,logits=None,dim=-
+[13]
+Overfull \hbox (5.41907pt too wide) in paragraph at lines 267--271
+\TU/pcr/m/n/10.95 tf.nn.softmax_cross_entropy_with_logits(_setinel=None,labels=
+None,logits=None,dim=-
  []
 
 
-Overfull \hbox (50.19601pt too wide) in paragraph at lines 273--274
-[]\TU/FandolSong-Regular(0)/m/n/12 输 入 \TU/pcr/m/n/12 logits:[batch_size,num_cl
-asses],labels:[batch_size], \TU/FandolSong-Regular(0)/m/n/12 必 须 在 \TU/pcr/m/n/
-12 [0,num_classes] 
+Overfull \hbox (288.47655pt too wide) in paragraph at lines 267--271
+\TU/pcr/m/n/10.95 1,name=None) \TU/FandolSong-Regular(0)/m/n/10.95 输 出 \TU/pcr/
+m/n/10.95 loss:[batch_size] \TU/FandolSong-Regular(0)/m/n/10.95 保 存 的 时 \TU/pcr
+/m/n/10.95 batch \TU/FandolSong-Regular(0)/m/n/10.95 中 每 个 样 本 的 交 叉 熵。| \TU/pc
+r/m/n/10.95 tf.nn.sparse_softmax_cross_entropy_with_logic(logits,labels,name=No
+ne) 
  []
 
-[16] [17] [18]
-Underfull \vbox (badness 1360) has occurred while \output is active []
-
- [19]
+[14] [15] [16]
 File: ./pic/chapter1/Opt.png Graphic file (type QTm)
-
-<use  "./pic/chapter1/Opt.png" >
+ <use  "./pic/chapter1/Opt.png" >
 File: ./pic/chapter1/origin.png Graphic file (type QTm)
- <use  "./pic/chapter1/origin.png" >
+
+<use  "./pic/chapter1/origin.png" >
+Overfull \hbox (180.15372pt too wide) in paragraph at lines 359--361
+[]\TU/FandolSong-Regular(0)/m/n/10.95 原 始 数 据 为 $\OML/ztmcm/m/it/10.95 y \OT1/z
+tmcm/m/n/10.95 = \OML/ztmcm/m/it/10.95 x[]$ \TU/FandolSong-Regular(0)/m/n/10.95
+ 的 基 础 上 添 加 随 机 噪 声。|  原 始 数 据 的 散 点 图 如 下 [] 
+ []
+
+
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
- [20]
+ [17]
 
 LaTeX Font Warning: Font shape `TU/FandolFang-Regular(0)/m/sl' undefined
 (Font)              using `TU/FandolFang-Regular(0)/m/n' instead on input line 
 368.
 
-[21]
+
+Underfull \vbox (badness 2753) has occurred while \output is active []
+
+ [18]
 File: ./pic/chapter1/final.png Graphic file (type QTm)
- <use  "./pic/chapter1/final.png" >
-Overfull \hbox (146.23499pt too wide) in paragraph at lines 402--403
+
+<use  "./pic/chapter1/final.png" >
+Overfull \hbox (104.03743pt too wide) in paragraph at lines 402--403
 [][] 
  []
 
-[22]
-Overfull \hbox (189.0039pt too wide) in paragraph at lines 433--434
+[19]
+Overfull \hbox (129.50473pt too wide) in paragraph at lines 433--434
 [][] 
  []
 
-
-Underfull \vbox (badness 2088) has occurred while \output is active []
-
- [23]
 File: ./pic/chapter1/tenbor1.png Graphic file (type QTm)
-
 <use  "./pic/chapter1/tenbor1.png" >
-Overfull \hbox (61.6795pt too wide) in paragraph at lines 449--450
+Overfull \hbox (19.48195pt too wide) in paragraph at lines 449--450
 [][] 
  []
 
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
- [24]
-[25]
+ [20]
+[21]
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
- [26]
+ [22]
 File: ./pic/chapter1/mnist_cnn.png Graphic file (type QTm)
 
 <use  "./pic/chapter1/mnist_cnn.png" >
-Overfull \hbox (161.65121pt too wide) in paragraph at lines 515--516
+Overfull \hbox (119.45366pt too wide) in paragraph at lines 515--516
 [][] 
  []
 
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
- [27]
-[28]
+ [23]
+[24]
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
- [29])
-[30]
+ [25])
+[26]
 \openout2 = `./chapter2/tf_chapter2.aux'.
 
  (./chapter2/tf_chapter2.tex
 Chapter 2.
-) [31
+
+Overfull \hbox (14.21077pt too wide) in paragraph at lines 4--6
+[]\TU/FandolSong-Regular(0)/m/n/10.95 生 成 \TU/pcr/m/n/10.95 checkpoint \TU/Fand
+olSong-Regular(0)/m/n/10.95 文 件，|  扩 展 名 一 般 为\TU/pcr/m/n/10.95 .ckpt, \TU/Fand
+olSong-Regular(0)/m/n/10.95 通 过 在 \TU/pcr/m/n/10.95 tf.train.Saver \TU/FandolSo
+ng-Regular(0)/m/n/10.95 对 象 上 调 用 \TU/pcr/m/n/10.95 Saver.saver()
+ []
+
+
+Overfull \hbox (14.5405pt too wide) in paragraph at lines 6--8
+[]\TU/FandolSong-Regular(0)/m/n/10.95 生 成 \TU/pcr/m/n/10.95 (graph proto file)\
+TU/FandolSong-Regular(0)/m/n/10.95 ，|  这 是 一 个 二 进 制 文 件，|  扩 展 名 一 般 是\TU/pcr/
+m/n/10.95 .pb, \TU/FandolSong-Regular(0)/m/n/10.95 用 \TU/pcr/m/n/10.95 tf.train
+.write_graph()
+ []
+
+) [27
 
 
 
@@ -1647,25 +1764,20 @@ Underfull \hbox (badness 10000) in paragraph at lines 20--22
 
  []
 
-[32
+File: ./pic/chapter2/use_gpu2.png Graphic file (type QTm)
+<use  "./pic/chapter2/use_gpu2.png" > [28
 
 
 ]
-File: ./pic/chapter2/use_gpu2.png Graphic file (type QTm)
- <use  "./pic/chapter2/use_gpu2.png" > [33]
 File: ./pic/chapter2/use_gpu3.png Graphic file (type QTm)
 
-<use  "./pic/chapter2/use_gpu3.png" >
+<use  "./pic/chapter2/use_gpu3.png" > [29]
 File: ./pic/chapter2/use_gpu4.png Graphic file (type QTm)
- <use  "./pic/chapter2/use_gpu4.png" >
-[34]) [35]
+
+<use  "./pic/chapter2/use_gpu4.png" >) [30]
 \openout2 = `./chapter3/common_module.aux'.
 
- (./chapter3/common_module.tex [36
-
-
-
-]
+ (./chapter3/common_module.tex
 Chapter 3.
 File: ./pic/chapter3/demo1.png Graphic file (type QTm)
 <use  "./pic/chapter3/demo1.png" >
@@ -1673,25 +1785,23 @@ Underfull \hbox (badness 10000) in paragraph at lines 12--13
 
  []
 
-[37]
-Overfull \hbox (24.83342pt too wide) in paragraph at lines 22--23
-[]\TU/pcr/m/n/12 class argparse.ArgumentParser(prog=None, usage=None, descripti
-on=None,
+
+Overfull \hbox (20.97449pt too wide) in paragraph at lines 22--23
+[]\TU/pcr/m/n/10.95 class argparse.ArgumentParser(prog=None, usage=None, descri
+ption=None, epilog=None,
  []
 
 
-Overfull \hbox (40.20242pt too wide) in paragraph at lines 22--23
-\TU/pcr/m/n/12 epilog=None, parents=[], formatter_class=argparse.HelpFormatter,
- prefix_chars=’-
+Overfull \hbox (51.56876pt too wide) in paragraph at lines 22--23
+\TU/pcr/m/n/10.95 parents=[], formatter_class=argparse.HelpFormatter, prefix_ch
+ars=’-’, fromfile_prefix_chars=None,
  []
 
+[31
 
-Overfull \hbox (36.17023pt too wide) in paragraph at lines 22--23
-\TU/pcr/m/n/12 ’, fromfile_prefix_chars=None, argument_default=None, conflict_h
-andler=’error’,
- []
 
-[38]
+
+]
 File: ./pic/chapter3/demo2.png Graphic file (type QTm)
  <use  "./pic/chapter3/demo2.png" >
 Overfull \hbox (228.11906pt too wide) in paragraph at lines 61--61
@@ -1704,13 +1814,14 @@ Overfull \hbox (47.14531pt too wide) in paragraph at lines 66--66
  [][] 
  []
 
+[32]
 File: ./pic/chapter3/demo4.png Graphic file (type QTm)
-<use  "./pic/chapter3/demo4.png" > [39]
+ <use  "./pic/chapter3/demo4.png" >
 File: ./pic/chapter3/demo5.png Graphic file (type QTm)
  <use  "./pic/chapter3/demo5.png" >
 File: ./pic/chapter3/demo6.png Graphic file (type QTm)
 
-<use  "./pic/chapter3/demo6.png" > [40]
+<use  "./pic/chapter3/demo6.png" > [33]
 File: ./pic/chapter3/demo7.png Graphic file (type QTm)
  <use  "./pic/chapter3/demo7.png" >
 Underfull \hbox (badness 10000) in paragraph at lines 108--112
@@ -1718,106 +1829,115 @@ Underfull \hbox (badness 10000) in paragraph at lines 108--112
  []
 
 File: ./pic/chapter3/demo8.png Graphic file (type QTm)
-<use  "./pic/chapter3/demo8.png" > [41]
+<use  "./pic/chapter3/demo8.png" > [34]
 File: ./pic/chapter3/demo9.png Graphic file (type QTm)
  <use  "./pic/chapter3/demo9.png" >
 Underfull \hbox (badness 10000) in paragraph at lines 130--133
 
  []
 
-[42]
-Overfull \hbox (8.43073pt too wide) in paragraph at lines 162--163
-[]\TU/FandolSong-Regular(0)/m/n/12 通 常 我 们 传 递 一 个 参 数 \TU/pcr/m/n/12 liebhiao 
-\TU/FandolSong-Regular(0)/m/n/12 给 \TU/pcr/m/n/12 ArgumentParser \TU/FandolSong
--Regular(0)/m/n/12 的 方 法 \TU/pcr/m/n/12 parse_args()\TU/FandolSong-Regular(0)/m
-/n/12 ，|
+
+Overfull \hbox (111.42604pt too wide) in paragraph at lines 150--151
+\TU/FandolSong-Regular(0)/m/n/10.95 默 认 从 一 个 文 件 读 取 参 数，|  上 面 的 表 达 式 \TU/pc
+r/m/n/10.95 [’-f’,’foo’,’@args.txt’] \TU/FandolSong-Regular(0)/m/n/10.95 等 于 表 
+达 式 \TU/pcr/m/n/10.95 [’-f’,’foo’,’-f’,’bar’],fromfile_prefix_chars
  []
 
+
+Overfull \hbox (15.39456pt too wide) in paragraph at lines 152--153
+\TU/FandolSong-Regular(0)/m/n/10.95 有 时 候 通 过 给 参 数 指 定 一 个 简 单 的 \TU/pcr/m/n/1
+0.95 parser-wide \TU/FandolSong-Regular(0)/m/n/10.95 是 有 用 的，|  这 可 以 通 过 传 递 \
+TU/pcr/m/n/10.95 argument_default=
+ []
+
+[35]
 File: ./pic/chapter3/demo10.png Graphic file (type QTm)
-<use  "./pic/chapter3/demo10.png" >
+ <use  "./pic/chapter3/demo10.png" >
 File: ./pic/chapter3/demo11.png Graphic file (type QTm)
  <use  "./pic/chapter3/demo11.png" >
-Overfull \hbox (13.97209pt too wide) in paragraph at lines 173--175
-[][] \TU/FandolSong-Regular(0)/m/n/12 有
+Overfull \hbox (1.29742pt too wide) in paragraph at lines 173--175
+[][] \TU/FandolSong-Regular(0)/m/n/10.95 有 时 候 覆
  []
 
-[43]
+[36]
 File: ./pic/chapter3/demo12.png Graphic file (type QTm)
  <use  "./pic/chapter3/demo12.png" >
 File: ./pic/chapter3/demo13.png Graphic file (type QTm)
  <use  "./pic/chapter3/demo13.png" >
-[44]
 File: ./pic/chapter3/demo14.png Graphic file (type QTm)
- <use  "./pic/chapter3/demo14.png" >
-Overfull \hbox (8.32622pt too wide) in paragraph at lines 205--207
-[]\TU/pcr/m/n/12 ArgumentParser.add_argument(name or flags...[, action][, nargs
-][, const][,
- []
 
-[45]
+<use  "./pic/chapter3/demo14.png" > [37]
 File: ./pic/chapter3/demo15.png Graphic file (type QTm)
  <use  "./pic/chapter3/demo15.png" >
-Overfull \hbox (7.30861pt too wide) in paragraph at lines 230--231
-[] \TU/pcr/m/n/12 action 
- []
-
-[46] [47]
+[38] [39]
 Underfull \hbox (badness 10000) in paragraph at lines 295--299
 
  []
 
-[48]
-Overfull \hbox (56.23601pt too wide) in paragraph at lines 328--334
-\TU/FandolSong-Regular(0)/m/n/12 输 出\TU/pcr/m/n/12 :Namespace(infile=<_io.TextI
-OWrapper name=’input.txt’,encoding=’UTF-
+[40]
+Overfull \hbox (2.80182pt too wide) in paragraph at lines 328--334
+\TU/FandolSong-Regular(0)/m/n/10.95 输 出\TU/pcr/m/n/10.95 :Namespace(infile=<_io
+.TextIOWrapper name=’input.txt’,encoding=’UTF-8’>,
  []
 
 
-Overfull \hbox (5.36382pt too wide) in paragraph at lines 328--334
-\TU/pcr/m/n/12 8’>) parser.parse_args([]) \TU/FandolSong-Regular(0)/m/n/12 输 出\
-TU/pcr/m/n/12 : Namespace(infile=<io.TextIOWrapper
+Overfull \hbox (27.99779pt too wide) in paragraph at lines 328--334
+\TU/pcr/m/n/10.95 outfile<_io.TextIOWrapper name=’output.txt’ encoding=’UTF-8’>
+) parser.parse_args([])
  []
 
-[49]
+
 Underfull \hbox (badness 10000) in paragraph at lines 351--354
 
  []
 
+[41]
+Overfull \hbox (24.62541pt too wide) in paragraph at lines 368--369
+[]\TU/FandolSong-Regular(0)/m/n/10.95 当 \TU/pcr/m/n/10.95 add_argument() \TU/Fa
+ndolSong-Regular(0)/m/n/10.95 调 用 的 时 候 设 置 了 \TU/pcr/m/n/10.95 action=’store_c
+onst’ \TU/FandolSong-Regular(0)/m/n/10.95 或 者 是 \TU/pcr/m/n/10.95 action=’appen
+d_cost’
+ []
 
-Overfull \hbox (4.02269pt too wide) in paragraph at lines 362--364
-\TU/FandolSong-Regular(0)/m/n/12 输 出\TU/pcr/m/n/12 :Namespace(args=[’–arg1’,’XX
-’,’ZZ’],command=’cmd’,foo=’B’) \TU/FandolSong-Regular(0)/m/n/12 如
+[42]
+Overfull \hbox (4.02846pt too wide) in paragraph at lines 418--420
+\TU/FandolSong-Regular(0)/m/n/10.95 输 出\TU/pcr/m/n/10.95 :Namespace(bar=<_io.Te
+xtIOWrapper name=’temp.txt’ encoding=’UTF-8’,foo=2) \TU/FandolSong-Regular(0)/m
+/n/10.95 为
  []
 
 
-Overfull \hbox (1.53601pt too wide) in paragraph at lines 372--373
-[]\TU/FandolSong-Regular(0)/m/n/12 所 有 的 参 数 和 一 些 位 置 的 参 数 在 命 令 行 下 可 能 被 忽 
-略，| \TU/pcr/m/n/12 add_argument()
+Overfull \hbox (42.35225pt too wide) in paragraph at lines 418--420
+\TU/FandolSong-Regular(0)/m/n/10.95 了 能 轻 松 的 使 用 多 种 文 件 类 型，| \TU/pcr/m/n/10.
+95 argparse \TU/FandolSong-Regular(0)/m/n/10.95 模 块 提 供 了 工 厂 \TU/pcr/m/n/10.95
+ FileType\TU/FandolSong-Regular(0)/m/n/10.95 ，|  利 用 \TU/pcr/m/n/10.95 mode=,bu
+fsize=,encoding=
  []
 
-[50] [51]
-Overfull \hbox (16.44803pt too wide) in paragraph at lines 418--420
-\TU/FandolSong-Regular(0)/m/n/12 输 出\TU/pcr/m/n/12 :Namespace(bar=<_io.TextIOWr
-apper name=’temp.txt’ encoding=’UTF-
+[43]
+Overfull \hbox (31.68816pt too wide) in paragraph at lines 459--460
+[]\TU/FandolSong-Regular(0)/m/n/10.95 一 些 命 令 行 参 数 从 一 些 限 定 值 的 中 选 定，|  可 以 
+通 过 传 递 \TU/pcr/m/n/10.95 choice \TU/FandolSong-Regular(0)/m/n/10.95 关 键 字 参 数 
+给 \TU/pcr/m/n/10.95 add_argument(),
  []
 
-
-Overfull \hbox (7.31602pt too wide) in paragraph at lines 425--427
-\TU/FandolSong-Regular(0)/m/n/12 输 出\TU/pcr/m/n/12 :Namespace(bar=<_io.TextIOWr
-apepr name=’out.txt’ encoding=;UTF-
- []
-
-[52] [53]
+[44]
 Underfull \hbox (badness 10000) in paragraph at lines 504--508
 
  []
 
-[54]
+
+Overfull \hbox (3.46999pt too wide) in paragraph at lines 509--513
+\TU/pcr/m/n/10.95 help \TU/FandolSong-Regular(0)/m/n/10.95 字 符 串 能 包 含 多 种 格 式 
+像 程 序 名 字 或 者 默 认 参 数，|  可 用 的 指 定 包 含 程 序 的 名 字\TU/pcr/m/n/10.95 ,%(prog)s
+ []
+
+
 Underfull \hbox (badness 10000) in paragraph at lines 518--520
 
  []
 
-
+[45]
 Underfull \hbox (badness 10000) in paragraph at lines 521--523
 
  []
@@ -1827,7 +1947,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 533--535
 
  []
 
-[55]
+
 Underfull \hbox (badness 10000) in paragraph at lines 547--550
 
  []
@@ -1842,7 +1962,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 554--557
 
  []
 
-
+[46]
 Underfull \hbox (badness 10000) in paragraph at lines 566--568
 
  []
@@ -1852,74 +1972,35 @@ Underfull \hbox (badness 10000) in paragraph at lines 569--571
 
  []
 
-[56]
+
 Underfull \hbox (badness 10000) in paragraph at lines 582--584
 
  []
 
-[57]
-Overfull \hbox (44.75182pt too wide) in paragraph at lines 616--619
-\TU/pcr/m/n/12 fault=None, type=None, choices=None, required=False, help=None, 
-metavar=None)
- []
-
-[58] [59] [60]
-Overfull \hbox (27.28401pt too wide) in paragraph at lines 706--707
-\TU/FandolSong-Regular(0)/m/n/12 如 果 你 有 一 个 必 须 以\TU/pcr/m/n/12 -\TU/FandolSon
-g-Regular(0)/m/n/12 开 始 的 参 数 而 且 不 是 负 数，|  你 可 以 插 入\TU/pcr/m/n/12 ’–’ \TU/Fa
-ndolSong-Regular(0)/m/n/12 告 诉 \TU/pcr/m/n/12 parse_args()
+[47]
+Overfull \hbox (0.16289pt too wide) in paragraph at lines 616--619
+\TU/FandolSong-Regular(0)/m/n/10.95 都 可 以 被 \TU/pcr/m/n/10.95 zuoiweiaction \TU
+/FandolSong-Regular(0)/m/n/10.95 参 数 传 递 给 \TU/pcr/m/n/10.95 add_argument()\TU/
+FandolSong-Regular(0)/m/n/10.95 。| \TU/pcr/m/n/10.95 class argparse.Action(opti
+on_strings,
  []
 
 
-Overfull \hbox (21.37201pt too wide) in paragraph at lines 710--713
-\TU/FandolSong-Regular(0)/m/n/12 输 出\TU/pcr/m/n/12 :Namespace(foo=’-f’,one=None
-) \TU/FandolSong-Regular(0)/m/n/12 参 数 缩 略 如 果 缩 略 没 有 歧 义 \TU/pcr/m/n/12 parse
-r_args()
+Overfull \hbox (0.2308pt too wide) in paragraph at lines 616--619
+\TU/pcr/m/n/10.95 dest, nargs=None, const=None, default=None, type=None, choice
+s=None, required=False,
  []
 
-[61]
-Overfull \hbox (42.09024pt too wide) in paragraph at lines 760--764
-\TU/FandolSong-Regular(0)/m/n/12 子 命 令\TU/pcr/m/n/12 : ArgumentParser.add_subpa
-rsers([title][, description][, prog][, parser_class][,
- []
-
-
-Overfull \hbox (46.03201pt too wide) in paragraph at lines 765--766
-[]\TU/pcr/m/n/12 title: \TU/FandolSong-Regular(0)/m/n/12 帮 助 输 出 \TU/pcr/m/n/12
- sub-parser \TU/FandolSong-Regular(0)/m/n/12 组 的 标 题，|  如 果 说 明 提 供 了 的 话 默 认\T
-U/pcr/m/n/12 ”subcommands”\TU/FandolSong-Regular(0)/m/n/12 ，|
- []
-
-[62]
-Overfull \hbox (9.79073pt too wide) in paragraph at lines 772--773
-[]\TU/pcr/m/n/12 matavar: \TU/FandolSong-Regular(0)/m/n/12 在 \TU/pcr/m/n/12 hel
-p \TU/FandolSong-Regular(0)/m/n/12 中 可 用 的 子 命 令 默 认 是 \TU/pcr/m/n/12 None \TU/
-FandolSong-Regular(0)/m/n/12 代 表 子 命 令 \TU/pcr/m/n/12 cmd1,cmd2,… 
- []
-
-[63] [64]
-Overfull \hbox (37.46002pt too wide) in paragraph at lines 853--854
-\TU/FandolSong-Regular(0)/m/n/12 一 个 类 似 的 高 效 处 理 \TU/pcr/m/n/12 sub-commands 
-\TU/FandolSong-Regular(0)/m/n/12 结 合 \TU/pcr/m/n/12 add_subparsers() \TU/Fandol
-Song-Regular(0)/m/n/12 方 法 调 用 \TU/pcr/m/n/12 set_default()
- []
-
-[65]
-Overfull \hbox (3.94223pt too wide) in paragraph at lines 898--901
-\TU/pcr/m/n/12 class argparse.FileType(mode=’r’, bufsize=-1, encoding=None, err
-ors=None)
- []
-
-[66]
-Overfull \hbox (46.14003pt too wide) in paragraph at lines 907--907
-\TU/FandolSong-Regular(0)/m/n/12 输 出\TU/pcr/m/n/12 :Namespace(out<_io.TextIOWap
-per name=’file.txt’ mode=’w’ encoding=’UTF-
+[48] [49] [50] [51] [52] [53] [54] [55]
+Overfull \hbox (67.1112pt too wide) in paragraph at lines 907--907
+\TU/FandolSong-Regular(0)/m/n/10.95 输 出\TU/pcr/m/n/10.95 :Namespace(out<_io.Tex
+tIOWapper name=’file.txt’ mode=’w’ encoding=’UTF-8’,raw=<_ioFileIO
  []
 
 
-Overfull \hbox (13.55873pt too wide) in paragraph at lines 915--919
-\TU/FandolSong-Regular(0)/m/n/12 输 出 \TU/pcr/m/n/12 Namespace(infile<_io.TextIO
-Wrapper name=’<stdin>’ encoding=’UTF-
+Overfull \hbox (14.10243pt too wide) in paragraph at lines 915--919
+\TU/FandolSong-Regular(0)/m/n/10.95 数 和 选 项 参 数。|  当 有 一 个 比 默 认 更 好 的 概 念 上 的 
+参 数 组，|  合 适 的 组 能 被 \TU/pcr/m/n/10.95 add_argument_group()
  []
 
 
@@ -1927,7 +2008,14 @@ Underfull \hbox (badness 10000) in paragraph at lines 927--929
 
  []
 
-[67]
+
+Overfull \hbox (5.10155pt too wide) in paragraph at lines 930--934
+\TU/FandolSong-Regular(0)/m/n/10.95 增 加 到 组 中，| \TU/pcr/m/n/10.95 parser \TU/Fa
+ndolSong-Regular(0)/m/n/10.95 就 当 它 为 正 常 参 数，|  但 是 在 帮 助 信 息 中 分 组 显 示。| \TU/
+pcr/m/n/10.95 add_argument_group()
+ []
+
+[56]
 Underfull \hbox (badness 10000) in paragraph at lines 942--943
 
  []
@@ -1947,106 +2035,225 @@ Underfull \hbox (badness 10000) in paragraph at lines 949--951
 
  []
 
-[68] [69] [70] [71]
+[57]
+Overfull \hbox (12.43803pt too wide) in paragraph at lines 984--986
+\TU/FandolSong-Regular(0)/m/n/10.95 大 多 数 时 候，| \TU/pcr/m/n/10.95 parse_args() 
+\TU/FandolSong-Regular(0)/m/n/10.95 返 回 的 属 性 对 象 将 被 命 令 行 参 数 和 参 数 行 为 完 全 决
+ 定。| \TU/pcr/m/n/10.95 set_default()
+ []
+
+
+Overfull \hbox (62.95567pt too wide) in paragraph at lines 1000--1005
+\TU/FandolSong-Regular(0)/m/n/10.95 输 出\TU/pcr/m/n/10.95 : Namespace(foo=’spam’
+) Parser \TU/FandolSong-Regular(0)/m/n/10.95 级 别 在 多 个 \TU/pcr/m/n/10.95 parser
+ \TU/FandolSong-Regular(0)/m/n/10.95 时 特 别 有 用。| \TU/pcr/m/n/10.95 ArgumentPars
+er.get_default(dest)
+ []
+
+
+Overfull \hbox (36.76776pt too wide) in paragraph at lines 1012--1017
+\TU/FandolSong-Regular(0)/m/n/10.95 令 行 调 用 的 简 单 描 述，|  如 果 \TU/pcr/m/n/10.95 
+file \TU/FandolSong-Regular(0)/m/n/10.95 是 \TU/pcr/m/n/10.95 None\TU/FandolSong
+-Regular(0)/m/n/10.95 ，| \TU/pcr/m/n/10.95 sys.stdout \TU/FandolSong-Regular(0)
+/m/n/10.95 被 假 定。| \TU/pcr/m/n/10.95 ArgumentParser.print_help(file=None):
+ []
+
+[58] [59]
 File: ./pic/chapter3/arg1.png Graphic file (type QTm)
  <use  "./pic/chapter3/arg1.png" >
 File: ./pic/chapter3/arg2.png Graphic file (type QTm)
-
-<use  "./pic/chapter3/arg2.png" > [72]
+ <use  "./pic/chapter3/arg2.png" >
 File: ./pic/chapter3/arg3.png Graphic file (type QTm)
- <use  "./pic/chapter3/arg3.png" >
-File: ./pic/chapter3/arg4.png Graphic file (type QTm)
 
-<use  "./pic/chapter3/arg4.png" >
+<use  "./pic/chapter3/arg3.png" > [60]
+File: ./pic/chapter3/arg4.png Graphic file (type QTm)
+ <use  "./pic/chapter3/arg4.png" >
 Underfull \hbox (badness 10000) in paragraph at lines 1098--1099
 
  []
 
-[73] [74]
+[61]
 Underfull \hbox (badness 10000) in paragraph at lines 1144--1147
 
  []
 
-[75] [76]) [77]
+[62] [63]) [64]
 \openout2 = `./chapter3/path.aux'.
 
  (./chapter3/path.tex
-Missing character: There is no 或 in font [lmroman12-regular]:mapping=tex-text;!
-Missing character: There is no 者 in font [lmroman12-regular]:mapping=tex-text;!
-
-Overfull \hbox (1.48125pt too wide) in paragraph at lines 9--10
-[]\TU/pcr/m/n/12 os.expandvars(path): \TU/FandolSong-Regular(0)/m/n/12 返 回 环 境 
-变 量 的 值，|  子 字 符 串 形 式 时 $[][][]$\TU/pcr/m/n/12 name
- []
-
-
-Overfull \hbox (9.36801pt too wide) in paragraph at lines 11--12
-[]\TU/pcr/m/n/12 os.path.getmtime(path): \TU/FandolSong-Regular(0)/m/n/12 返 回 最
- 新 修 改 路 径 的 时 间，|  返 回 值 时 一 个 \TU/pcr/m/n/12 epoch
- []
-
-[78
+Missing character: There is no 或 in font zptmcm7t!
+Missing character: There is no 者 in font zptmcm7t!
+ [65
 
 
 ]
-Overfull \hbox (4.35072pt too wide) in paragraph at lines 17--18
-[]\TU/pcr/m/n/12 os.path.islink(path): \TU/FandolSong-Regular(0)/m/n/12 如 果 路 径
- 查 询 一 个 目 录 入 口 时 符 号 链 接 返 回 \TU/pcr/m/n/12 True\TU/FandolSong-Regular(0)/m/n
-/12 ，|
+Overfull \hbox (9.0533pt too wide) in paragraph at lines 24--25
+[]\TU/pcr/m/n/10.95 os.path.samefile(path1,path2): \TU/FandolSong-Regular(0)/m/
+n/10.95 如 果 \TU/pcr/m/n/10.95 pathname \TU/FandolSong-Regular(0)/m/n/10.95 值 访 
+问 相 同 的 文 件 或 者 目 录 则 返 回 \TU/pcr/m/n/10.95 True\TU/FandolSong-Regular(0)/m/n/1
+0.95 ，|
+ []
+
+[66]) [67]
+\openout2 = `./chapter3/re.aux'.
+
+ (./chapter3/re.tex [68
+
+
+
+]
+Chapter 4.
+
+Underfull \hbox (badness 10000) in paragraph at lines 6--6
+[]\TU/FandolSong-Regular(0)/m/n/10.95 操 作
  []
 
 
-Overfull \hbox (42.87071pt too wide) in paragraph at lines 21--22
-[]\TU/pcr/m/n/12 os.path.normpath(path): \TU/FandolSong-Regular(0)/m/n/12 删 除 冗
- 余 得 分 和 服，|  因 此 \TU/pcr/m/n/12 A//B,A/B,A/./B,A/foo../B
+Overfull \hbox (0.7509pt too wide) in paragraph at lines 24--24
+[]\TU/pcr/m/n/10.95 {m,n}| 
  []
 
-[79]
-Overfull \hbox (40.75601pt too wide) in paragraph at lines 29--30
-\TU/FandolSong-Regular(0)/m/n/12 个 分 隔 符 \TU/pcr/m/n/12 splitdrive(”//host/comp
-uter/dir”)return(”//host/computer”,”/dir”) 
+
+Overfull \hbox (30.59381pt too wide) in paragraph at lines 4--37
+ [] 
  []
 
-) [80]
+
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [69]
+Underfull \vbox (badness 1603) has occurred while \output is active []
+
+ [70]
+Overfull \hbox (3.27289pt too wide) in paragraph at lines 75--83
+\TU/pcr/m/n/10.95 IP \TU/FandolSong-Regular(0)/m/n/10.95 地 址 的 正 则 表 达 式\TU/pcr
+/m/n/10.95 :(([1-9]?\d|1\d{2}|2[0-4]\d|25[0-5]).){3}([1-9]?\d|1\d{2}|2[0-4]\d|2
+5[0-
+ []
+
+
+Overfull \hbox (1.58426pt too wide) in paragraph at lines 85--100
+ [] 
+ []
+
+[71]
+Underfull \hbox (badness 10000) in paragraph at lines 134--137
+
+ []
+
+[72]
+Overfull \hbox (17.70265pt too wide) in paragraph at lines 170--185
+ [] 
+ []
+
+[73]) [74]
+\openout2 = `./chapter3/sys.aux'.
+
+ (./chapter3/sys.tex
+Chapter 5.
+
+Overfull \hbox (5.98851pt too wide) in paragraph at lines 6--7
+\TU/FandolSong-Regular(0)/m/n/10.95 值 将 被 改 变 到 指 向 虚 拟 环 境，|  由 于 \TU/pcr/m/n/
+10.95 base_prefix \TU/FandolSong-Regular(0)/m/n/10.95 和 \TU/pcr/m/n/10.95 base_
+exec_prefix \TU/FandolSong-Regular(0)/m/n/10.95 将 保 留 指 向 \TU/pcr/m/n/10.95 pyt
+hon
+ []
+
+[75
+
+
+
+]
+Overfull \hbox (18.0773pt too wide) in paragraph at lines 36--37
+[]\TU/pcr/m/n/10.95 sys.exceptgook(type,value,traceback): \TU/FandolSong-Regula
+r(0)/m/n/10.95 这 个 函 数 打 印 出 一 个 给 定 的 \TU/pcr/m/n/10.95 traceback \TU/FandolSo
+ng-Regular(0)/m/n/10.95 和 \TU/pcr/m/n/10.95 sys.stderr
+ []
+
+[76]
+Overfull \hbox (26.8592pt too wide) in paragraph at lines 40--41
+\TU/FandolSong-Regular(0)/m/n/10.95 别 是 所 有 的 配 置 文 件 \TU/pcr/m/n/10.95 (\TU/Fa
+ndolSong-Regular(0)/m/n/10.95 像 \TU/pcr/m/n/10.95 pyconfig.h \TU/FandolSong-Reg
+ular(0)/m/n/10.95 头 文 件\TU/pcr/m/n/10.95 ) \TU/FandolSong-Regular(0)/m/n/10.95 
+被 安 装 子 啊 \TU/pcr/m/n/10.95 exec_prefix/lib/pythonX.Y/config
+ []
+
+
+Underfull \vbox (badness 3375) has occurred while \output is active []
+
+ [77]
+Overfull \hbox (185.48824pt too wide) in paragraph at lines 61--73
+[][]
+ []
+
+[78] [79]
+Overfull \hbox (76.32031pt too wide) in paragraph at lines 107--114
+\TU/FandolSong-Regular(0)/m/n/10.95 素 时 \TU/pcr/m/n/10.95 major,minor,build,pla
+tform,service_pack_minor,service_pack_major,suit_mask,product_type
+ []
+
+
+Overfull \hbox (238.7709pt too wide) in paragraph at lines 107--114
+\TU/pcr/m/n/10.95 platform \TU/FandolSong-Regular(0)/m/n/10.95 将 被 \TU/pcr/m/n/
+10.95 2(VER_PLATFORM_WIN32_NI) []
+ []
+
+
+Overfull \hbox (124.69505pt too wide) in paragraph at lines 116--127
+[]\TU/pcr/m/n/10.95 sys.has_info: \TU/FandolSong-Regular(0)/m/n/10.95 数 值 \TU/p
+cr/m/n/10.95 hash \TU/FandolSong-Regular(0)/m/n/10.95 实 现 参 数 给 一 个 结 构 序 列。| [
+] 
+ []
+
+
+Underfull \vbox (badness 5446) has occurred while \output is active []
+
+ [80])
+[81]
+\openout2 = `./chapter3/url.aux'.
+
+ (./chapter3/url.tex [82
+
+
+
+]
+Chapter 6.
+) [83]
+\openout2 = `./chapter3/requests.aux'.
+
+ (./chapter3/requests.tex [84
+
+
+
+]
+Chapter 7.
+) [85]
 \openout2 = `./chapter4/tf_common.aux'.
 
- (./chapter4/tf_common.tex
-Chapter 4.
+ (./chapter4/tf_common.tex [86
+
+
+
+]
+Chapter 8.
 
 Underfull \hbox (badness 10000) in paragraph at lines 13--17
 
  []
 
-[81
-
-
-
-]
-Overfull \hbox (155.748pt too wide) in paragraph at lines 47--48
-[]\TU/pcr/m/n/12 accuracy(labels,predictions,weights=none,metrics_collections,u
-pdates_collections=none,name=none) 
+[87]
+Overfull \hbox (75.99182pt too wide) in paragraph at lines 47--48
+[]\TU/pcr/m/n/10.95 accuracy(labels,predictions,weights=none,metrics_collection
+s,updates_collections=none,name=none) 
  []
 
-[82] [83]) [84]
+[88]) [89]
 \openout2 = `./chapter4/tf_image.aux'.
 
  (./chapter4/tf_image.tex
-Overfull \hbox (16.16672pt too wide) in paragraph at lines 7--8
-[]\TU/FandolSong-Regular(0)/m/n/12 返 回 一 个 \TU/pcr/m/n/12 8 \TU/FandolSong-Regu
-lar(0)/m/n/12 位 无 符 号 的 \TU/pcr/m/n/12 Tensor\TU/FandolSong-Regular(0)/m/n/12 ，
-|  四 维 形 状 为 \TU/pcr/m/n/12 [num_frames,height,width,3],
- []
-
-
-Overfull \hbox (62.46pt too wide) in paragraph at lines 10--13
-[]\TU/pcr/m/n/12 tf.image.decode_jpeg(contents,channels=None,ratio=None,fancy_u
-pscaling=None, 
- []
-
-
-Overfull \hbox (82.65579pt too wide) in paragraph at lines 10--13
-\TU/pcr/m/n/12 try_recover_truncated=None,acceptable_fraction=None,dct_metched=
-None,name=None)
+Overfull \hbox (8.40822pt too wide) in paragraph at lines 10--13
+\TU/pcr/m/n/10.95 try_recover_truncated=None,acceptable_fraction=None,dct_metch
+ed=None,name=None)
  []
 
 
@@ -2055,75 +2262,60 @@ Underfull \hbox (badness 10000) in paragraph at lines 10--13
  []
 
 
-Overfull \hbox (26.34401pt too wide) in paragraph at lines 20--21
-\TU/FandolSong-Regular(0)/m/n/12 统 自 行 指 定。|  可 用 的 值 有 \TU/pcr/m/n/12 [”INTEGE
-R_FAST”,”INTEGER_ACCURATE”] 
+Overfull \hbox (52.94206pt too wide) in paragraph at lines 25--27
+[]\TU/pcr/m/n/10.95 tf.image.encode_jpeg(image,format=None,quality=None,progres
+sive=None,optimize_size=None 
  []
 
-[85
+
+Overfull \hbox (154.87561pt too wide) in paragraph at lines 25--27
+\TU/pcr/m/n/10.95 chroma_downsampling=None,density_uint=None,x_density=None,y_d
+ensity=None,xmp_metadata=None,name=None) 
+ []
+
+[90
 
 
 ]
-Overfull \hbox (2.70673pt too wide) in paragraph at lines 22--23
-[]\TU/FandolSong-Regular(0)/m/n/12 返 回 值 为 一 个 \TU/pcr/m/n/12 8 \TU/FandolSong-
-Regular(0)/m/n/12 位 无 符 号 整 型 \TU/pcr/m/n/12 Tensor\TU/FandolSong-Regular(0)/m/
-n/12 ，| \TU/pcr/m/n/12 3 \TU/FandolSong-Regular(0)/m/n/12 维 形 状 \TU/pcr/m/n/12 
-[height,width,channels] 
+Overfull \hbox (4.04918pt too wide) in paragraph at lines 42--44
+[]\TU/pcr/m/n/10.95 tf.image.decode_png(contents,channels=None,dtype=None,name=
+None) \TU/FandolSong-Regular(0)/m/n/10.95 解 码 \TU/pcr/m/n/10.95 PNG \TU/FandolS
+ong-Regular(0)/m/n/10.95 编
+ []
+
+[91]
+Overfull \hbox (31.53484pt too wide) in paragraph at lines 70--71
+[]\TU/pcr/m/n/10.95 tf.image.resize_images(images,size,method=ResizeMethed.BILI
+NEAR,align_corners=False) 
  []
 
 
-Overfull \hbox (131.016pt too wide) in paragraph at lines 25--27
-[]\TU/pcr/m/n/12 tf.image.encode_jpeg(image,format=None,quality=None,progressiv
-e=None,optimize_size=None 
+Overfull \hbox (67.33897pt too wide) in paragraph at lines 72--73
+[]\TU/pcr/m/n/10.95 images: \TU/FandolSong-Regular(0)/m/n/10.95 形 状 为 \TU/pcr/m
+/n/10.95 [batch,height,width,channels]4 \TU/FandolSong-Regular(0)/m/n/10.95 维 \
+TU/pcr/m/n/10.95 Tensor,3 \TU/FandolSong-Regular(0)/m/n/10.95 为 \TU/pcr/m/n/10.
+95 Tensor\TU/FandolSong-Regular(0)/m/n/10.95 ，|  形 状 为 \TU/pcr/m/n/10.95 [heigh
+t,width,channels] 
  []
 
-
-Overfull \hbox (239.94003pt too wide) in paragraph at lines 25--27
-\TU/pcr/m/n/12 chroma_downsampling=None,density_uint=None,x_density=None,y_dens
-ity=None,xmp_metadata=None,name=None) 
- []
-
-
-Overfull \hbox (29.48001pt too wide) in paragraph at lines 33--34
-[]\TU/pcr/m/n/12 density_unit: \TU/FandolSong-Regular(0)/m/n/12 一 个 字 符 串，|  可 
-以 为\TU/pcr/m/n/12 ”in”,”cm”, \TU/FandolSong-Regular(0)/m/n/12 指 定 \TU/pcr/m/n/1
-2 x_density \TU/FandolSong-Regular(0)/m/n/12 和 \TU/pcr/m/n/12 y_density.in
- []
-
-[86]
-Overfull \hbox (9.5158pt too wide) in paragraph at lines 42--44
-[]\TU/pcr/m/n/12 tf.image.decode_png(contents,channels=None,dtype=None,name=Non
-e)
- []
-
-
-Overfull \hbox (4.03873pt too wide) in paragraph at lines 66--67
-[]\TU/FandolSong-Regular(0)/m/n/12 返 回 \TU/pcr/m/n/12 JPEG,PNG \TU/FandolSong-R
-egular(0)/m/n/12 的 \TU/pcr/m/n/12 8 \TU/FandolSong-Regular(0)/m/n/12 位 无 符 号 的 
-形 状 为 \TU/pcr/m/n/12 [height,width,num_channels]\TU/FandolSong-Regular(0)/m/n/1
-2 ，|
- []
-
-[87]
-Overfull \hbox (108.024pt too wide) in paragraph at lines 70--71
-[]\TU/pcr/m/n/12 tf.image.resize_images(images,size,method=ResizeMethed.BILINEA
-R,align_corners=False) 
- []
-
-) [88] (./book.aux (./chapter1/tf_chapter1.aux) (./chapter2/tf_chapter2.aux)
-(./chapter2/use_gpu.aux) (./chapter3/common_module.aux) (./chapter3/path.aux)
-(./chapter4/tf_common.aux) (./chapter4/tf_image.aux))
+[92]) [93] (./book.aux (./chapter1/tf_chapter1.aux) (./chapter2/tf_chapter2.aux
+) (./chapter2/use_gpu.aux) (./chapter3/common_module.aux) (./chapter3/path.aux)
+(./chapter3/re.aux) (./chapter3/sys.aux) (./chapter3/url.aux)
+(./chapter3/requests.aux) (./chapter4/tf_common.aux) (./chapter4/tf_image.aux))
 
 LaTeX Font Warning: Some font shapes were not available, defaults substituted.
 
+
+LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
+
  ) 
 Here is how much of TeX's memory you used:
- 24317 strings out of 493005
- 473500 string characters out of 6134596
- 659785 words of memory out of 5000000
- 27993 multiletter control sequences out of 15000+600000
- 7308 words of font info for 46 fonts, out of 8000000 for 9000
+ 25139 strings out of 493005
+ 486977 string characters out of 6134596
+ 696549 words of memory out of 5000000
+ 28742 multiletter control sequences out of 15000+600000
+ 12309 words of font info for 56 fonts, out of 8000000 for 9000
  1348 hyphenation exceptions out of 8191
- 57i,13n,69p,10430b,1871s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 57i,13n,69p,10430b,1868s stack positions out of 5000i,500n,10000p,200000b,80000s
 
-Output written on book.pdf (88 pages).
+Output written on book.pdf (93 pages).
