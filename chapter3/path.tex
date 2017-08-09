@@ -1,7 +1,8 @@
 \section{path}
+\subsection{函数说明}
 \begin{itemize}
 \item os.path.abspath(path):返回path的绝对路径，在多数平台下，相当于调用函数normpath(join(os.getcwd(),path))
-\item os.path.basename(path):返回path的路径base name，第二个元素同感传递path给split(),注意这个结果不同于unix的basename程序，这里basename,'foo/bar'然会bar,而basename()函数返回空字符串('')。
+\item os.path.basename(path):返回path的路径base name，第二个元素通过传递path给split(),注意这个结果不同于unix的basename程序，这里basename,'foo/bar'然会bar,而basename()函数返回空字符串('')。
 \item os.path.commonpath(paths):返回paths队列中最长的sub-path，日国路径中包含绝对路径和相对路径的话将报ValueError或者如果paths是空，不想commonprefix(),这个函数返回一个错的路径。
 \item os.path.dirname(path):返回目录的名字，就是path用split分割厚的第一个元素。
 \item os.path.exists(path):如果春在路径path或者一个打开的文件描述返回True。对于破掉的符号链接返回False，在一些平台，如果权限不允许执行os.stat()即使存在物理路径这个函数也返回False。
@@ -30,3 +31,375 @@
 \item os.path.split(path):分割路径名为(root,ext)像root+ext == path，ext时空或者以一个周期开头，导致basename被忽略，splitex('.cshrc')返回('.cshrc','')
 \item os.path.supports\_unicode\_filenames():如果文件名时unicode编码的则为True。
 \end{itemize}
+\subsection{例子}
+1.获取文件名，目录，扩展，新文路径。
+\begin{python}
+import os
+file_path = '~/iris_test.csv'
+filename = os.path.basename(file_path)
+new_dir = os.path.join('home','hpc',filename)
+file_dir = os.path.dirname(file_path)
+dir1 = '~/'
+fulldir = os.path.expanduser(dir1)
+sp = os.path.split(new_dir)
+print('new_dir:',sp[0],'ext:',sp[1])
+\end{python}
+2.查看文件同时打开文件
+\begin{python}
+import os
+path = '/etc'
+filename = 'passwd'
+if os.path.isdir(path):
+    full_path = os.path.join(path,filename)
+    if os.path.isfile(full_path):
+        with open(full_path,'r') as f:
+            line = f.readlines()
+            for _ in range(len(line)):
+                print(line)
+\end{python}
+3.获取文件大小和修改时间
+\begin{python}
+os.path.getsize('/etc/passwd')
+os.path.gettime('/etc/passwd')
+import time
+time.ctime(os.path.gettime('/etc/passwd'))
+\end{python}
+4.获取当前目录里面的指定文件的文件名
+\begin{python}
+dir_name = '/home/hpc/TensorFlow_Notebook/code'
+pyfile = [name for name in os.listdir(dir_name) if name.endswith('.py')]
+#or use glob and fnmatch
+import glob
+pyfiles = glob.glob(dir_name+'/*.py')
+from fnmatch import fnmatch
+pyfiles = [name for name in os.listdir(dir_name) if fnmatch(name,'*.py')]
+\end{python}
+4.获取指定目录的文件的相关信息
+\begin{python}
+import os
+import os.path
+import glob
+import time
+path_name = '/home/hpc/TensorFlow_Notebook/code'
+pyfiles = glob.glob(path_name+'/*.py')
+name_sz_data = [(name,os.path.getsize(name),os.path.getmtime(name)) for name in pyfiles]
+file_metadata = [(name,os.stat(name)) for name in pyfiles]
+for name,meta in file_metadata:
+    print(name,'\t|',meta.st_size,'\t|',time.ctime(meta.st_mtime))
+
+\end{python}
+\subsection{常见问题}
+1.当你的程序获得目录中的一个文件列表，但是当试着打印文件名的时候文件崩溃，出现UnicodeEncodeError异常和一条奇怪的消息--surrogates not allow。\newline
+打印位置文件名时使用下面的方法可以避免下面的错误:
+\begin{python}
+def bad_filename(filename):
+    return repr(filename)[1:-1]
+try:
+    print(filename)
+except UnicodeEncodeError:
+    print(bad_filename(filename))
+\end{python}
+默认情况下，Python假定所有文件名都已经根据 sys.getfilesystemencoding() 的值编码过了。 但是，有一些文件系统并没有强制要求这样做，因此允许创建文件名没有正确编码的文件。 这种情况不太常见，但是总会有些用户冒险这样做或者是无意之中这样做了( 可能是在一个有缺陷的代码中给 open() 函数传递了一个不合规范的文件名)。
+当执行类似 os.listdir() 这样的函数时，这些不合规范的文件名就会让Python陷入困境。 一方面，它不能仅仅只是丢弃这些不合格的名字。而另一方面，它又不能将这些文件名转换为正确的文本字符串。 Python对这个问题的解决方案是从文件名中获取未解码的字节值比如 \textbackslash xhh 并将它映射成Unicode字符 \textbackslash udchh 表示的所谓的”代理编码”。 当你有一个不合格的文件名在目录列表中的是后，python会将其转化为unicode如果你有代码需要操作文件名或者将文件名传递给 open() 这样的函数，一切都能正常工作。 只有当你想要输出文件名时才会碰到些麻烦(比如打印输出到屏幕或日志文件等)。 特别的，当你想打印上面的文件名列表时，你的程序就会崩溃,崩溃的原因就是字符\textbackslash udce4是一个非法的Unicode字符。它其实是一个被称为代理字符对的双子符组合的后半部分，因此他是一个非法的Unicode，所以唯一能称该输出的方法就是遇到不合法文件名时采取相应的补救措施。可以将上述代码修改为:
+\begin{python}
+for name in files:
+    try:
+        print(name)
+    except UnicodeEncodeError:
+        print(bad_filename(name))
+\end{python}
+或者:
+\begin{python}
+def bad_filename(filename):
+    temp = filename.encode(sys.getfilesystemencoding(),errors='surrogateescape')
+    return temp.decode('latin-1')
+\end{python}
+2.不关闭一个以打开的文件前提下增加或改变它的Unicode编码。
+\begin{python}
+>>> f = open('sample.txt','w')
+>>> f
+<_io.TextIOWrapper name='sample.txt' mode='w' encoding='UTF-8'>
+>>> f.buffer
+<_io.BufferedWriter name='sample.txt'>
+>>> f.buffer.raw
+<_io.FileIO name='sample.txt' mode='wb'>
+>>>
+\end{python}
+在这个例子中，io.TextIOWrapper 是一个编码和解码Unicode的文本处理层， io.BufferedWriter 是一个处理二进制数据的带缓冲的I/O层， io.FileIO 是一个表示操作系统底层文件描述符的原始文件。 增加或改变文本编码会涉及增加或改变最上面的 io.TextIOWrapper 层。\par
+detach()会断开文件最顶层并返回第二层，之后顶层就没什么用了，例如
+\begin{python}
+>>> f = open('text.txt','w')
+>>> f = io.TextIOWrapper(f.buffer,encoding='latin-1')
+>>> b = f.detach()
+>>> f.write('hello')
+ValueError                                Traceback (most recent call last)
+<ipython-input-21-0ec9cf64e174> in <module>()
+----> 1 f.write('hello')
+
+ValueError: underlying buffer has been detached
+\end{python}
+一旦断开最顶层后，你就可以给返回结果添加一个新的最顶层，比如:
+\begin{python}
+>>> f = io.TextIOWrapper(b,encoding='latin-1')
+<_io.TextIOWrapper name='text.txt' encoding='latin-1'>
+\end{python}
+在文本模式打开的文件中写入原始的字节数据(将数据直接写入缓冲区)
+\begin{python}
+In [1]: import sys
+
+In [2]: sys.stdout.write(b'Hello\n')
+---------------------------------------------------------------------------
+TypeError                                 Traceback (most recent call last)
+<ipython-input-2-51d3384e9645> in <module>()
+----> 1 sys.stdout.write(b'Hello\n')
+
+TypeError: write() argument must be str, not bytes
+
+In [3]: sys.stdout.buffer.write(b'Hello\n')
+Hello
+
+\end{python}
+类似的，能够读取文本的buffer属性来读取二进制数据。
+I/O系统以层级结构的形式构建而成。 文本文件是通过在一个拥有缓冲的二进制模式文件上增加一个Unicode编码/解码层来创建。 buffer 属性指向对应的底层文件。如果你直接访问它的话就会绕过文本编码/解码层。
+
+本小节例子展示的 sys.stdout 可能看起来有点特殊。 默认情况下，sys.stdout 总是以文本模式打开的。 但是如果你在写一个需要打印二进制数据到标准输出的脚本的话，你可以使用上面演示的技术来绕过文本编码层。
+3.你有一个对应于操作系统上一个已经打开的I/O通道(比如文件，管道，套芥子等)的整形文件描述符，你想将它包装成一个更高层的Python文件对象。\par
+一个文件描述和一个打开的普通文件不一样。文件描述仅仅是一个操作系统指定的整数，用来指代某系统的I/O通道。如果你碰巧有这么一个文件描述吗你可以通过shyingopen()函数来将其包装为一个Python的文件对象。你仅仅需要使用这个整数值的文件描述符作为第一个参数来替代文件名即可:
+\begin{python}
+In [4]: import os
+In [5]: fd = os.open('text.txt',os.O_WRONLY|os.O_CREAT)
+In [6]: f = open(fd,'wt')
+In [7]: f.write('hello world\n')
+In [8]: f.close()
+\end{python}
+当高层文件对象被关闭或者破坏的时候，底层文件描述符也会被关闭。如果这个并不是你想要的结果，你可以给open()函数传递一个可选的closefd=False.比如:
+\begin{python}
+f = open(fd,'wt',closefd=False)
+\end{python}
+在Unix系统中，这种包装文件描述符的技术可以很方便的将一个类文件接口作用于一个以不同方式打开的I/O通道上， 如管道、套接字等。举例来讲，下面是一个操作管道的例子：
+\begin{python}
+from socket import socket, AF_INET, SOCK_STREAM
+
+def echo_client(client_sock, addr):
+    print('Got connection from', addr)
+
+    # Make text-mode file wrappers for socket reading/writing
+    client_in = open(client_sock.fileno(), 'rt', encoding='latin-1',
+                closefd=False)
+
+    client_out = open(client_sock.fileno(), 'wt', encoding='latin-1',
+                closefd=False)
+
+    # Echo lines back to the client using file I/O
+    for line in client_in:
+        client_out.write(line)
+        client_out.flush()
+
+    client_sock.close()
+
+def echo_server(address):
+    sock = socket(AF_INET, SOCK_STREAM)
+    sock.bind(address)
+    sock.listen(1)
+    while True:
+        client, addr = sock.accept()
+        echo_client(client, addr)
+\end{python}
+需要重点强调的一点是，上面的例子仅仅是为了演示内置的 open() 函数的一个特性，并且也只适用于基于Unix的系统。 如果你想将一个类文件接口作用在一个套接字并希望你的代码可以跨平台，请使用套接字对象的 makefile() 方法。 但是如果不考虑可移植性的话，那上面的解决方案会比使用 makefile() 性能更好一点。
+
+你也可以使用这种技术来构造一个别名，允许以不同于第一次打开文件的方式使用它。 例如，下面演示如何创建一个文件对象，它允许你输出二进制数据到标准输出(通常以文本模式打开)：
+\begin{python}
+import sys
+# Create a binary-mode file for stdout
+bstdout = open(sys.stdout.fileno(), 'wb', closefd=False)
+bstdout.write(b'Hello World\n')
+bstdout.flush()
+\end{python}
+尽管可以将一个已存在的文件描述符包装成一个正常的文件对象， 但是要注意的是并不是所有的文件模式都被支持，并且某些类型的文件描述符可能会有副作用 (特别是涉及到错误处理、文件结尾条件等等的时候)。 在不同的操作系统上这种行为也是不一样，特别的，上面的例子都不能在非Unix系统上运行。
+5.创建临时文件和文件夹，在程序执行完后自动销毁。
+\begin{python}
+from tempfile import TemporaryFile
+with TemporaryFile('w+t') as f:
+    # Read/write to the file
+    f.write('Hello world \n')
+    f.write('testing\n')
+    # Seek back to beginning and read the data
+    f.seek(0)
+    data = r.read()
+# Temporary file is destroyed
+\end{python}
+或者，如果你喜欢，你还可以像这样使用临时文件:
+\begin{python}
+f = TemporaryFile('w+t')
+# Use the temporary file
+...
+f.close()
+# File is destroyed
+\end{python}
+TemporaryFile()的第一个参数时文件模式，通常来将文本模式使用w+t,二进制模式使用w+b。这个模式同时支持读和写操作，在这里很有用，因为当你关闭文件去修改模式的时候，文件实际上已经不存在了。TenporaryFile()另外还支持内置的open()函数一样的参数。比如:
+\begin{python}
+with TemporaryFile('w+t', encoding='utf-8', errors='ignore') as f:
+    ...
+\end{python}
+在大多数系统上，同感TenporaryFile()创建的文件都是匿名的，甚至连目录都没有。如果你想打波这个限制，可以使用NamedTemporaryFile()来代替。比如:
+\begin{python}
+In [16]: with NamedTemporaryFile('w+t') as f:
+    ...:     print('filename is:',f.name)
+from tempfile import NamedTemporaryFile
+with NamedTemporaryFile('w+t') as f:
+    print('filename is:', f.name)
+filename is: /tmp/tmp4dwoxtyf
+\end{python}
+这里被打开的文件的f.name属性包含了临时文件的文件名。当你需要将文件传递给其它代码来打开这个文件的scipio，这个就很有用了，和TemporaryFile()一样，结果文件关闭时会被自动删除调。如果你不想这么做呒，可以传递一个关键字参数delte=False即可。比如:
+\begin{python}
+with NamedTemporaryFile('w+t', delete=False) as f:
+    print('filename is:', f.name)
+    ...
+\end{python}
+为了创建一个临时目录，可以使以哦嗯tempfile.TenporaryDirectory()。比如:
+\begin{python}
+from tempfile import TemporaryDirectory
+
+with TemporaryDirectory() as dirname:
+    print('dirname is:', dirname)
+    # Use the directory
+    ...
+# Directory and all contents destroyed
+\end{python}
+TemporaryFile() 、NamedTemporaryFile() 和 TemporaryDirectory() 函数 应该是处理临时文件目录的最简单的方式了，因为它们会自动处理所有的创建和清理步骤。 在一个更低的级别，你可以使用 mkstemp() 和 mkdtemp() 来创建临时文件和目录。比如：
+\begin{python}
+In [19]: tempfile.mkstemp()
+Out[19]: (13, '/tmp/tmp6hep1g63')
+
+In [20]: tempfile.mkdtemp()
+Out[20]: '/tmp/tmpcd70_9po'
+\end{python}
+但是，这些函数并不会做进一步的管理了。 例如，函数 mkstemp() 仅仅就返回一个原始的OS文件描述符，你需要自己将它转换为一个真正的文件对象。 同样你还需要自己清理这些文件。
+
+通常来讲，临时文件在系统默认的位置被创建，比如 /var/tmp 或类似的地方。 为了获取真实的位置，可以使用 tempfile.gettempdir() 函数。比如：
+\begin{python}
+In [20]: tempfile.mkdtemp()
+Out[20]: '/tmp/tmpcd70_9po'
+
+In [21]: tempfile.gettempdir()
+Out[21]: '/tmp'
+\end{python}
+所有和临时文件相关的函数都允许你通过使用关键值参数prefix,suffix和dir来自定义目录以及命名规则，比如:
+\begin{python}
+In [24]: from tempfile import NamedTemporaryFile
+In [25]: f = NamedTemporaryFile(prefix='mytemp', suffix='.txt', dir='/tmp')
+In [26]: f.name
+'/tmp/mytempw2pxl2v5.txt'
+\end{python}
+最后还有一点，尽可能以最安全的方式使用 tempfile 模块来创建临时文件。 包括仅给当前用户授权访问以及在文件创建过程中采取措施避免竞态条件。
+6.序列化Python对象\par
+你需要将一个Pythondurian序列化为一个紫荆诶刘，一边将它保存到一个文件，存储到数据库或者通过网络传输它。\newline
+用pickle模块将一个对象保存在一个文件中
+\begin{python}
+import pickle
+data = [1,2,3,4]
+f = open('sample','wb')
+pickle.dump(data,f)
+\end{python}
+将一个对象保存在一个文件中
+\begin{python}
+import pickle
+data = range(10)
+f = open('temp','wb')
+pickle.dump(data)
+\end{python}
+如果香将一个对象转化为字符串，可以使用pickle.dumps():
+\begin{python}
+s = pickle.dumps(data)
+\end{python}
+为了从字节流中恢复一个对象，使用pickle.load()或者pickle.loads()函数。比如:
+\begin{python}
+# Restore from a file
+f = open('somefile', 'rb')
+data = pickle.load(f)
+
+# Restore from a string
+data = pickle.loads(s)
+\end{python}
+对于大多数应用程序来讲，dump() 和 load() 函数的使用就是你有效使用 pickle 模块所需的全部了。 它可适用于绝大部分Python数据类型和用户自定义类的对象实例。 如果你碰到某个库可以让你在数据库中保存/恢复Python对象或者是通过网络传输对象的话， 那么很有可能这个库的底层就使用了 pickle 模块。
+
+pickle 是一种Python特有的自描述的数据编码。 通过自描述，被序列化后的数据包含每个对象开始和结束以及它的类型信息。 因此，你无需担心对象记录的定义，它总是能工作。 举个例子，如果要处理多个对象，你可以这样做：
+\begin{python}
+>>> import pickle
+>>> f = open('somedata', 'wb')
+>>> pickle.dump([1, 2, 3, 4], f)
+>>> pickle.dump('hello', f)
+>>> pickle.dump({'Apple', 'Pear', 'Banana'}, f)
+>>> f.close()
+>>> f = open('somedata', 'rb')
+>>> pickle.load(f)
+[1, 2, 3, 4]
+>>> pickle.load(f)
+'hello'
+>>> pickle.load(f)
+{'Apple', 'Pear', 'Banana'}
+>>>
+\end{python}
+还能序列化成函数，类，接口，但是结果数据仅仅将他们的名称编码成对应的代码对象.例如
+\begin{python}
+>>> import math
+>>> import pickle.
+>>> pickle.dumps(math.cos)
+b'\x80\x03cmath\ncos\nq\x00.'
+>>>
+\end{python}
+当数据反序列化回来的时候，会先假定所有的源数据时可用的。 模块、类和函数会自动按需导入进来。对于Python数据被不同机器上的解析器所共享的应用程序而言， 数据的保存可能会有问题，因为所有的机器都必须访问同一个源代码。
+有些类型的对象是不能被序列化的。这些通常是那些依赖外部系统状态的对象， 比如打开的文件，网络连接，线程，进程，栈帧等等。 用户自定义类可以通过提供 \_\_getstate\_\_() 和 \_\_setstate\_\_() 方法来绕过这些限制。 如果定义了这两个方法，pickle.dump() 就会调用 \_\_getstate\_\_() 获取序列化的对象。 类似的，\_\_setstate\_\_() 在反序列化时被调用。为了演示这个工作原理， 下面是一个在内部定义了一个线程但仍然可以序列化和反序列化的类：
+\begin{python}
+# countdown.py
+import time
+import threading
+
+class Countdown:
+    def __init__(self, n):
+        self.n = n
+        self.thr = threading.Thread(target=self.run)
+        self.thr.daemon = True
+        self.thr.start()
+
+    def run(self):
+        while self.n > 0:
+            print('T-minus', self.n)
+            self.n -= 1
+            time.sleep(5)
+
+    def __getstate__(self):
+        return self.n
+
+    def __setstate__(self, n):
+        self.__init__(n)
+\end{python}
+运行下面结构化代码
+\begin{python}
+>>> import countdown
+>>> c = countdown.Countdown(30)
+>>> T-minus 30
+T-minus 29
+T-minus 28
+...
+
+>>> # After a few moments
+>>> f = open('cstate.p', 'wb')
+>>> import pickle
+>>> pickle.dump(c, f)
+>>> f.close()
+\end{python}
+然后退出Python解析器并重启后再试验下:
+\begin{python}
+>>> f = open('cstate.p', 'rb')
+>>> pickle.load(f)
+countdown.Countdown object at 0x10069e2d0>
+T-minus 19
+T-minus 18
+...
+\end{python}
+你可以看到线程又奇迹般的重生了，从你第一次序列化它的地方又恢复过来。
+
+pickle 对于大型的数据结构比如使用 array 或 numpy 模块创建的二进制数组效率并不是一个高效的编码方式。 如果你需要移动大量的数组数据，你最好是先在一个文件中将其保存为数组数据块或使用更高级的标准编码方式如HDF5 (需要第三方库的支持)。
+
+由于 pickle 是Python特有的并且附着在源码上，所有如果需要长期存储数据的时候不应该选用它。 例如，如果源码变动了，你所有的存储数据可能会被破坏并且变得不可读取。 坦白来讲，对于在数据库和存档文件中存储数据时，你最好使用更加标准的数据编码格式如XML，CSV或JSON。 这些编码格式更标准，可以被不同的语言支持，并且也能很好的适应源码变更。

@@ -1,7 +1,7 @@
 \chapter{re}
 \section{正则表达式介绍}
 \begin{center}
-\begin{tabular}{|p{1cm}|p{8cm}|p{6cm}|}
+\begin{tabular}{|p{3cm}|p{10cm}|p{4cm}|}
 \hline
 操作符 & 说明 & 实例\\
 \hline
@@ -9,9 +9,8 @@
 \hline
 .& 任何单个字符 &\\
 \hline
-\text{[]} & 字符集合，对单个字符给出取值范围 & \text{[abc]}表示a,b,c,\text{[a-z]}表示a到z的单个字符\\
+\text{[\^ \quad]}&非字符集，对单个字符给出排除范围&\text{[\^{} abc]}表示非a或者b或者c的单个字符\\
 \hline
-\text{[\quad\^ \quad]}&非字符集，对单个字符给出排除范围&\text{[\^ abc]}表示非a或者b或者c的单个字符\\
 *&前一个字符0次或者无限次扩展&abc*表示ab,abc,abcc等\\
 \hline
 +&前一个字符1次或无限次扩展&abc+表示abc,abcc,abccc等\\
@@ -21,15 +20,59 @@
 |&左右表达式任一个&abc|def表示abc或者def\\
 \hline
 \{m\}&扩展前一个字符m次&ab\{2\}c表示abc,abbc\\
+\hline
 \{m,n\}&扩展前一个字符m到n次，包含n&ab\{1,2\}c表示abc,abbc\\
 \hline
 \^&匹配字符串开头&\^{}abc表示abc且在一个字符串开头\\
 \hline
-\$&匹配字符串结尾&abc表示abc且在一个字符串的结尾\\
+\$&匹配字符串结尾&abc\$表示abc且在一个字符串的结尾\\
 \hline
 ()&分组标记，内部只能使用|操作符&(abc)表示abc，(abc|def)表示abc或者def\\
 \hline
+(?...)&这是一个扩展的符号,第一个字符在'?'后面决定了深层的语法。扩展通常没有创建一个新的group,(?P<name>...时该规则惟一的特例)&\\
+\hline
+(?aiLmsux)&来自集合'a','i','L','m','s','u','x'的一个或者多个字母，group匹配空字符串字符给整个正则表达式设置相关的flags：re.A,re.I,re.L,re.M,re.S,re.X。如果你洗完桑包含flags作为正则表达式的一部分而不是传递一个flag参数到re.compile()函数这就是很有用的，Flasg应该首先用在表达式字符串。&\\
+\hline
+\end{tabular}
+\end{center}
+
+\begin{center}
+\begin{tabular}{|p{2.5cm}|p{8cm}|p{4cm}|}
+操作符 & 说明 & 实例\\
+(?:...)&非捕获版本的正则括号，匹配括号中无论什么正则表达式，但是在执行一个匹配或者查询之后group中子字符串匹配不能被获得&\\
+\hline
 \textbackslash d&数字等价与[0-9]&\\
+\hline
+\textbackslash D&非数字等价与[\^0-9]&\\
+\hline
+\textbackslash number &匹配相同number的组。组以1开始，例如(.+) \textbackslash1匹配'the the'or'55 55',但是'thethe'(中间需要有空格)，这种特殊的序列仅仅被用来匹配1到99组。如果第一个数字为0或者是3为八进制的，他将被解释为一个group match，在字符类'[' and ']'中，所有的数被当作字符。&\\
+\hline
+\\A 匹配&匹配字符串的开始\\
+\hline
+\textbackslash b& 匹配空字符串，但是仅仅是单词前面或者后面的空字符串，单词被定义为一个unicode字母数字序列或下划线特征，因此单词为被空格或者为字母数字预示，非强跳得字符串，注意，\textbackslash b被定义为a\textbackslash w和a\textbackslash W之间，或者在\textbackslash w和单词开始之间，这意味着r'\textbackslash bfoo\textbackslash b'匹配'foo','foo.','(foo)','bar foo baz'而不是'foobar'或者'foo3'&\\
+\hline
+\textbackslash B &匹配空字符串，但是仅仅当它不在单词的开头或者结尾时，这意味着r'py\textbackslash B'匹配'python','py3','py2',而不是'py','py.'或者是'py!'.\textbackslash B和\textbackslash b相反，因此单词时unicode字母数字或者下划线，尽管这能被ASCII flag改变&\\
+\hline
+%\textbackslash s&对于Unicode字符串类型：匹配Unicode空格字符串(包括\left[\textbackslash t\textbackslash n\textbackslash r\textbackslash f\textbackslash v\right],因此一些其它字符，例如不间断的空格),如果ASCII flag被用，仅仅\left[\textbackslash t\textbackslash n\textbackslash r\textbackslash f\textbackslash v\right]被匹配(但是flag影响整个正则表达我时)，因此在这样的情况下用\left[\textbackslash t\textbackslash n\textbackslash r\textbackslash f\textbackslash v\right]也许是更好的选择。&&\\
+\hline
+\textbackslash S&匹配不是任何不是空格的unicode字符，和\textbackslash s相反，如果ASCII flag被用这因为等于[\^{} \textbackslash t\textbackslash n\textbackslash r\textbackslash f\textbackslash v](但是flag影响整个正则表达式，因此在这种情况下[\^{} \textbackslash t\textbackslash n\textbackslash r\textbackslash f\textbackslash v])&\\
+\hline
+\\z&匹配字符串的尾部&\\
+\hline
+(?imsx-imsx:...)&在字符字母集合'i','m','s','x'中，'-'跟着的来自同样字母集合的一个或者更多字母),对于部分表达式字母集合或者移去相关的flags:re.I,re.M,re.S,re.X。\\
+\hline
+<?P=name>&:对于group的一个反向引用，它匹配之前name命名的group无论什么文本。\\
+\hline
+\end{tabular}
+\end{center}
+\begin{center}
+\begin{tabular}{|p{3cm}|p{10cm}|p{4cm}|}
+\hline
+(?+...)&一个注释，括号里面的内容被简单的忽视&\\
+\hline
+(?=...)&如果...匹配下一步，不小号任何字符串。例如Isaac (?=Asimov) 将匹配'Isacc'如果它被'Asimov'跟着的话。&\\
+\hline
+(?!...)&如果...不匹配下一个，例如Isaac (?!Asimov)将匹配'Isaac',仅仅是它没有'Asimov'跟着。&\\
 \hline
 \textbackslash w&单词字符，等价与[A-Za-z0-9\_]&\\
 \hline
@@ -53,7 +96,7 @@ PY\{:3\}N&'PN','PYN','PYYN','PYYYN',\ldots\\
 \end{center}
 常用的正则表达式:
 \begin{center}
-\begin{tabular}{||c|c||}
+\begin{tabular}{||l|l||}
 \hline
 \^\text{[A-Za-Z]+\$}&26个字母组成的字符串\\
 \hline
@@ -82,11 +125,13 @@ PY\{:3\}N&'PN','PYN','PYYN','PYYYN',\ldots\\
 IP地址的正则表达式:(([1-9]?\textbackslash d|1\textbackslash d\{2\}|2[0-4]\textbackslash d|25[0-5]).)\{3\}([1-9]?\textbackslash d|1\textbackslash d\{2\}|2[0-4]\textbackslash d|25[0-5]
 \section{RE库的主要功能函数}
 \begin{center}
-\begin{tabular}{|l|l|}
+\begin{tabular}{|p{3cm}|p{12cm}|}
 \hline
 re.search()&在一个字符串搜索匹配正则表达式的第一个位置。\\
 \hline
 re.match()&从一个字符的开始为值起匹配正则表达式，返回match对象。\\
+\hline
+re.fullmatch()&如果整个字符串匹配正则表达式然会相应的match对象，不匹配返回None，注意这不同于0长度匹配\\
 \hline
 re.findall()&搜索字符串，以列表类型返回全部匹配的字串\\
 \hline
@@ -96,21 +141,52 @@ re.finditer()&搜索字符串，返回一个匹配结果的迭代类型，每个
 \hline
 re.sub()&在字符串中替换所有匹配正则表达式的子串，返回替换后的字符串。\\
 \hline
+re.subn()&执行替换操作凡是返回一个(new\_string,number\_of\_subs\_made)元组\\
+\hline
+re.escape(pattern)&转义素有的字符除了ASCII字母，数字和下划线，如果你想匹配一个也许有正则表达式在里面的任一字符串这是很有用的。\\
+\hline
+re.purge()&清除正则表达式缓存\\
+\hline
 \end{tabular}
 \end{center}
-re.search(pattern,string,flags=0):在一个字符串中搜索匹配正则表达式的第一个位置返回match对象。\par
+re.search(pattern,string,flags=0):在一个字符串中搜索匹配正则表达式的第一个位置返回match对象。\newline
 \begin{itemize}
 \item pattern:正则表达式的字符串或原声字符串表示。
 \item string:待匹配字符串。
 \item flags:正则表达式使用时的控制标记。\newline
-\begin{tabular}{|c|c|}
+\begin{tabular}{|p{4cm}|p{10cm}|}
+\hline
+\subsection{re表达式中的flags}
+re.A&使\textbackslash w \textbackslash W\textbackslash b\textbackslash B\textbackslash d\textbackslash D
+\textbackslash s\textbackslash S值执行ASCII匹配而不是Unicode匹配，仅仅对于Unicode样式有意义对Byte样式忽略。\\
+\hline
+re.DEBUG&显示编译表达式的调试信息\\
 \hline
 re.I &忽略正则表达式的大小写，[A-Z]能够匹配小写。\\
+\hline
+re.L &使得\textbackslash w \textbackslash W\textbackslash b\textbackslash B\textbackslash d\textbackslash D
+\textbackslash s\textbackslash S依赖于当前现场，当现场机制不可信时不鼓励使用，在不管什么时候它处理一个cultrue，你应该用Unicode匹配，这个flag仅仅可以被用在bytes样式中。\\
 \hline
 re.M &正则表达式中的\^操作能够将给定字符串的每一行当作匹配开始\\
 \hline
 re.S &正则表达式中的.操作能够匹配所有的字符，默认匹配除换行外的所有字符\\
+re.VERBOSE(re.X)&这个flag通过允许你分割逻辑部分和增加注释允许你写的正则表达式更好，空pattern中的空格被忽略特别是当一个字符类或者当有为转义的反斜线时，当一行包含不饿时字符类得\#和非转义斜线时，所有的左边以\#开头的字符将被忽略\\
 \hline
+%\begin{python}
+%a = re.compile(r"""\d +  # the integral part
+%                   \.    # the decimal point
+%                   \d *  # some fractional digits""", re.X)
+%b = re.compile(r"\d+\.\d*")
+%\end{python}
+\hline
+re,error(msg,pattern=None,pos=None)\newline
+\begin{itemize}
+\item msg:非正式格式的错误消息
+\item pattern:正则表达式
+\item pos:在pattern编译失败的索引(也许是None)
+\item lineno:对应位置的行(也许是None)
+\item colno:对应位置的列(也许是None)
+\end{itemize}
 \end{tabular}
 \end{itemize}
 \begin{python}
@@ -192,17 +268,41 @@ type(match)
 \end{python}
 match对象的属性和方法
 \begin{center}
-\begin{tabular}{|l|l|}
+\begin{tabular}{|p{4.2cm}|p{10cm}|}
+\hline
 .string&待匹配的文本\\
+\hline
 .re&匹配时使用的patter对象(正则表达式)\\
+\hline
 .pos&正则表达式搜索文本的开始位置\\
+\hline
 .endpos&正则表达式搜索文本的结束位置\\
+\hline
 .group(0)&获得匹配后的字符串\\
+\hline
 .start()&匹配字符串在原始字符串的开始位置\\
-.end()&匹配字符串的将诶数位置\\
+\hline
+.end()&匹配字符串的结尾位置\\
+\hline
 .span()&返回(.start(),.end())\\
+\hline
+.expand()&用sub()方法返回一个通过在temple字符串替代\textbackslash 的像\textbackslash n被转换成合适的字符串，数值反向索引(\textbackslash 1,\textbackslash 2)和(\textbackslash g<1>,\textbackslash g<name>)被相应组里面的内容取代\textbackslash 字符串\\
+\hline
+.\_\_getitem\_\_(g)&允许你轻松的访问一个match组\\
+\hline
+.groupdict(default=None)&返回一个包含所有子组的匹配对象，key是子组的名字，被用在groups的默认参数
+默认参数不参加匹配，默认值时None。\\
+\hline
+.lastindex&最新匹配的组的整数索引，或者如果没有组被匹配就为None。例如表达式(a)b,((a)(b))
+和((ab))将有lastindex == 1如果应用的字符串'ab',然而表达式(a)(b)将有lastindex == 2,如果与应用在同一个字符串。\\
+\hline
+.lastgroup&最新匹配名字，如果group没有一个名字或者没有group就匹配为None。\\
+\hline
+.re&正则表达式的match()或者search()方法生成的match实例\\
+\hline
 \end{tabular}
 \end{center}
+
 Re库默认采用贪婪匹配，即输出匹配最长的字子串
 \begin{python}
 match = re.search(r'PY.*N','PYANBNCNDN')
@@ -213,7 +313,7 @@ match.group(0)
 \begin{python}
 match = re.search(r'PY.*?N','PYANBNCNDN')
 \end{python}
-最小匹配操作符
+最小匹配操作符\newline
 \begin{tabular}{|l|l|}
 \hline
 操作符&说明\\
@@ -227,6 +327,28 @@ match = re.search(r'PY.*?N','PYANBNCNDN')
 \{m,n\}?&扩展前一个字符串m到n次(含n)，最小匹配\\
 \hline
 \end{tabular}
-\begin{quote}
-本章内容借鉴与北京理工大学的嵩天老师的python正则表达式相关内容。
-\end{quote}
+\begin{python}
+import re
+m = re.match(r'(\w+ \w+)','Isaac Newton,physicist')
+m.group(0)
+m.group(1)
+m.group(2)
+m.group(1,2)
+\end{python}
+输出：\newline
+'Isaac Newton'\newline
+'Isaac' \newline
+'Newton'\newline
+('Isaac','Newton')\newline
+\begin{python}
+m =re.match(r'(\d+).(\d+)','3.1415')
+m.groups()
+\end{python}
+输出:\newline
+('3','1415')\newline
+\begin{python}
+m = re.match(r'(?P<first_name>\w+) (?P<last_name>\w+)','Malcolm Reynolds')
+m.groupdict()
+\end{python}
+输出:{'first\_name':'Malcolm','last\_name':'Reynolds'}\newline
+

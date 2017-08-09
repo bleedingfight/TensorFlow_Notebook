@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.14159265-2.6-0.99998 (TeX Live 2017) (preloaded format=xelatex 2017.7.26)  5 AUG 2017 21:50
+This is XeTeX, Version 3.14159265-2.6-0.99998 (TeX Live 2017) (preloaded format=xelatex 2017.7.26)  9 AUG 2017 18:05
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1353,6 +1353,136 @@ Package: longtable 2014/10/28 v4.11 Multi-page Table package (DPC)
 \c@LT@chunks=\count183
 \LT@p@ftn=\toks29
 )
+(/usr/local/texlive/2017/texmf-dist/tex/latex/hyperref/hyperref.sty
+Package: hyperref 2017/03/14 v6.85a Hypertext links for LaTeX
+
+(/usr/local/texlive/2017/texmf-dist/tex/generic/oberdiek/hobsub-hyperref.sty
+Package: hobsub-hyperref 2016/05/16 v1.14 Bundle oberdiek, subset hyperref (HO)
+
+
+(/usr/local/texlive/2017/texmf-dist/tex/generic/oberdiek/hobsub-generic.sty
+Package: hobsub-generic 2016/05/16 v1.14 Bundle oberdiek, subset generic (HO)
+Package: hobsub 2016/05/16 v1.14 Construct package bundles (HO)
+Package: infwarerr 2016/05/16 v1.4 Providing info/warning/error messages (HO)
+Package: ltxcmds 2016/05/16 v1.23 LaTeX kernel commands for general use (HO)
+Package: ifluatex 2016/05/16 v1.4 Provides the ifluatex switch (HO)
+Package ifluatex Info: LuaTeX not detected.
+Package hobsub Info: Skipping package `ifvtex' (already loaded).
+Package: intcalc 2016/05/16 v1.2 Expandable calculations with integers (HO)
+Package hobsub Info: Skipping package `ifpdf' (already loaded).
+Package: etexcmds 2016/05/16 v1.6 Avoid name clashes with e-TeX commands (HO)
+Package etexcmds Info: Could not find \expanded.
+(etexcmds)             That can mean that you are not using pdfTeX 1.50 or
+(etexcmds)             that some package has redefined \expanded.
+(etexcmds)             In the latter case, load this package earlier.
+Package: kvsetkeys 2016/05/16 v1.17 Key value parser (HO)
+Package: kvdefinekeys 2016/05/16 v1.4 Define keys (HO)
+Package: pdftexcmds 2017/03/19 v0.25 Utility functions of pdfTeX for LuaTeX (HO
+)
+Package pdftexcmds Info: LuaTeX not detected.
+Package pdftexcmds Info: pdfTeX >= 1.30 not detected.
+Package pdftexcmds Info: \pdf@primitive is available.
+Package pdftexcmds Info: \pdf@ifprimitive is available.
+Package pdftexcmds Info: \pdfdraftmode not found.
+Package: pdfescape 2016/05/16 v1.14 Implements pdfTeX's escape features (HO)
+Package: bigintcalc 2016/05/16 v1.4 Expandable calculations on big integers (HO
+)
+Package: bitset 2016/05/16 v1.2 Handle bit-vector datatype (HO)
+Package: uniquecounter 2016/05/16 v1.3 Provide unlimited unique counter (HO)
+)
+Package hobsub Info: Skipping package `hobsub' (already loaded).
+Package: letltxmacro 2016/05/16 v1.5 Let assignment for LaTeX macros (HO)
+Package: hopatch 2016/05/16 v1.3 Wrapper for package hooks (HO)
+Package: xcolor-patch 2016/05/16 xcolor patch
+Package: atveryend 2016/05/16 v1.9 Hooks at the very end of document (HO)
+Package atveryend Info: \enddocument detected (standard20110627).
+Package: atbegshi 2016/06/09 v1.18 At begin shipout hook (HO)
+Package: refcount 2016/05/16 v3.5 Data extraction from label references (HO)
+Package: hycolor 2016/05/16 v1.8 Color options for hyperref/bookmark (HO)
+)
+(/usr/local/texlive/2017/texmf-dist/tex/latex/oberdiek/auxhook.sty
+Package: auxhook 2016/05/16 v1.4 Hooks for auxiliary files (HO)
+)
+(/usr/local/texlive/2017/texmf-dist/tex/latex/oberdiek/kvoptions.sty
+Package: kvoptions 2016/05/16 v3.12 Key value format for package options (HO)
+)
+\@linkdim=\dimen268
+\Hy@linkcounter=\count184
+\Hy@pagecounter=\count185
+
+(/usr/local/texlive/2017/texmf-dist/tex/latex/hyperref/pd1enc.def
+File: pd1enc.def 2017/03/14 v6.85a Hyperref: PDFDocEncoding definition (HO)
+)
+\Hy@SavedSpaceFactor=\count186
+
+(/usr/local/texlive/2017/texmf-dist/tex/latex/latexconfig/hyperref.cfg
+File: hyperref.cfg 2002/06/06 v1.2 hyperref configuration of TeXLive
+)
+Package hyperref Info: Option `unicode' set `true' on input line 4374.
+
+(/usr/local/texlive/2017/texmf-dist/tex/latex/hyperref/puenc.def
+File: puenc.def 2017/03/14 v6.85a Hyperref: PDF Unicode definition (HO)
+)
+Package hyperref Info: Hyper figures OFF on input line 4498.
+Package hyperref Info: Link nesting OFF on input line 4503.
+Package hyperref Info: Hyper index ON on input line 4506.
+Package hyperref Info: Plain pages OFF on input line 4513.
+Package hyperref Info: Backreferencing OFF on input line 4518.
+Package hyperref Info: Implicit mode ON; LaTeX internals redefined.
+Package hyperref Info: Bookmarks ON on input line 4751.
+\c@Hy@tempcnt=\count187
+
+(/usr/local/texlive/2017/texmf-dist/tex/latex/url/url.sty
+\Urlmuskip=\muskip18
+Package: url 2013/09/16  ver 3.4  Verb mode for urls, etc.
+)
+LaTeX Info: Redefining \url on input line 5104.
+\XeTeXLinkMargin=\dimen269
+\Fld@menulength=\count188
+\Field@Width=\dimen270
+\Fld@charsize=\dimen271
+Package hyperref Info: Hyper figures OFF on input line 6358.
+Package hyperref Info: Link nesting OFF on input line 6363.
+Package hyperref Info: Hyper index ON on input line 6366.
+Package hyperref Info: backreferencing OFF on input line 6373.
+Package hyperref Info: Link coloring OFF on input line 6378.
+Package hyperref Info: Link coloring with OCG OFF on input line 6383.
+Package hyperref Info: PDF/A mode OFF on input line 6388.
+LaTeX Info: Redefining \ref on input line 6428.
+LaTeX Info: Redefining \pageref on input line 6432.
+\Hy@abspage=\count189
+\c@Item=\count190
+\c@Hfootnote=\count191
+)
+
+Package hyperref Message: Driver (autodetected): hxetex.
+
+(/usr/local/texlive/2017/texmf-dist/tex/latex/hyperref/hxetex.def
+File: hxetex.def 2017/03/14 v6.85a Hyperref driver for XeTeX
+
+(/usr/local/texlive/2017/texmf-dist/tex/generic/oberdiek/stringenc.sty
+Package: stringenc 2016/05/16 v1.11 Convert strings between diff. encodings (HO
+)
+)
+\pdfm@box=\box65
+\c@Hy@AnnotLevel=\count192
+\HyField@AnnotCount=\count193
+\Fld@listcount=\count194
+\c@bookmark@seq@number=\count195
+
+(/usr/local/texlive/2017/texmf-dist/tex/latex/oberdiek/rerunfilecheck.sty
+Package: rerunfilecheck 2016/05/16 v1.8 Rerun checks for auxiliary files (HO)
+Package rerunfilecheck Info: Feature \pdfmdfivesum is not available
+(rerunfilecheck)             (e.g. pdfTeX or LuaTeX with package `pdftexcmds').
+
+(rerunfilecheck)             Therefore file contents cannot be checked efficien
+tly
+(rerunfilecheck)             and the loading of the package is aborted.
+)
+\Hy@SectionHShift=\skip75
+)
+Package hyperref Info: Option `colorlinks' set `true' on input line 23.
+
 (/usr/local/texlive/2017/texmf-dist/tex/latex/psnfss/avant.sty
 Package: avant 2005/04/12 PSNFSS-v9.2a (SPQR) 
 )
@@ -1394,8 +1524,8 @@ LaTeX Info: Redefining \hbar on input line 50.
 )
 (/usr/local/texlive/2017/texmf-dist/tex/xelatex/xecjk/xeCJK-listings.sty
 Package: xeCJK-listings 2017/05/15 v3.4.8 xeCJK patch file for listings
-\l__xeCJK_listings_max_char_int=\count184
-\l__xeCJK_listings_flag_int=\count185
+\l__xeCJK_listings_max_char_int=\count196
+\l__xeCJK_listings_flag_int=\count197
 )
 (./book.aux (./chapter1/tf_chapter1.aux) (./chapter2/tf_chapter2.aux)
 (./chapter2/use_gpu.aux) (./chapter3/common_module.aux) (./chapter3/path.aux)
@@ -1403,34 +1533,38 @@ Package: xeCJK-listings 2017/05/15 v3.4.8 xeCJK patch file for listings
 (./chapter3/requests.aux) (./chapter4/tf_common.aux) (./chapter4/tf_image.aux))
 \openout1 = `book.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 37.
-LaTeX Font Info:    ... okay on input line 37.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 37.
-LaTeX Font Info:    ... okay on input line 37.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 37.
-LaTeX Font Info:    ... okay on input line 37.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 37.
-LaTeX Font Info:    ... okay on input line 37.
-LaTeX Font Info:    Checking defaults for TU/lmr/m/n on input line 37.
-LaTeX Font Info:    ... okay on input line 37.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 37.
-LaTeX Font Info:    ... okay on input line 37.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 37.
-LaTeX Font Info:    ... okay on input line 37.
-LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 37.
-LaTeX Font Info:    ... okay on input line 37.
-LaTeX Font Info:    Checking defaults for T3/cmr/m/n on input line 37.
-LaTeX Font Info:    Try loading font information for T3+cmr on input line 37.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 46.
+LaTeX Font Info:    ... okay on input line 46.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 46.
+LaTeX Font Info:    ... okay on input line 46.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 46.
+LaTeX Font Info:    ... okay on input line 46.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 46.
+LaTeX Font Info:    ... okay on input line 46.
+LaTeX Font Info:    Checking defaults for TU/lmr/m/n on input line 46.
+LaTeX Font Info:    ... okay on input line 46.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 46.
+LaTeX Font Info:    ... okay on input line 46.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 46.
+LaTeX Font Info:    ... okay on input line 46.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 46.
+LaTeX Font Info:    ... okay on input line 46.
+LaTeX Font Info:    Checking defaults for T3/cmr/m/n on input line 46.
+LaTeX Font Info:    Try loading font information for T3+cmr on input line 46.
 (/usr/local/texlive/2017/texmf-dist/tex/latex/tipa/t3cmr.fd
 File: t3cmr.fd 2001/12/31 TIPA font definitions
 )
-LaTeX Font Info:    ... okay on input line 37.
-LaTeX Font Info:    Try loading font information for TU+ptm on input line 37.
-LaTeX Font Info:    No file TUptm.fd. on input line 37.
+LaTeX Font Info:    ... okay on input line 46.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 46.
+LaTeX Font Info:    ... okay on input line 46.
+LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 46.
+LaTeX Font Info:    ... okay on input line 46.
+LaTeX Font Info:    Try loading font information for TU+ptm on input line 46.
+LaTeX Font Info:    No file TUptm.fd. on input line 46.
 
 
 LaTeX Font Warning: Font shape `TU/ptm/m/n' undefined
-(Font)              using `TU/lmr/m/n' instead on input line 37.
+(Font)              using `TU/lmr/m/n' instead on input line 46.
 
 *geometry* driver: auto-detecting
 *geometry* detected driver: xetex
@@ -1467,9 +1601,10 @@ LaTeX Font Warning: Font shape `TU/ptm/m/n' undefined
 * (1in=72.27pt=25.4mm, 1cm=28.453pt)
 
 ABD: EverySelectfont initializing macros
-LaTeX Info: Redefining \selectfont on input line 37.
-\c@lstlisting=\count186
+LaTeX Info: Redefining \selectfont on input line 46.
+\c@lstlisting=\count198
 Package caption Info: Begin \AtBeginDocument code.
+Package caption Info: hyperref package is loaded.
 Package caption Info: longtable package is loaded.
 
 (/usr/local/texlive/2017/texmf-dist/tex/latex/caption/ltcaption.sty
@@ -1477,10 +1612,29 @@ Package: ltcaption 2013/06/09 v1.4-94 longtable captions (AR)
 )
 Package caption Info: subfigure package is loaded.
 Package caption Info: End \AtBeginDocument code.
+\AtBeginShipoutBox=\box66
+Package hyperref Info: Link coloring ON on input line 46.
+
+(/usr/local/texlive/2017/texmf-dist/tex/latex/hyperref/nameref.sty
+Package: nameref 2016/05/21 v2.44 Cross-referencing by name of section
+
+(/usr/local/texlive/2017/texmf-dist/tex/generic/oberdiek/gettitlestring.sty
+Package: gettitlestring 2016/05/16 v1.5 Cleanup title references (HO)
+)
+\c@section@level=\count199
+)
+LaTeX Info: Redefining \ref on input line 46.
+LaTeX Info: Redefining \pageref on input line 46.
+LaTeX Info: Redefining \nameref on input line 46.
+
+(./book.out) (./book.out)
+\@outlinefile=\write3
+\openout3 = `book.out'.
+
 
 
 LaTeX Font Warning: Font shape `TU/ptm/bx/n' undefined
-(Font)              using `TU/ptm/m/n' instead on input line 38.
+(Font)              using `TU/ptm/m/n' instead on input line 47.
 
 (./book.toc
 LaTeX Font Info:    Try loading font information for OT1+ztmcm on input line 2.
@@ -1523,15 +1677,15 @@ LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <6> not available
 ]
 
 LaTeX Font Warning: Font shape `TU/ptm/m/sl' undefined
-(Font)              using `TU/ptm/m/n' instead on input line 59.
+(Font)              using `TU/ptm/m/n' instead on input line 66.
 
 LaTeX Font Info:    Font shape `TU/FandolSong-Regular(0)/m/sl' in size <10.95> 
 not available
 (Font)              Font shape `TU/FandolSong-Regular(0)/m/it' tried instead on
- input line 59.
+ input line 66.
 [2])
-\tf@toc=\write3
-\openout3 = `book.toc'.
+\tf@toc=\write4
+\openout4 = `book.toc'.
 
  [3]
 \openout2 = `./chapter1/tf_chapter1.aux'.
@@ -1549,7 +1703,7 @@ File: lstlang1.sty 2015/06/04 1.6 listings language file
 * 
 * Font 'FandolFang-Regular' does not contain script 'CJK'.
 *************************************************
-\g__fontspec_family_FandolFang-Regular_int=\count187
+\g__fontspec_family_FandolFang-Regular_int=\count266
 LaTeX Font Info:    Try loading font information for TU+pcr on input line 4.
 LaTeX Font Info:    No file TUpcr.fd. on input line 4.
 
@@ -1728,8 +1882,64 @@ Underfull \vbox (badness 10000) has occurred while \output is active []
 [24]
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
- [25])
+ [25]
 [26]
+File: ./pic/chapter1/softmax-nplm.png Graphic file (type QTm)
+ <use  "./pic/chapter1/softmax-nplm.png" >
+Overfull \hbox (6.942pt too wide) in paragraph at lines 601--602
+[][] 
+ []
+
+
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [27]
+File: ./pic/chapter1/nce-nplm.png Graphic file (type QTm)
+
+<use  "./pic/chapter1/nce-nplm.png" >
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [28]
+[29]
+File: ./pic/chapter1/linear-relationships.png Graphic file (type QTm)
+ <use  "./pic/chapter1/linear-relationships.png" >
+Overfull \hbox (323.1225pt too wide) in paragraph at lines 644--645
+[][] 
+ []
+
+
+Underfull \vbox (badness 6542) has occurred while \output is active []
+
+ [30]
+Overfull \hbox (137.45415pt too wide) in paragraph at lines 662--663
+\TU/FandolSong-Regular(0)/m/n/10.95 中 的 文 字 整 型 化 了，|  这 样 每 个 整 型 代 表 一 个 单 词 
+\TU/pcr/m/n/10.95 (\TU/FandolSong-Regular(0)/m/n/10.95 细 节 请 查 看 \TU/pcr/m/n/10
+.95 tensorflow/g3doc/tutorials/word2vec/word2vec_basic.py)\TU/FandolSong-Regula
+r(0)/m/n/10.95 。|
+ []
+
+[31]
+File: ./pic/chapter1/tsne.png Graphic file (type QTm)
+ <use  "./pic/chapter1/tsne.png" >
+Overfull \hbox (11.05795pt too wide) in paragraph at lines 691--692
+[][] 
+ []
+
+
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [32]
+Overfull \hbox (138.79436pt too wide) in paragraph at lines 696--697
+\TU/FandolSong-Regular(0)/m/n/10.95 做 类 比 推 理，|  可 参 考 \TU/pcr/m/n/10.95 Mikolo
+v and colleagues\TU/FandolSong-Regular(0)/m/n/10.95 ，|  数 据 集 下 载 地 址 为\TU/pcr/
+m/n/10.95 : https://word2vec.googlecode.com/svn/trunk/questions-
+ []
+
+
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [33])
+[34]
 \openout2 = `./chapter2/tf_chapter2.aux'.
 
  (./chapter2/tf_chapter2.tex
@@ -1750,7 +1960,7 @@ m/n/10.95 .pb, \TU/FandolSong-Regular(0)/m/n/10.95 用 \TU/pcr/m/n/10.95 tf.trai
 .write_graph()
  []
 
-) [27
+) [35
 
 
 
@@ -1765,16 +1975,16 @@ Underfull \hbox (badness 10000) in paragraph at lines 20--22
  []
 
 File: ./pic/chapter2/use_gpu2.png Graphic file (type QTm)
-<use  "./pic/chapter2/use_gpu2.png" > [28
+<use  "./pic/chapter2/use_gpu2.png" > [36
 
 
 ]
 File: ./pic/chapter2/use_gpu3.png Graphic file (type QTm)
 
-<use  "./pic/chapter2/use_gpu3.png" > [29]
+<use  "./pic/chapter2/use_gpu3.png" > [37]
 File: ./pic/chapter2/use_gpu4.png Graphic file (type QTm)
 
-<use  "./pic/chapter2/use_gpu4.png" >) [30]
+<use  "./pic/chapter2/use_gpu4.png" >) [38]
 \openout2 = `./chapter3/common_module.aux'.
 
  (./chapter3/common_module.tex
@@ -1797,7 +2007,7 @@ Overfull \hbox (51.56876pt too wide) in paragraph at lines 22--23
 ars=’-’, fromfile_prefix_chars=None,
  []
 
-[31
+[39
 
 
 
@@ -1814,14 +2024,14 @@ Overfull \hbox (47.14531pt too wide) in paragraph at lines 66--66
  [][] 
  []
 
-[32]
+[40]
 File: ./pic/chapter3/demo4.png Graphic file (type QTm)
  <use  "./pic/chapter3/demo4.png" >
 File: ./pic/chapter3/demo5.png Graphic file (type QTm)
  <use  "./pic/chapter3/demo5.png" >
 File: ./pic/chapter3/demo6.png Graphic file (type QTm)
 
-<use  "./pic/chapter3/demo6.png" > [33]
+<use  "./pic/chapter3/demo6.png" > [41]
 File: ./pic/chapter3/demo7.png Graphic file (type QTm)
  <use  "./pic/chapter3/demo7.png" >
 Underfull \hbox (badness 10000) in paragraph at lines 108--112
@@ -1829,7 +2039,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 108--112
  []
 
 File: ./pic/chapter3/demo8.png Graphic file (type QTm)
-<use  "./pic/chapter3/demo8.png" > [34]
+<use  "./pic/chapter3/demo8.png" > [42]
 File: ./pic/chapter3/demo9.png Graphic file (type QTm)
  <use  "./pic/chapter3/demo9.png" >
 Underfull \hbox (badness 10000) in paragraph at lines 130--133
@@ -1850,7 +2060,7 @@ Overfull \hbox (15.39456pt too wide) in paragraph at lines 152--153
 TU/pcr/m/n/10.95 argument_default=
  []
 
-[35]
+[43]
 File: ./pic/chapter3/demo10.png Graphic file (type QTm)
  <use  "./pic/chapter3/demo10.png" >
 File: ./pic/chapter3/demo11.png Graphic file (type QTm)
@@ -1859,22 +2069,22 @@ Overfull \hbox (1.29742pt too wide) in paragraph at lines 173--175
 [][] \TU/FandolSong-Regular(0)/m/n/10.95 有 时 候 覆
  []
 
-[36]
+[44]
 File: ./pic/chapter3/demo12.png Graphic file (type QTm)
  <use  "./pic/chapter3/demo12.png" >
 File: ./pic/chapter3/demo13.png Graphic file (type QTm)
  <use  "./pic/chapter3/demo13.png" >
 File: ./pic/chapter3/demo14.png Graphic file (type QTm)
 
-<use  "./pic/chapter3/demo14.png" > [37]
+<use  "./pic/chapter3/demo14.png" > [45]
 File: ./pic/chapter3/demo15.png Graphic file (type QTm)
  <use  "./pic/chapter3/demo15.png" >
-[38] [39]
+[46] [47]
 Underfull \hbox (badness 10000) in paragraph at lines 295--299
 
  []
 
-[40]
+[48]
 Overfull \hbox (2.80182pt too wide) in paragraph at lines 328--334
 \TU/FandolSong-Regular(0)/m/n/10.95 输 出\TU/pcr/m/n/10.95 :Namespace(infile=<_io
 .TextIOWrapper name=’input.txt’,encoding=’UTF-8’>,
@@ -1891,7 +2101,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 351--354
 
  []
 
-[41]
+[49]
 Overfull \hbox (24.62541pt too wide) in paragraph at lines 368--369
 []\TU/FandolSong-Regular(0)/m/n/10.95 当 \TU/pcr/m/n/10.95 add_argument() \TU/Fa
 ndolSong-Regular(0)/m/n/10.95 调 用 的 时 候 设 置 了 \TU/pcr/m/n/10.95 action=’store_c
@@ -1899,7 +2109,7 @@ onst’ \TU/FandolSong-Regular(0)/m/n/10.95 或 者 是 \TU/pcr/m/n/10.95 action
 d_cost’
  []
 
-[42]
+[50]
 Overfull \hbox (4.02846pt too wide) in paragraph at lines 418--420
 \TU/FandolSong-Regular(0)/m/n/10.95 输 出\TU/pcr/m/n/10.95 :Namespace(bar=<_io.Te
 xtIOWrapper name=’temp.txt’ encoding=’UTF-8’,foo=2) \TU/FandolSong-Regular(0)/m
@@ -1914,14 +2124,14 @@ Overfull \hbox (42.35225pt too wide) in paragraph at lines 418--420
 fsize=,encoding=
  []
 
-[43]
+[51]
 Overfull \hbox (31.68816pt too wide) in paragraph at lines 459--460
 []\TU/FandolSong-Regular(0)/m/n/10.95 一 些 命 令 行 参 数 从 一 些 限 定 值 的 中 选 定，|  可 以 
 通 过 传 递 \TU/pcr/m/n/10.95 choice \TU/FandolSong-Regular(0)/m/n/10.95 关 键 字 参 数 
 给 \TU/pcr/m/n/10.95 add_argument(),
  []
 
-[44]
+[52]
 Underfull \hbox (badness 10000) in paragraph at lines 504--508
 
  []
@@ -1937,7 +2147,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 518--520
 
  []
 
-[45]
+[53]
 Underfull \hbox (badness 10000) in paragraph at lines 521--523
 
  []
@@ -1962,7 +2172,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 554--557
 
  []
 
-[46]
+[54]
 Underfull \hbox (badness 10000) in paragraph at lines 566--568
 
  []
@@ -1977,7 +2187,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 582--584
 
  []
 
-[47]
+[55]
 Overfull \hbox (0.16289pt too wide) in paragraph at lines 616--619
 \TU/FandolSong-Regular(0)/m/n/10.95 都 可 以 被 \TU/pcr/m/n/10.95 zuoiweiaction \TU
 /FandolSong-Regular(0)/m/n/10.95 参 数 传 递 给 \TU/pcr/m/n/10.95 add_argument()\TU/
@@ -1991,7 +2201,7 @@ Overfull \hbox (0.2308pt too wide) in paragraph at lines 616--619
 s=None, required=False,
  []
 
-[48] [49] [50] [51] [52] [53] [54] [55]
+[56] [57] [58] [59] [60] [61] [62] [63]
 Overfull \hbox (67.1112pt too wide) in paragraph at lines 907--907
 \TU/FandolSong-Regular(0)/m/n/10.95 输 出\TU/pcr/m/n/10.95 :Namespace(out<_io.Tex
 tIOWapper name=’file.txt’ mode=’w’ encoding=’UTF-8’,raw=<_ioFileIO
@@ -2015,7 +2225,7 @@ ndolSong-Regular(0)/m/n/10.95 就 当 它 为 正 常 参 数，|  但 是 在 �
 pcr/m/n/10.95 add_argument_group()
  []
 
-[56]
+[64]
 Underfull \hbox (badness 10000) in paragraph at lines 942--943
 
  []
@@ -2035,7 +2245,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 949--951
 
  []
 
-[57]
+[65]
 Overfull \hbox (12.43803pt too wide) in paragraph at lines 984--986
 \TU/FandolSong-Regular(0)/m/n/10.95 大 多 数 时 候，| \TU/pcr/m/n/10.95 parse_args() 
 \TU/FandolSong-Regular(0)/m/n/10.95 返 回 的 属 性 对 象 将 被 命 令 行 参 数 和 参 数 行 为 完 全 决
@@ -2058,95 +2268,258 @@ file \TU/FandolSong-Regular(0)/m/n/10.95 是 \TU/pcr/m/n/10.95 None\TU/FandolSon
 /m/n/10.95 被 假 定。| \TU/pcr/m/n/10.95 ArgumentParser.print_help(file=None):
  []
 
-[58] [59]
+[66] [67]
 File: ./pic/chapter3/arg1.png Graphic file (type QTm)
  <use  "./pic/chapter3/arg1.png" >
 File: ./pic/chapter3/arg2.png Graphic file (type QTm)
  <use  "./pic/chapter3/arg2.png" >
 File: ./pic/chapter3/arg3.png Graphic file (type QTm)
 
-<use  "./pic/chapter3/arg3.png" > [60]
+<use  "./pic/chapter3/arg3.png" > [68]
 File: ./pic/chapter3/arg4.png Graphic file (type QTm)
  <use  "./pic/chapter3/arg4.png" >
 Underfull \hbox (badness 10000) in paragraph at lines 1098--1099
 
  []
 
-[61]
+[69]
 Underfull \hbox (badness 10000) in paragraph at lines 1144--1147
 
  []
 
-[62] [63]) [64]
+[70] [71]) [72]
 \openout2 = `./chapter3/path.aux'.
 
  (./chapter3/path.tex
 Missing character: There is no 或 in font zptmcm7t!
 Missing character: There is no 者 in font zptmcm7t!
- [65
+ [73
 
 
 ]
-Overfull \hbox (9.0533pt too wide) in paragraph at lines 24--25
+Overfull \hbox (9.0533pt too wide) in paragraph at lines 25--26
 []\TU/pcr/m/n/10.95 os.path.samefile(path1,path2): \TU/FandolSong-Regular(0)/m/
 n/10.95 如 果 \TU/pcr/m/n/10.95 pathname \TU/FandolSong-Regular(0)/m/n/10.95 值 访 
 问 相 同 的 文 件 或 者 目 录 则 返 回 \TU/pcr/m/n/10.95 True\TU/FandolSong-Regular(0)/m/n/1
 0.95 ，|
  []
 
-[66]) [67]
+[74] [75] [76]
+Overfull \hbox (14.35289pt too wide) in paragraph at lines 128--128
+\TU/FandolSong-Regular(0)/m/n/10.95 在 这 个 例 子 中，| \TU/pcr/m/n/10.95 io.TextIOWr
+apper \TU/FandolSong-Regular(0)/m/n/10.95 是 一 个 编 码 和 解 码 \TU/pcr/m/n/10.95 Uni
+code \TU/FandolSong-Regular(0)/m/n/10.95 的 文 本 处 理 层，| \TU/pcr/m/n/10.95 io.Buf
+feredWriter
+ []
+
+[77] [78] [79] [80] [81] [82] [83]) [84] [85]
 \openout2 = `./chapter3/re.aux'.
 
- (./chapter3/re.tex [68
+ (./chapter3/re.tex [86
 
 
 
 ]
 Chapter 4.
 
-Underfull \hbox (badness 10000) in paragraph at lines 6--6
-[]\TU/FandolSong-Regular(0)/m/n/10.95 操 作
+Underfull \hbox (badness 6047) in paragraph at lines 8--9
+[][]\TU/FandolSong-Regular(0)/m/n/10.95 表 示 \TU/pcr/m/n/10.95 a,b,c,[]\TU/Fando
+lSong-Regular(0)/m/n/10.95 表
  []
 
 
-Overfull \hbox (0.7509pt too wide) in paragraph at lines 24--24
-[]\TU/pcr/m/n/10.95 {m,n}| 
+Underfull \hbox (badness 10000) in paragraph at lines 16--17
+[]\TU/pcr/m/n/10.95 abc+ \TU/FandolSong-Regular(0)/m/n/10.95 表 示
  []
 
 
-Overfull \hbox (30.59381pt too wide) in paragraph at lines 4--37
+Underfull \hbox (badness 10000) in paragraph at lines 30--31
+[]\TU/pcr/m/n/10.95 (abc) \TU/FandolSong-Regular(0)/m/n/10.95 表 示 \TU/pcr/m/n/1
+0.95 abc\TU/FandolSong-Regular(0)/m/n/10.95 ，|
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 30--31
+\TU/pcr/m/n/10.95 (abc|def) \TU/FandolSong-Regular(0)/m/n/10.95 表 示 \TU/pcr/m/n
+/10.95 abc
+ []
+
+
+Underfull \hbox (badness 1552) in paragraph at lines 34--34
+\TU/FandolSong-Regular(0)/m/n/10.95 匹 配 空 字 符 串 字 符 给 整 个 正 则 表 达 式 设 置 相 关 的 \
+TU/pcr/m/n/10.95 flags\TU/FandolSong-Regular(0)/m/n/10.95 ：|
+ []
+
+
+Overfull \hbox (87.49934pt too wide) in paragraph at lines 4--37
  [] 
  []
 
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
- [69]
-Underfull \vbox (badness 1603) has occurred while \output is active []
+ [87]
+Underfull \hbox (badness 10000) in paragraph at lines 54--54
+[]\TU/FandolSong-Regular(0)/m/n/10.95 匹 配 空 字 符 串，|  但 是 仅 仅 当 它 不 在 单 词 的
+ []
 
- [70]
-Overfull \hbox (3.27289pt too wide) in paragraph at lines 75--83
+
+Underfull \hbox (badness 10000) in paragraph at lines 54--54
+\TU/FandolSong-Regular(0)/m/n/10.95 开 头 或 者 结 尾 时，|  这 意 味 着 \TU/pcr/m/n/10.95 
+r’py\B’ \TU/FandolSong-Regular(0)/m/n/10.95 匹
+ []
+
+
+Underfull \hbox (badness 7308) in paragraph at lines 54--54
+\TU/FandolSong-Regular(0)/m/n/10.95 配\TU/pcr/m/n/10.95 ’python’,’py3’,’py2’, \T
+U/FandolSong-Regular(0)/m/n/10.95 而 不 是\TU/pcr/m/n/10.95 ’py’,’py.’ \TU/FandolS
+ong-Regular(0)/m/n/10.95 或 者
+ []
+
+
+Underfull \hbox (badness 1199) in paragraph at lines 58--58
+\TU/FandolSong-Regular(0)/m/n/10.95 相 反，|  如 果 \TU/pcr/m/n/10.95 ASCII flag \TU
+/FandolSong-Regular(0)/m/n/10.95 被 用 这 因 为 等 于 \TU/pcr/m/n/10.95 [ˆ
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 62--62
+[]\TU/pcr/m/n/10.95 (?imsx-
+ []
+
+
+Underfull \hbox (badness 3557) in paragraph at lines 62--63
+[]\TU/FandolSong-Regular(0)/m/n/10.95 在 字 符 字 母 集 合\TU/pcr/m/n/10.95 ’i’,’m’,’s
+’,’x’ \TU/FandolSong-Regular(0)/m/n/10.95 中，| \TU/pcr/m/n/10.95 ’-’ \TU/FandolS
+ong-Regular(0)/m/n/10.95 跟 着 的
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 62--63
+\TU/FandolSong-Regular(0)/m/n/10.95 来 自 同 样 字 母 集 合 的 一 个 或 者 更 多 字 母\TU/pcr/m/
+n/10.95 ),
+ []
+
+
+Underfull \hbox (badness 7012) in paragraph at lines 62--63
+\TU/FandolSong-Regular(0)/m/n/10.95 对 于 部 分 表 达 式 字 母 集 合 或 者 移 去 相 关 的
+ []
+
+
+Overfull \hbox (16.36745pt too wide) in paragraph at lines 40--67
+ [] 
+ []
+
+
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [88]
+Overfull \vbox (75.38565pt too high) has occurred while \output is active []
+
+
+[89]
+Overfull \hbox (87.49934pt too wide) in paragraph at lines 69--80
+ [] 
+ []
+
+
+Overfull \hbox (3.27289pt too wide) in paragraph at lines 118--126
 \TU/pcr/m/n/10.95 IP \TU/FandolSong-Regular(0)/m/n/10.95 地 址 的 正 则 表 达 式\TU/pcr
 /m/n/10.95 :(([1-9]?\d|1\d{2}|2[0-4]\d|25[0-5]).){3}([1-9]?\d|1\d{2}|2[0-4]\d|2
 5[0-
  []
 
 
-Overfull \hbox (1.58426pt too wide) in paragraph at lines 85--100
+Overfull \hbox (1.45332pt too wide) in paragraph at lines 146--146
+[]\TU/pcr/m/n/10.95 re.escape(pattern)| 
+ []
+
+
+Overfull \hbox (18.59381pt too wide) in paragraph at lines 128--151
  [] 
  []
 
-[71]
-Underfull \hbox (badness 10000) in paragraph at lines 134--137
+[90]
+Underfull \hbox (badness 10000) in paragraph at lines 152--153
 
  []
 
-[72]
-Overfull \hbox (17.70265pt too wide) in paragraph at lines 170--185
+
+Overfull \hbox (72.94118pt too wide) in paragraph at lines 182--183
+[]\TU/pcr/m/n/10.95 re,error(msg,pattern=None,pos=None) 
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 182--183
+
+ []
+
+
+Underfull \hbox (badness 1810) in paragraph at lines 184--185
+[]\TU/pcr/m/n/10.95 msg: \TU/FandolSong-Regular(0)/m/n/10.95 非 正 式 格 式
+ []
+
+
+Overfull \hbox (17.51605pt too wide) in paragraph at lines 156--191
+[] 
+ []
+
+
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [91]
+Overfull \vbox (14.10182pt too high) has occurred while \output is active []
+
+
+[92]
+Underfull \hbox (badness 10000) in paragraph at lines 210--213
+
+ []
+
+[93]
+Overfull \hbox (17.70265pt too wide) in paragraph at lines 246--261
  [] 
  []
 
-[73]) [74]
+
+Underfull \hbox (badness 1668) in paragraph at lines 289--290
+[]\TU/FandolSong-Regular(0)/m/n/10.95 用 \TU/pcr/m/n/10.95 sub() \TU/FandolSong-
+Regular(0)/m/n/10.95 方 法 返 回 一 个 通 过 在 \TU/pcr/m/n/10.95 temple \TU/FandolSong-
+Regular(0)/m/n/10.95 字 符 串 替 代\TU/pcr/m/n/10.95 \\TU/FandolSong-Regular(0)/m/n/
+10.95 的
+ []
+
+
+Overfull \hbox (4.36488pt too wide) in paragraph at lines 293--293
+[]\TU/pcr/m/n/10.95 .groupdict(default=None)| 
+ []
+
+
+Underfull \hbox (badness 1168) in paragraph at lines 296--298
+[]\TU/FandolSong-Regular(0)/m/n/10.95 最 新 匹 配 的 组 的 整 数 索 引，|  或 者 如 果 没 有 组 被 
+匹 配 就 为
+ []
+
+
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [94]
+[95]
+Underfull \hbox (badness 10000) in paragraph at lines 338--343
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 347--349
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 353--354
+
+ []
+
+) [96]
 \openout2 = `./chapter3/sys.aux'.
 
  (./chapter3/sys.tex
@@ -2159,7 +2532,7 @@ exec_prefix \TU/FandolSong-Regular(0)/m/n/10.95 将 保 留 指 向 \TU/pcr/m/n/
 hon
  []
 
-[75
+[97
 
 
 
@@ -2170,7 +2543,7 @@ r(0)/m/n/10.95 这 个 函 数 打 印 出 一 个 给 定 的 \TU/pcr/m/n/10.95
 ng-Regular(0)/m/n/10.95 和 \TU/pcr/m/n/10.95 sys.stderr
  []
 
-[76]
+[98]
 Overfull \hbox (26.8592pt too wide) in paragraph at lines 40--41
 \TU/FandolSong-Regular(0)/m/n/10.95 别 是 所 有 的 配 置 文 件 \TU/pcr/m/n/10.95 (\TU/Fa
 ndolSong-Regular(0)/m/n/10.95 像 \TU/pcr/m/n/10.95 pyconfig.h \TU/FandolSong-Reg
@@ -2181,12 +2554,12 @@ ular(0)/m/n/10.95 头 文 件\TU/pcr/m/n/10.95 ) \TU/FandolSong-Regular(0)/m/n/1
 
 Underfull \vbox (badness 3375) has occurred while \output is active []
 
- [77]
+ [99]
 Overfull \hbox (185.48824pt too wide) in paragraph at lines 61--73
 [][]
  []
 
-[78] [79]
+[100] [101]
 Overfull \hbox (76.32031pt too wide) in paragraph at lines 107--114
 \TU/FandolSong-Regular(0)/m/n/10.95 素 时 \TU/pcr/m/n/10.95 major,minor,build,pla
 tform,service_pack_minor,service_pack_major,suit_mask,product_type
@@ -2208,85 +2581,190 @@ cr/m/n/10.95 hash \TU/FandolSong-Regular(0)/m/n/10.95 实 现 参 数 给 一 �
 
 Underfull \vbox (badness 5446) has occurred while \output is active []
 
- [80])
-[81]
+ [102])
+[103]
 \openout2 = `./chapter3/url.aux'.
 
- (./chapter3/url.tex [82
+ (./chapter3/url.tex [104
 
 
 
 ]
 Chapter 6.
-) [83]
+) [105]
 \openout2 = `./chapter3/requests.aux'.
 
- (./chapter3/requests.tex [84
+ (./chapter3/requests.tex [106
 
 
 
 ]
 Chapter 7.
-) [85]
+
+Overfull \hbox (18.59381pt too wide) in paragraph at lines 11--28
+ [] 
+ []
+
+
+Overfull \hbox (0.57498pt too wide) in paragraph at lines 47--47
+[]\TU/pcr/m/n/10.95 r.apparent_encoding| 
+ []
+
+
+Overfull \hbox (32.82019pt too wide) in paragraph at lines 37--52
+ [] 
+ []
+
+[107]
+Overfull \hbox (2.6695pt too wide) in paragraph at lines 54--56
+[]\TU/pcr/m/n/10.95 r.encoding: \TU/FandolSong-Regular(0)/m/n/10.95 从 \TU/pcr/m
+/n/10.95 HTTp header \TU/FandolSong-Regular(0)/m/n/10.95 中 猜 测 的 响 应 内 容 编 码 方 
+式，|  如 果 \TU/pcr/m/n/10.95 header \TU/FandolSong-Regular(0)/m/n/10.95 中 不 存 在 \
+TU/pcr/m/n/10.95 charset\TU/FandolSong-Regular(0)/m/n/10.95 ，|
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 54--56
+
+ []
+
+
+Overfull \hbox (3.75676pt too wide) in paragraph at lines 68--68
+[]\TU/pcr/m/n/10.95 requests.TooManyRedirects| 
+ []
+
+
+Overfull \hbox (2.54132pt too wide) in paragraph at lines 74--74
+[]\TU/pcr/m/n/10.95 requests.raise_for_status()| 
+ []
+
+
+Overfull \hbox (61.27295pt too wide) in paragraph at lines 58--77
+ [] 
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 80--82
+
+ []
+
+[108]
+Overfull \hbox (18.59381pt too wide) in paragraph at lines 90--107
+ [] 
+ []
+
+[109]
+Overfull \hbox (18.59381pt too wide) in paragraph at lines 157--186
+ [] 
+ []
+
+
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [110])
+[111]
 \openout2 = `./chapter4/tf_common.aux'.
 
- (./chapter4/tf_common.tex [86
+ (./chapter4/tf_common.tex [112
 
 
 
 ]
 Chapter 8.
 
-Underfull \hbox (badness 10000) in paragraph at lines 13--17
-
+Underfull \hbox (badness 10000) in paragraph at lines 2--2
+|[]\TU/ptm/bx/n/14.4 tf.squeeze|
  []
 
-[87]
-Overfull \hbox (75.99182pt too wide) in paragraph at lines 47--48
-[]\TU/pcr/m/n/10.95 accuracy(labels,predictions,weights=none,metrics_collection
-s,updates_collections=none,name=none) 
+
+Underfull \hbox (badness 10000) in paragraph at lines 17--17
+|[]\TU/ptm/bx/n/14.4 tf.stack|
  []
 
-[88]) [89]
+[113]
+Underfull \hbox (badness 10000) in paragraph at lines 46--46
+|[]\TU/ptm/bx/n/14.4 tf.metrics|
+ []
+
+
+Overfull \hbox (54.09183pt too wide) in paragraph at lines 47--48
+ []\TU/pcr/m/n/10.95 accuracy(labels,predictions,weights=none,metrics_collectio
+ns,updates_collections=none,name=none) 
+ []
+
+[114]
+Underfull \hbox (badness 10000) in paragraph at lines 59--59
+|[]\TU/ptm/bx/n/14.4 tf.reshape|
+ []
+
+) [115]
 \openout2 = `./chapter4/tf_image.aux'.
 
  (./chapter4/tf_image.tex
+Underfull \hbox (badness 10000) in paragraph at lines 1--1
+|[]\TU/ptm/bx/n/14.4 tf.image|
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 2--2
+|[]\TU/ptm/bx/n/12 tf.image.decode_gif|
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 9--9
+|[]\TU/ptm/bx/n/12 tf.image.decode_jpeg|
+ []
+
+
 Overfull \hbox (8.40822pt too wide) in paragraph at lines 10--13
-\TU/pcr/m/n/10.95 try_recover_truncated=None,acceptable_fraction=None,dct_metch
-ed=None,name=None)
+ \TU/pcr/m/n/10.95 try_recover_truncated=None,acceptable_fraction=None,dct_metc
+hed=None,name=None) 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 10--13
-
+Underfull \hbox (badness 10000) in paragraph at lines 24--24
+|[]\TU/ptm/bx/n/12 tf.image.encode_jpeg|
  []
 
 
-Overfull \hbox (52.94206pt too wide) in paragraph at lines 25--27
-[]\TU/pcr/m/n/10.95 tf.image.encode_jpeg(image,format=None,quality=None,progres
-sive=None,optimize_size=None 
+Overfull \hbox (31.04207pt too wide) in paragraph at lines 25--27
+ []\TU/pcr/m/n/10.95 tf.image.encode_jpeg(image,format=None,quality=None,progre
+ssive=None,optimize_size=None  
  []
 
 
 Overfull \hbox (154.87561pt too wide) in paragraph at lines 25--27
-\TU/pcr/m/n/10.95 chroma_downsampling=None,density_uint=None,x_density=None,y_d
-ensity=None,xmp_metadata=None,name=None) 
+ \TU/pcr/m/n/10.95 chroma_downsampling=None,density_uint=None,x_density=None,y_
+density=None,xmp_metadata=None,name=None) 
  []
 
-[90
+[116
 
 
 ]
-Overfull \hbox (4.04918pt too wide) in paragraph at lines 42--44
-[]\TU/pcr/m/n/10.95 tf.image.decode_png(contents,channels=None,dtype=None,name=
-None) \TU/FandolSong-Regular(0)/m/n/10.95 解 码 \TU/pcr/m/n/10.95 PNG \TU/FandolS
-ong-Regular(0)/m/n/10.95 编
+Underfull \hbox (badness 10000) in paragraph at lines 41--41
+|[]\TU/ptm/bx/n/12 tf.image.decode_png|
  []
 
-[91]
-Overfull \hbox (31.53484pt too wide) in paragraph at lines 70--71
-[]\TU/pcr/m/n/10.95 tf.image.resize_images(images,size,method=ResizeMethed.BILI
-NEAR,align_corners=False) 
+
+Underfull \hbox (badness 10000) in paragraph at lines 52--52
+|[]\TU/ptm/bx/n/12 tf.image.encode_png|
+ []
+
+[117]
+Underfull \hbox (badness 10000) in paragraph at lines 60--60
+|[]\TU/ptm/bx/n/12 tf.image.decode_image|
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 69--69
+|[]\TU/ptm/bx/n/12 tf.image.resize_images|
+ []
+
+
+Overfull \hbox (9.63484pt too wide) in paragraph at lines 70--71
+ []\TU/pcr/m/n/10.95 tf.image.resize_images(images,size,method=ResizeMethed.BIL
+INEAR,align_corners=False) 
  []
 
 
@@ -2298,24 +2776,29 @@ TU/pcr/m/n/10.95 Tensor,3 \TU/FandolSong-Regular(0)/m/n/10.95 为 \TU/pcr/m/n/10
 t,width,channels] 
  []
 
-[92]) [93] (./book.aux (./chapter1/tf_chapter1.aux) (./chapter2/tf_chapter2.aux
-) (./chapter2/use_gpu.aux) (./chapter3/common_module.aux) (./chapter3/path.aux)
-(./chapter3/re.aux) (./chapter3/sys.aux) (./chapter3/url.aux)
-(./chapter3/requests.aux) (./chapter4/tf_common.aux) (./chapter4/tf_image.aux))
+[118]) [119]
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 60.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 60.
+ (./book.aux (./chapter1/tf_chapter1.aux)
+(./chapter2/tf_chapter2.aux) (./chapter2/use_gpu.aux)
+(./chapter3/common_module.aux) (./chapter3/path.aux) (./chapter3/re.aux)
+(./chapter3/sys.aux) (./chapter3/url.aux) (./chapter3/requests.aux)
+(./chapter4/tf_common.aux) (./chapter4/tf_image.aux))
+Package atveryend Info: Empty hook `AtVeryEndDocument' on input line 60.
+Package atveryend Info: Empty hook `AtEndAfterFileList' on input line 60.
+
 
 LaTeX Font Warning: Some font shapes were not available, defaults substituted.
 
-
-LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
-
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 60.
  ) 
 Here is how much of TeX's memory you used:
- 25139 strings out of 493005
- 486977 string characters out of 6134596
- 696549 words of memory out of 5000000
- 28742 multiletter control sequences out of 15000+600000
- 12309 words of font info for 56 fonts, out of 8000000 for 9000
+ 31469 strings out of 493005
+ 584637 string characters out of 6134596
+ 803712 words of memory out of 5000000
+ 35020 multiletter control sequences out of 15000+600000
+ 12669 words of font info for 57 fonts, out of 8000000 for 9000
  1348 hyphenation exceptions out of 8191
- 57i,13n,69p,10430b,1868s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 57i,13n,69p,10430b,2014s stack positions out of 5000i,500n,10000p,200000b,80000s
 
-Output written on book.pdf (93 pages).
+Output written on book.pdf (119 pages).
