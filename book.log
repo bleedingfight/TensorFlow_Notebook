@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.14159265-2.6-0.99998 (TeX Live 2017) (preloaded format=xelatex 2017.7.26)  10 AUG 2017 20:29
+This is XeTeX, Version 3.14159265-2.6-0.99998 (TeX Live 2017) (preloaded format=xelatex 2017.7.26)  10 AUG 2017 23:04
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1528,9 +1528,10 @@ Package: xeCJK-listings 2017/05/15 v3.4.8 xeCJK patch file for listings
 \l__xeCJK_listings_flag_int=\count197
 )
 (./book.aux (./chapter1/tf_chapter1.aux) (./chapter2/tf_chapter2.aux)
-(./chapter2/use_gpu.aux) (./chapter3/common_module.aux) (./chapter3/path.aux)
-(./chapter3/re.aux) (./chapter3/sys.aux) (./chapter3/url.aux)
-(./chapter3/requests.aux) (./chapter4/tf_common.aux) (./chapter4/tf_image.aux))
+(./chapter2/use_gpu.aux) (./chapter2/performance.aux)
+(./chapter3/common_module.aux) (./chapter3/path.aux) (./chapter3/re.aux)
+(./chapter3/sys.aux) (./chapter3/url.aux) (./chapter3/requests.aux)
+(./chapter4/tf_common.aux) (./chapter4/tf_image.aux))
 \openout1 = `book.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 47.
@@ -1551,6 +1552,7 @@ LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 47.
 LaTeX Font Info:    ... okay on input line 47.
 LaTeX Font Info:    Checking defaults for T3/cmr/m/n on input line 47.
 LaTeX Font Info:    Try loading font information for T3+cmr on input line 47.
+
 (/usr/local/texlive/2017/texmf-dist/tex/latex/tipa/t3cmr.fd
 File: t3cmr.fd 2001/12/31 TIPA font definitions
 )
@@ -1678,12 +1680,12 @@ LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <6> not available
 ]
 
 LaTeX Font Warning: Font shape `TU/ptm/m/sl' undefined
-(Font)              using `TU/ptm/m/n' instead on input line 72.
+(Font)              using `TU/ptm/m/n' instead on input line 74.
 
 LaTeX Font Info:    Font shape `TU/FandolSong-Regular(0)/m/sl' in size <10.95> 
 not available
 (Font)              Font shape `TU/FandolSong-Regular(0)/m/it' tried instead on
- input line 72.
+ input line 74.
 [2])
 \tf@toc=\write4
 \openout4 = `book.toc'.
@@ -1959,13 +1961,6 @@ Overfull \hbox (323.1225pt too wide) in paragraph at lines 792--793
 Underfull \vbox (badness 6542) has occurred while \output is active []
 
  [36]
-Overfull \hbox (137.45415pt too wide) in paragraph at lines 810--811
-\TU/FandolSong-Regular(0)/m/n/10.95 中 的 文 字 整 型 化 了，|  这 样 每 个 整 型 代 表 一 个 单 词 
-\TU/pcr/m/n/10.95 (\TU/FandolSong-Regular(0)/m/n/10.95 细 节 请 查 看 \TU/pcr/m/n/10
-.95 tensorflow/g3doc/tutorials/word2vec/word2vec_basic.py)\TU/FandolSong-Regula
-r(0)/m/n/10.95 。|
- []
-
 [37]
 File: ./pic/chapter1/tsne.png Graphic file (type QTm)
  <use  "./pic/chapter1/tsne.png" >
@@ -1977,12 +1972,6 @@ Overfull \hbox (11.05795pt too wide) in paragraph at lines 839--840
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
  [38]
-Overfull \hbox (138.79436pt too wide) in paragraph at lines 843--844
-\TU/FandolSong-Regular(0)/m/n/10.95 做 类 比 推 理，|  可 参 考 \TU/pcr/m/n/10.95 Mikolo
-v and colleagues\TU/FandolSong-Regular(0)/m/n/10.95 ，|  数 据 集 下 载 地 址 为\TU/pcr/
-m/n/10.95 : https://word2vec.googlecode.com/svn/trunk/questions-
- []
-
 [39] [40] [41] [42]) [43]
 \openout2 = `./chapter2/tf_chapter2.aux'.
 
@@ -2029,10 +2018,23 @@ File: ./pic/chapter2/use_gpu3.png Graphic file (type QTm)
 File: ./pic/chapter2/use_gpu4.png Graphic file (type QTm)
 
 <use  "./pic/chapter2/use_gpu4.png" >) [48]
+\openout2 = `./chapter2/performance.aux'.
+
+ (./chapter2/performance.tex
+Chapter 3.
+[49
+
+
+
+] [50]) [51]
 \openout2 = `./chapter3/common_module.aux'.
 
- (./chapter3/common_module.tex
-Chapter 3.
+ (./chapter3/common_module.tex [52
+
+
+
+]
+Chapter 4.
 File: ./pic/chapter3/demo1.png Graphic file (type QTm)
 <use  "./pic/chapter3/demo1.png" >
 Underfull \hbox (badness 10000) in paragraph at lines 12--13
@@ -2051,11 +2053,7 @@ Overfull \hbox (51.56876pt too wide) in paragraph at lines 22--23
 ars=’-’, fromfile_prefix_chars=None,
  []
 
-[49
-
-
-
-]
+[53]
 File: ./pic/chapter3/demo2.png Graphic file (type QTm)
  <use  "./pic/chapter3/demo2.png" >
 Overfull \hbox (228.11906pt too wide) in paragraph at lines 61--61
@@ -2068,14 +2066,14 @@ Overfull \hbox (47.14531pt too wide) in paragraph at lines 66--66
  [][] 
  []
 
-[50]
+[54]
 File: ./pic/chapter3/demo4.png Graphic file (type QTm)
  <use  "./pic/chapter3/demo4.png" >
 File: ./pic/chapter3/demo5.png Graphic file (type QTm)
  <use  "./pic/chapter3/demo5.png" >
 File: ./pic/chapter3/demo6.png Graphic file (type QTm)
 
-<use  "./pic/chapter3/demo6.png" > [51]
+<use  "./pic/chapter3/demo6.png" > [55]
 File: ./pic/chapter3/demo7.png Graphic file (type QTm)
  <use  "./pic/chapter3/demo7.png" >
 Underfull \hbox (badness 10000) in paragraph at lines 108--112
@@ -2083,7 +2081,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 108--112
  []
 
 File: ./pic/chapter3/demo8.png Graphic file (type QTm)
-<use  "./pic/chapter3/demo8.png" > [52]
+<use  "./pic/chapter3/demo8.png" > [56]
 File: ./pic/chapter3/demo9.png Graphic file (type QTm)
  <use  "./pic/chapter3/demo9.png" >
 Underfull \hbox (badness 10000) in paragraph at lines 130--133
@@ -2104,7 +2102,7 @@ Overfull \hbox (15.39456pt too wide) in paragraph at lines 152--153
 TU/pcr/m/n/10.95 argument_default=
  []
 
-[53]
+[57]
 File: ./pic/chapter3/demo10.png Graphic file (type QTm)
  <use  "./pic/chapter3/demo10.png" >
 File: ./pic/chapter3/demo11.png Graphic file (type QTm)
@@ -2113,22 +2111,22 @@ Overfull \hbox (1.29742pt too wide) in paragraph at lines 173--175
 [][] \TU/FandolSong-Regular(0)/m/n/10.95 有 时 候 覆
  []
 
-[54]
+[58]
 File: ./pic/chapter3/demo12.png Graphic file (type QTm)
  <use  "./pic/chapter3/demo12.png" >
 File: ./pic/chapter3/demo13.png Graphic file (type QTm)
  <use  "./pic/chapter3/demo13.png" >
 File: ./pic/chapter3/demo14.png Graphic file (type QTm)
 
-<use  "./pic/chapter3/demo14.png" > [55]
+<use  "./pic/chapter3/demo14.png" > [59]
 File: ./pic/chapter3/demo15.png Graphic file (type QTm)
  <use  "./pic/chapter3/demo15.png" >
-[56] [57]
+[60] [61]
 Underfull \hbox (badness 10000) in paragraph at lines 295--299
 
  []
 
-[58]
+[62]
 Overfull \hbox (2.80182pt too wide) in paragraph at lines 328--334
 \TU/FandolSong-Regular(0)/m/n/10.95 输 出\TU/pcr/m/n/10.95 :Namespace(infile=<_io
 .TextIOWrapper name=’input.txt’,encoding=’UTF-8’>,
@@ -2145,7 +2143,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 351--354
 
  []
 
-[59]
+[63]
 Overfull \hbox (24.62541pt too wide) in paragraph at lines 368--369
 []\TU/FandolSong-Regular(0)/m/n/10.95 当 \TU/pcr/m/n/10.95 add_argument() \TU/Fa
 ndolSong-Regular(0)/m/n/10.95 调 用 的 时 候 设 置 了 \TU/pcr/m/n/10.95 action=’store_c
@@ -2153,7 +2151,7 @@ onst’ \TU/FandolSong-Regular(0)/m/n/10.95 或 者 是 \TU/pcr/m/n/10.95 action
 d_cost’
  []
 
-[60]
+[64]
 Overfull \hbox (4.02846pt too wide) in paragraph at lines 418--420
 \TU/FandolSong-Regular(0)/m/n/10.95 输 出\TU/pcr/m/n/10.95 :Namespace(bar=<_io.Te
 xtIOWrapper name=’temp.txt’ encoding=’UTF-8’,foo=2) \TU/FandolSong-Regular(0)/m
@@ -2168,14 +2166,14 @@ Overfull \hbox (42.35225pt too wide) in paragraph at lines 418--420
 fsize=,encoding=
  []
 
-[61]
+[65]
 Overfull \hbox (31.68816pt too wide) in paragraph at lines 459--460
 []\TU/FandolSong-Regular(0)/m/n/10.95 一 些 命 令 行 参 数 从 一 些 限 定 值 的 中 选 定，|  可 以 
 通 过 传 递 \TU/pcr/m/n/10.95 choice \TU/FandolSong-Regular(0)/m/n/10.95 关 键 字 参 数 
 给 \TU/pcr/m/n/10.95 add_argument(),
  []
 
-[62]
+[66]
 Underfull \hbox (badness 10000) in paragraph at lines 504--508
 
  []
@@ -2191,7 +2189,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 518--520
 
  []
 
-[63]
+[67]
 Underfull \hbox (badness 10000) in paragraph at lines 521--523
 
  []
@@ -2216,7 +2214,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 554--557
 
  []
 
-[64]
+[68]
 Underfull \hbox (badness 10000) in paragraph at lines 566--568
 
  []
@@ -2231,7 +2229,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 582--584
 
  []
 
-[65]
+[69]
 Overfull \hbox (0.16289pt too wide) in paragraph at lines 616--619
 \TU/FandolSong-Regular(0)/m/n/10.95 都 可 以 被 \TU/pcr/m/n/10.95 zuoiweiaction \TU
 /FandolSong-Regular(0)/m/n/10.95 参 数 传 递 给 \TU/pcr/m/n/10.95 add_argument()\TU/
@@ -2245,7 +2243,7 @@ Overfull \hbox (0.2308pt too wide) in paragraph at lines 616--619
 s=None, required=False,
  []
 
-[66] [67] [68] [69] [70] [71] [72] [73]
+[70] [71] [72] [73] [74] [75] [76] [77]
 Overfull \hbox (67.1112pt too wide) in paragraph at lines 907--907
 \TU/FandolSong-Regular(0)/m/n/10.95 输 出\TU/pcr/m/n/10.95 :Namespace(out<_io.Tex
 tIOWapper name=’file.txt’ mode=’w’ encoding=’UTF-8’,raw=<_ioFileIO
@@ -2269,7 +2267,7 @@ ndolSong-Regular(0)/m/n/10.95 就 当 它 为 正 常 参 数，|  但 是 在 �
 pcr/m/n/10.95 add_argument_group()
  []
 
-[74]
+[78]
 Underfull \hbox (badness 10000) in paragraph at lines 942--943
 
  []
@@ -2289,7 +2287,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 949--951
 
  []
 
-[75]
+[79]
 Overfull \hbox (12.43803pt too wide) in paragraph at lines 984--986
 \TU/FandolSong-Regular(0)/m/n/10.95 大 多 数 时 候，| \TU/pcr/m/n/10.95 parse_args() 
 \TU/FandolSong-Regular(0)/m/n/10.95 返 回 的 属 性 对 象 将 被 命 令 行 参 数 和 参 数 行 为 完 全 决
@@ -2312,32 +2310,32 @@ file \TU/FandolSong-Regular(0)/m/n/10.95 是 \TU/pcr/m/n/10.95 None\TU/FandolSon
 /m/n/10.95 被 假 定。| \TU/pcr/m/n/10.95 ArgumentParser.print_help(file=None):
  []
 
-[76] [77]
+[80] [81]
 File: ./pic/chapter3/arg1.png Graphic file (type QTm)
  <use  "./pic/chapter3/arg1.png" >
 File: ./pic/chapter3/arg2.png Graphic file (type QTm)
  <use  "./pic/chapter3/arg2.png" >
 File: ./pic/chapter3/arg3.png Graphic file (type QTm)
 
-<use  "./pic/chapter3/arg3.png" > [78]
+<use  "./pic/chapter3/arg3.png" > [82]
 File: ./pic/chapter3/arg4.png Graphic file (type QTm)
  <use  "./pic/chapter3/arg4.png" >
 Underfull \hbox (badness 10000) in paragraph at lines 1098--1099
 
  []
 
-[79]
+[83]
 Underfull \hbox (badness 10000) in paragraph at lines 1144--1147
 
  []
 
-[80] [81]) [82]
+[84] [85]) [86]
 \openout2 = `./chapter3/path.aux'.
 
  (./chapter3/path.tex
 Missing character: There is no 或 in font zptmcm7t!
 Missing character: There is no 者 in font zptmcm7t!
- [83
+ [87
 
 
 ]
@@ -2348,7 +2346,7 @@ n/10.95 如 果 \TU/pcr/m/n/10.95 pathname \TU/FandolSong-Regular(0)/m/n/10.95 �
 0.95 ，|
  []
 
-[84] [85] [86]
+[88] [89] [90]
 Overfull \hbox (14.35289pt too wide) in paragraph at lines 128--128
 \TU/FandolSong-Regular(0)/m/n/10.95 在 这 个 例 子 中，| \TU/pcr/m/n/10.95 io.TextIOWr
 apper \TU/FandolSong-Regular(0)/m/n/10.95 是 一 个 编 码 和 解 码 \TU/pcr/m/n/10.95 Uni
@@ -2356,15 +2354,15 @@ code \TU/FandolSong-Regular(0)/m/n/10.95 的 文 本 处 理 层，| \TU/pcr/m/n
 feredWriter
  []
 
-[87] [88] [89] [90] [91] [92] [93]) [94] [95]
+[91] [92] [93] [94] [95] [96] [97]) [98] [99]
 \openout2 = `./chapter3/re.aux'.
 
- (./chapter3/re.tex [96
+ (./chapter3/re.tex [100
 
 
 
 ]
-Chapter 4.
+Chapter 5.
 
 Underfull \hbox (badness 6047) in paragraph at lines 8--9
 [][]\TU/FandolSong-Regular(0)/m/n/10.95 表 示 \TU/pcr/m/n/10.95 a,b,c,[]\TU/Fando
@@ -2402,7 +2400,7 @@ Overfull \hbox (87.49934pt too wide) in paragraph at lines 4--37
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
- [97]
+ [101]
 Underfull \hbox (badness 10000) in paragraph at lines 54--54
 []\TU/FandolSong-Regular(0)/m/n/10.95 匹 配 空 字 符 串，|  但 是 仅 仅 当 它 不 在 单 词 的
  []
@@ -2457,11 +2455,11 @@ Overfull \hbox (16.36745pt too wide) in paragraph at lines 40--67
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
- [98]
+ [102]
 Overfull \vbox (75.38565pt too high) has occurred while \output is active []
 
 
-[99]
+[103]
 Overfull \hbox (87.49934pt too wide) in paragraph at lines 69--80
  [] 
  []
@@ -2483,7 +2481,7 @@ Overfull \hbox (18.59381pt too wide) in paragraph at lines 128--151
  [] 
  []
 
-[100]
+[104]
 Underfull \hbox (badness 10000) in paragraph at lines 152--153
 
  []
@@ -2511,16 +2509,16 @@ Overfull \hbox (17.51605pt too wide) in paragraph at lines 156--191
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
- [101]
+ [105]
 Overfull \vbox (14.10182pt too high) has occurred while \output is active []
 
 
-[102]
+[106]
 Underfull \hbox (badness 10000) in paragraph at lines 210--213
 
  []
 
-[103]
+[107]
 Overfull \hbox (17.70265pt too wide) in paragraph at lines 246--261
  [] 
  []
@@ -2547,8 +2545,8 @@ Underfull \hbox (badness 1168) in paragraph at lines 296--298
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
- [104]
-[105]
+ [108]
+[109]
 Underfull \hbox (badness 10000) in paragraph at lines 338--343
 
  []
@@ -2563,11 +2561,11 @@ Underfull \hbox (badness 10000) in paragraph at lines 353--354
 
  []
 
-) [106]
+) [110]
 \openout2 = `./chapter3/sys.aux'.
 
  (./chapter3/sys.tex
-Chapter 5.
+Chapter 6.
 
 Overfull \hbox (5.98851pt too wide) in paragraph at lines 6--7
 \TU/FandolSong-Regular(0)/m/n/10.95 值 将 被 改 变 到 指 向 虚 拟 环 境，|  由 于 \TU/pcr/m/n/
@@ -2576,7 +2574,7 @@ exec_prefix \TU/FandolSong-Regular(0)/m/n/10.95 将 保 留 指 向 \TU/pcr/m/n/
 hon
  []
 
-[107
+[111
 
 
 
@@ -2587,7 +2585,7 @@ r(0)/m/n/10.95 这 个 函 数 打 印 出 一 个 给 定 的 \TU/pcr/m/n/10.95
 ng-Regular(0)/m/n/10.95 和 \TU/pcr/m/n/10.95 sys.stderr
  []
 
-[108]
+[112]
 Overfull \hbox (26.8592pt too wide) in paragraph at lines 40--41
 \TU/FandolSong-Regular(0)/m/n/10.95 别 是 所 有 的 配 置 文 件 \TU/pcr/m/n/10.95 (\TU/Fa
 ndolSong-Regular(0)/m/n/10.95 像 \TU/pcr/m/n/10.95 pyconfig.h \TU/FandolSong-Reg
@@ -2598,12 +2596,12 @@ ular(0)/m/n/10.95 头 文 件\TU/pcr/m/n/10.95 ) \TU/FandolSong-Regular(0)/m/n/1
 
 Underfull \vbox (badness 3375) has occurred while \output is active []
 
- [109]
+ [113]
 Overfull \hbox (185.48824pt too wide) in paragraph at lines 61--73
 [][]
  []
 
-[110] [111]
+[114] [115]
 Overfull \hbox (76.32031pt too wide) in paragraph at lines 107--114
 \TU/FandolSong-Regular(0)/m/n/10.95 素 时 \TU/pcr/m/n/10.95 major,minor,build,pla
 tform,service_pack_minor,service_pack_major,suit_mask,product_type
@@ -2625,25 +2623,25 @@ cr/m/n/10.95 hash \TU/FandolSong-Regular(0)/m/n/10.95 实 现 参 数 给 一 �
 
 Underfull \vbox (badness 5446) has occurred while \output is active []
 
- [112])
-[113]
+ [116])
+[117]
 \openout2 = `./chapter3/url.aux'.
 
- (./chapter3/url.tex [114
-
-
-
-]
-Chapter 6.
-) [115]
-\openout2 = `./chapter3/requests.aux'.
-
- (./chapter3/requests.tex [116
+ (./chapter3/url.tex [118
 
 
 
 ]
 Chapter 7.
+) [119]
+\openout2 = `./chapter3/requests.aux'.
+
+ (./chapter3/requests.tex [120
+
+
+
+]
+Chapter 8.
 
 Overfull \hbox (18.59381pt too wide) in paragraph at lines 11--28
  [] 
@@ -2659,7 +2657,7 @@ Overfull \hbox (32.82019pt too wide) in paragraph at lines 37--52
  [] 
  []
 
-[117]
+[121]
 Overfull \hbox (2.6695pt too wide) in paragraph at lines 54--56
 []\TU/pcr/m/n/10.95 r.encoding: \TU/FandolSong-Regular(0)/m/n/10.95 从 \TU/pcr/m
 /n/10.95 HTTp header \TU/FandolSong-Regular(0)/m/n/10.95 中 猜 测 的 响 应 内 容 编 码 方 
@@ -2692,12 +2690,12 @@ Underfull \hbox (badness 10000) in paragraph at lines 80--82
 
  []
 
-[118]
+[122]
 Overfull \hbox (18.59381pt too wide) in paragraph at lines 90--107
  [] 
  []
 
-[119]
+[123]
 Overfull \hbox (18.59381pt too wide) in paragraph at lines 157--186
  [] 
  []
@@ -2705,16 +2703,16 @@ Overfull \hbox (18.59381pt too wide) in paragraph at lines 157--186
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
- [120])
-[121]
+ [124])
+[125]
 \openout2 = `./chapter4/tf_common.aux'.
 
- (./chapter4/tf_common.tex [122
+ (./chapter4/tf_common.tex [126
 
 
 
 ]
-Chapter 8.
+Chapter 9.
 
 Underfull \hbox (badness 10000) in paragraph at lines 2--2
 |[]\TU/ptm/bx/n/14.4 tf.squeeze|
@@ -2725,7 +2723,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 17--17
 |[]\TU/ptm/bx/n/14.4 tf.stack|
  []
 
-[123]
+[127]
 Underfull \hbox (badness 10000) in paragraph at lines 46--46
 |[]\TU/ptm/bx/n/14.4 tf.metrics|
  []
@@ -2736,12 +2734,12 @@ Overfull \hbox (54.09183pt too wide) in paragraph at lines 47--48
 ns,updates_collections=none,name=none) 
  []
 
-[124]
+[128]
 Underfull \hbox (badness 10000) in paragraph at lines 59--59
 |[]\TU/ptm/bx/n/14.4 tf.reshape|
  []
 
-) [125]
+) [129]
 \openout2 = `./chapter4/tf_image.aux'.
 
  (./chapter4/tf_image.tex
@@ -2782,7 +2780,7 @@ Overfull \hbox (154.87561pt too wide) in paragraph at lines 25--27
 density=None,xmp_metadata=None,name=None) 
  []
 
-[126
+[130
 
 
 ]
@@ -2795,7 +2793,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 52--52
 |[]\TU/ptm/bx/n/12 tf.image.encode_png|
  []
 
-[127]
+[131]
 Underfull \hbox (badness 10000) in paragraph at lines 60--60
 |[]\TU/ptm/bx/n/12 tf.image.decode_image|
  []
@@ -2820,29 +2818,30 @@ TU/pcr/m/n/10.95 Tensor,3 \TU/FandolSong-Regular(0)/m/n/10.95 为 \TU/pcr/m/n/10
 t,width,channels] 
  []
 
-[128]) [129]
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 64.
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 64.
+[132]) [133]
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 65.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 65.
  (./book.aux (./chapter1/tf_chapter1.aux)
 (./chapter2/tf_chapter2.aux) (./chapter2/use_gpu.aux)
-(./chapter3/common_module.aux) (./chapter3/path.aux) (./chapter3/re.aux)
-(./chapter3/sys.aux) (./chapter3/url.aux) (./chapter3/requests.aux)
-(./chapter4/tf_common.aux) (./chapter4/tf_image.aux))
-Package atveryend Info: Empty hook `AtVeryEndDocument' on input line 64.
-Package atveryend Info: Empty hook `AtEndAfterFileList' on input line 64.
+(./chapter2/performance.aux) (./chapter3/common_module.aux)
+(./chapter3/path.aux) (./chapter3/re.aux) (./chapter3/sys.aux)
+(./chapter3/url.aux) (./chapter3/requests.aux) (./chapter4/tf_common.aux)
+(./chapter4/tf_image.aux))
+Package atveryend Info: Empty hook `AtVeryEndDocument' on input line 65.
+Package atveryend Info: Empty hook `AtEndAfterFileList' on input line 65.
 
 
 LaTeX Font Warning: Some font shapes were not available, defaults substituted.
 
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 64.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 65.
  ) 
 Here is how much of TeX's memory you used:
- 31633 strings out of 493005
- 587541 string characters out of 6134596
- 803732 words of memory out of 5000000
- 35174 multiletter control sequences out of 15000+600000
+ 31687 strings out of 493005
+ 588826 string characters out of 6134596
+ 804268 words of memory out of 5000000
+ 35221 multiletter control sequences out of 15000+600000
  12669 words of font info for 57 fonts, out of 8000000 for 9000
  1348 hyphenation exceptions out of 8191
  57i,13n,69p,10430b,2014s stack positions out of 5000i,500n,10000p,200000b,80000s
 
-Output written on book.pdf (133 pages).
+Output written on book.pdf (137 pages).

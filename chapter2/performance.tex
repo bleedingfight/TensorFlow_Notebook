@@ -1,0 +1,61 @@
+\chapter{Performance}
+这个导航包含一个优化你的TensorFlow代码的集合。对于Tensorflow用户来说这是最好的应用，正如在这个文档中最好的时间，高性能模式为在不同的硬件上创建模型文档链接到示例代码。
+\section{最好的实践}
+尽管优化实现不同类型的模型可能不同，下面是通过tensorflow实现性能的几个最好的方式，尽管这些暗示在基于图像的模型，我们将增加一些笑技巧到所有类型的模型。下面列出了最好实践的关键:
+\begin{itemize}
+\item 从原来码编译安装
+\item 利用队列读取数据
+\item 在CPU上预处理
+\item 用NCHW图像格式
+\item 在GPU上放共享参数
+\item 用融合的批处理规范
+\end{itemize}
+下面章节时处理的详细信息。
+\section{从源代码创建安装}
+为了安装最优化的TensorFlow版本，通过源代码编译安装Tensorflow。从原来码编译优化目标硬件确保最新的CUDA平台和CuDNN库被用高性能安装。
+
+对于多数稳定的实验，从最新版的\href{https://github.com/tensorflow/tensorflow/releases}{latest release}分支编译。为了得到最新性能改变接受一些稳定性风险，从\href{https://github.com/tensorflow/tensorflow}{master}编译。
+
+  如果你需要在不同的目标硬件平台上编译TensorFLow，交叉编译最优化目标平台。下面的目录是一个例子高数bazel为指定平台编译
+\begin{python}
+# This command optimizes for Intel’s Broadwell processor
+bazel build -c opt --copt=-march="broadwell" --config=cuda //tensorflow/tools/pip_package:build_pip_package
+\end{python}
+环境，构建，安装技巧
+\begin{itemize}
+\item 编译最高级别的\href{http://developer.nvidia.com/cuda-gpus}{GPU 支持}，e.g. P100: 6.0, Titan X (pascal): 6.2, Titan X (maxwell): 5.2, and K80: 3.7.
+\item 安装最新版的CUDA平台和cuDNN库
+\item 确保你的gcc版本支持对目标cpu所有的优化，推荐最小的gcc版本为4.8.3
+\item TensorFlow在启动时检查是否在已经在cpu上编译优化过，如果优化不被包含，TensorFlow将chxuian警告，e.g.AVX,AVX2和FMA设备不被包含。
+\end{itemize}
+\subsection{利用队列读取数据}
+在利用GPUs时性能很差或者没有设置高效的pipeline导致缺乏数据，确保设置输入pipeline高效利用队列和流数据，一种识别GPU处于饥饿状态的方法时生成和查询时间线。一个相信的时间线指南不存在，但是一个快速生成时间线的例子在\href{https://www.tensorflow.org/performance/xla/jit}{XLA JIT}部分存在，另一个检查是否GPU被充分使用时运行nvidia-smi查看，如果GPU利用没有达到100\%这样GPU没有足够快的得到数据。
+
+除非指定一个特殊的情形或者示例代码，没有从Python变量给予数据到会话，e.g.
+\begin{python}
+# Using feed_dict often results in suboptimal performance when using large inputs.
+sess.run(train_step, feed_dict={x: batch_xs, y_: batch_ys})
+\end{python}
+\subsection{在CPU上的预处理}
+将预处理操作放在CPU上可能对性能提升很重要，当预处理发生在GPU，数据流使从CPU->GPU(预处理)->CPU->GPU(训练)。这数据被限制在CPU和GPU之间，当预处理被放在CPU上，数据流是CPU(预处理)->GPU(训练)。另一个好处是在CPU上预处理释放GPU时间让其集中训练。
+
+将预处理放在CPU上可能导致对sample/sec处理速度6倍以上的处理性能增加，将导致训练时间缩短为原来的$\frac{1}{6}$,确保预处理在CPU上，按照如下操作:
+\begin{python}
+with tf.device('/cpu:0'):
+  # function to get and process images or data.
+  distorted_inputs = load_and_distort_images()
+\end{python}
+\subsection{用大文件}
+在一些情形下，CPU和GPU可能同感I/O操作获取数据时对数据处于饥饿状态。如果你正用一些小文件形成输入数据集，你也许被你的文件系统限制了速度。如果你在SSD上而不是HDD上存储你的输入数据你的训练循环运行更快。如果是这样你应该通过创建一些大的TFRecord文件预处理你的输入数据。
+\subsection{用NCHW图像数据格式}
+图像数据格式涉及到图像的批量表示。TensorFlow支持NHWC(TensorFlow 默认)和NCHW(cuDNN默认)，N时图像的批数，H时图像垂直方向的像素数量，W是水平方向的像素，C时图像的通道数，尽管cuDNN能处理上面两种格式，但是它处理默认格式更快。最好的实现是用NCHW和NHWC构建模型正如通常在GPU上用NCHW训练然后在CPU上用NHWC推断。
+
+TensorFlow用这两个格式是的一个简单的历史因为它在CPUs上运行快点，然后TensorFlow团队发现当NVIDIA cuDNN库时NCHW运行更好。当即用户推荐在他们的模型中支持两种格式，在很长一段时期，我们计划重写图转化两种格式。
+\subsection{用融批规范}
+当用批规范tf.contrib.layers.batch\_norm设置属性fused=True:
+\begin{python}
+bn = tf.contrib.layers.batch_norm(
+          input_layer, fused=True, data_format='NCHW'
+          scope=scope, **kwargs)
+\end{python}
+在没有融合批规范计算几个单独的操作。融合批规范结合单个操作进入内核，运行更快。
