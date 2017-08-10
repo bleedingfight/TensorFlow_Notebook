@@ -448,6 +448,153 @@ plt.show()
 \begin{figure}[H]
 	\includegraphics[scale=0.4]{./pic/chapter1/tenbor1.png}
 \end{figure}
+\subsection{TensorBoard Histogram Dashboard}
+TensorBoard Histogram Dashboard 显示TensorFlow图中的Tensor如何随着时间变化。
+\subsection{一个简单的例子}
+正态分布变量，均值随着和时间移动。TensorFlow有一个操作tf.random\_normal可以完美的达到这个目的。正如通常情况下TensorBoard，我们将用summary op融合数据据。
+在这种情况下'tf.summary.histogram'。
+这里有一个代码段将生成一些包含正态分布直方图数据的总结，这里均值随着时间增大。
+\begin{python}
+import tensorflow as tf
+k = tf.placeholder(tf.float32)
+mean_moving_normal = tf.random_normal(shape=[1000], mean=(5*k), stddev=1)
+summaries = tf.summary.histogram('normal/moving_mean',mean_moving_normal)
+sess = tf.Session()
+writer = tf.summary.FileWriter('./histogram_example')
+N = 400
+for step in range(N):
+    k_val = step/float(N)
+    summ = sess.run(summaries,feed_dict={k:k_val})
+    writer.add_summary(summ,global_step=step)
+\end{python}
+在当前代码中运行下边的代码启动TensorFlow载入数据
+\begin{python}
+tensorboard --logdir=./histogram_example
+\end{python}
+\begin{center}
+\begin{figure}[H]
+\includegraphics[scale=0.5]{tb_hist1.png}
+\end{figure}
+\end{center}
+tf.summary.histogram接受任一尺寸和大小的Tensor，压缩他们进入直方数据结构组成一些小的数据宽度和数量组层的bin将诶够，例如我们像组成数[0.5,1.1,1.3,2.2,2.9,2.99]成3个bin，我们可以创建三个bin：一个包含0到1之间的一切(0.5)，一个包含1-2(1.1,1.3)之间，一个包含2-3(2.2,2.9,2.99)
+
+  TensorFlow用类是的方法创建bins，但是不想我们上面的例子，它不创建整数读额bins，瑞与大型数据，稀疏数据，这样的也许导致上千个bin，bins时指数分布时，一些bins相比于一些非常大数的bin接近于0。然而，可视化指数分布bin时一个技巧，如果高被编码为数量，bin宽度更大的空间，甚至他们有相同的元素，相比较之下统计数量使得豪赌比较变得可能，直方图采集数据仅均匀的bins，这可能导致不幸的人工操作。
+
+在直方图可视化器的每一个切片显示为一个单个的直方图。切片安装步数组织。例老的切片(e.g. step 0)比较靠后变为更深，然而新的slices接近于前景色，颜色更轻，右边的y轴显示了步数。
+
+你可以在直方图上滑动鼠标看到更多的详细星系。你如下面的图你可以看到直方图的时间不为177有一个bin中心在3.78有bin中有34.5个元素。
+\begin{center}
+\begin{figure}[H]
+\includegraphics[scale=0.5]{tb_hist2.png}
+\end{figure}
+\end{center}
+你也许注意到注意到直方切片在统计步数和时间上不总是偶数，这是因为TensorBoard用\href{https://en.wikipedia.org/wiki/Reservoir\_sampling}{reservoir sampling}保持直方图的子集，为了节约内存，Reservior sampling保证每个采样有一个相等的可能性被包含进去，但是因为它时一个随机算法，采样并不在每个偶数步发生。
+\subsection{Overlay Mode}
+控制面板上允许你打开直方图模式为offset为overlay。
+在offset模式下，可视化转动45度，因此单个的直方图切片不再展开，而是所有的图华仔一个相同的y轴上。
+\begin{center}
+\begin{figure}[H]
+\includegraphics[scale=0.5]{tb_hist3.png}
+\end{figure}
+\end{center}
+现在表上的每个切片被线分开，y轴显示每个bucket项目数量，深色线时老的，早期的时间不，浅色线时最近的新的时间不，你可以用鼠标在表上查看更多的信息。
+\begin{center}
+\begin{figure}[H]
+\includegraphics[scale=0.5]{tb_hist4.png}
+\end{figure}
+\end{center}
+
+overlay可视化在你想直接比较不同直方图的数量。
+\subsection{多个分布}
+直方图控制面板对多分布下的可视化很有用，当我们通过链接两个不同的正态分布构造一个简单的二两分布，代码如下:
+\begin{python}
+import tensorflow as tf
+k = tf.placeholder(tf.float32)
+mean_moving_normal = tf.random_normal(shape=[1000],mean=(3*5),stddev=1)
+tf.summary.histogram('normal/moving_mean',mean_moving_normal)
+variance_shrinking_normal = tf.random_normal(shape=[100],mean=0,stddev=1-(k))
+tf.summary.histogram('normal/shrinking_varance',variance_shrinking_normal)
+normal_combined = tf.concat([mean_moving_normal,variance_shrinking_normal],0)
+tf.summary.histogram('normal/bimodal',normal_combined)
+summaris = tf.summary.merge_all()
+sess = tf.Session()
+writer = tf.summary.FileWriter('./histgram_example1')
+N = 400
+for step in range(N):
+    k_val = step/float(N)
+    summ = sess.run(summaris,feed_dict={k:k_val})
+    writer.add_summary(summ,global_step=step)
+\end{python}
+上面的例子是滑动平均，现在我们已有一个收缩的变量分布。
+\begin{center}
+\begin{figure}[H]
+\includegraphics[scale=0.6]{tb_hist5.png}
+\end{figure}
+\end{center}
+当我们链接她们在一起，我们得到一个清晰解释分歧，二进制结构的表格:
+\begin{center}
+\begin{figure}[H]
+\includegraphics[scale=0.5]{tb_hist6.png}
+\end{figure}
+\end{center}
+\subsection{更多分布}
+生成可视化更多分布，结合他们到表中:
+\begin{python}
+import tensorflow as tf
+k = tf.placeholder(tf.float32)
+# Make a normal distribution,with a shift mean
+mean_moving_normal = tf.random_normal(shape=[1000],mean=(5*k),stddev=1)
+tf.summary.histogram('normal/moving_mean',mean_moving_normal)
+variance_shrinking_normal = tf.random_normal(shape=[1000],mean=0,stddev=1-(k))
+tf.summary.histogram('normal/shinking_variance',variance_shrinking_normal)
+normal_combined = tf.concat([mean_moving_normal,variance_shrinking_normal],0)
+tf.summary.histogram("normal/bimodal",normal_combined)
+#add gamma distribution
+gamma = tf.random_gamma(shape=[1000],alpha=k)
+tf.summary.histogram('gamma',gamma)
+poisson = tf.random_poisson(shape=[1000],lam=k)
+tf.summary.histogram('poisson',poisson)
+#add a uniform distribution
+uniform = tf.random_uniform(shape=[1000],maxval=k*10)
+tf.summary.histogram('uniform',uniform)
+#finnally combine everything together
+
+all_distributions = [mean_moving_normal,variance_shrinking_normal,gamma,poisson,uniform]
+all_combined = tf.concat(all_distributions,0)
+tf.summary.histogram('all_combined',all_combined)
+summaries = tf.summary.merge_all()
+sess = tf.Session()
+writer = tf.summary.FileWriter('./histogram_example2')
+N = 400
+for step in range(N):
+    k_val = step/float(N)
+    summ = sess.run(summaries,feed_dict={k:k_val})
+    writer.add_summary(summ,global_step=step)
+\end{python}
+\begin{center}
+\begin{figure}[H]
+\includegraphics[scale=0.5]{tb_hist7.png}
+\end{figure}
+\end{center}
+\begin{center}
+\begin{figure}
+\includegraphics[scale=0.5]{tb_hist9.png}
+\end{figure}
+\end{center}
+\subsection{poisson分布}
+\begin{center}
+\begin{figure}[H]
+\includegraphics[scale=0.5]{tb_hist10.png}
+\end{figure}
+\end{center}
+poisson分布定义在整数上，因此所有被生成的值都是整数，直方图压缩移动数据到浮点bins，导致可视化在整数值上显示一点点突起。
+\subsection{结合所有的数据到一张图向上}
+\begin{center}
+\begin{figure}[H]
+\includegraphics[scale=0.5]{tb_hist11.png}
+\end{figure}
+\end{center}
+
 
 \begin{python}
 import tensorflow as tf
@@ -580,11 +727,12 @@ for step in range(600):
 test_output = sess.run(output,{tf_x:test_x[:10]})
 pred_y = np.argmax(test_output,1)
 \end{python}
-\subsection{RNN}
+\section{RNN}
+\subsection{向量字表示}
 \subsubsection{Vector Representation of Words}
 通常图像或音频系统处理的是由图片中所有单个原始像素点强度值或者音频中功率谱密度的强度值，把它们编码成丰富、高维度的向量数据集。对于物体或语音识别这一类的任务，我们所需的全部信息已经都存储在原始数据中（显然人类本身就是依赖原始数据进行日常的物体或语音识别的）。然后，自然语言处理系统通常将词汇作为离散的单一符号，例如 "cat" 一词或可表示为 Id537 ，而 "dog" 一词或可表示为 Id143。这些符号编码毫无规律，无法提供不同词汇之间可能存在的关联信息。换句话说，在处理关于 "dogs" 一词的信息时，模型将无法利用已知的关于 "cats" 的信息（例如，它们都是动物，有四条腿，可作为宠物等等）。可见，将词汇表达为上述的独立离散符号将进一步导致数据稀疏，使我们在训练统计模型时不得不寻求更多的数据。而词汇的向量表示将克服上述的难题。向量空间模型 (VSMs)将词汇表达（嵌套）于一个连续的向量空间中，语义近似的词汇被映射为相邻的数据点。向量空间模型在自然语言处理领域中有着漫长且丰富的历史，不过几乎所有利用这一模型的方法都依赖于 分布式假设，其核心思想为出现于上下文情景中的词汇都有相类似的语义。采用这一假设的研究方法大致分为以下两类：基于计数的方法 (e.g. 潜在语义分析)， 和 预测方法 (e.g. 神经概率化语言模型).
 
-其中它们的区别在如下论文中又详细阐述 Baroni et al.，不过简而言之：基于计数的方法计算某词汇与其邻近词汇在一个大型语料库中共同出现的频率及其他统计量，然后将这些统计量映射到一个小型且稠密的向量中。预测方法则试图直接从某词汇的邻近词汇对其进行预测，在此过程中利用已经学习到的小型且稠密的嵌套向量。
+其中它们的区别在如下论文中又详细阐述 \href{http://clic.cimec.unitn.it/marco/publications/acl2014/baroni-etal-countpredict-acl2014.pdf}{Baroni :et al}，不过简而言之：基于计数的方法计算某词汇与其邻近词汇在一个大型语料库中共同出现的频率及其它统计量，然后将这些统计量映射到一个小型且稠密的向量中。预测方法则试图直接从某词汇的邻近词汇对其进行预测，在此过程中利用已经学习到的小型且稠密的嵌套向量。
 
 Word2vec是一种可以进行高效率词嵌套学习的预测模型。其两种变体分别为：连续词袋模型（CBOW）及Skip-Gram模型。从算法角度看，这两种方法非常相似，其区别为CBOW根据源词上下文词汇（'the cat sits on the'）来预测目标词汇（例如，‘mat’），而Skip-Gram模型做法相反，它通过目标词汇来预测源词汇。Skip-Gram模型采取CBOW的逆过程的动机在于：CBOW算法对于很多分布式信息进行了平滑处理（例如将一整段上下文信息视为一个单一观察量）。很多情况下，对于小型的数据集，这一处理是有帮助的。相形之下，Skip-Gram模型将每个“上下文-目标词汇”的组合视为一个新观察量，这种做法在大型数据集中会更为有效。本教程余下部分将着重讲解Skip-Gram模型。
 \subsubsection{处理噪声的对比训练}
@@ -592,36 +740,36 @@ Word2vec是一种可以进行高效率词嵌套学习的预测模型。其两种
 \begin{equation*}
 P(w_t|h)=softmax(score(w_t,h))=\frac{exp\left\{score(w_t,h)\right\}}{\Sigma_{Word w' in Vocab}exp\left\{score(w',h)\right\}}
 \end{equation*}
-当 score(w\_t,h) 计算了文字 w\_t 和 上下文 h 的相容性（通常使用向量积）。我们使用对数似然函数来训练训练集的最大值，比如通过：
+当 $score(w_t,h)$ 计算了文字 $w_t$ 和 上下文 h 的相容性（通常使用向量积）。我们使用对数似然函数来训练训练集的最大值，比如通过：
 \begin{equation*}
 J_{ML} = logP(w_t|h)=score(w_t,h)-log(\Sigma_{Word w' in Vocab}exp\left\{score(w',h)\right\})
 \end{equation*}
-这里提出了一个解决语言概率模型的合适的通用方法。然而这个方法实际执行起来开销非常大，因为我们需要去计算并正则化当前上下文环境 h 中所有其他 V 单词 w' 的概率得分，在每一步训练迭代中。
+这里提出了一个解决语言概率模型的合适的通用方法。然而这个方法实际执行起来开销非常大，因为我们需要去计算并正则化当前上下文环境 h 中所有其它 V 单词 w' 的概率得分，在每一步训练迭代中。
 \begin{figure}[H]
 \includegraphics[scale=0.5]{softmax-nplm.png}
 \caption{CBOW方法}
 \end{figure}
-从另一个角度来说，当使用word2vec模型时，我们并不需要对概率模型中的所有特征进行学习。而CBOW模型和Skip-Gram模型为了避免这种情况发生，使用一个二分类器（逻辑回归）在同一个上下文环境里从 k 虚构的 (噪声) 单词$\bar{w}$区分真正的目标单词$w_t$,下面详细参数CBOW模型，对于Skip-Gram模型只要简单的反向操作即可。
+从另一个角度来说，当使用word2vec模型时，我们并不需要对概率模型中的所有特征进行学习。而CBOW模型和Skip-Gram模型为了避免这种情况发生，使用一个二分类器（逻辑回归）在同一个上下文环境里从 k 虚构的 (噪声) 单词$\hat{w}$区分真正的目标单词$w_t$,下面详细参数CBOW模型，对于Skip-Gram模型只要简单的反向操作即可。
 \begin{center}
 \begin{figure}[H]
 \includegraphics[scale=0.5]{nce-nplm.png}
+\caption{Skip-Gram}
 \end{figure}
 \end{center}
 从数学的角度来说，我们的目标时对每个样本最大化:
 \begin{equation*}
 J_{NEG}=logQ_{\theta}(D=1|w_t,h)+k\underset{\hat{w}\sim P_{noise}}{E}[logQ_{\theta}(D=0|\hat{\omega},h)]
 \end{equation*}
-其中$Q_{\theta}(D=1|w,h)$代表的是当前上下文h，根据所学得嵌套向量$\theta$目标单词 w 使用二分类逻辑回归计算得出的概率。在实践中，我们通过在噪声分布中绘制比对文字来获得近似的期望值（通过计算蒙特卡洛平均值）。
+其中$Q_{\theta}(D=1|w,h)$代表的是当前上下文h，根据所学得嵌套向量$\theta$目标单词 w 使用二分类逻辑回归计算得出的概率。在实践中，我们通过在噪声分布中绘制比对文字来获得近似的期望值（通过计算\href{https://en.wikipedia.org/wiki/Monte_Carlo_integration}{蒙特卡洛平均值}）。
 
-当真实地目标单词被分配到较高的概率，同时噪声单词的概率很低时，目标函数也就达到最大值了。从技术层面来说，这种方法叫做 负抽样，而且使用这个损失函数在数学层面上也有很好的解释：这个更新过程也近似于softmax函数的更新。这在计算上将会有很大的优势，因为当计算这个损失函数时，只是有我们挑选出来的 k 个 噪声单词，而没有使用整个语料库 V。这使得训练变得非常快。我们实际上使用了与noise-contrastive estimation (NCE)介绍的非常相似的方法，这在TensorFlow中已经封装了一个很便捷的函数tf.nn.nce\_loss()。
+当真实地目标单词被分配到较高的概率，同时噪声单词的概率很低时，目标函数也就达到最大值了。从技术层面来说，这种方法叫做\href{http://papers.nips.cc/paper/5021-distributed-representations-of-words-and-phrases-and-their-compositionality.pdf}{负抽样}，而且使用这个损失函数在数学层面上也有很好的解释：这个更新过程也近似于softmax函数的更新。这在计算上将会有很大的优势，因为当计算这个损失函数时，只是有我们挑选出来的 k 个 噪声单词，而没有使用整个语料库 V。这使得训练变得非常快。我们实际上使用了与\href{http://papers.nips.cc/paper/5165-learning-word-embeddings-efficiently-with-noise-contrastive-estimation.pdf}{noise-contrastive estimation (NCE)}介绍的非常相似的方法，这在TensorFlow中已经封装了一个很便捷的函数tf.nn.nce\_loss()。
 
-让我们在实践中来直观地体会它是如何运作的
 \subsubsection{Skip-gram模型}
 下面来看一下这个数据集
 
 the quick brown fox jumped over the lazy dog
 
-我们首先对一些单词以及它们的上下文环境建立一个数据集。我们可以以任何合理的方式定义‘上下文’，而通常上这个方式是根据文字的句法语境的（使用语法原理的方式处理当前目标单词可以看一下这篇文献 Levy et al.，比如说把目标单词左边的内容当做一个‘上下文’，或者以目标单词右边的内容，等等。现在我们把目标单词的左右单词视作一个上下文， 使用大小为1的窗口，这样就得到这样一个由(上下文, 目标单词) 组成的数据集：
+我们首先对一些单词以及它们的上下文环境建立一个数据集。我们可以以任何合理的方式定义‘上下文’，而通常上这个方式是根据文字的句法语境的（使用语法原理的方式处理当前目标单词可以看一下这篇文献 \href{https://levyomer.files.wordpress.com/2014/04/dependency-based-word-embeddings-acl-2014.pdf}{Levy et al.}，比如说把目标单词左边的内容当做一个‘上下文’，或者以目标单词右边的内容，等等。现在我们把目标单词的左右单词视作一个上下文， 使用大小为1的窗口，这样就得到这样一个由(上下文, 目标单词) 组成的数据集：
 
 ([the, brown], quick), ([quick, fox], brown), ([brown, jumped], fox), ...
 
@@ -629,7 +777,7 @@ the quick brown fox jumped over the lazy dog
 
 (quick, the), (quick, brown), (brown, quick), (brown, fox), ...
 
-目标函数通常是对整个数据集建立的，但是本问题中要对每一个样本（或者是一个batch\_size 很小的样本集，通常设置为16 <= batch\_size <= 512）在同一时间执行特别的操作，称之为随机梯度下降 (SGD)。我们来看一下训练过程中每一步的执行。
+目标函数通常是对整个数据集建立的，但是本问题中要对每一个样本（或者是一个batch\_size 很小的样本集，通常设置为16 <= batch\_size <= 512）在同一时间执行特别的操作，称之为\href{https://en.wikipedia.org/wiki/Stochastic_gradient_descent}{随机梯度下降 (SGD)}。我们来看一下训练过程中每一步的执行。
 
 假设用 t 表示上面这个例子中quick 来预测 the 的训练的单个循环。用 num\_noise 定义从噪声分布中挑选出来的噪声（相反的）单词的个数，通常使用一元分布，P(w)。为了简单起见，我们就定num\_noise=1，用 sheep 选作噪声词。接下来就可以计算每一对观察值和噪声值的损失函数了，每一个执行步骤就可表示为：
 \begin{equation*}
@@ -638,13 +786,13 @@ J_{NEG}^{(t)}=logQ_{\theta}(D=1|the,quick)+log(Q_{\theta}(D=0|sleep,quick))
 整个计算过程的目标时同感更新嵌套参数$\theta$来逼近目标函数(这个例子中就是使目标函数最大化)。为此我们要计算损失函数中嵌套参数$\theta$的梯度，比如\[\frac{\partial}{\partial}J_{NEG}\]
 (幸好TensorFlow封装了工具函数可以简单调用!)。对于整个数据集，当梯度下降的过程中不断地更新参数，对应产生的效果就是不断地移动每个单词的嵌套向量，直到可以把真实单词和噪声单词很好得区分开。
 
-我们可以把学习向量映射到2维中以便我们观察，其中用到的技术可以参考 t-SNE 降纬技术。当我们用可视化的方式来观察这些向量，就可以很明显的获取单词之间语义信息的关系，这实际上是非常有用的。当我们第一次发现这样的诱导向量空间中，展示了一些特定的语义关系，这是非常有趣的，比如文字中 male-female，gender 甚至还有 country-capital 的关系, 如下方的图所示 (也可以参考 Mikolov et al., 2013论文中的例子)。
+我们可以把学习向量映射到2维中以便我们观察，其中用到的技术可以参考 \href{http://lvdmaaten.github.io/tsne/}{t-SNE 降纬技术}。当我们用可视化的方式来观察这些向量，就可以很明显的获取单词之间语义信息的关系，这实际上是非常有用的。当我们第一次发现这样的诱导向量空间中，展示了一些特定的语义关系，这是非常有趣的，比如文字中 male-female，gender 甚至还有 country-capital 的关系, 如下方的图所示 (也可以参考 \href{http://www.aclweb.org/anthology/N13-1090}{Mikolov et al.}, 2013论文中的例子)。
 \begin{center}
 \begin{figure}[H]
 \includegraphics[scale=0.5]{linear-relationships.png}
 \end{figure}
 \end{center}
-这也解释了为什么这些向量在传统的NLP问题中可作为特性使用，比如用在对一个演讲章节打个标签，或者对一个专有名词的识别 (看看如下这个例子 Collobert et al.或者 Turian et al.)。
+这也解释了为什么这些向量在传统的NLP问题中可作为特性使用，比如用在对一个演讲章节打个标签，或者对一个专有名词的识别 (看看如下这个例子 \href{https://arxiv.org/pdf/1103.0398v1.pdf}{Collobert et al.}或者 \href{http://www.aclweb.org/anthology/P10-1040}{Turian et al.})。
 
 不过现在让我们用它们来画漂亮的图表吧！
 
@@ -691,11 +839,10 @@ for inputs, labels in generate_batch(...):
 \includegraphics[scale=0.5]{tsne.png}
 \end{figure}
 \end{center}
-Et voila! 与预期的一样，相似的单词被聚类在一起。对word2vec模型更复杂的实现需要用到TensorFlow一些更高级的特性，具体是实现可以参考 tensorflow/models/embedding/word2vec.py。
-\subsubsection{嵌套学习的评估:类比推理}
+Et voila! 与预期的一样，相似的单词被聚类在一起。对word2vec模型更复杂的实现需要用到TensorFlow一些更高级的特性，具体是实现可以参考\href{https://github.com/bleedingfight/models/tree/master/tutorials/embedding}{word2vec.py}\subsubsection{嵌套学习的评估:类比推理}
 词嵌套在NLP的预测问题中是非常有用且使用广泛地。如果要检测一个模型是否是可以成熟地区分词性或者区分专有名词的模型，最简单的办法就是直接检验它的预测词性、语义关系的能力，比如让它解决形如king is to queen as father is to ?这样的问题。这种方法叫做类比推理 ，可参考Mikolov and colleagues，数据集下载地址为: https://word2vec.googlecode.com/svn/trunk/questions-words.txt。
 
-To see how we do this evaluation如何执行这样的评估，可以看build\_eval\_graph()和 eval()这两个函数在下面源码中的使用 tensorflow/models/embedding/word2vec.py.
+To see how we do this evaluation如何执行这样的评估，可以看build\_eval\_graph()和 eval()这两个函数在下面源码中的使用 \href{https://github.com/bleedingfight/models/tree/master/tutorials/embedding}{word2vec.py}
 
 超参数的选择对该问题解决的准确性有巨大的影响。想要模型具有很好的表现，需要有一个巨大的训练数据集，同时仔细调整参数的选择并且使用例如二次抽样的一些技巧。不过这些问题已经超出了本教程的范围。
 \subsubsection{优化实现}
@@ -704,4 +851,104 @@ To see how we do this evaluation如何执行这样的评估，可以看build\_ev
 一旦你有了一个满意的模型结构，或许它就可以使实现运行地更高效（在短时间内覆盖更多的数据）。比如说，在本教程中使用的简单代码，实际运行速度都不错，因为我们使用Python来读取和填装数据，而这些在TensorFlow后台只需执行非常少的工作。如果你发现你的模型在输入数据时存在严重的瓶颈，你可以根据自己的实际问题自行实现一个数据阅读器，参考 新的数据格式。对于Skip-Gram 模型，我们已经完成了如下这个例子 tensorflow/models/embedding/word2vec.py。
 
 如果I/O问题对你的模型已经不再是个问题，并且想进一步地优化性能，或许你可以自行编写TensorFlow操作单元，详见 添加一个新的操作。相应的，我们也提供了Skip-Gram模型的例子 tensorflow/models/embedding/word2vec\_optimized.py。请自行调节以上几个过程的标准，使模型在每个运行阶段有更好地性能。
+\subsection{RNN}
+此教程将展示如何在高难度的语言模型中训练循环神经网络。该问题的目标是获得一个能确定语句概率的概率模型。为了做到这一点，通过之前已经给出的词语来预测后面的词语。我们将使用 PTB(Penn Tree Bank) 数据集，这是一种常用来衡量模型的基准，同时它比较小而且训练起来相对快速。
 
+语言模型是很多有趣难题的关键所在，比如语音识别，机器翻译，图像字幕等。它很有意思--可以参看 here。
+
+本教程的目的是重现 Zaremba et al., 2014 的成果，他们在 PTB 数据集上得到了很棒的结果。
+\subsubsection{下载及准备数据}
+本教程需要的数据在 data/ 路径下，来源于 Tomas Mikolov 网站上的 PTB 数据集http://www.fit.vutbr.cz/~imikolov/rnnlm/simple-examples.tgz。
+
+该数据集已经预先处理过并且包含了全部的 10000 个不同的词语，其中包括语句结束标记符，以及标记稀有词语的特殊符号 (<unk>) 。我们在 reader.py 中转换所有的词语，让他们各自有唯一的整型标识符，便于神经网络处理。
+\subsubsection{LSTM}
+模型的核心由一个 LSTM 单元组成，其可以在某时刻处理一个词语，以及计算语句可能的延续性的概率。网络的存储状态由一个零矢量初始化并在读取每一个词语后更新。而且，由于计算上的原因，我们将以 batch\_size 为最小批量来处理数据。
+
+基础的伪代码就像下面这样：
+\begin{python}
+lstm = rnn_cell.BasicLSTMCell(lstm_size)
+state = tf.zeros([batch_size, lstm.state_size])
+
+loss = 0.0
+for current_batch_of_words in words_in_dataset:
+    output, state = lstm(current_batch_of_words, state)
+
+    logits = tf.matmul(output, softmax_w) + softmax_b
+    probabilities = tf.nn.softmax(logits)
+    loss += loss_function(probabilities, target_words)
+\end{python}
+\subsubsection{截断反向传播}
+为使学习过程易于处理，通常的做法是将反向传播的梯度在（按时间）展开的步骤上照一个固定长度(num\_steps)截断。 通过在一次迭代中的每个时刻上提供长度为 num\_steps 的输入和每次迭代完成之后反向传导，这会很容易实现。
+
+一个简化版的用于计算图创建的截断反向传播代码：
+\begin{python}
+words = tf.placeholder(tf.int32, [batch_size, num_steps])
+
+lstm = rnn_cell.BasicLSTMCell(lstm_size)
+initial_state = state = tf.zeros([batch_size, lstm.state_size])
+
+for i in range(len(num_steps)):
+    output, state = lstm(words[:, i], state)
+
+    # ...
+
+final_state = state
+\end{python}
+下面展现如何实现迭代整个数据集：
+\begin{python}
+numpy_state = initial_state.eval()
+total_loss = 0.0
+for current_batch_of_words in words_in_dataset:
+    numpy_state, current_loss = session.run([final_state, loss],
+        feed_dict={initial_state: numpy_state, words: current_batch_of_words})
+    total_loss += current_loss
+\end{python}
+\subsubsection{输入}
+在输入 LSTM 前，词语 ID 被嵌入到了一个密集的表示中(查看 矢量表示教程)。这种方式允许模型高效地表示词语，也便于写代码：
+\begin{python}
+# embedding_matrix 张量的形状是： [vocabulary_size, embedding_size]
+word_embeddings = tf.nn.embedding_lookup(embedding_matrix, word_ids)
+\end{python}
+嵌入的矩阵会被随机地初始化，模型会学会通过数据分辨不同词语的意思。
+\subsubsection{损失函数}
+我们想使目标词语的平均负对数概率最小$loss = -\frac{1}{N}\Sigma_{i=1}^NlnP_{target_i}$
+实现起来并非很难，而且函数 sequence\_loss\_by\_example 已经有了，可以直接使用。
+
+论文中的典型衡量标准是每个词语的平均困惑度（perplexity），计算式为
+$$e^{-\frac{1}{N}\Sigma_{i=1}^N}lnp_{target_i}=e^{loss}$$
+同时我们会观察训练过程中的困惑度值（perplexity)
+\subsubsection{多个LSTM层堆叠}
+要想给模型更强的表达能力，可以添加多层 LSTM 来处理数据。第一层的输出作为第二层的输入，以此类推。
+
+类 MultiRNNCell 可以无缝的将其实现：
+\begin{python}
+lstm = rnn_cell.BasicLSTMCell(lstm_size)
+stacked_lstm = rnn_cell.MultiRNNCell([lstm] * number_of_layers)
+
+initial_state = state = stacked_lstm.zero_state(batch_size, tf.float32)
+for i in range(len(num_steps)):
+    # 每次处理一批词语后更新状态值.
+    output, state = stacked_lstm(words[:, i], state)
+
+    # 其余的代码.
+    # ...
+
+final_state = state
+\end{python}
+\subsubsection{编译并运行代码}
+首先需要构建库，在CPU上编译:
+\begin{python}
+bazel build -c opt tensorflow/models/rnn/ptb:ptb_word_lm
+\end{python}
+如果你有一个强大的 GPU，可以运行
+\begin{python}
+bazel build -c opt --config=cuda tensorflow/models/rnn/ptb:ptb_word_lm
+\end{python}
+运行模型:
+\begin{python}
+bazel-bin/tensorflow/models/rnn/ptb/ptb_word_lm \
+  --data_path=/tmp/simple-examples/data/ --alsologtostderr --model small
+\end{python}
+教程代码中有 3 个支持的模型配置参数："small"， "medium" 和 "large"。它们指的是 LSTM 的大小，以及用于训练的超参数集。
+
+模型越大，得到的结果应该更好。在测试集中 small 模型应该可以达到低于 120 的困惑度（perplexity），large 模型则是低于 80，但它可能花费数小时来训练。

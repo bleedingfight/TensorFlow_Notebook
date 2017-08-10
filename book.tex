@@ -15,6 +15,7 @@
 \setlength{\arrayrulewidth}{1mm}
 \usepackage{hyperref}
 \usepackage{amsmath}
+\pagenumbering{arabic}
 \hypersetup{
     colorlinks=true,
     linkcolor=blue,
@@ -44,8 +45,11 @@
 %\tableofcontents
 %\newpage
 \begin{document}
-\tableofcontents % Print the table of contents itself
+%set page number
+\frontmatter
 
+\tableofcontents % Print the table of contents itself
+\mainmatter
 \include{./chapter1/tf_chapter1}
 \include{./chapter2/tf_chapter2}
 \include{./chapter2/use_gpu}
