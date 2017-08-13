@@ -74,3 +74,36 @@ with tf.Session() as sess:
 print(a.shape)
 print(b.shape)
 \end{python}
+\section{tf.app.flags}
+\subsection{DEFINE\_boolean}
+DEFINE\_boolean(flag\_name,default\_value,docstring):定义一个'boolean'类型的flag。
+\begin{itemize}
+\item flag\_name:flag的名字，是一个字符串。
+\item default\_value:flag应被被看作一个boolean的默认值。
+\item docstring:用flag的一个帮助信息。
+\end{itemize}
+\subsection{DEFINE\_boolean}:定义一个'boolean'类型的flag。
+\begin{itemize}
+\item flag\_name:flag的名字，是一个字符串。
+\item flag\_default\_value:默认的boolean类型的值。
+\item docstring:用flag的一个有用的帮助信息。
+\end{itemize}
+\subsection{DEFINE\_float}:定义一个浮点数类型的flag。
+\begin{itemize}
+\item flag\_name:作为flag的名字，应该是字符串。
+\item default\_value:flag的默认值，应该是浮点数。
+\item docstring:用flag的一个有用的帮助信息。
+\end{itemize}
+\subsection{DEFINE\_integer}:定义一个整数的flag。
+\begin{itemize}
+\item flag\_name:flag的名字，应该是字符串。
+\item default\_value:flag的默认值，应该是一个整数。
+\item docstring:用flag的一个有用的帮助信息。
+\end{itemize}
+\subsection{DEFINE\_string}:定义一个字符串的flag。
+\begin{itemize}
+\item flag的名字，应该是字符串。
+\item default\_value:flag的默认值，应该是字符串。
+\item docstring:用flag的一个有用的帮助信息。
+\end{itemize}
+

@@ -1,0 +1,7 @@
+\chapter{Bazel}
+\section{Bazel开始}
+\subsection{用一个工作空间}
+所有的共建操作在你的文件系统上包含有所有构建的软件的源代码目录，正如build输出的符号连接的目录(例如bazel-bin和bazel-out)，构建发生在workspace。workspace的位置目录不重要，但是必须包含一个叫最哦WORKSPACE的听层目录tige控温建是一个可用的workspace。WORKSPACE文件能被用来查询构建输出需要的外部依赖。一个workspace可以在多个项目中共享。
+\begin{lstlisting}[frame =shadowbox ]
+touch WORKSPACE
+\end{lstlisting}

@@ -1,11 +1,15 @@
 \documentclass[11pt,fleqn]{book}
 \usepackage[top=3cm,bottom=3cm,left=3.2cm,right=3.2cm,headsep=10pt,letterpaper]{geometry}
+%中文支持
 \usepackage[space]{ctex}
 \usepackage{amsmath}
 \usepackage{times}
 \usepackage{titlesec}
-\usepackage{titlesec}
+%结构化
 \graphicspath{{./pic/chapter1/}{./pic/chapter2/}{./pic/chapter3/}}
+\usepackage{subfiles}
+\usepackage{blindtext}
+\usepackage{listings}%设置C风格代码格式
 \usepackage{graphicx}
 \usepackage{float}
 \usepackage{pythonhighlight}
@@ -27,29 +31,11 @@
 \usepackage{avant} % Use the Avantgarde font for headings
 %\usepackage{times} % Use the Times font for headings
 \usepackage{mathptmx} % Use the Adobe Times Roman as the default text font together with math symbols from the Sym­bol, Chancery and 
-%\titleformat
-%{\chapter} % command
-%[display] % shape
-%{\bfseries\Large\itshape} % format
-%{Tensorflow No. \ \thechapter} % label
-%{0.5ex} % sep
-%{\rule{\textwidth}{1pt}
-%\vspace{1ex}
-%\centering
-%}
-%[\vspace{-0.5ex}%
-%\rule{\textwidth}{0.3pt}
-%] % after-code
-%\begin{document}
-%\date{\today}
-%\tableofcontents
-%\newpage
 \begin{document}
-%set page number
 \frontmatter
-
 \tableofcontents % Print the table of contents itself
 \mainmatter
+\lstset{numbers=left,numberstyle=\tiny,keywordstyle=\color{blue!70}, commentstyle=\color{red!50!green!50!blue!50},frame=shadowbox,rulesepcolor=\color{red!20!green!20!blue!20},escapeinside=``}
 \include{./chapter1/tf_chapter1}
 \include{./chapter2/tf_chapter2}
 \include{./chapter2/use_gpu}
@@ -60,6 +46,7 @@
 \include{./chapter3/sys}
 \include{./chapter3/url}
 \include{./chapter3/requests}
+\include{./chapter3/bazel}
 \include{./chapter4/tf_common}
 \include{./chapter4/tf_image}
 \end{document}
