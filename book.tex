@@ -3,6 +3,7 @@
 %中文支持
 \usepackage[space]{ctex}
 \usepackage{amsmath}
+\usepackage{amssymb}
 \usepackage{times}
 \usepackage{titlesec}
 %结构化
@@ -31,11 +32,23 @@
 \usepackage{avant} % Use the Avantgarde font for headings
 %\usepackage{times} % Use the Times font for headings
 \usepackage{mathptmx} % Use the Adobe Times Roman as the default text font together with math symbols from the Sym­bol, Chancery and 
+%tktz画图
+\usepackage{tkz-graph}
+\GraphInit[vstyle = Shade]
+\tikzset{
+  LabelStyle/.style = { rectangle, rounded corners, draw,
+                        minimum width = 2em, fill = green!50,
+                        text = red, font = \bfseries },
+  VertexStyle/.append style = { inner sep=5pt,
+                                font = \Large\bfseries},
+  EdgeStyle/.append style = {->, bend left} }
+
 \begin{document}
 \frontmatter
 \tableofcontents % Print the table of contents itself
 \mainmatter
 \lstset{numbers=left,numberstyle=\tiny,keywordstyle=\color{blue!70}, commentstyle=\color{red!50!green!50!blue!50},frame=shadowbox,rulesepcolor=\color{red!20!green!20!blue!20},escapeinside=``}
+\include{./chapter1/deeplearning}
 \include{./chapter1/tf_chapter1}
 \include{./chapter2/tf_chapter2}
 \include{./chapter2/use_gpu}
