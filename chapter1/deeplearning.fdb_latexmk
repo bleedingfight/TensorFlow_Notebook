@@ -1,0 +1,16 @@
+# Fdb version 3
+["xdvipdfmx"] 1502980039 "deeplearning.xdv" "deeplearning.pdf" "deeplearning" 1502980040
+  "deeplearning.xdv" 1502980039 12040 8e4c784dc98401b0db81f34d4084d030 "xelatex"
+  (generated)
+  "deeplearning.pdf"
+["xelatex"] 1502980038 "deeplearning.tex" "deeplearning.xdv" "deeplearning" 1502980040
+  "deeplearning.aux" 1502979787 2652 262aebbb1f163c2342f4b8e41be6f737 ""
+  "deeplearning.tex" 1502980037 23093 e23b37fea36bbc29e06940150405d4ea ""
+  "f:/TexLive/texmf-dist/fonts/map/fontname/texfonts.map" 1497429645 3287 e6b82fe08f5336d4d5ebc73fb1152e87 ""
+  "f:/TexLive/texmf-dist/fonts/tfm/public/cm/cmbx10.tfm" 1497429334 1328 c834bbb027764024c09d3d2bf908b5f0 ""
+  "f:/TexLive/texmf-dist/fonts/tfm/public/cm/cmbx5.tfm" 1497429334 1332 f817c21a1ba54560425663374f1b651a ""
+  "f:/TexLive/texmf-dist/fonts/tfm/public/cm/cmbx7.tfm" 1497429334 1336 3125ccb448c1a09074e3aa4a9832f130 ""
+  "f:/TexLive/texmf-var/web2c/xetex/xelatex.fmt" 1497431102 3678246 978092e0f3f3e8e04412e45768fefeb3 ""
+  (generated)
+  "deeplearning.xdv"
+  "deeplearning.log"

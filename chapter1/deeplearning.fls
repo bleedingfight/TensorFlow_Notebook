@@ -1,0 +1,9 @@
+PWD C:/Users/Alien/TensorFlow_Notebook/chapter1
+INPUT f:/TexLive/texmf-var/web2c/xetex/xelatex.fmt
+INPUT ./deeplearning.tex
+OUTPUT deeplearning.log
+OUTPUT deeplearning.xdv
+INPUT f:/TexLive/texmf-dist/fonts/map/fontname/texfonts.map
+INPUT f:/TexLive/texmf-dist/fonts/tfm/public/cm/cmbx10.tfm
+INPUT f:/TexLive/texmf-dist/fonts/tfm/public/cm/cmbx7.tfm
+INPUT f:/TexLive/texmf-dist/fonts/tfm/public/cm/cmbx5.tfm
