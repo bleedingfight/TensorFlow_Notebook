@@ -1,1 +1,81 @@
 \section{layer}
+\subsection{tf.layers.average\_pooling1d}
+\begin{lstlisting}{language={ANSI}C}
+average_pooling1d(
+    inputs,
+    pool_size,
+    strides,
+    padding='valid',
+    data_format='channels_last',
+    name=None
+)
+\end{lstlisting}
+参数:
+\begin{itemize}
+	\item 池化的Tensor，rank必须是3。
+	\item pool\_size:一个正数或者是一个整数列表或元组，代表池化窗口大小。
+	\item striders:一个整数，指定池化操作的步数。
+	\item padding:一个字符串，padding的方法，可以是'valid'或者是'same'。
+	\item data\_format:一个字符串channels\_last(默认)或者channels\_first,输入维度的顺序，channels\_last输入形状为(batch,length,channels)，channels\_first形状为(batch,channels,length)
+	\item name:字符串，layer名字。
+	\item 返回值:输出tensor，rank为3。
+\end{itemize}
+\subsection{tf.layers.average\_pooling2d}
+\begin{lstlisting}{language={ANSI}C}
+average_pooling2d(
+    inputs,
+    pool_size,
+    strides,
+    padding='valid',
+    data_format='channels_last',
+    name=None
+)
+\end{lstlisting}
+二维输入数据的平均池化
+
+参数:
+\begin{itemize}
+	\item inputs:池化的Tensor，rank必须为4
+	\item pool\_size:两个元素的正数或者元组。指定池化窗口的大小。可以是单个整数表示，指定所有的空间维度为相同的值。
+	\item padding:一个字符串，padding的方法，可以是'valid'或者是'same'
+	\item data\_format:一个字符串channels\_last(默认)或者channels\_first,输入维度的顺序，channels\_last输入形状为(batch,height,width,channels)，channels\_first形状为(batch,channels,height,width)
+	\item name:字符串，layer名字。
+	\item 返回值:输出tensor。
+\end{itemize}
+\subsection{tf.layers.average\_pooling3d}
+三维输入的平均池化
+参数:
+\begin{itemize}
+	\item inputs:池化的Tensor，rank必须为5
+	\item pool\_size:正数或者元组。列表（3个元素）指定池化窗口的大小。可以三个元素的整数，列表或者元组，指定所有的空间维度为相同的值。
+	\item padding:一个字符串，padding的方法，可以是'valid'或者是'same'
+	\item data\_format:一个字符串channels\_last(默认)或者channels\_first,输入维度的顺序，channels\_last输入形状为(batch,depth,height,width,channels)，channels\_first形状为(batch,depth,channels,height,width)
+	\item name:字符串，layer名字。
+	\item 返回值:输出tensor。
+\end{itemize}
+\subsection{tf.layers.batch_normalization}
+\begin{lstlisting}{language={ANSI}C}
+batch_normalization(
+    inputs,
+    axis=-1,
+    momentum=0.99,
+    epsilon=0.001,
+    center=True,
+    scale=True,
+    beta_initializer=tf.zeros_initializer(),
+    gamma_initializer=tf.ones_initializer(),
+    moving_mean_initializer=tf.zeros_initializer(),
+    moving_variance_initializer=tf.ones_initializer(),
+    beta_regularizer=None,
+    gamma_regularizer=None,
+    training=False,
+    trainable=True,
+    name=None,
+    reuse=None,
+    renorm=False,
+    renorm_clipping=None,
+    renorm_momentum=0.99,
+    fused=False
+)
+\end{lstlisting}
+batch normalization layer的函数接口。
