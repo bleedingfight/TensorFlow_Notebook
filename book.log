@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.14159265-2.6-0.99998 (TeX Live 2017/W32TeX) (preloaded format=xelatex 2017.6.14)  17 AUG 2017 23:34
+This is XeTeX, Version 3.14159265-2.6-0.99998 (TeX Live 2017/W32TeX) (preloaded format=xelatex 2017.6.14)  20 AUG 2017 21:47
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1892,7 +1892,7 @@ Package: xeCJK-listings 2017/05/15 v3.4.8 xeCJK patch file for listings
 (./chapter2/performance.aux) (./chapter3/common_module.aux)
 (./chapter3/path.aux) (./chapter3/re.aux) (./chapter3/sys.aux)
 (./chapter3/url.aux) (./chapter3/requests.aux) (./chapter3/bazel.aux)
-(./chapter4/tf_common.aux) (./chapter4/tf_image.aux))
+(./chapter4/tf_common.aux) (./chapter4/tf_image.aux) (./chapter4/tf_layer.aux))
 \openout1 = `book.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 46.
@@ -1913,7 +1913,6 @@ LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 46.
 LaTeX Font Info:    ... okay on input line 46.
 LaTeX Font Info:    Checking defaults for T3/cmr/m/n on input line 46.
 LaTeX Font Info:    Try loading font information for T3+cmr on input line 46.
-
 (f:/TexLive/texmf-dist/tex/latex/tipa/t3cmr.fd
 File: t3cmr.fd 2001/12/31 TIPA font definitions
 )
@@ -2041,23 +2040,24 @@ LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <6> not available
 ]
 
 LaTeX Font Warning: Font shape `TU/ptm/m/sl' undefined
-(Font)              using `TU/ptm/m/n' instead on input line 76.
+(Font)              using `TU/ptm/m/n' instead on input line 77.
 
 LaTeX Font Info:    Font shape `TU/SimSun(0)/m/sl' in size <10.95> not availabl
 e
 (Font)              Font shape `TU/SimSun(0)/m/it' tried instead on input line 
-76.
-[2] [3])
+77.
+[2] [3] [4])
 \tf@toc=\write5
 \openout5 = `book.toc'.
 
- [4]
+ [5] [6
+
+]
 \openout2 = `./chapter1/deeplearning.aux'.
 
  (./chapter1/deeplearning.tex
 Chapter 1.
 [1
-
 
 
 ] (f:/TexLive/texmf-dist/tex/latex/listings/lstlang1.sty
@@ -2172,84 +2172,51 @@ Underfull \hbox (badness 10000) in paragraph at lines 205--206
  []
 
 [20]
-LaTeX Font Info:    Try loading font information for OMS+ptm on input line 230.
-
- (f:/TexLive/texmf-dist/tex/latex/psnfss/omsptm.fd
-File: omsptm.fd 
-)
-LaTeX Font Info:    Font shape `OMS/ptm/m/n' in size <10.95> not available
-(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 230.
-
-Underfull \hbox (badness 10000) in paragraph at lines 232--232
-[][] \TU/pcr/m/n/10.95 tf.nn.max_pool_with_argmax(input,ksize,strides,padding,T
-argmax=None,name
- []
-
-
-Overfull \hbox (139.10435pt too wide) in paragraph at lines 235--235
-[][] \TU/pcr/m/n/10.95 tf.nn.fractionan_avg_pool(value,pooling_ratio,pseudo_ran
-dom=None,overlapping=None,deterministic=None,seed
- []
-
-
-Overfull \hbox (111.07234pt too wide) in paragraph at lines 236--236
-[][] \TU/pcr/m/n/10.95 tf.nn.avg_max_pool(value,pooling_ratio,pseudo_random=Non
-e,overlapping=None,deterministic=None,seed
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 237--237
-[][] \TU/pcr/m/n/10.95 tf.nn.pool(input,window_shape,pool_typing,padding,dilati
-on_rate =
- []
-
-
-Overfull \hbox (171.8938pt too wide) in paragraph at lines 227--239
-[][] 
- []
-
-[21]
-Overfull \hbox (5.41907pt too wide) in paragraph at lines 257--261
+Overfull \hbox (5.41907pt too wide) in paragraph at lines 237--241
 \TU/pcr/m/n/10.95 tf.nn.softmax_cross_entropy_with_logits(_setinel=None,labels=
 None,logits=None,dim=-
  []
 
 
-Overfull \hbox (288.391pt too wide) in paragraph at lines 257--261
+Overfull \hbox (288.391pt too wide) in paragraph at lines 237--241
 \TU/pcr/m/n/10.95 1,name=None) \TU/SimSun(0)/m/n/10.95 输 出 \TU/pcr/m/n/10.95 lo
 ss:[batch_size] \TU/SimSun(0)/m/n/10.95 保 存 的 时 \TU/pcr/m/n/10.95 batch \TU/Sim
 Sun(0)/m/n/10.95 中 每 个 样 本 的 交 叉 熵。| \TU/pcr/m/n/10.95 tf.nn.sparse_softmax_cro
 ss_entropy_with_logic(logits,labels,name=None) 
  []
 
-[22] [23] [24]
+[21] [22] [23]
 File: ./pic/chapter1/Opt.png Graphic file (type QTm)
  <use  "./pic/chapter1/Opt.png" >
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [24]
 File: ./pic/chapter1/origin.png Graphic file (type QTm)
 
 <use  "./pic/chapter1/origin.png" >
-Underfull \vbox (badness 10000) has occurred while \output is active []
-
- [25]
 
 LaTeX Font Warning: Font shape `TU/FangSong(0)/m/sl' undefined
-(Font)              using `TU/FangSong(0)/m/n' instead on input line 362.
+(Font)              using `TU/FangSong(0)/m/n' instead on input line 342.
 
-[26]
+[25]
 File: ./pic/chapter1/final.png Graphic file (type QTm)
  <use  "./pic/chapter1/final.png" >
-Overfull \hbox (104.03743pt too wide) in paragraph at lines 396--397
+Overfull \hbox (104.03743pt too wide) in paragraph at lines 376--377
 [][] 
  []
 
+
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [26]
 [27]
-Overfull \hbox (129.50473pt too wide) in paragraph at lines 427--428
+Overfull \hbox (129.50473pt too wide) in paragraph at lines 407--408
 [][] 
  []
 
 File: ./pic/chapter1/tenbor1.png Graphic file (type QTm)
 <use  "./pic/chapter1/tenbor1.png" >
-Overfull \hbox (19.48195pt too wide) in paragraph at lines 443--444
+Overfull \hbox (19.48195pt too wide) in paragraph at lines 423--424
 [][] 
  []
 
@@ -2277,7 +2244,7 @@ Underfull \vbox (badness 10000) has occurred while \output is active []
 [33]
 File: ./pic/chapter1/tb_hist5.png Graphic file (type QTm)
  <use  "./pic/chapter1/tb_hist5.png" >
-Overfull \hbox (18.89119pt too wide) in paragraph at lines 525--526
+Overfull \hbox (18.89119pt too wide) in paragraph at lines 505--506
 [][] 
  []
 
@@ -2309,7 +2276,7 @@ Underfull \vbox (badness 10000) has occurred while \output is active []
 [39] [40]
 File: ./pic/chapter1/mnist_cnn.png Graphic file (type QTm)
  <use  "./pic/chapter1/mnist_cnn.png" >
-Overfull \hbox (119.45366pt too wide) in paragraph at lines 656--657
+Overfull \hbox (119.45366pt too wide) in paragraph at lines 636--637
 [][] 
  []
 
@@ -2324,7 +2291,7 @@ Underfull \vbox (badness 10000) has occurred while \output is active []
 [44]
 File: ./pic/chapter1/softmax-nplm.png Graphic file (type QTm)
  <use  "./pic/chapter1/softmax-nplm.png" >
-Overfull \hbox (6.942pt too wide) in paragraph at lines 743--744
+Overfull \hbox (6.942pt too wide) in paragraph at lines 723--724
 [][] 
  []
 
@@ -2341,7 +2308,7 @@ Underfull \vbox (badness 10000) has occurred while \output is active []
 [47]
 File: ./pic/chapter1/linear-relationships.png Graphic file (type QTm)
  <use  "./pic/chapter1/linear-relationships.png" >
-Overfull \hbox (323.1225pt too wide) in paragraph at lines 786--787
+Overfull \hbox (323.1225pt too wide) in paragraph at lines 766--767
 [][] 
  []
 
@@ -2352,7 +2319,7 @@ Underfull \vbox (badness 6542) has occurred while \output is active []
 [49]
 File: ./pic/chapter1/tsne.png Graphic file (type QTm)
  <use  "./pic/chapter1/tsne.png" >
-Overfull \hbox (11.05795pt too wide) in paragraph at lines 833--834
+Overfull \hbox (11.05795pt too wide) in paragraph at lines 813--814
 [][] 
  []
 
@@ -2404,32 +2371,78 @@ File: ./pic/chapter2/use_gpu3.png Graphic file (type QTm)
 <use  "./pic/chapter2/use_gpu3.png" > [59]
 File: ./pic/chapter2/use_gpu4.png Graphic file (type QTm)
 
-<use  "./pic/chapter2/use_gpu4.png" >) [60]
-\openout2 = `./chapter2/performance.aux'.
-
- (./chapter2/performance.tex
-Chapter 4.
-[61
-
-
-
-] [62]
+<use  "./pic/chapter2/use_gpu4.png" >
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
- [63]
-[64] (f:/TexLive/texmf-dist/tex/latex/listings/lstlang1.sty
+ [60]
+File: ./pic/chapter2/daisies.jpg Graphic file (type QTm)
+
+<use  "./pic/chapter2/daisies.jpg" >
+(f:/TexLive/texmf-dist/tex/latex/listings/lstlang1.sty
 File: lstlang1.sty 2015/06/04 1.6 listings language file
 )
 (f:/TexLive/texmf-dist/tex/latex/listings/lstmisc.sty
 File: lstmisc.sty 2015/06/04 1.6 (Carsten Heinz)
 )
+Overfull \hbox (34.27621pt too wide) in paragraph at lines 107--108
+[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][
+][][][][][][][] 
+ []
+
+
+Overfull \hbox (21.13611pt too wide) in paragraph at lines 112--113
+[][][][][][][][][][][][][][][][][][][][] 
+ []
+
+[61]
+Overfull \hbox (21.13611pt too wide) in paragraph at lines 120--121
+[][][][][][][][][][][][][][][][][][][][] 
+ []
+
+
+Overfull \hbox (106.5468pt too wide) in paragraph at lines 124--125
+[][][][][][][][][][][][][][][][][][][][][] 
+ []
+
+[62]
+Overfull \hbox (3.43594pt too wide) in paragraph at lines 141--144
+[]\TU/SimSun(0)/m/n/10.95 脚 本 将 用 训 练 好 的 最 后 一 层 写 出 你 的 一 个 \TU/pcr/m/n/10.95
+ Inception v3 \TU/SimSun(0)/m/n/10.95 版 本 到\TU/pcr/m/n/10.95 /tmp/output_graph,
+text
+ []
+
+
+Overfull \hbox (7.996pt too wide) in paragraph at lines 145--146
+[][][][][][][][][][][][][][][][][][][][][][][] 
+ []
+
+File: ./pic/chapter2/folder_structure.png Graphic file (type QTm)
+<use  "./pic/chapter2/folder_structure.png" > [63] [64] [65]
+Overfull \hbox (67.12648pt too wide) in paragraph at lines 190--191
+[][][][][][][][][][][][][][][][][][] 
+ []
+
+[66]) [67]
+\openout2 = `./chapter2/performance.aux'.
+
+ (./chapter2/performance.tex [68
+
+
+
+]
+Chapter 4.
+[69] [70]
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [71]
+[72]
 Overfull \hbox (1.42595pt too wide) in paragraph at lines 97--98
 [][][][][][][][][][][][][][][][][][][][][][] 
  []
 
-[65]
+[73]
 File: ./pic/chapter2/quantization0.png Graphic file (type QTm)
- <use  "./pic/chapter2/quantization0.png" > [66]
+ <use  "./pic/chapter2/quantization0.png" > [74]
 File: ./pic/chapter2/quantization1.png Graphic file (type QTm)
 
 <use  "./pic/chapter2/quantization1.png" >
@@ -2438,11 +2451,11 @@ File: ./pic/chapter2/quantization2.png Graphic file (type QTm)
 <use  "./pic/chapter2/quantization2.png" >
 Underfull \vbox (badness 8056) has occurred while \output is active []
 
- [67]
-[68]) [69]
+ [75]
+[76]) [77]
 \openout2 = `./chapter3/common_module.aux'.
 
- (./chapter3/common_module.tex [70
+ (./chapter3/common_module.tex [78
 
 
 
@@ -2466,7 +2479,7 @@ Overfull \hbox (51.56876pt too wide) in paragraph at lines 22--23
 ars=’-’, fromfile_prefix_chars=None,
  []
 
-[71]
+[79]
 File: ./pic/chapter3/demo2.png Graphic file (type QTm)
  <use  "./pic/chapter3/demo2.png" >
 Overfull \hbox (228.11906pt too wide) in paragraph at lines 61--61
@@ -2479,14 +2492,14 @@ Overfull \hbox (47.14531pt too wide) in paragraph at lines 66--66
  [][] 
  []
 
-[72]
+[80]
 File: ./pic/chapter3/demo4.png Graphic file (type QTm)
  <use  "./pic/chapter3/demo4.png" >
 File: ./pic/chapter3/demo5.png Graphic file (type QTm)
  <use  "./pic/chapter3/demo5.png" >
 File: ./pic/chapter3/demo6.png Graphic file (type QTm)
 
-<use  "./pic/chapter3/demo6.png" > [73]
+<use  "./pic/chapter3/demo6.png" > [81]
 File: ./pic/chapter3/demo7.png Graphic file (type QTm)
  <use  "./pic/chapter3/demo7.png" >
 Underfull \hbox (badness 10000) in paragraph at lines 108--112
@@ -2494,7 +2507,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 108--112
  []
 
 File: ./pic/chapter3/demo8.png Graphic file (type QTm)
-<use  "./pic/chapter3/demo8.png" > [74]
+<use  "./pic/chapter3/demo8.png" > [82]
 File: ./pic/chapter3/demo9.png Graphic file (type QTm)
  <use  "./pic/chapter3/demo9.png" >
 Underfull \hbox (badness 10000) in paragraph at lines 130--133
@@ -2515,7 +2528,7 @@ wide \TU/SimSun(0)/m/n/10.95 是 有 用 的，|  这 可 以 通 过 传 递 \T
 t_default=
  []
 
-[75]
+[83]
 File: ./pic/chapter3/demo10.png Graphic file (type QTm)
  <use  "./pic/chapter3/demo10.png" >
 File: ./pic/chapter3/demo11.png Graphic file (type QTm)
@@ -2524,22 +2537,22 @@ Overfull \hbox (1.29742pt too wide) in paragraph at lines 173--175
 [][] \TU/SimSun(0)/m/n/10.95 有 时 候 覆
  []
 
-[76]
+[84]
 File: ./pic/chapter3/demo12.png Graphic file (type QTm)
  <use  "./pic/chapter3/demo12.png" >
 File: ./pic/chapter3/demo13.png Graphic file (type QTm)
  <use  "./pic/chapter3/demo13.png" >
 File: ./pic/chapter3/demo14.png Graphic file (type QTm)
 
-<use  "./pic/chapter3/demo14.png" > [77]
+<use  "./pic/chapter3/demo14.png" > [85]
 File: ./pic/chapter3/demo15.png Graphic file (type QTm)
  <use  "./pic/chapter3/demo15.png" >
-[78] [79]
+[86] [87]
 Underfull \hbox (badness 10000) in paragraph at lines 295--299
 
  []
 
-[80]
+[88]
 Overfull \hbox (2.80182pt too wide) in paragraph at lines 328--334
 \TU/SimSun(0)/m/n/10.95 输 出\TU/pcr/m/n/10.95 :Namespace(infile=<_io.TextIOWrapp
 er name=’input.txt’,encoding=’UTF-8’>,
@@ -2556,14 +2569,14 @@ Underfull \hbox (badness 10000) in paragraph at lines 351--354
 
  []
 
-[81]
+[89]
 Overfull \hbox (24.62541pt too wide) in paragraph at lines 368--369
 []\TU/SimSun(0)/m/n/10.95 当 \TU/pcr/m/n/10.95 add_argument() \TU/SimSun(0)/m/n/
 10.95 调 用 的 时 候 设 置 了 \TU/pcr/m/n/10.95 action=’store_const’ \TU/SimSun(0)/m/n/
 10.95 或 者 是 \TU/pcr/m/n/10.95 action=’append_cost’
  []
 
-[82]
+[90]
 Overfull \hbox (4.02846pt too wide) in paragraph at lines 418--420
 \TU/SimSun(0)/m/n/10.95 输 出\TU/pcr/m/n/10.95 :Namespace(bar=<_io.TextIOWrapper 
 name=’temp.txt’ encoding=’UTF-8’,foo=2) \TU/SimSun(0)/m/n/10.95 为
@@ -2576,14 +2589,14 @@ Overfull \hbox (40.128pt too wide) in paragraph at lines 418--420
 /n/10.95 ，|  利 用 \TU/pcr/m/n/10.95 mode=,bufsize=,encoding=
  []
 
-[83]
+[91]
 Overfull \hbox (30.57603pt too wide) in paragraph at lines 459--460
 []\TU/SimSun(0)/m/n/10.95 一 些 命 令 行 参 数 从 一 些 限 定 值 的 中 选 定，|  可 以 通 过 传 递 \TU/
 pcr/m/n/10.95 choice \TU/SimSun(0)/m/n/10.95 关 键 字 参 数 给 \TU/pcr/m/n/10.95 add_
 argument(),
  []
 
-[84]
+[92]
 Underfull \hbox (badness 10000) in paragraph at lines 504--508
 
  []
@@ -2599,7 +2612,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 518--520
 
  []
 
-[85]
+[93]
 Underfull \hbox (badness 10000) in paragraph at lines 521--523
 
  []
@@ -2624,7 +2637,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 554--557
 
  []
 
-[86]
+[94]
 Underfull \hbox (badness 10000) in paragraph at lines 566--568
 
  []
@@ -2639,13 +2652,13 @@ Underfull \hbox (badness 10000) in paragraph at lines 582--584
 
  []
 
-[87]
+[95]
 Overfull \hbox (0.2308pt too wide) in paragraph at lines 616--619
 \TU/pcr/m/n/10.95 dest, nargs=None, const=None, default=None, type=None, choice
 s=None, required=False,
  []
 
-[88] [89] [90] [91] [92] [93] [94] [95]
+[96] [97] [98] [99] [100] [101] [102] [103]
 Overfull \hbox (67.11119pt too wide) in paragraph at lines 907--907
 \TU/SimSun(0)/m/n/10.95 输 出\TU/pcr/m/n/10.95 :Namespace(out<_io.TextIOWapper na
 me=’file.txt’ mode=’w’ encoding=’UTF-8’,raw=<_ioFileIO
@@ -2669,7 +2682,7 @@ Overfull \hbox (2.79176pt too wide) in paragraph at lines 930--934
 nt_group()
  []
 
-[96]
+[104]
 Underfull \hbox (badness 10000) in paragraph at lines 942--943
 
  []
@@ -2689,7 +2702,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 949--951
 
  []
 
-[97]
+[105]
 Overfull \hbox (11.24037pt too wide) in paragraph at lines 984--986
 \TU/SimSun(0)/m/n/10.95 大 多 数 时 候，| \TU/pcr/m/n/10.95 parse_args() \TU/SimSun(0
 )/m/n/10.95 返 回 的 属 性 对 象 将 被 命 令 行 参 数 和 参 数 行 为 完 全 决 定。| \TU/pcr/m/n/10.95 s
@@ -2711,32 +2724,33 @@ n(0)/m/n/10.95 是 \TU/pcr/m/n/10.95 None\TU/SimSun(0)/m/n/10.95 ，| \TU/pcr/m/
 r.print_help(file=None):
  []
 
-[98] [99]
+[106] [107]
 File: ./pic/chapter3/arg1.png Graphic file (type QTm)
  <use  "./pic/chapter3/arg1.png" >
 File: ./pic/chapter3/arg2.png Graphic file (type QTm)
- <use  "./pic/chapter3/arg2.png" >
-File: ./pic/chapter3/arg3.png Graphic file (type QTm)
 
-<use  "./pic/chapter3/arg3.png" > [100]
+<use  "./pic/chapter3/arg2.png" >
+File: ./pic/chapter3/arg3.png Graphic file (type QTm)
+ <use  "./pic/chapter3/arg3.png" > [108]
 File: ./pic/chapter3/arg4.png Graphic file (type QTm)
- <use  "./pic/chapter3/arg4.png" >
+
+<use  "./pic/chapter3/arg4.png" >
 Underfull \hbox (badness 10000) in paragraph at lines 1098--1099
 
  []
 
-[101]
+[109]
 Underfull \hbox (badness 10000) in paragraph at lines 1144--1147
 
  []
 
-[102] [103]) [104]
+[110] [111]) [112]
 \openout2 = `./chapter3/path.aux'.
 
  (./chapter3/path.tex
 Missing character: There is no 或 in font zptmcm7t!
 Missing character: There is no 者 in font zptmcm7t!
- [105
+ [113
 
 
 ]
@@ -2746,18 +2760,18 @@ Overfull \hbox (8.7176pt too wide) in paragraph at lines 25--26
 回 \TU/pcr/m/n/10.95 True\TU/SimSun(0)/m/n/10.95 ，|
  []
 
-[106] [107] [108]
+[114] [115] [116]
 Overfull \hbox (12.12866pt too wide) in paragraph at lines 128--128
 \TU/SimSun(0)/m/n/10.95 在 这 个 例 子 中，| \TU/pcr/m/n/10.95 io.TextIOWrapper \TU/Si
 mSun(0)/m/n/10.95 是 一 个 编 码 和 解 码 \TU/pcr/m/n/10.95 Unicode \TU/SimSun(0)/m/n/1
 0.95 的 文 本 处 理 层，| \TU/pcr/m/n/10.95 io.BufferedWriter
  []
 
-[109] [110] [111] [112] [113] [114] [115]) [116] [117]
+[117] [118] [119] [120] [121] [122] [123]) [124] [125]
 \openout2 = `./chapter3/re.aux'.
 
  (./chapter3/re.tex
-[118
+[126
 
 
 
@@ -2799,7 +2813,7 @@ Overfull \hbox (87.49934pt too wide) in paragraph at lines 4--37
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
- [119]
+ [127]
 Underfull \hbox (badness 10000) in paragraph at lines 54--54
 []\TU/SimSun(0)/m/n/10.95 匹 配 空 字 符 串，|  但 是 仅 仅 当 它 不 在 单 词 的
  []
@@ -2851,11 +2865,11 @@ Overfull \hbox (16.36745pt too wide) in paragraph at lines 40--67
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
- [120]
+ [128]
 Overfull \vbox (75.38565pt too high) has occurred while \output is active []
 
 
-[121]
+[129]
 Overfull \hbox (87.49934pt too wide) in paragraph at lines 69--80
  [] 
  []
@@ -2876,7 +2890,7 @@ Overfull \hbox (18.59381pt too wide) in paragraph at lines 128--151
  [] 
  []
 
-[122]
+[130]
 Underfull \hbox (badness 10000) in paragraph at lines 152--153
 
  []
@@ -2904,16 +2918,16 @@ Overfull \hbox (17.51605pt too wide) in paragraph at lines 156--191
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
- [123]
+ [131]
 Overfull \vbox (14.10182pt too high) has occurred while \output is active []
 
 
-[124]
+[132]
 Underfull \hbox (badness 10000) in paragraph at lines 210--213
 
  []
 
-[125]
+[133]
 Overfull \hbox (17.70265pt too wide) in paragraph at lines 246--261
  [] 
  []
@@ -2938,10 +2952,10 @@ Underfull \hbox (badness 1168) in paragraph at lines 296--298
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
- [126]
+ [134]
 Underfull \vbox (badness 3271) has occurred while \output is active []
 
- [127]
+ [135]
 Underfull \hbox (badness 10000) in paragraph at lines 338--343
 
  []
@@ -2956,12 +2970,12 @@ Underfull \hbox (badness 10000) in paragraph at lines 353--354
 
  []
 
-) [128]
+) [136]
 \openout2 = `./chapter3/sys.aux'.
 
  (./chapter3/sys.tex
 Chapter 7.
-[129
+[137
 
 
 
@@ -2972,7 +2986,7 @@ Overfull \hbox (18.0773pt too wide) in paragraph at lines 36--37
 和 \TU/pcr/m/n/10.95 sys.stderr
  []
 
-[130]
+[138]
 Overfull \hbox (26.8592pt too wide) in paragraph at lines 40--41
 \TU/SimSun(0)/m/n/10.95 别 是 所 有 的 配 置 文 件 \TU/pcr/m/n/10.95 (\TU/SimSun(0)/m/n/
 10.95 像 \TU/pcr/m/n/10.95 pyconfig.h \TU/SimSun(0)/m/n/10.95 头 文 件\TU/pcr/m/n/1
@@ -2983,12 +2997,12 @@ onX.Y/config
 
 Underfull \vbox (badness 3375) has occurred while \output is active []
 
- [131]
+ [139]
 Overfull \hbox (185.48822pt too wide) in paragraph at lines 61--73
 [][]
  []
 
-[132] [133]
+[140] [141]
 Overfull \hbox (76.32031pt too wide) in paragraph at lines 107--114
 \TU/SimSun(0)/m/n/10.95 素 时 \TU/pcr/m/n/10.95 major,minor,build,platform,servic
 e_pack_minor,service_pack_major,suit_mask,product_type
@@ -3009,20 +3023,20 @@ Overfull \hbox (124.60951pt too wide) in paragraph at lines 116--127
 
 Underfull \vbox (badness 5388) has occurred while \output is active []
 
- [134])
-[135]
+ [142])
+[143]
 \openout2 = `./chapter3/url.aux'.
 
- (./chapter3/url.tex [136
+ (./chapter3/url.tex [144
 
 
 
 ]
 Chapter 8.
-) [137]
+) [145]
 \openout2 = `./chapter3/requests.aux'.
 
- (./chapter3/requests.tex [138
+ (./chapter3/requests.tex [146
 
 
 
@@ -3043,7 +3057,7 @@ Overfull \hbox (32.82019pt too wide) in paragraph at lines 37--52
  [] 
  []
 
-[139]
+[147]
 Overfull \hbox (1.22168pt too wide) in paragraph at lines 54--56
 []\TU/pcr/m/n/10.95 r.encoding: \TU/SimSun(0)/m/n/10.95 从 \TU/pcr/m/n/10.95 HTT
 p header \TU/SimSun(0)/m/n/10.95 中 猜 测 的 响 应 内 容 编 码 方 式，|  如 果 \TU/pcr/m/n/10.
@@ -3076,24 +3090,24 @@ Underfull \hbox (badness 10000) in paragraph at lines 80--82
 
  []
 
-[140]
+[148]
 Overfull \hbox (18.59381pt too wide) in paragraph at lines 90--107
  [] 
  []
 
-[141]
-Overfull \hbox (18.59381pt too wide) in paragraph at lines 157--186
+[149]
+Overfull \hbox (18.59381pt too wide) in paragraph at lines 154--185
  [] 
  []
 
-
+)
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
- [142])
-[143]
+ [150]
+[151]
 \openout2 = `./chapter3/bazel.aux'.
 
- (./chapter3/bazel.tex [144
+ (./chapter3/bazel.tex [152
 
 
 
@@ -3101,18 +3115,18 @@ Underfull \vbox (badness 10000) has occurred while \output is active []
 Chapter 10.
 
 Underfull \hbox (badness 10000) in paragraph at lines 2--2
-|[]\TU/ptm/bx/n/14.4 Bazel \TU/SimSun(0)/bx/n/14.4 开 始|
+|[]\TU/ptm/bx/n/14.4 Bazel start|
  []
 
 
 Underfull \hbox (badness 10000) in paragraph at lines 3--3
-|[]\TU/SimSun(0)/bx/n/12 用 一 个 工 作 空 间|
+|[]\TU/SimSun(0)/bx/n/12 用 工 作 空 间|
  []
 
-) [145]
+) [153]
 \openout2 = `./chapter4/tf_common.aux'.
 
- (./chapter4/tf_common.tex [146
+ (./chapter4/tf_common.tex [154
 
 
 
@@ -3128,7 +3142,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 17--17
 |[]\TU/ptm/bx/n/14.4 tf.stack|
  []
 
-[147]
+[155]
 Underfull \hbox (badness 10000) in paragraph at lines 46--46
 |[]\TU/ptm/bx/n/14.4 tf.metrics|
  []
@@ -3139,7 +3153,7 @@ Overfull \hbox (54.09181pt too wide) in paragraph at lines 47--48
 ns,updates_collections=none,name=none) 
  []
 
-[148]
+[156]
 Underfull \hbox (badness 10000) in paragraph at lines 59--59
 |[]\TU/ptm/bx/n/14.4 tf.reshape|
  []
@@ -3159,7 +3173,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 85--85
 |[]\TU/ptm/bx/n/12 DEFINE_boolean|
  []
 
-[149]
+[157]
 Underfull \hbox (badness 10000) in paragraph at lines 91--91
 |[]\TU/ptm/bx/n/12 DEFINE_float|
  []
@@ -3174,7 +3188,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 103--103
 |[]\TU/ptm/bx/n/12 DEFINE_string|
  []
 
-) [150]
+) [158]
 \openout2 = `./chapter4/tf_image.aux'.
 
  (./chapter4/tf_image.tex
@@ -3215,7 +3229,7 @@ Overfull \hbox (154.87561pt too wide) in paragraph at lines 25--27
 density=None,xmp_metadata=None,name=None) 
  []
 
-[151
+[159
 
 
 ]
@@ -3228,7 +3242,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 52--52
 |[]\TU/ptm/bx/n/12 tf.image.encode_png|
  []
 
-[152]
+[160]
 Underfull \hbox (badness 10000) in paragraph at lines 60--60
 |[]\TU/ptm/bx/n/12 tf.image.decode_image|
  []
@@ -3252,30 +3266,147 @@ tch,height,width,channels]4 \TU/SimSun(0)/m/n/10.95 维 \TU/pcr/m/n/10.95 Tensor
  形 状 为 \TU/pcr/m/n/10.95 [height,width,channels] 
  []
 
-[153]) [154]
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 65.
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 65.
+[161]) [162]
+\openout2 = `./chapter4/tf_layer.aux'.
+
+ (./chapter4/tf_layer.tex
+Underfull \hbox (badness 10000) in paragraph at lines 1--1
+|[]\TU/ptm/bx/n/14.4 layer|
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 2--2
+|[]\TU/ptm/bx/n/12 tf.layers.average_pooling1d|
+ []
+
+
+Overfull \hbox (53.17683pt too wide) in paragraph at lines 21--22
+\TU/pcr/m/n/10.95 channels_last \TU/SimSun(0)/m/n/10.95 输 入 形 状 为 \TU/pcr/m/n/1
+0.95 (batch,length,channels)\TU/SimSun(0)/m/n/10.95 ，| \TU/pcr/m/n/10.95 channe
+ls_first \TU/SimSun(0)/m/n/10.95 形 状 为 \TU/pcr/m/n/10.95 (batch,channels,length
+) 
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 25--25
+|[]\TU/ptm/bx/n/12 tf.layers.average_pooling2d|
+ []
+
+[163
+
+
+]
+Underfull \hbox (badness 10000) in paragraph at lines 47--47
+|[]\TU/ptm/bx/n/12 tf.layers.average_pooling3d|
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 68--68
+|[]\TU/ptm/bx/n/12 tf.layers.batch_normalization|
+ []
+
+[164]
+Overfull \hbox (18.16235pt too wide) in paragraph at lines 103--104
+[]\TU/pcr/m/n/10.95 inputs:2 \TU/SimSun(0)/m/n/10.95 维 以 上 \TU/pcr/m/n/10.95 Te
+nsor\TU/SimSun(0)/m/n/10.95 ，|  进 行 \TU/pcr/m/n/10.95 normalizeation\TU/SimSun(
+0)/m/n/10.95 ，|  第 一 个 维 度 是 \TU/pcr/m/n/10.95 batch_size, \TU/SimSun(0)/m/n/10
+.95 如 果 \TU/pcr/m/n/10.95 data_format
+ []
+
+
+Overfull \hbox (34.06906pt too wide) in paragraph at lines 104--105
+\TU/SimSun(0)/m/n/10.95 果 模 型 训 练 性 能 好 但 是 在 验 证 和 测 试 性 能 差，|  尝 试 着 设 置 \TU/
+pcr/m/n/10.95 zeros_debias_moving_mean=True
+ []
+
+[165] [166]
+Underfull \hbox (badness 10000) in paragraph at lines 135--135
+|[]\TU/ptm/bx/n/12 conv1d|
+ []
+
+[167]
+Overfull \hbox (53.17683pt too wide) in paragraph at lines 165--166
+\TU/pcr/m/n/10.95 channels_last \TU/SimSun(0)/m/n/10.95 输 入 形 状 为 \TU/pcr/m/n/1
+0.95 (batch,length,channels)\TU/SimSun(0)/m/n/10.95 ，| \TU/pcr/m/n/10.95 channe
+ls_first \TU/SimSun(0)/m/n/10.95 形 状 为 \TU/pcr/m/n/10.95 (batch,channels,length
+) 
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 178--178
+|[]\TU/ptm/bx/n/12 conv2d|
+ []
+
+[168] [169]
+Underfull \hbox (badness 10000) in paragraph at lines 220--220
+|[]\TU/ptm/bx/n/12 conv2d_transpose|
+ []
+
+[170]
+Underfull \hbox (badness 10000) in paragraph at lines 261--261
+|[]\TU/ptm/bx/n/12 conv3d|
+ []
+
+[171] [172]
+Underfull \hbox (badness 10000) in paragraph at lines 304--304
+|[]\TU/ptm/bx/n/12 conv3d_transpose|
+ []
+
+[173]
+Underfull \hbox (badness 10000) in paragraph at lines 345--345
+|[]\TU/ptm/bx/n/12 dense|
+ []
+
+[174]
+Underfull \hbox (badness 10000) in paragraph at lines 379--379
+|[]\TU/ptm/bx/n/12 dropout|
+ []
+
+[175]
+Underfull \hbox (badness 10000) in paragraph at lines 401--401
+|[]\TU/ptm/bx/n/12 max_pool1d|
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 423--423
+|[]\TU/ptm/bx/n/12 max_pool2d|
+ []
+
+[176]
+Underfull \hbox (badness 10000) in paragraph at lines 445--445
+|[]\TU/ptm/bx/n/12 max_pool3d|
+ []
+
+[177]
+Underfull \hbox (badness 10000) in paragraph at lines 467--467
+|[]\TU/ptm/bx/n/12 separable_conv2d|
+ []
+
+[178]) [179]
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 66.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 66.
  (./book.aux (./chapter1/deeplearning.aux)
 (./chapter1/tf_chapter1.aux) (./chapter2/tf_chapter2.aux)
 (./chapter2/use_gpu.aux) (./chapter2/performance.aux)
 (./chapter3/common_module.aux) (./chapter3/path.aux) (./chapter3/re.aux)
 (./chapter3/sys.aux) (./chapter3/url.aux) (./chapter3/requests.aux)
-(./chapter3/bazel.aux) (./chapter4/tf_common.aux) (./chapter4/tf_image.aux))
-Package atveryend Info: Empty hook `AtVeryEndDocument' on input line 65.
-Package atveryend Info: Empty hook `AtEndAfterFileList' on input line 65.
+(./chapter3/bazel.aux) (./chapter4/tf_common.aux) (./chapter4/tf_image.aux)
+(./chapter4/tf_layer.aux))
+Package atveryend Info: Empty hook `AtVeryEndDocument' on input line 66.
+Package atveryend Info: Empty hook `AtEndAfterFileList' on input line 66.
 
 
 LaTeX Font Warning: Some font shapes were not available, defaults substituted.
 
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 65.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 66.
  ) 
 Here is how much of TeX's memory you used:
- 43732 strings out of 493005
- 833076 string characters out of 6140056
- 1080058 words of memory out of 5000000
- 46974 multiletter control sequences out of 15000+600000
- 13917 words of font info for 66 fonts, out of 8000000 for 9000
+ 44037 strings out of 493005
+ 839976 string characters out of 6140056
+ 1081164 words of memory out of 5000000
+ 47272 multiletter control sequences out of 15000+600000
+ 13660 words of font info for 65 fonts, out of 8000000 for 9000
  1348 hyphenation exceptions out of 8191
- 62i,13n,98p,10432b,2308s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 62i,10n,98p,10432b,2308s stack positions out of 5000i,500n,10000p,200000b,80000s
 
-Output written on book.xdv (158 pages, 3606232 bytes).
+Output written on book.xdv (185 pages, 4112712 bytes).

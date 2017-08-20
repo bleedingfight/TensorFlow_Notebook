@@ -224,5 +224,11 @@ if __name__ == "__main__":
 \subsection{建立CNN MNIST分类器}
 用CNN架构建立模型分类MNIST数据集。
 \begin{enumerate}
-  \item 卷积层:应用
+  \item 卷积层1:应用$5\times5$卷积核(提取$5\times5$像素的区域)，用relu激活函数。
+  \item 池化层1：执行最大池化$2\times2$stride=2(指定的池化区域不重叠)
+  \item 卷积层2:应用64个$5\times5$的卷积核，激活函数为relu。
+  \item 池化层2:再次执行最大池化操作(卷积核$2\times2$)strider=2。
+  \item Dense1:1024个神经元，dropout=0.4。
+  \item Dense2:10个神经元0-9。
 \end{enumerate}
+

@@ -328,6 +328,8 @@ INPUT ./chapter4/tf_common.aux
 INPUT ./chapter4/tf_common.aux
 INPUT ./chapter4/tf_image.aux
 INPUT ./chapter4/tf_image.aux
+INPUT ./chapter4/tf_layer.aux
+INPUT ./chapter4/tf_layer.aux
 OUTPUT book.aux
 INPUT f:/TexLive/texmf-dist/tex/latex/tipa/t3cmr.fd
 INPUT f:/TexLive/texmf-dist/tex/latex/tipa/t3cmr.fd
@@ -394,9 +396,6 @@ INPUT ./pic/chapter1/relu.png
 INPUT ./pic/chapter1/relu6.png
 INPUT ./pic/chapter1/activate_fun.png
 INPUT ./pic/chapter1/relu_softplus.png
-INPUT f:/TexLive/texmf-dist/tex/latex/psnfss/omsptm.fd
-INPUT f:/TexLive/texmf-dist/tex/latex/psnfss/omsptm.fd
-INPUT f:/TexLive/texmf-dist/fonts/tfm/public/cm/cmsy10.tfm
 INPUT ./pic/chapter1/Opt.png
 INPUT ./pic/chapter1/origin.png
 INPUT ./pic/chapter1/final.png
@@ -426,13 +425,15 @@ INPUT ./pic/chapter2/use_gpu1.png
 INPUT ./pic/chapter2/use_gpu2.png
 INPUT ./pic/chapter2/use_gpu3.png
 INPUT ./pic/chapter2/use_gpu4.png
+INPUT ./pic/chapter2/daisies.jpg
+INPUT f:/TexLive/texmf-dist/tex/latex/listings/lstlang1.sty
+INPUT f:/TexLive/texmf-dist/tex/latex/listings/lstlang1.sty
+INPUT f:/TexLive/texmf-dist/tex/latex/listings/lstmisc.sty
+INPUT f:/TexLive/texmf-dist/tex/latex/listings/lstmisc.sty
+INPUT ./pic/chapter2/folder_structure.png
 OUTPUT ./chapter2/performance.aux
 INPUT ./chapter2/performance.tex
 INPUT ./chapter2/performance.tex
-INPUT f:/TexLive/texmf-dist/tex/latex/listings/lstlang1.sty
-INPUT f:/TexLive/texmf-dist/tex/latex/listings/lstlang1.sty
-INPUT f:/TexLive/texmf-dist/tex/latex/listings/lstmisc.sty
-INPUT f:/TexLive/texmf-dist/tex/latex/listings/lstmisc.sty
 INPUT ./pic/chapter2/quantization0.png
 INPUT ./pic/chapter2/quantization1.png
 INPUT ./pic/chapter2/quantization2.png
@@ -482,6 +483,9 @@ INPUT ./chapter4/tf_common.tex
 OUTPUT ./chapter4/tf_image.aux
 INPUT ./chapter4/tf_image.tex
 INPUT ./chapter4/tf_image.tex
+OUTPUT ./chapter4/tf_layer.aux
+INPUT ./chapter4/tf_layer.tex
+INPUT ./chapter4/tf_layer.tex
 INPUT book.aux
 INPUT ./chapter1/deeplearning.aux
 INPUT ./chapter1/deeplearning.aux
@@ -511,3 +515,5 @@ INPUT ./chapter4/tf_common.aux
 INPUT ./chapter4/tf_common.aux
 INPUT ./chapter4/tf_image.aux
 INPUT ./chapter4/tf_image.aux
+INPUT ./chapter4/tf_layer.aux
+INPUT ./chapter4/tf_layer.aux

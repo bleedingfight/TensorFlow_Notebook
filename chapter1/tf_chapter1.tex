@@ -223,26 +223,6 @@ with tf.Session() as sess:
     print(sess.run(y).shape)
 \end{python}
 输出形状为[10,9,9,2]。
-\subsection{池化}
-\begin{tabular}{|p{15cm}|l|}
-池化函数 &功能\\
-\hline
-\textcircled{1} tf.nn.avg\_pool(value,ksize,strides,padding,data\_format='NHWC',name =None)&平均池化\\
-\textcircled{2} tf.nn.max\_pool(value,ksize,strides,padding,data\_format='NHWC',name =None)&最大池化\\
-\textcircled{3} tf.nn.max\_pool\_with\_argmax(input,ksize,strides,padding,Targmax=None,name =None)&最大池化返回最大值的位置\\
-\textcircled{4} tf.nn.avg\_pool3d(input,ksize,strides,padding,name =None)&三维状态下的平均池化\\
-\textcircled{5} tf.nn.max\_pool3d(input,ksize,strides,padding,name =None)&三维状态下的最大池化\\
-\textcircled{6} tf.nn.fractionan\_avg\_pool(value,pooling\_ratio,pseudo\_random=None,overlapping=None,deterministic=None,seed = None,seed2=None,name = None)&三维下的平均池化\\
-\textcircled{7} tf.nn.avg\_max\_pool(value,pooling\_ratio,pseudo\_random=None,overlapping=None,deterministic=None,seed = None,seed2=None,name = None)&三维状态下的最大池化\\
-\textcircled{8} tf.nn.pool(input,window\_shape,pool\_typing,padding,dilation\_rate = None,strides=None,name=None,data\_format=None)&执行一个N为池化操作。
-\end{tabular}
-\begin{itemize}
-\item value:一个四维Tensor,维度时[batch,height,width,chennels]。
-\item ksize:一个长度不小于4的整型数据，每一位上的值对应于输入数据Tensor中每一维窗口对应值。
-\item stride:一个长度不小于4的整型列表。该参数指定窗口在输入数据Tensor每一维上的步长。
-\item padding:一个字符串，取值为SAME或者VALID。
-\item data\_format:NHWC。
-\end{itemize}
 \subsection{常见的分类函数}
 tf.nn.sigmoid\_cross\_entropy\_with\_logits(logits,targets,name=None)
 \begin{itemize}
