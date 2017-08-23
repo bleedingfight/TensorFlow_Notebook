@@ -1,13 +1,49 @@
-\section{datetime}
-各个子类的关系
-\begin{python}
-object 
-    timedelta
-    tzinfo
-	timezone
-    time
-    date
-	datetime
-\end{python}
-\subsection{timedelta对象}
-
+%\section{datetime}
+%各个子类的关系
+%%\begin{python}
+%%object 
+%%    timedelta
+%%    tzinfo
+%%	timezone
+%%    time
+%%    date
+%%	datetime
+%%\end{python}
+%%\subsection{timedelta对象}
+%datetime.timedelta(days=0, seconds=0, microseconds=0, milliseconds=0, minutes=0, hours=0, weeks=0)
+%
+%所有的参数默认为0,可以使整数或者浮点数，可以是正数或者复数，仅仅days,seconds,microseconds在内部存储，参数被转化为下面的单位:
+%\begin{itemize}
+%\item 1ms转化为1000$\mu m$。
+%\item 1分钟转化为60s。
+%\item 一小时转化为3600s。
+%\item 一周转化为7天。
+%\end{itemize}
+%days,seconds,microseconds然后标准化以至于表达式能唯一:
+%\begin{itemize}
+%\item 0 <= microseconds < 1000000
+%\item 0 <= seconds < 3600*24 (一天总共的秒数)
+%\item -999999999 <= days <= 999999999
+%\end{itemize}
+%\subsubsection{属性}
+%timedelta.min:最小负值(-999999999)\newline
+%timedelta.max:最大正值(days=999999999, hours=23, minutes=59, seconds=59, microseconds=999999)\newline
+%timedelta.resolution:不为timedelta对象和timedelta对象的最小可能差别。
+%
+%\begin{tabular}{|c|c|}
+%\hline
+%属性&值\\
+%\hline
+%days&[-999999999, 999999999]\\
+%seconds&[0,86399]\\
+%microseconds&[0-999999]
+%\end{tabular}
+%
+%\textbf{支持的操作}
+%\begin{tabular}{p{2cm}|p{8cm}}
+%\hline
+%操作&结果\\
+%\hline
+%t1 = t2+t3&对t2,t3球和t1-t2==t3和t1-t3==t2都为真。\\
+%
+%
