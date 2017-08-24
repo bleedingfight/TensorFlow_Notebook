@@ -1,5 +1,149 @@
 \chapter{Tensorflow基础}
-\section{Tensorflow基础函数}
+\section{Tensorflow基础概念}
+在Tensorflow中正如它的名字显示定义tensor计算。一个tensor是一个概括的矩阵和向量并且有能力表示更高的维度，我们写Tensorflow程序，主要的对象就是tf.Tensor,一个tensor定义计算的一部分最后生成值。TensorFlow程序首先用tensor建立一个图，然后运行图获得想要的数据。一个tensor需要制定两个参数:数据类型和形状。Tensor中的数据类型相同，而且总是可知的，形状可能仅仅部分知道。
+下面是一些特殊的Tensor类型:
+\begin{itemize}
+\item	tf.Variable
+\item	tf.Constant
+\item	tf.Placeholder
+\item	tf.SparseTensor
+\end{itemize}
+\subsection{Rank}
+tf.Tensor的rank是对象的维度。TensorFlow的rank和数学中矩阵的rank不一样，下面显示TensorFlow rank和相对应的数学实体
+\begin{tabular}{|c|c|}
+rank&数学实体\\
+0&Scalar(只有值)\\
+1&Vecor(值和方向)\\
+2&矩阵(数值表)\\
+3&3-Tensor\\
+n&n-Tensor
+\end{tabular}
+\textbf{rank0}
+
+下面片段展示创建一些0维的变量。
+\begin{python}
+mammal = tf.Variable("Elephant", tf.string)
+ignition = tf.Variable(451, tf.int16)
+floating = tf.Variable(3.14159265359, tf.float64)
+its_complicated = tf.Variable((12.3, -4.85), tf.complex64)
+\end{python}
+\textbf{Rank1}
+传递列表作为初始值创建1维tf.Tensor对象
+\begin{python}
+mystr = tf.Variable(["Hello"], tf.string)
+cool_numbers  = tf.Variable([3.14159, 2.71828], tf.float32)
+first_primes = tf.Variable([2, 3, 5, 7, 11], tf.int32)
+its_very_complicated = tf.Variable([(12.3, -4.85), (7.5, -6.23)], tf.complex64)
+\end{python}
+\textbf{更高的rank}
+二维的Tensor至少有一行一列
+\begin{python}
+mymat = tf.Variable([[7],[11]], tf.int16)
+myxor = tf.Variable([[False, True],[True, False]], tf.bool)
+linear_squares = tf.Variable([[4], [9], [16], [25]], tf.int32)
+squarish_squares = tf.Variable([ [4, 9], [16, 25] ], tf.int32)
+rank_of_squares = tf.rank(squarish_squares)
+mymatC = tf.Variable([[7],[11]], tf.int32)
+\end{python}
+更高rank的Tensor，里斯的有n维数组。例如在图像处理，一些tensor的rank为4,维度通常是example-in-batch,image width,image height,color chennel。
+\begin{python}
+my_image = tf.zeros([10, 299, 299, 3])  # batch x height x width x color
+\end{python}
+\subsection{获取Tensor对象的rank}
+你可以使用tf.rank方法获取tensor对象的rank。例如下面获取my3d的rank。
+\begin{python}
+r = tf.rank(my2d)#在图运行后，r将保持值3。
+\end{python}
+\subsection{Tensor的切片}
+因为tf.Tensor是n维cell阵列，为了访问tf.Tensor的单个cell，你需要制定索引。
+对于rank为0的tensor，不需要索引，因为它已经是单个值了。\par
+对于rank1(向量)，传递一个索引允许你访问:
+\begin{python}
+my_scale = my_vector[2]
+\end{python}
+如果你想动态的选择向量中的元素，你可以制定[]一个tf.Tensor。
+传递一个数值访问矩阵的子向量:
+\begin{python}
+my_row_vetor = my_matrix[2]
+my_column_vector = my_matrix[:, 3]
+\end{python}
+\subsection{形状}
+shape是tensor每一维元素的个数。TensorFLow在构造图的时候自动计算形状。有时候自动计算可能不知道rank，如果rank已经知道，每一维的形状可能直到可能不知道。
+\begin{tabular}{|c|c|c|c|}
+rank&shape&维数&example\\
+0&[]&0-D&O维Tensor，标量\\
+1&[D0]&1-D&一维tensor的形状\\
+2&[D0,D1]&2-D&二维Tensoe的形状\\
+3&[D0,D1,D2]&3-D&三维Tensor的形状\\
+n&[D0,D1,\ldots,$D_{n-1}$]&N维tensor的形状[$D_0,D_1,\ldots,D_{n-1}$]&
+\end{tabular}
+\subsection{获取tf.Tensor对象的形状}
+当建立图的时候tensor的形状已知是很有用的，你可以通过tensor的shape属性得到。得到完全定义的tf.Tensor的形状可以使用Tf.shape操作。这个方法你可以建立一个图操作tensor的形状。
+
+例如，这里是如何如何创建一个和给定矩阵列数相同的全零向量。
+\begin{python}
+zeros = tf.zeros(tf.shape(my_matrix)[1])
+\end{python}
+\subsection{改变Tensor的形状}
+tensor的元素是所有形状值的乘积。标量的元素总是1.因此，因为有相同元素不同形状的tensor，转变他们的形状是很方便的。可以使用tf.reshape.
+
+下面例子展示了如何reshape tensor。
+\begin{python}
+rank_three_tensor = tf.ones([3, 4, 5])
+matrix = tf.reshape(rank_three_tensor, [6, 10])  # Reshape existing content into
+                                                 # a 6x10 matrix
+matrixB = tf.reshape(matrix, [3, -1])  #  Reshape existing content into a 3x20
+                                       # matrix. -1 tells reshape to calculate
+                                       # the size of this dimension.
+matrixAlt = tf.reshape(matrixB, [4, 3, -1])  # Reshape existing content into a
+                                             #4x3x5 tensor
+
+# Note that the number of elements of the reshaped Tensors has to match the
+# original number of elements. Therefore, the following example generates an
+# error because no possible value for the last dimension will match the number
+# of elements.
+yet_another = tf.reshape(matrixAlt, [13, 2, -1])  # ERROR!
+\end{python}
+\subsection{数据类型}
+tf.Tensor不可能有一个以上的数据类型。然而序列化数据结构作为字符串尺寸处在tf.Tensor里是可能的。
+
+可以使用tf.cast装换一种数据类型到另一种。
+\begin{python}
+# Cast a constant integer tensor into floating point.
+float_tensor = tf.cast(tf.constant([1, 2, 3]), dtype=tf.fl
+\end{python}
+通过Tensor的dtype查看tensor的数据类型。你通过python对象创建tf.Tensor的时候需要制定数据类型。如果你不指定TensorFLow选择亿个代表你数据的数据类型。TensorFlow转换Python整数为tf.int32,浮点数为tf.float32。转换数组时TensorFlow用和numpy相同的规则。
+\subsection{计算Tensor}
+当计算图被创建后你可以通过运行计算tf.Tensor湖区指定的值。用Tensor.eval方法简单的计算:
+\begin{python}
+constant = tf.constant([1,2,3])
+tensor = constant*constant
+print(tensor.eval())
+\end{python}
+eval方法仅仅当tf.Session()被激活时可用。Tensor.eval然会一个和tensor相同内容的numpy数组。有时候没有上下文计算tf.Tensor是不可能的。例如，tensor依赖于Placeholder在提供给Placeholder值之前不能计算。
+\begin{python}
+p = tf.placeholder(tf.float32)
+t = p + 1.0
+t.eval()  # This will fail, since the placeholder did not get a value.
+t.eval(feed_dict={p:2.0})  # This will succeed because we're feeding a value
+                           # to the placeholder.
+\end{python}
+其他的模型结构在计算tf.Tensor时可能很复杂。TensorFlow不能直接计算定义在函数内部的或者控制流结构的tf.Tensor。如果tf.Tensor伊奈于队列中的值，计算tf.Tensorbang仅仅入队的时候工作，负责计算被挂起。当和queue工作的时候，记得在计算任何tf.Tensor之前用tf.train.start\_queue\_runners。
+\subsection{打印Tensor}
+处于调试目的，你想要打印tf.Tesor的值。tfdbg提供了高级的调制支持。TensorFlow用下面的模板打印tf.Tensor:
+\begin{python}
+t = <<some tensorflow operation>>
+print t  # This will print the symbolic tensor when the graph is being built.
+         # This tensor does not have a value in this context.
+\end{python}
+这段代码打印tf.Tensor对象不是它的值，TensorFLow提供了tf.Print操作，然会第一个没有改变的Tensor参数然后打印tf.Tensor的第二个参数。
+
+为了正确的使用tf.Print(),必须要用它的返回值,查看下面的例子:
+\begin{python}
+ we are using the value returned by tf.Print
+result = t + 1  # Now when result is evaluated the value of `t` will be printed.
+\end{python}
+当你计算result你将计算result依赖的每个结果，因为result依赖于t，然后计算t，打印它的输入，t被打印。
 \subsection{Variable}
 \begin{python}
 #tensorflow 1.2.1
