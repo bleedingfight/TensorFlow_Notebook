@@ -1,1 +1,99 @@
 \section{collections}
+collections是Python内建的一个集合模块，提供了许多有用的集合。
+\subsection{namedtuple}
+namedtuple是一个函数，用来创建一个自定义的tuple对象，并且规定了tuple元素的个数，并且可以用属性而不是索引访问tuple的某个元素。
+定义一个Point类型。
+\begin{python}
+from collections import namedtuple
+Point = namedtuple('Point',['x'.'y'])
+p = Point(1,2)
+p.x
+p.y
+\end{python}
+上面创建的Point是tuple的一种子类:
+\begin{python}
+	>>>isinstance(p,Point)
+	True
+	>>>isinstance(p,tuple)
+	True
+\end{python}
+用坐标和半径表示一个元，可以用namedtuple定义:
+\begin{python}
+	Circle = namedtuple('Circle',['x','y','r'])
+\end{python}
+\subsection{deque}
+deque是为了高效实现插入和删除操作的双向列表，适合与队列和栈:
+\begin{python}
+In [1]: from collections import deque
+In [2]: q = deque(['a','b','c','d'])
+In [3]: q.append('f')
+In [4]: q
+Out[4]: deque(['a', 'b', 'c', 'd', 'f'])
+In [5]: q.appendleft('1')
+In [6]: q
+Out[6]: deque(['1', 'a', 'b', 'c', 'd', 'f'])
+In [7]: q.rotate()
+In [8]: q
+Out[8]: deque(['f', '1', 'a', 'b', 'c', 'd'])
+\end{python}
+\subsection{defaultdict}
+使用dict时，如果key不存在就会抛出KeyError。如果不希望key不存在时，返回会一个默认值，就可以采用defaultdict。
+\begin{python}
+In [9]: from collections import defaultdict
+In [10]: aa = defaultdict(lambda:'N/A')
+In [11]: aa['key1'] = 'abc'
+In [12]: aa['key1']
+Out[12]: 'abc'
+In [13]: aa['key2']
+Out[13]: 'N/A'
+\end{python}
+除了key不存在时返回默认值外，defaultdict的其他行为和dict完全一样。
+\subsection{OrderdDict}
+使用dict时，Key是无序的。对dict做迭代时，我们无法确定Key的顺序。要保持key的顺序可以使用OrderDict:
+\begin{python}
+In [1]: from collections import OrderedDict
+In [2]: a = dict([('a',1),('E',2),('B',3),('Q',5)])
+In [3]: a
+Out[3]: {'B': 3, 'E': 2, 'Q': 5, 'a': 1}
+In [4]: b = OrderedDict([('a',1),('E',2),('B',2),('Q',5)])
+In [5]: b
+Out[5]: OrderedDict([('a', 1), ('E', 2), ('B', 2), ('Q', 5)])
+\end{python}
+OrderedDict的Key会按照插入的顺序排列，不是key本身的排序。
+\begin{python}
+In [7]: od['z'] = 1
+In [8]: od['y'] = 2
+In [9]: od['x'] = 3
+In [10]: od
+Out[10]: OrderedDict([('z', 1), ('y', 2), ('x', 3)])
+\end{python}
+OrderedDict可以实现FIFO的dict，当容量超出限制时，先删除最早添加的Key。
+\begin{python}
+from collections import OrderedDict
+class LastUpdatedOrderedDict(OrderedDict):
+    def __init__(self, capacity):
+        super(LastUpdatedOrderedDict, self).__init__()
+        self._capacity = capacity
+    def __setitem__(self, key, value):
+        containsKey = 1 if key in self else 0
+        if len(self) - containsKey >= self._capacity:
+            last = self.popitem(last=False)
+            print('remove:', last)
+        if containsKey:
+            del self[key]
+            print('set:', (key, value))
+        else:
+            print('add:', (key, value))
+            OrderedDict.__setitem__(self, key, value)
+\end{python}
+\subsection{Counter}
+Counter是一个简单的计数器，例如统计字符出现的个数。
+\begin{python}
+In [11]: from collections import Counter
+In [12]: c = Counter()
+In [13]: for ch in 'programming':
+...:     c[ch]=c[ch]+1
+...:     
+In [14]: c
+Out[14]: Counter({'a': 1, 'g': 2, 'i': 1, 'm': 2, 'n': 1, 'o': 1, 'p': 1, 'r': 2})
+\end{python}
