@@ -1,1 +1,39 @@
 \section{hashlib}
+Python中的haslib提供了常见的摘要算法，如MD5和SHA1等等。
+
+什么是摘要算法？摘要算法又称哈希算法，散列算法。他通过一个函数，吧任意长度的数据转换为一个长度固定的数据串(通常16进制的字符串表示)。
+
+举个例子，你写了一篇文章，内容是一个字符串'how to use python hashlib - by Michael'，并附上这篇文章的摘要是'2d73d4f15c0db7f5ecb321b6a65e5d6d'。如果有人篡改了你的文章，并发表为'how to use python hashlib - by Bob'，你可以一下子指出Bob篡改了你的文章，因为根据'how to use python hashlib - by Bob'计算出的摘要不同于原始文章的摘要。
+
+可见，摘要算法就是通过摘要函数f()对任意长度的数据data计算出固定长度的摘要digest，目的是为了发现原始数据是否被人篡改过。
+
+摘要算法之所以能指出数据是否被篡改过，就是因为摘要函数是一个单向函数，计算f(data)很容易，但通过digest反推data却非常困难。而且，对原始数据做一个bit的修改，都会导致计算出的摘要完全不同。
+
+以常见的MD5算法为例，计算出一个字符串的MD5值:
+\begin{python}
+In [29]: import hashlib
+In [30]: md5 = hashlib.md5()
+In [31]: md5.update('how to use md5 in python hashlib?'.encode('utf-8'))
+In [32]: print(md5.hexdigest())
+	d26a53750bc40b38b65a520292f69306
+\end{python}
+如果数据量很大，可以分快多次调用update(),最后计算的结果是一样的:
+\begin{python}
+In [44]: import hashlib
+In [46]: md5 = hashlib.md5()
+In [47]: md5.update('how to use md5 in '.encode('utf-8'))
+In [48]: md5.update('python hashlib?'.encode('utf-8'))
+In [49]: print(md5.hexdigest())
+d26a53750bc40b38b65a520292f69306
+
+\end{python}
+MD5是最常见的在要算法，速度很快，生成的结果是固定的128bit字节，通常一个32位或者16进制字符串表示/另一种常见的摘要算法是SHA1，调用SHA1和调用MD5完全类似:
+\begin{python}
+In [53]: sha1 = hashlib.sha1()
+In [55]: sha1.update('how to use sha1 in '.encode('utf-8'))
+In [57]: sha1.update('python hashlib?'.encode('utf-8'))
+In [58]: print(sha1.hexdigest())
+2c76b57293ce30acef38d98f6046927161b46a44
+\end{python}
+SHA1的结果是160bit字节，通常用一个40位的16进制表示。比SHA1更安全的算法是SHA256和SHA512,不过月安全的算法不仅越慢，而且摘要长度更长。有没有可能两个不同的数据通过某个摘要算法的到了相同的摘要?有可能，因为任何摘要算法都是吧无线多的数据集合映射到一个有限的集合中。这种情况成为碰撞，比如Bob试图根据你的摘要算打反推出一篇文章'how to learning hashlib in python - by Bod',并且这篇文章的摘要恰好和你的文章完全一致，这种情况并非不可能出现，但是非常困难。
+
