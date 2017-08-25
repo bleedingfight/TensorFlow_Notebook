@@ -1,0 +1,117 @@
+\section{图(Graphs)和会话(Session)}
+TensorFlow用数据流图(dataflow graph)代表操作间的相应的计算。这导致首先你需要先定义图，创建TensorFlow Session通过本地设备或远程设备运行图的一部分。这个向导对于你想用低级变量模型是很有用的。要记得API像tf.estimator.Estimator和Keras对于用户端隐藏了图和会话的细节。
+\subsection{为什么用数据流图？}
+数据流图对于并行变成来说是一个常见的模型。在数据流图中，节点(node)代表了计算单元，边(edge)代表了数据消耗和产生。例如在TensorFlow图中，tf.matmul操作将对应两个边(两个相乘的矩阵)单个节点一个输出(相乘的结果)。
+TensorFlow利用数据流图计算有如下好处:
+\begin{itemize}
+\item 并行性:通过指定边代表不同操作间的依赖，系统能很容易的识别能并行执行的操作。
+\item 分布执行:通过用便代表值在不同操作间的流动，这对于tensorflow分割你的程序打不同的机器上的设备(CPUs,GPUs,TPUs)上.TensorFlow插入必须的计算和不同设备间的协调。
+\item 编译：TensorFlow的XLA compiler可以用你的数据流图的信息生成更快的打uma，例如通过融合连接操作。
+\item 数据流图是一个代表你模型的代码，你可以用Python建立图，存储在SavedModel，为了更低的推理延迟在C++程序中恢复。
+\end{itemize}
+\subsection{建立一个tf.Graph}
+大多数的TensorFlow以构造一个数据流图作为开始时期，在这个时期，你利用TensorFlow的API函数构造tf.Operation(节点)和tf.Tensor(边)对象，添加他们到图实例上。TensorFlow提供默认的图到相同上下文环境下的API函数，例如:
+\begin{itemize}
+\item 调用tf.constant(42.0)创建一个tf.Operation生成值42.0,添加值到默认的图上，返回一个掉表这个常量值的tf.Tensor。
+\item 调用tf.matmul(x,y)创建一个tf.Tensor对象x,y用tf.Operation相乘，增加它到默认的图上，返回一个代表相乘结果的tf.Tensor。
+\item 执行 v=tf.variable(0)给图添加一个tf.Operation到涂上，操作将存储可以写的Tensor值在tf.Session.run调用前。tf.Variable对象包装这个操作，然后他能被想tensor一样使用，Tensor将读当前存储的之。tf.Variable对象有assign和assig_aadd之类的方法，当方法被执行的时候，更新存储的值。
+\item 调用tf.train.Optimizer.minimize将操作和tensor到默认的涂上计算梯度，返回一个tf.Operation,当运行的时候，用图读设置变量。
+\end{itemize}
+多数程序依赖于默认的图，在TensorFlow API调用大多数程序仅仅添加操作和tensor到默认的图上，并不执行实际的计算。当你通过这些tf.Tensor和tf.Operation代表你的函数传递给tf.Session进行计算。
+\subsection{命名你的操作}
+tf.Graph对象给它包含的包含tf.Operation对象定义了一个namespace。TensorFlow自动为你涂上的才注意选择一个独一无二的名字，而且给操作名字方便程序易读和调试。TensorFlow API提供了两个操作来覆盖操作的名字:
+\begin{itemize}
+\item 每个API函数创建一个新的tf.Operation或者返回一个新的tf.Tensor时接受一个name选项。例如tf.constant(42.0,name="answer")创建一个新的操作名字叫answer，返回一个名字为”answer:0“的tf.Tensor。如果默认图已经包含了名字为"answer"的操作，TensorFlow将添加"-1","-2"等等，例如:
+\begin{python}
+c_0 = tf.constant(0,name="c")#操作的名字为"c"
+c_1 = tf.constant(2,name="")#操作的名字为"c_1"
+with tf.name_scope("outer"):
+    c_2 = tf.constant(2,name="c")#操作的名字为outer/c
+    with tf.name_scope("inner"):
+        c_2 = tf.constant(3,name="c")
+    c_4 = tf.constant(4,name="c")#操作名字为"outer/c_1"
+    with tf.name_scope("inner"):
+        c_5 = tf.constant(5,name="c")
+\end{python}
+\end{itemize}
+tf.Tensor对象隐藏为tf.Operation名字，之后tf.Operation将产生tensor作为输出。一个tensor的名字形式"<OP\_NAME>:<i>",这里:
+\begin{itemize}
+\item "<OP_NAME>"是产生它的操作的名字。
+\item "<i>"是一个整数操作输出的tensor的索引。
+\end{itemize}
+\subsection{放置操作在不同的设备上}
+如果你想TensorFlow用多个不同的设备，tf.device函数提供了方便的方法请求所有的操作在一个特别的上下文被放置现在相同的设备上。
+指定格式如下:
+\begin{python}
+/job:<JOB_NAME>/task:<TASK_INDEX>/device:<DEVICE_TYPE>:<DEVICE_INDEX>
+\end{python}
+这里:
+\begin{python}
+\item <JOB_NAME>是一个alpha数字，不是以数字开头
+\item <DEVICE_TYPE>是一个u注册的设备。
+\item <TASK_INDEX>一个非负整数代表job中的任务的索引
+\item <JOB_NAME>查看tf.train.ClusterSpec查看更多关于jobs和tasks的解释。
+\item <DEVICE_INDEX>:一个代表device索引的非负整数，例如为了区别在同一进程中的不同GPU。
+\end{python}
+你不需要制定设备的每一部分，例如，如果你运行在一个单GPU的机器上，你也许用tf.device添加一些操作到CPU和GPU上。
+\begin{python}
+weights = tf.random_normal()
+with tf.device("/device:CPU:0")
+    img = tf.decode_jpeg(tf.read_file("img.jpg"))
+with tf.device("/device:GPU:0"):
+    result = tf.matmul(weights,img)
+\end{python}
+如果你用典型的分布式配置部署TensorFlow，你也许制定job的名字和task ID放置变量在参数服务器job("/job:ps"),其他的操作在worker job("/job:worker")
+\begin{python}
+with tf.device("/job:ps/task:0"):
+    weight_1 = tf.Variable(tf.truncated_normal([784,100]))
+    biases_1 = tf.Variable(tf.zeros([100]))
+with tf.device("/job:ps/task:1"):
+    weight_2 = tf.Variable("/job:ps/task:1"):
+    biases_2 = tf.Variable(tf.zeros([10]))
+with tf.device("/job:worker"):
+    layer_1 = tf.matmul(train_batch,weight_1)+biases_1
+    layer_2 = tf.matmul(train_batch,weight_2)+biases_2
+\end{python}
+tf.device给你一些灵活度选择防止单个操作或者更广范围的TensorFlow图。在一些情况下，有简单的算法。例如tf.train.replica_device_setter API可以用tf.device防止操作parallel distributed training.例如下面的代码段显示tf.train.replica_device_setter应用不同的放置策略到tf.Vriable对象和其他操作:
+\begin{python}
+with tf.device(tf.train.replica_device_setter(ps_tasks=3)):
+# tf.Variable objects are, by default, placed on tasks in "/job:ps" in a
+# round-robin fashion.
+    w_0 = tf.Variable(...)  # placed on "/job:ps/task:0"
+    b_0 = tf.Variable(...)  # placed on "/job:ps/task:1"
+    w_1 = tf.Variable(...)  # placed on "/job:ps/task:2"
+    b_1 = tf.Variable(...)  # placed on "/job:ps/task:0"
+    input_data = tf.placeholder(tf.float32)     # placed on "/job:worker"
+    layer_0 = tf.matmul(input_data, w_0) + b_0  # placed on "/job:worker"
+    layer_1 = tf.matmul(input_data, w_1) + b_1  # placed on "/job:worker"
+\end{python}
+\subsection{Tensor-like对象}
+一些TensorFlow操作接受一个或者更多的tf.Tensor队形作为参数。例如，tf.matmul得到tf.Tensor对象，tf.add\_n得到一个tf.Tensor列表对象。为了方便死用这些函数接受一个tensor-like对象在tf.Tensor,用tf.convert\_to\_tensor方法转换它为tf.Tensor，Tensor-like包含下面的元素类型:
+\begin{python}
+\item tf.Tensor
+\item tf.Variable
+\item numpy.ndarray
+\item list(tensor-like对象的列表)
+\item Python标量:bool,float,int,str。
+\end{python}
+你可以用tf.register\_tensor\_convension\_function。
+
+默认，每次你相同的tensor-like对象TensorFlow将创建一个新的tf.Tensor。如果tensor-like对象大(numpy.ndarray包含一些训练样本)当你多次使用你也许会超出内存。为了避免这样，手动调用tf.vonvert\_to\_tensor在tensor-like对象，用tf.Tensor返回。
+\subsection{在tf.Session执行图}
+TensorFlow用tf.session类代表客户程序（通常是Python程序），通过一个类似的接口在C++也可用。一个tf.Session对象提供访问设备在本地机器上，远程设备用分布式的TensorFlow与。它也缓存一些关于你的tf.Graph的信息以至于你能高校的运行相同的计算多次。
+\subsection{创建tf.Session}
+如果你用低层的TensorFlow API，你可以为当前图创建一个tf.Session
+\begin{python}
+#创建一个默认的session
+with tf.Session() as sess:
+#创建一个远程会话
+with tf.Session("grpc://example.org:2222"):
+\end{python}
+因为一个tf.Session拥有自己的物理资源(像GPU和网络连接)，它是典型用作上下文管理(with)自动关闭会话。但是你应该确定调用tf.Session.close当你完成后你必须释放资源。
+
+高级API像tf.train.MonitoredTrainingSession或者tf.estimator.Estimator将创建和管理一个tf.Session给你。APIs接受target和config参数(或者作为tf.estimator.RunConfig的一部分)，含义如下:
+tf.Session.\_\_init\_\_接受三个参数:
+\begin{itemize}
+	\item target 如果这个参数为空，会话仅仅用在本地机器上。然而，你也许指定grpc:// URL指定TensorFlow server。server给
+\end{itemize}
