@@ -1,50 +1,50 @@
-\subsection{embeddings}
-Ò»¸öembeddingÊÇÒ»¸ö´ÓÀëÉ¢¶ÔÏóÏñ×ÖÓ³ÉäÎªÒ»¸öÕæÊµÖµµÄÏòÁ¿£¬ÀıÈçÒ»¸öÓ¢ÎÄ×Ö·ûµÄ300Î¬µÄembedding¿ÉÄÜ°üÀ¨:
+\section{embeddings}
+ä¸€ä¸ªembeddingæ˜¯ä¸€ä¸ªä»ç¦»æ•£å¯¹è±¡åƒå­—æ˜ å°„ä¸ºä¸€ä¸ªçœŸå®å€¼çš„å‘é‡ï¼Œä¾‹å¦‚ä¸€ä¸ªè‹±æ–‡å­—ç¬¦çš„300ç»´çš„embeddingå¯èƒ½åŒ…æ‹¬:
 \begin{python}
 blue:  (0.01359, 0.00075997, 0.24608, ..., -0.2524, 1.0048, 0.06259)
 blues:  (0.01396, 0.11887, -0.48963, ..., 0.033483, -0.10007, 0.1158)
 orange:  (-0.24776, -0.12359, 0.20986, ..., 0.079717, 0.23865, -0.014213)
 oranges:  (-0.35609, 0.21854, 0.080944, ..., -0.35413, 0.38511, -0.070976)
 \end{python}
-embeddingÈÃÄãÄÜÔÚÀëÉ¢µÄÊı¾İÉÏÓ¦ÓÃ»úÆ÷Ñ§Ï°,·ÖÀàÆ÷£¬¸ü³£ÓÃµÄÉñ¾­ÍøÂç¶¼±»Éè¼ÆÎªÒ»¸ö¸ßÃÜ¶ÈµÄÁ¬ĞøÏòÁ¿(ËùÓĞµÄÖµ¶¼ÓÃÀ´¶¨ÒåÒ»¸ö¶ÔÏó)Èç¹ûÀëÉ¢¶ÔÏó±»±àÂëÎªÒ»¸öÀëÉ¢µÄÔº×Ó£¬Èë¶ÀÒ»ÎŞ¶şµÄidºÅ£¬ËûÃÇ×èÖ¹Ñ§Ï°ºÍ·º»¯Ò»ÖÖ¿¼ÂÇembeddingsµÄ·½·¨ÊÇ×ª»¯·ÑÏìÁÁµÄ¶ÔÏóÎªÓĞÓÃµÄ»úÆ÷Ñ§Ï°ÊäÈë¡££¬embeding×÷Îª»úÆ÷Ñ§Ï°µÄÊä³öÒ²ÊÇÓĞÓÃµÄ£¬ÒòÎªembeddingÓ³Éä¶ÀÏíÎªÏòÁ¿£¬ÔÚÏòÁ¿¿Õ¼äÖĞµÄÓ¦ÓÃÊÇÀàËÆµÄ¡£Ò»¸öÍ¨³£µÄÓÃ·¨ÊÇÕÒµ½Ò»¸ö×î½Ó½üµÄÁÚ¾Ó¡£ÓÃºÍÏàÃæÏàÍ¬µÄword embedding£¬ÀıÈç¶ÔÓÚÃ¿¸ö×ÖºÍÏà¹ØµÄ½Ç¶ÈÕâÀïÓĞÈı¸ö½Ó½üµÄÁÚ¾Ó:
+embeddingè®©ä½ èƒ½åœ¨ç¦»æ•£çš„æ•°æ®ä¸Šåº”ç”¨æœºå™¨å­¦ä¹ ,åˆ†ç±»å™¨ï¼Œæ›´å¸¸ç”¨çš„ç¥ç»ç½‘ç»œéƒ½è¢«è®¾è®¡ä¸ºä¸€ä¸ªé«˜å¯†åº¦çš„è¿ç»­å‘é‡(æ‰€æœ‰çš„å€¼éƒ½ç”¨æ¥å®šä¹‰ä¸€ä¸ªå¯¹è±¡)å¦‚æœç¦»æ•£å¯¹è±¡è¢«ç¼–ç ä¸ºä¸€ä¸ªç¦»æ•£çš„é™¢å­ï¼Œå…¥ç‹¬ä¸€æ— äºŒçš„idå·ï¼Œä»–ä»¬é˜»æ­¢å­¦ä¹ å’Œæ³›åŒ–ä¸€ç§è€ƒè™‘embeddingsçš„æ–¹æ³•æ˜¯è½¬åŒ–è´¹å“äº®çš„å¯¹è±¡ä¸ºæœ‰ç”¨çš„æœºå™¨å­¦ä¹ è¾“å…¥ã€‚ï¼Œembedingä½œä¸ºæœºå™¨å­¦ä¹ çš„è¾“å‡ºä¹Ÿæ˜¯æœ‰ç”¨çš„ï¼Œå› ä¸ºembeddingæ˜ å°„ç‹¬äº«ä¸ºå‘é‡ï¼Œåœ¨å‘é‡ç©ºé—´ä¸­çš„åº”ç”¨æ˜¯ç±»ä¼¼çš„ã€‚ä¸€ä¸ªé€šå¸¸çš„ç”¨æ³•æ˜¯æ‰¾åˆ°ä¸€ä¸ªæœ€æ¥è¿‘çš„é‚»å±…ã€‚ç”¨å’Œç›¸é¢ç›¸åŒçš„word embeddingï¼Œä¾‹å¦‚å¯¹äºæ¯ä¸ªå­—å’Œç›¸å…³çš„è§’åº¦è¿™é‡Œæœ‰ä¸‰ä¸ªæ¥è¿‘çš„é‚»å±…:
 \begin{python}
-blue:  (red, 47.6¡ã), (yellow, 51.9¡ã), (purple, 52.4¡ã)
-blues:  (jazz, 53.3¡ã), (folk, 59.1¡ã), (bluegrass, 60.6¡ã)
-orange:  (yellow, 53.5¡ã), (colored, 58.0¡ã), (bright, 59.9¡ã)
-oranges:  (apples, 45.3¡ã), (lemons, 48.3¡ã), (mangoes, 50.4¡ã)
+blue:  (red, 47.6Â°), (yellow, 51.9Â°), (purple, 52.4Â°)
+blues:  (jazz, 53.3Â°), (folk, 59.1Â°), (bluegrass, 60.6Â°)
+orange:  (yellow, 53.5Â°), (colored, 58.0Â°), (bright, 59.9Â°)
+oranges:  (apples, 45.3Â°), (lemons, 48.3Â°), (mangoes, 50.4Â°)
 \end{python}
-Õâ½«¸æËß³ÌĞòÆ»¹ûºÍ³È×ÓÀàËÆ¶È($45.3^o$)±ÈÄûÃÊºÍ³È×Ó($48.3^o$)¸üÀàËÆ¡£
-\subsection{ÑµÁ·Ò»¸öembedding}
-ÎªÁËÔÚTensorFlowÖĞÑµÁ·word embedding£¬Ê×ÏÈÄãĞèÒª·Ö¸ôÎÄ×Ö³Éµ¥´Ê¸³Öµ¸ø´Ê»ã±íÖĞµÄÃ¿Ò»¸öµ¥´ÊÒ»¸öÕûÊı¡£¼ÙÉèÎÒÃÇÒÑ¾­×öÁËÕâ²½£¬word\_idsÊÇÒ»¸öÕûÊıÏòÁ¿¡£ÀıÈç¾ä×Ó"I have a cat."¿ÉÄÜ±»·Ö¸î³É["I","have","a","cat","."]È»ºóÏà¹ØµÄword\_ids tensorĞÎ×´Îª[5]ÓÉ5¸öÕûÊı×é³É¡£ÎªÁËµÃµ½ÕâĞ©µ¥´Êids embeded£¬ÎÒÃÇĞèÒªÓÃtf.gatherº¯Êı°´ÕÕÏÂÃæ´´½¨embedding±äÁ¿¡£
+è¿™å°†å‘Šè¯‰ç¨‹åºè‹¹æœå’Œæ©™å­ç±»ä¼¼åº¦($45.3^o$)æ¯”æŸ æª¬å’Œæ©™å­($48.3^o$)æ›´ç±»ä¼¼ã€‚
+\subsection{è®­ç»ƒä¸€ä¸ªembedding}
+ä¸ºäº†åœ¨TensorFlowä¸­è®­ç»ƒword embeddingï¼Œé¦–å…ˆä½ éœ€è¦åˆ†éš”æ–‡å­—æˆå•è¯èµ‹å€¼ç»™è¯æ±‡è¡¨ä¸­çš„æ¯ä¸€ä¸ªå•è¯ä¸€ä¸ªæ•´æ•°ã€‚å‡è®¾æˆ‘ä»¬å·²ç»åšäº†è¿™æ­¥ï¼Œword\_idsæ˜¯ä¸€ä¸ªæ•´æ•°å‘é‡ã€‚ä¾‹å¦‚å¥å­"I have a cat."å¯èƒ½è¢«åˆ†å‰²æˆ["I","have","a","cat","."]ç„¶åç›¸å…³çš„word\_ids tensorå½¢çŠ¶ä¸º[5]ç”±5ä¸ªæ•´æ•°ç»„æˆã€‚ä¸ºäº†å¾—åˆ°è¿™äº›å•è¯ids embededï¼Œæˆ‘ä»¬éœ€è¦ç”¨tf.gatherå‡½æ•°æŒ‰ç…§ä¸‹é¢åˆ›å»ºembeddingå˜é‡ã€‚
 \begin{python}
-word_embeddings = tf.get_variable(¡°word_embeddings¡±,
+word_embeddings = tf.get_variable(â€œword_embeddingsâ€,
     [vocabulary_size, embedding_size])
 embedded_word_ids = tf.gather(word_embeddings, word_ids)
 \end{python}
-ÔÚÕâÖ®ºótensor embedded\_word\_idsÔÚÎÒÃÇµÄÀı×ÓÖĞ½«ÓĞĞÎ×´[5,embedding\_size]Í¬Ê±°üº¬5¸öµ¥´ÊµÄembeddings(dese vector)¡£±äÁ¿word\_embeddings½«±»Ñ§Ï°ÔÚÑµÁ·½áÊøºóËü½«°üº¬ËùÓĞÔÚ´Ê»ã±íÖĞµÄembeddings.embeddings¿ÉÄÜ±»¶àÖÖ·½Ê½ÑµÁ·£¬ÒÀ¿¿Êı¾İ±äÁ¿¡£ÀıÈç¿ÉÒÔÓÃÑ­»·Éñ¾­ÍøÂç´ÓÓïÁÏÖĞµÄ¾ä×ÓµÄÇ°Ò»¸öµ¥´ÊÔ¤²âÏÂÒ»¸öµ¥´Ê»òÕßÓÃÁ½¸öÍøÂç×ö¶àÖÖÓïÑÔµÄ·­Òë¡£Õâ¸ö·½·¨ÔÚ\textbf{×Ö´ÊµÄÏòÁ¿±íÊ¾}ÖĞÓĞÃèÊö£¬µ«ÊÇÉÏÃæµÄËùÓĞÇé¿öÏÂÓĞÒ»¸öÏñÉÏÃæµÄembedding±äÁ¿ºÍÓÃtf.gatherµÄembbedded word¡£
-\subsection{¿ÉÊÓ»¯Embeddings}
-TensorBoardÓĞÒ»¸öÄÚ½¨µÄ¿ÉÊÓ»¯Æ÷£¬³ÆÎªEmbeddingProjector£¬ÓÃÓÚ½»»¥Ê½µÄembedding¿ÉÊÓ»¯¡£embedding projector½«´ÓÄãµÄcheckpointerÎÄ¼ş¶ÁÈ¡embeddingsÓÃPCAÓ³ÉäËûÃÇµ½3Î¬¿Õ¼ä¡£¶ÔÓÚPCAµÄ¿ÉÊÓ»¯²é¿´\href{http://setosa.io/ev/principal-component-analysis/}{ÕâÀï}£¬ÁíÒ»¸öÓĞÓÃµÄÓ³ÉäÊÇt-SNE¡£Èç¹ûÄãÕıÔÚembeddingÉÏ¹¤×÷£¬Äã¿ÉÄÜÏñÌí¼Ólabels/imagesµ½Êı¾İµã¡£Äã¿ÉÒÔÍ¨¹ıÉú³ÉÒ»¸ö°üº¬Ã¿¸öµãµÄlabelsºÍÓÃÎÒÃÇµÄPython APIÓ³ÉäÆ÷µÄÅäÖÃ\href{https://www.tensorflow.org/programmers_guide/embedding#metadata}{metadata file}£¬»òÕßÔÚºÍÄãµÄcheckpointÎÄ¼şÏàÍ¬¶à¸öÄ¿Â¼ÊÖ¶¯¹¹ÔìºÍ±£´æÒ»¸öprojector\_config.pbtxt¡£
-\subsection{´´½¨}
+åœ¨è¿™ä¹‹åtensor embedded\_word\_idsåœ¨æˆ‘ä»¬çš„ä¾‹å­ä¸­å°†æœ‰å½¢çŠ¶[5,embedding\_size]åŒæ—¶åŒ…å«5ä¸ªå•è¯çš„embeddings(dese vector)ã€‚å˜é‡word\_embeddingså°†è¢«å­¦ä¹ åœ¨è®­ç»ƒç»“æŸåå®ƒå°†åŒ…å«æ‰€æœ‰åœ¨è¯æ±‡è¡¨ä¸­çš„embeddings.embeddingså¯èƒ½è¢«å¤šç§æ–¹å¼è®­ç»ƒï¼Œä¾é æ•°æ®å˜é‡ã€‚ä¾‹å¦‚å¯ä»¥ç”¨å¾ªç¯ç¥ç»ç½‘ç»œä»è¯­æ–™ä¸­çš„å¥å­çš„å‰ä¸€ä¸ªå•è¯é¢„æµ‹ä¸‹ä¸€ä¸ªå•è¯æˆ–è€…ç”¨ä¸¤ä¸ªç½‘ç»œåšå¤šç§è¯­è¨€çš„ç¿»è¯‘ã€‚è¿™ä¸ªæ–¹æ³•åœ¨\textbf{å­—è¯çš„å‘é‡è¡¨ç¤º}ä¸­æœ‰æè¿°ï¼Œä½†æ˜¯ä¸Šé¢çš„æ‰€æœ‰æƒ…å†µä¸‹æœ‰ä¸€ä¸ªåƒä¸Šé¢çš„embeddingå˜é‡å’Œç”¨tf.gatherçš„embbedded wordã€‚
+\subsection{å¯è§†åŒ–Embeddings}
+TensorBoardæœ‰ä¸€ä¸ªå†…å»ºçš„å¯è§†åŒ–å™¨ï¼Œç§°ä¸ºEmbeddingProjectorï¼Œç”¨äºäº¤äº’å¼çš„embeddingå¯è§†åŒ–ã€‚embedding projectorå°†ä»ä½ çš„checkpointeræ–‡ä»¶è¯»å–embeddingsç”¨PCAæ˜ å°„ä»–ä»¬åˆ°3ç»´ç©ºé—´ã€‚å¯¹äºPCAçš„å¯è§†åŒ–æŸ¥çœ‹\href{http://setosa.io/ev/principal-component-analysis/}{è¿™é‡Œ}ï¼Œå¦ä¸€ä¸ªæœ‰ç”¨çš„æ˜ å°„æ˜¯t-SNEã€‚å¦‚æœä½ æ­£åœ¨embeddingä¸Šå·¥ä½œï¼Œä½ å¯èƒ½åƒæ·»åŠ labels/imagesåˆ°æ•°æ®ç‚¹ã€‚ä½ å¯ä»¥é€šè¿‡ç”Ÿæˆä¸€ä¸ªåŒ…å«æ¯ä¸ªç‚¹çš„labelså’Œç”¨æˆ‘ä»¬çš„Python APIæ˜ å°„å™¨çš„é…ç½®\href{https://www.tensorflow.org/programmers_guide/embedding#metadata}{metadata file}ï¼Œæˆ–è€…åœ¨å’Œä½ çš„checkpointæ–‡ä»¶ç›¸åŒå¤šä¸ªç›®å½•æ‰‹åŠ¨æ„é€ å’Œä¿å­˜ä¸€ä¸ªprojector\_config.pbtxtã€‚
+\subsection{åˆ›å»º}
 \begin{enumerate}
-	\item ÉèÖÃÒ»¸ö2Î¬tensor±£´æÄãµÄembedding¡£
+	\item è®¾ç½®ä¸€ä¸ª2ç»´tensorä¿å­˜ä½ çš„embeddingã€‚
 		\begin{python}
 			embedding\_var = tf.get\_variable(...)
 		\end{python}
-	\item ¶¨ÆÚ±£´æÄãÄ£ĞÍµÄ±äÁ¿µ½LOG\_DIRÄ¿Â¼ÖĞ
+	\item å®šæœŸä¿å­˜ä½ æ¨¡å‹çš„å˜é‡åˆ°LOG\_DIRç›®å½•ä¸­
 		\begin{python}
 			saver = tf.train.Saver()
 			saver.save(session,os.path.join(LOG_DIR,"model.ckpt"),step)
 		\end{python}
-	\item ½áºÏmeta dataºÍÄãµÄembedding(¿ÉÑ¡)
+	\item ç»“åˆmeta dataå’Œä½ çš„embedding(å¯é€‰)
 \end{enumerate}
-Èç¹ûÄãÓĞÈÎºÎµÄmetadata(labels,images)½áºÏÄãµÄembedding£¬Äã¿ÉÒÔµ÷ÓÃTensorBoardÍ¨¹ıÖÆ¶¨´æ´¢ÔÚLOG\_DIRÖĞµÄÒ»¸öprojector\_config.pgtxt»òÕßÓÃÄã×Ô¼ºµÄPythonAPI¡£ÀıÈçÏÂÃæµÄprojector\_config.pbtxt½áºÏword\_embedding tensorºÍ´æ´¢ÔÚ\$LOG\_DIR/metadata.tsvµÄmetadataÎÄ¼ş¡£
+å¦‚æœä½ æœ‰ä»»ä½•çš„metadata(labels,images)ç»“åˆä½ çš„embeddingï¼Œä½ å¯ä»¥è°ƒç”¨TensorBoardé€šè¿‡åˆ¶å®šå­˜å‚¨åœ¨LOG\_DIRä¸­çš„ä¸€ä¸ªprojector\_config.pgtxtæˆ–è€…ç”¨ä½ è‡ªå·±çš„PythonAPIã€‚ä¾‹å¦‚ä¸‹é¢çš„projector\_config.pbtxtç»“åˆword\_embedding tensorå’Œå­˜å‚¨åœ¨\$LOG\_DIR/metadata.tsvçš„metadataæ–‡ä»¶ã€‚
 \begin{python}
 embeddings {
 	  tensor_name: 'word_embedding'
 	    metadata_path: '$LOG_DIR/metadata.tsv'
 	   }
 \end{python}
-ÏàÍ¬µÄÅäÖÃ¿ÉÒÔÍ¨¹ıÏÂÃæµÄ´úÂë¶ÎÒ»³ÌĞò²úÉú:
+ç›¸åŒçš„é…ç½®å¯ä»¥é€šè¿‡ä¸‹é¢çš„ä»£ç æ®µä¸€ç¨‹åºäº§ç”Ÿ:
 \begin{python}
 from tensorflow.contrib.tensorboard.plugins import projector
 # Create randomly initialized embedding weights which will be trained.
@@ -64,83 +64,83 @@ summary_writer = tf.summary.FileWriter(LOG_DIR)
 # read this file during startup.
 projector.visualize_embeddings(summary_writer, config)
 \end{python}
-ÔÚÄãÔËĞĞÄãµÄÄ£ĞÍºÍÑµÁ·ÄãµÄembeddingºó£¬ÔËĞĞTensorBoardºÍÖ¸¶¨jobµÄLOG\_DIR
+åœ¨ä½ è¿è¡Œä½ çš„æ¨¡å‹å’Œè®­ç»ƒä½ çš„embeddingåï¼Œè¿è¡ŒTensorBoardå’ŒæŒ‡å®šjobçš„LOG\_DIR
 \begin{python}
 tensorboard --logdir=LOG_DIR
 \end{python}
-µã»÷¶¥¶ËÃæ°åµÄEmbeddingÑ¡ÔñºÏÊÊµÄÔËĞĞ¡£
+ç‚¹å‡»é¡¶ç«¯é¢æ¿çš„Embeddingé€‰æ‹©åˆé€‚çš„è¿è¡Œã€‚
 \subsection{metdadata}
-Í¨³£embeddingsÓĞmetedata½áºÏ¡£metadataÓ¦¸Ã±»´æ´¢ÔÚºÍÄ£ĞÍµÄcheckpoint·Ö¸ôµÄÎÄ¼şÖĞÒò´Ëmetadata²»ÃÀ¿ÉÑµÁ·µÄÄ£ĞÍµÄ²ÎÊı¡£ÕâÊÇÓ¦¸ÃÎª\href{https://en.wikipedia.org/wiki/Tab-separated_values}{TSV file}£¨ÏÔÊ¾ºìÉ«±êÇ©£©£¬µÚÒ»ĞĞÊ®´ÖÌåÏÔÊ¾µÄ±íÍ·ºÍ°üº¬metadataÖµµÃ×ÓĞòÁĞĞĞ¡£
+é€šå¸¸embeddingsæœ‰metedataç»“åˆã€‚metadataåº”è¯¥è¢«å­˜å‚¨åœ¨å’Œæ¨¡å‹çš„checkpointåˆ†éš”çš„æ–‡ä»¶ä¸­å› æ­¤metadataä¸ç¾å¯è®­ç»ƒçš„æ¨¡å‹çš„å‚æ•°ã€‚è¿™æ˜¯åº”è¯¥ä¸º\href{https://en.wikipedia.org/wiki/Tab-separated_values}{TSV file}ï¼ˆæ˜¾ç¤ºçº¢è‰²æ ‡ç­¾ï¼‰ï¼Œç¬¬ä¸€è¡Œåç²—ä½“æ˜¾ç¤ºçš„è¡¨å¤´å’ŒåŒ…å«metadataå€¼å¾—å­åºåˆ—è¡Œã€‚
 \begin{lstlisting}{language=Python}
 Word\tFrequency
 Airplane\t345
 Car\t241
 ...
 \end{lstlisting}
-ÓĞ²»Ã÷È·µÄºÍÖ÷ÒªÊı¾İÎÄ¼şµÄ¹Ø¼ü¹²Ïí£¬¶ø²»ÊÇÔÚmadatadaÎÄ¼şÖĞµÄË³ĞòºÍembedding tensorÀïÃæµÄË³ĞòÏàÆ¥Åä£¬»»¾ä»°ËµµÚÒ»ĞĞÊÇÍ·ĞÅÏ¢£¬metadataÎÄ¼şÖĞ(i+1)ĞĞºÍ´æ´¢ÔÚcheckpointÎÄ¼şÖĞµÄembedding tensorµÄµÚiĞĞÏà¹Ø¡£
+æœ‰ä¸æ˜ç¡®çš„å’Œä¸»è¦æ•°æ®æ–‡ä»¶çš„å…³é”®å…±äº«ï¼Œè€Œä¸æ˜¯åœ¨madatadaæ–‡ä»¶ä¸­çš„é¡ºåºå’Œembedding tensoré‡Œé¢çš„é¡ºåºç›¸åŒ¹é…ï¼Œæ¢å¥è¯è¯´ç¬¬ä¸€è¡Œæ˜¯å¤´ä¿¡æ¯ï¼Œmetadataæ–‡ä»¶ä¸­(i+1)è¡Œå’Œå­˜å‚¨åœ¨checkpointæ–‡ä»¶ä¸­çš„embedding tensorçš„ç¬¬iè¡Œç›¸å…³ã€‚
 \begin{quote}
-	\emph{Èç¹ûTSV metadataÎÄ¼ş½ö½öÓĞÒ»ÁĞ£¬ÎÒÃÇ²»ĞèÒªµÚÒ»ĞĞ¼ÙÉèÃ¿Ò»ĞĞÊÇembeddingµÄlabel£¬ÎÒÃÇ°üÀ¨Õâ¸öÀıÍâ£¬ÒòÎªËüÆ¥ÅäÍ¨³£ÓÃµÄ"vocab file"¸ñÊ½¡£}
+	\emph{å¦‚æœTSV metadataæ–‡ä»¶ä»…ä»…æœ‰ä¸€åˆ—ï¼Œæˆ‘ä»¬ä¸éœ€è¦ç¬¬ä¸€è¡Œå‡è®¾æ¯ä¸€è¡Œæ˜¯embeddingçš„labelï¼Œæˆ‘ä»¬åŒ…æ‹¬è¿™ä¸ªä¾‹å¤–ï¼Œå› ä¸ºå®ƒåŒ¹é…é€šå¸¸ç”¨çš„"vocab file"æ ¼å¼ã€‚}
 \end{quote}
-\subsection{Í¼Ïñ}
-Èç¹ûÄãÓĞÍ¼ÏñºÍÄãµÄembedding½áºÏ£¬Äã½«ĞèÒªÉú³ÉÒ»¸öÃ¿¸öÊı¾İµãËõÂÔÍ¼×é³ÉµÄÍ¼Ïñ¡£Ëü±»³ÆÎª\href{https://www.google.com/webhp#q=what+is+a+sprite+image}{sprite image}¡£spriteÓ¦¸ÃÓĞºÍ´æ´¢½øĞĞÓÅÏÈË³ĞòµÄËõÂÔÍ¼ÏàÍ¬µÄĞĞºÍÁĞ:µÚÒ»¸öÊı¾İµã·ÅÔÚÊÇ×óÉÏ½Ç×îºóÒ»¸öÊı¾İ·ÅÔÚÓÒÏÂ½Ç¡£
+\subsection{å›¾åƒ}
+å¦‚æœä½ æœ‰å›¾åƒå’Œä½ çš„embeddingç»“åˆï¼Œä½ å°†éœ€è¦ç”Ÿæˆä¸€ä¸ªæ¯ä¸ªæ•°æ®ç‚¹ç¼©ç•¥å›¾ç»„æˆçš„å›¾åƒã€‚å®ƒè¢«ç§°ä¸º\href{https://www.google.com/webhp#q=what+is+a+sprite+image}{sprite image}ã€‚spriteåº”è¯¥æœ‰å’Œå­˜å‚¨è¿›è¡Œä¼˜å…ˆé¡ºåºçš„ç¼©ç•¥å›¾ç›¸åŒçš„è¡Œå’Œåˆ—:ç¬¬ä¸€ä¸ªæ•°æ®ç‚¹æ”¾åœ¨æ˜¯å·¦ä¸Šè§’æœ€åä¸€ä¸ªæ•°æ®æ”¾åœ¨å³ä¸‹è§’ã€‚
 \begin{tabular}{|c|c|c|}
 	0&1&2\\
 	3&4&5\\
 	6&7&\\
 \end{tabular}
-×¢ÒâÉÏÃæÀı×ÓµÄ×îºóÒ»¸öÔªËØ²»ÊÇ±ØĞëÌî£¬¶ÔÓÚ¾ßÌåµÄspriteÀı×Ó²é¿´10000ÕÅÊÖĞ´ÌåÊı¾İ\href{https://www.tensorflow.org/images/mnist_10k_sprite.png}{sprite image}
+æ³¨æ„ä¸Šé¢ä¾‹å­çš„æœ€åä¸€ä¸ªå…ƒç´ ä¸æ˜¯å¿…é¡»å¡«ï¼Œå¯¹äºå…·ä½“çš„spriteä¾‹å­æŸ¥çœ‹10000å¼ æ‰‹å†™ä½“æ•°æ®\href{https://www.tensorflow.org/images/mnist_10k_sprite.png}{sprite image}
 \begin{quote}
-	\emph{×¢ÒâÎÒÃÇµ±Ç°Ö§³Ö$8192px\times8192px$}
+	\emph{æ³¨æ„æˆ‘ä»¬å½“å‰æ”¯æŒ$8192px\times8192px$}
 \end{quote}
-ÔÚ¹»ÔçÁËspriteºóÄãĞèÒª¸æËßEmbedding Projectorµ½ÄÄÀïÑ°ÕÒËü:
+åœ¨å¤Ÿæ—©äº†spriteåä½ éœ€è¦å‘Šè¯‰Embedding Projectoråˆ°å“ªé‡Œå¯»æ‰¾å®ƒ:
 \begin{python}
 embedding.sprite.image_path = PATH_TO_SPRITE_IMAGE
 	# Specify the width and height of a single thumbnail.
 	embedding.sprite.single_image_dim.extend([w, h])
 \end{python}
-\subsection{½»»¥}
-Embedding ProjectorÓĞÈı¸öÃæ°å:
+\subsection{äº¤äº’}
+Embedding Projectoræœ‰ä¸‰ä¸ªé¢æ¿:
 \begin{enumerate}
-	\item ×óÉÏ½ÇµÄDataÃæ°å£¬ÄãÒ²ÒÑÑ¡ÔñÔËĞĞembedding tensorºÍÊı¾İÁĞ±êÉÏÑÕÉ«ºÍlabel points¡£
-	\item ×óÏÂ½ÇµÄProjectionsÃæ°åÑ¡ÔñprojectionµÄÀàĞÍ(PCA,tSNE)
-	\item ÓÒ±ßµÄInsepctorÃæ°å£¬ÕâÀïÄãÄÜËÑË÷ÀàËÆµÄµêÉ¶¿´×î½üÁÚ¾ÓµÄÁĞ±í
+	\item å·¦ä¸Šè§’çš„Dataé¢æ¿ï¼Œä½ ä¹Ÿå·²é€‰æ‹©è¿è¡Œembedding tensorå’Œæ•°æ®åˆ—æ ‡ä¸Šé¢œè‰²å’Œlabel pointsã€‚
+	\item å·¦ä¸‹è§’çš„Projectionsé¢æ¿é€‰æ‹©projectionçš„ç±»å‹(PCA,tSNE)
+	\item å³è¾¹çš„Insepctoré¢æ¿ï¼Œè¿™é‡Œä½ èƒ½æœç´¢ç±»ä¼¼çš„åº—å•¥çœ‹æœ€è¿‘é‚»å±…çš„åˆ—è¡¨
 \end{enumerate}
 \subsection{Projections}
-Embedding ProjectorÓĞÈıÖÖ·½·¨¼õÉÙÊı¾İ¼¯µÄÎ¬¶È:Á½¸öÏßĞÔÒ»¸ö·ÇÏßĞÔ¡£Ã¿¶ş¸ö·½·¨¿ÉÒÔ±»ÓÃÀ´´´½¨Ò»¸ö¶şÎ¬»òÕßÈıÎ¬ÊÓÍ¼¡£
+Embedding Projectoræœ‰ä¸‰ç§æ–¹æ³•å‡å°‘æ•°æ®é›†çš„ç»´åº¦:ä¸¤ä¸ªçº¿æ€§ä¸€ä¸ªéçº¿æ€§ã€‚æ¯äºŒä¸ªæ–¹æ³•å¯ä»¥è¢«ç”¨æ¥åˆ›å»ºä¸€ä¸ªäºŒç»´æˆ–è€…ä¸‰ç»´è§†å›¾ã€‚
 
-PCA£ºÒ»¸öÖ±½ÓµÄ½µÎ¬¼¼Êõ£¬Embedding projectorj¼ÆËã10¸öÖ÷³É·Ö¡£²Ëµ¥ÈÃÄãÓ³ÉäÕâĞ©³É·Ö½øÈÎºÎ¶şÎ¬»òÕßÈıÎ¬¡£PCAÊÇÒ»¸öÏßĞÔprojection£¬¼ì²éÈ«¾Ö½á¹¹Ê±ºÜÓĞĞ§
-¡£
+PCAï¼šä¸€ä¸ªç›´æ¥çš„é™ç»´æŠ€æœ¯ï¼ŒEmbedding projectorjè®¡ç®—10ä¸ªä¸»æˆåˆ†ã€‚èœå•è®©ä½ æ˜ å°„è¿™äº›æˆåˆ†è¿›ä»»ä½•äºŒç»´æˆ–è€…ä¸‰ç»´ã€‚PCAæ˜¯ä¸€ä¸ªçº¿æ€§projectionï¼Œæ£€æŸ¥å…¨å±€ç»“æ„æ—¶å¾ˆæœ‰æ•ˆ
+ã€‚
 
-t-SNE£ºÒ»¸öÁ÷ĞĞµÄ·ÇÏßĞÔ½µÎ¬Embe ProjectorÌá¹©¶şÎ¬ºÍÈıÎ¬ÊÓÍ¼¡£Ëã·¨µÄÃ¿Ò»²½ÔÚÍ¼²ãÔÚ¿Í»§¶Ë±»Ö´ĞĞ¡£ÒòÎªt-SNE½ø³§±£ÁôÒ»Ğ©±¾µØ½á¹¹£¬¶ÔÓÚÌ³Âå±¾ÀûÁÚ¾ÓºÍ·¢ÏÖ¼Ä´æÊÇºÜÓĞÓÃµÄ¡£¾¡¹Ü¶ÔÓÚ¸ßÎ¬Êı¾İ¿ÉÊÓ»¯ºÜÓĞÓÃ,t-SNE»­Í¼¿ÉÄÜÓĞÒ»Ğ©ÉñÃØ»òÕßÄÑÒÔÀí½â£¬²é¿´\href{http://distill.pub/2016/misread-tsne/}{great artical}²é¿´t-SNEÈçºÎ¸ßĞ§Ê¹ÓÃ¡£
+t-SNEï¼šä¸€ä¸ªæµè¡Œçš„éçº¿æ€§é™ç»´Embe Projectoræä¾›äºŒç»´å’Œä¸‰ç»´è§†å›¾ã€‚ç®—æ³•çš„æ¯ä¸€æ­¥åœ¨å›¾å±‚åœ¨å®¢æˆ·ç«¯è¢«æ‰§è¡Œã€‚å› ä¸ºt-SNEè¿›å‚ä¿ç•™ä¸€äº›æœ¬åœ°ç»“æ„ï¼Œå¯¹äºå›æ´›æœ¬åˆ©é‚»å±…å’Œå‘ç°å¯„å­˜æ˜¯å¾ˆæœ‰ç”¨çš„ã€‚å°½ç®¡å¯¹äºé«˜ç»´æ•°æ®å¯è§†åŒ–å¾ˆæœ‰ç”¨,t-SNEç”»å›¾å¯èƒ½æœ‰ä¸€äº›ç¥ç§˜æˆ–è€…éš¾ä»¥ç†è§£ï¼ŒæŸ¥çœ‹\href{http://distill.pub/2016/misread-tsne/}{great artical}æŸ¥çœ‹t-SNEå¦‚ä½•é«˜æ•ˆä½¿ç”¨ã€‚
 
-Custom:ÄãÒ²¿ÉÒÔ¹¹Ôì»ùÓÚÎÄ±¾ËÑË÷²éÕÒÔÚ¿Õ¼äÖĞÓĞÓÃµÄ·½ÏòµÄÌØ±ğµÄÏßĞÔprojections¡£ÎªÁË¶¨ÒåÒ»¸öprojectionÖá£¬ÊäÈëÁ½¸öÊÕËõ×Ö·û´®»òÕßÕıÔò±í´ïÊ½¡£³ÌĞò¼ÆËã±êÇ©ºÍËÑË÷½á¹ûÅäµÄ±êÇ©µÄÖĞĞÄ£¬ÔÚ²»Í¬µÄÏòÁ¿ÖĞĞÄ×÷ÎªÒ»¸öprojectionÖá¡£
-\subsection{µ¼º½}
-ÎªÁËÌ½Ë÷Êı¾İ¼¯£¬ÓÃ2Îª»òÕß3Î¬ÊÓÍ¼²é¿´£¬Ëõ·Å£¬Ğı×ªºÍÓÃ×ÔÈ»µÄÊÖÊÆµã»÷ºÍÍÏ¶¯Ãæ°å¡£µã»÷Ò»¸öµãÒıÆğÓÒ±ßÃæ°åÏÔÊ¾Ò»¸öÈ·¶¨µÄ×îÏàÁÚµÄÎÄ±¾ÁĞ±í¡£×îÏàÁÚµÄµã±¾ÉíÔÚprojection±»Ç¿µ÷¡£
+Custom:ä½ ä¹Ÿå¯ä»¥æ„é€ åŸºäºæ–‡æœ¬æœç´¢æŸ¥æ‰¾åœ¨ç©ºé—´ä¸­æœ‰ç”¨çš„æ–¹å‘çš„ç‰¹åˆ«çš„çº¿æ€§projectionsã€‚ä¸ºäº†å®šä¹‰ä¸€ä¸ªprojectionè½´ï¼Œè¾“å…¥ä¸¤ä¸ªæ”¶ç¼©å­—ç¬¦ä¸²æˆ–è€…æ­£åˆ™è¡¨è¾¾å¼ã€‚ç¨‹åºè®¡ç®—æ ‡ç­¾å’Œæœç´¢ç»“æœé…çš„æ ‡ç­¾çš„ä¸­å¿ƒï¼Œåœ¨ä¸åŒçš„å‘é‡ä¸­å¿ƒä½œä¸ºä¸€ä¸ªprojectionè½´ã€‚
+\subsection{å¯¼èˆª}
+ä¸ºäº†æ¢ç´¢æ•°æ®é›†ï¼Œç”¨2ä¸ºæˆ–è€…3ç»´è§†å›¾æŸ¥çœ‹ï¼Œç¼©æ”¾ï¼Œæ—‹è½¬å’Œç”¨è‡ªç„¶çš„æ‰‹åŠ¿ç‚¹å‡»å’Œæ‹–åŠ¨é¢æ¿ã€‚ç‚¹å‡»ä¸€ä¸ªç‚¹å¼•èµ·å³è¾¹é¢æ¿æ˜¾ç¤ºä¸€ä¸ªç¡®å®šçš„æœ€ç›¸é‚»çš„æ–‡æœ¬åˆ—è¡¨ã€‚æœ€ç›¸é‚»çš„ç‚¹æœ¬èº«åœ¨projectionè¢«å¼ºè°ƒã€‚
 
-Ëõ·Å½øÈë¼¯Èº¸ø¶¨Ò»Ğ©ĞÅÏ¢£¬µ«ÊÇÓĞÊ±ºò¸üÓĞÓÃµÄÊÇÏŞÖÆ×Ô¼ºµãµÄÊÓ½ÇºÍÔÚÕâĞ©µãÉÏÖ´ĞĞprojection¡££¬Äã¿ÉÒÔÓÃ¶àÖÖ·½Ê½Ñ¡Ôñµã:
+ç¼©æ”¾è¿›å…¥é›†ç¾¤ç»™å®šä¸€äº›ä¿¡æ¯ï¼Œä½†æ˜¯æœ‰æ—¶å€™æ›´æœ‰ç”¨çš„æ˜¯é™åˆ¶è‡ªå·±ç‚¹çš„è§†è§’å’Œåœ¨è¿™äº›ç‚¹ä¸Šæ‰§è¡Œprojectionã€‚ï¼Œä½ å¯ä»¥ç”¨å¤šç§æ–¹å¼é€‰æ‹©ç‚¹:
 \begin{enumerate}
-	\item ÔÚµã»÷µãºó£¬ÏàÁÚµÄµãÒ²±»Ñ¡ÖĞ¡£
-	\item ÔÚËÑË÷ºóÆ¥ÅäµÄ²éÑ¯±»Ñ¡ÖĞ¡£
-	\item EmbeddingÑ¡Ôñ£¬µã»÷Ò»¸öµãÍÏ¶¯¶¨ÒåÒ»¸öÑ¡Ôñ·¶Î§¡£
+	\item åœ¨ç‚¹å‡»ç‚¹åï¼Œç›¸é‚»çš„ç‚¹ä¹Ÿè¢«é€‰ä¸­ã€‚
+	\item åœ¨æœç´¢ååŒ¹é…çš„æŸ¥è¯¢è¢«é€‰ä¸­ã€‚
+	\item Embeddingé€‰æ‹©ï¼Œç‚¹å‡»ä¸€ä¸ªç‚¹æ‹–åŠ¨å®šä¹‰ä¸€ä¸ªé€‰æ‹©èŒƒå›´ã€‚
 \end{enumerate}
-ÔÚÑ¡ÔñÒ»¸öÊı¾İ¼¯µãºó£¬Äã¿ÉÒÔÓÃÓÒ±ßµÄinspectorÃæ°å¸ôÀëÕâĞ©µãÓÃisolate Pointes½øÒ»²½·ÖÎö£¬
+åœ¨é€‰æ‹©ä¸€ä¸ªæ•°æ®é›†ç‚¹åï¼Œä½ å¯ä»¥ç”¨å³è¾¹çš„inspectoré¢æ¿éš”ç¦»è¿™äº›ç‚¹ç”¨isolate Pointesè¿›ä¸€æ­¥åˆ†æï¼Œ
 \begin{figure}[H]
 	\includegraphics{embedding-nearest-points.png}
-	\caption{important×îÏàÁÚµÄembeddingÊı¾İ¼¯}
+	\caption{importantæœ€ç›¸é‚»çš„embeddingæ•°æ®é›†}
 \end{figure}
-custom projection½áºÏ¹ıÂË»áºÜÓĞÓÃ£¬ÏÂÃæÎÒÃÇ¹ıÂËºÍ"politics"100¸ö×îÏàÁÚµÄµãprojectËûÃÇÔÚxÖáÉÏ´ÓºÃµ½»µÏòÁ¿±íÊ¾£¬yÖáË®»ú¡£Äã¿ÉÒÔ¿´ÓÒ±ßµÄÎÒÃÇÓĞ"ideas","science","perspective","journalism"×ó±ßÓĞ"crisis","violence"ºÍ"conflict"¡£
+custom projectionç»“åˆè¿‡æ»¤ä¼šå¾ˆæœ‰ç”¨ï¼Œä¸‹é¢æˆ‘ä»¬è¿‡æ»¤å’Œ"politics"100ä¸ªæœ€ç›¸é‚»çš„ç‚¹projectä»–ä»¬åœ¨xè½´ä¸Šä»å¥½åˆ°åå‘é‡è¡¨ç¤ºï¼Œyè½´æ°´æœºã€‚ä½ å¯ä»¥çœ‹å³è¾¹çš„æˆ‘ä»¬æœ‰"ideas","science","perspective","journalism"å·¦è¾¹æœ‰"crisis","violence"å’Œ"conflict"ã€‚
 \begin{figure}
 \includegraphics[scale=0.5]{embedding-custom-projection.png}
 \end{figure}
 
-\subsection{ºÏ×÷µÄÌØĞÔ}
-ÎªÁË·ÖÏíÄãµÄ·¢ÏÖÄã¿ÉÒÔÓÃÓÒÉÏ½ÇµÄbookmarkÃæ°å±£´æµ±Ç°×´Ì¬(°üÀ¨¼ÆËãÈÎºÎprojectionµÄ×ø±ê)ÎªÒ»¸öĞ¡ÎÄ¼ş¡£Projector¿ÉÄÜ±»Ö¸¶¨µ½Ò»¸ö»òÕß¸ü¶àÎÄ¼ş£¬²úÉúÏÂÃæµÄÃæ°å£¬ÆäËûÈË¿ÉÒÔÍ¨¹ı±êÇ©ĞòÁĞ²é¿´¡£
+\subsection{åˆä½œçš„ç‰¹æ€§}
+ä¸ºäº†åˆ†äº«ä½ çš„å‘ç°ä½ å¯ä»¥ç”¨å³ä¸Šè§’çš„bookmarké¢æ¿ä¿å­˜å½“å‰çŠ¶æ€(åŒ…æ‹¬è®¡ç®—ä»»ä½•projectionçš„åæ ‡)ä¸ºä¸€ä¸ªå°æ–‡ä»¶ã€‚Projectorå¯èƒ½è¢«æŒ‡å®šåˆ°ä¸€ä¸ªæˆ–è€…æ›´å¤šæ–‡ä»¶ï¼Œäº§ç”Ÿä¸‹é¢çš„é¢æ¿ï¼Œå…¶ä»–äººå¯ä»¥é€šè¿‡æ ‡ç­¾åºåˆ—æŸ¥çœ‹ã€‚
 \begin{figure}[H]
 	\includegraphics{embedding-bookmark.png}
 \end{figure}
-\subsection{¼òµ¥µÄÎÊ´ğ}
-embeddingÊÇÒ»¸ö¶¯×÷»¹ÊÇÒ»¸öÊÂÎï£¿Á½Õß¶¼ÊÇ£¬ÈËÃÇÌ¸ÂÛÏòÁ¿¿Õ¼äµÄembedding wordĞÎ³Éembedding(ÊÂÎï)¡£Í¨³£Á½¸öÊÇÒ»¸ö´ÓÀëÉ¢¶ÔÏóµ½ÏòÁ¿Ó³Éäembedding¸ÅÄî£¬´´½¨Ó¦ÓÃÓ³ÉäÊÇÒ»¸öĞĞÎª£¬µ«ÊÇÓ³ÉäÊÇÒ»¸öÊÂÎï¡£
+\subsection{ç®€å•çš„é—®ç­”}
+embeddingæ˜¯ä¸€ä¸ªåŠ¨ä½œè¿˜æ˜¯ä¸€ä¸ªäº‹ç‰©ï¼Ÿä¸¤è€…éƒ½æ˜¯ï¼Œäººä»¬è°ˆè®ºå‘é‡ç©ºé—´çš„embedding wordå½¢æˆembedding(äº‹ç‰©)ã€‚é€šå¸¸ä¸¤ä¸ªæ˜¯ä¸€ä¸ªä»ç¦»æ•£å¯¹è±¡åˆ°å‘é‡æ˜ å°„embeddingæ¦‚å¿µï¼Œåˆ›å»ºåº”ç”¨æ˜ å°„æ˜¯ä¸€ä¸ªè¡Œä¸ºï¼Œä½†æ˜¯æ˜ å°„æ˜¯ä¸€ä¸ªäº‹ç‰©ã€‚
 
-ÊÇ¸ßÎ¬»¹ÊÇµÍÎ¬embedding£¿300Î¬µÄÏòÁ¿×Ö´Ê¿Õ¼ä£¬ÀıÈçµ±ºÍÉÏ°ÙÍòµÄ×Ö´Ê¿Õ¼äÏà±ÈÊÇµÍÎ¬¡£µ«ÊÇÊıÑ§ÉÏËüÊÇ¸ßÎ¬£¬ÏÔÊ¾ÁË´óÁ¿ºÈºÍÈËÃÇÖ±¾õÉÏµÄ2Î»»òÕßÈıÎ¬¿Õ¼ä²»Ò»ÖÂµÄÌØĞÔ¡£
+æ˜¯é«˜ç»´è¿˜æ˜¯ä½ç»´embeddingï¼Ÿ300ç»´çš„å‘é‡å­—è¯ç©ºé—´ï¼Œä¾‹å¦‚å½“å’Œä¸Šç™¾ä¸‡çš„å­—è¯ç©ºé—´ç›¸æ¯”æ˜¯ä½ç»´ã€‚ä½†æ˜¯æ•°å­¦ä¸Šå®ƒæ˜¯é«˜ç»´ï¼Œæ˜¾ç¤ºäº†å¤§é‡å–å’Œäººä»¬ç›´è§‰ä¸Šçš„2ä½æˆ–è€…ä¸‰ç»´ç©ºé—´ä¸ä¸€è‡´çš„ç‰¹æ€§ã€‚
 
-embeddingºÍembedding layerÊÇÒ»ÑùµÄÂğ£¿²»ÊÇ£»Ò»¸öembedding layerÊÇÉñ¾­ÍøÂçµÄÒ»²¿·Ö£¬²»ÊÇÒ»¸öembeddingÊÇÒ»¸ö¸ü³£ÓÃµÄ¸ÅÄî¡£
+embeddingå’Œembedding layeræ˜¯ä¸€æ ·çš„å—ï¼Ÿä¸æ˜¯,ä¸€ä¸ªembedding layeræ˜¯ç¥ç»ç½‘ç»œçš„ä¸€éƒ¨åˆ†ï¼Œä¸æ˜¯ä¸€ä¸ªembeddingæ˜¯ä¸€ä¸ªæ›´å¸¸ç”¨çš„æ¦‚å¿µã€‚
