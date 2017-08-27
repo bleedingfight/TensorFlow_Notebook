@@ -1,6 +1,6 @@
 \chapter{Tensorflow基础}
 \section{Tensorflow基础概念}
-在Tensorflow中正如它的名字显示定义tensor计算。一个tensor是一个概括的矩阵和向量并且有能力表示更高的维度，我们写Tensorflow程序，主要的对象就是tf.Tensor,一个tensor定义计算的一部分最后生成值。TensorFlow程序首先用tensor建立一个图，然后运行图获得想要的数据。一个tensor需要制定两个参数:数据类型和形状。Tensor中的数据类型相同，而且总是可知的，形状可能仅仅部分知道。
+在Tensorflow中正如它的名字显示的定义tensor计算。一个tensor是一个概括的矩阵和向量，并且有能力表示更高的维度，我们写Tensorflow程序，主要的对象就是tf.Tensor,一个tensor定义计算的一部分最后生成值。TensorFlow程序首先用tensor建立一个图，然后运行图获得想要的数据。一个tensor需要指定两个参数:数据类型和形状。Tensor中的数据类型相同，而且总是可知的，形状可能仅仅部分知道。
 下面是一些特殊的Tensor类型:
 \begin{itemize}
 \item	tf.Variable
@@ -10,14 +10,23 @@
 \end{itemize}
 \subsection{Rank}
 tf.Tensor的rank是对象的维度。TensorFlow的rank和数学中矩阵的rank不一样，下面显示TensorFlow rank和相对应的数学实体
+\begin{center}
 \begin{tabular}{|c|c|}
+\hline
 rank&数学实体\\
+\hline
 0&Scalar(只有值)\\
+\hline
 1&Vecor(值和方向)\\
+\hline
 2&矩阵(数值表)\\
+\hline
 3&3-Tensor\\
-n&n-Tensor
+\hline
+n&n-Tensor\\
+\hline
 \end{tabular}
+\end{center}
 \textbf{rank0}
 
 下面片段展示创建一些0维的变量。
@@ -45,7 +54,7 @@ squarish_squares = tf.Variable([ [4, 9], [16, 25] ], tf.int32)
 rank_of_squares = tf.rank(squarish_squares)
 mymatC = tf.Variable([[7],[11]], tf.int32)
 \end{python}
-更高rank的Tensor，里斯的有n维数组。例如在图像处理，一些tensor的rank为4,维度通常是example-in-batch,image width,image height,color chennel。
+更高rank的Tensor，有n维数组。例如在图像处理，一些tensor的rank为4,维度通常是example-in-batch,image width,image height,color chennel。
 \begin{python}
 my_image = tf.zeros([10, 299, 299, 3])  # batch x height x width x color
 \end{python}
@@ -55,27 +64,34 @@ my_image = tf.zeros([10, 299, 299, 3])  # batch x height x width x color
 r = tf.rank(my2d)#在图运行后，r将保持值3。
 \end{python}
 \subsection{Tensor的切片}
-因为tf.Tensor是n维cell阵列，为了访问tf.Tensor的单个cell，你需要制定索引。
+因为tf.Tensor是n维cell阵列，为了访问tf.Tensor的单个cell，你需要指定索引。
 对于rank为0的tensor，不需要索引，因为它已经是单个值了。\par
 对于rank1(向量)，传递一个索引允许你访问:
 \begin{python}
 my_scale = my_vector[2]
 \end{python}
-如果你想动态的选择向量中的元素，你可以制定[]一个tf.Tensor。
+如果你想动态的选择向量中的元素，你可以指定[]一个tf.Tensor。
 传递一个数值访问矩阵的子向量:
 \begin{python}
 my_row_vetor = my_matrix[2]
 my_column_vector = my_matrix[:, 3]
 \end{python}
 \subsection{形状}
-shape是tensor每一维元素的个数。TensorFLow在构造图的时候自动计算形状。有时候自动计算可能不知道rank，如果rank已经知道，每一维的形状可能直到可能不知道。
+shape是tensor每一维元素的个数。TensorFlow在构造图的时候自动计算形状。有时候自动计算可能不知道rank，如果rank已经知道，每一维的形状可能直到可能不知道。
 \begin{tabular}{|c|c|c|c|}
+\hline
 rank&shape&维数&example\\
+\hline
 0&[]&0-D&O维Tensor，标量\\
+\hline
 1&[D0]&1-D&一维tensor的形状\\
+\hline
 2&[D0,D1]&2-D&二维Tensoe的形状\\
+\hline
 3&[D0,D1,D2]&3-D&三维Tensor的形状\\
-n&[D0,D1,\ldots,$D_{n-1}$]&N维tensor的形状[$D_0,D_1,\ldots,D_{n-1}$]&
+\hline
+n&[D0,D1,\ldots,$D_{n-1}$]&N维tensor的形状[$D_0,D_1,\ldots,D_{n-1}$]&\\
+\hline
 \end{tabular}
 \subsection{获取tf.Tensor对象的形状}
 当建立图的时候tensor的形状已知是很有用的，你可以通过tensor的shape属性得到。得到完全定义的tf.Tensor的形状可以使用Tf.shape操作。这个方法你可以建立一个图操作tensor的形状。
@@ -107,20 +123,20 @@ yet_another = tf.reshape(matrixAlt, [13, 2, -1])  # ERROR!
 \subsection{数据类型}
 tf.Tensor不可能有一个以上的数据类型。然而序列化数据结构作为字符串尺寸处在tf.Tensor里是可能的。
 
-可以使用tf.cast装换一种数据类型到另一种。
+可以使用tf.cast转换一种数据类型到另一种。
 \begin{python}
 # Cast a constant integer tensor into floating point.
 float_tensor = tf.cast(tf.constant([1, 2, 3]), dtype=tf.fl
 \end{python}
-通过Tensor的dtype查看tensor的数据类型。你通过python对象创建tf.Tensor的时候需要制定数据类型。如果你不指定TensorFLow选择亿个代表你数据的数据类型。TensorFlow转换Python整数为tf.int32,浮点数为tf.float32。转换数组时TensorFlow用和numpy相同的规则。
+通过Tensor的dtype查看tensor的数据类型。你通过python对象创建tf.Tensor的时候需要指定数据类型。如果你不指定TensorFlow选择一个代表你数据的数据类型。TensorFlow转换Python整数为tf.int32,浮点数为tf.float32。转换数组时TensorFlow用和numpy相同的规则。
 \subsection{计算Tensor}
-当计算图被创建后你可以通过运行计算tf.Tensor湖区指定的值。用Tensor.eval方法简单的计算:
+当计算图被创建后你可以通过运行计算tf.Tensor获取指定的值。用Tensor.eval方法简单的计算:
 \begin{python}
 constant = tf.constant([1,2,3])
 tensor = constant*constant
 print(tensor.eval())
 \end{python}
-eval方法仅仅当tf.Session()被激活时可用。Tensor.eval然会一个和tensor相同内容的numpy数组。有时候没有上下文计算tf.Tensor是不可能的。例如，tensor依赖于Placeholder在提供给Placeholder值之前不能计算。
+eval方法仅仅当tf.Session()被激活时可用。Tensor.eval然后会得到一个一个和tensor相同内容的numpy数组。有时候没有上下文计算tf.Tensor是不可能的。例如，tensor依赖于Placeholder在提供给Placeholder值之前不能计算。
 \begin{python}
 p = tf.placeholder(tf.float32)
 t = p + 1.0
@@ -130,25 +146,25 @@ t.eval(feed_dict={p:2.0})  # This will succeed because we're feeding a value
 \end{python}
 其他的模型结构在计算tf.Tensor时可能很复杂。TensorFlow不能直接计算定义在函数内部的或者控制流结构的tf.Tensor。如果tf.Tensor伊奈于队列中的值，计算tf.Tensorbang仅仅入队的时候工作，负责计算被挂起。当和queue工作的时候，记得在计算任何tf.Tensor之前用tf.train.start\_queue\_runners。
 \subsection{打印Tensor}
-处于调试目的，你想要打印tf.Tesor的值。tfdbg提供了高级的调制支持。TensorFlow用下面的模板打印tf.Tensor:
+出于调试目的，你想要打印tf.Tesor的值。tfdbg提供了高级的调制支持。TensorFlow用下面的模板打印tf.Tensor:
 \begin{python}
 t = <<some tensorflow operation>>
 print t  # This will print the symbolic tensor when the graph is being built.
          # This tensor does not have a value in this context.
 \end{python}
-这段代码打印tf.Tensor对象不是它的值，TensorFLow提供了tf.Print操作，然会第一个没有改变的Tensor参数然后打印tf.Tensor的第二个参数。
+这段代码打印tf.Tensor对象不是它的值，TensorFlow提供了tf.Print操作，然后第一个没有改变的Tensor参数然后打印tf.Tensor的第二个参数。
 
 为了正确的使用tf.Print(),必须要用它的返回值,查看下面的例子:
 \begin{python}
- we are using the value returned by tf.Print
+	#we are using the value returned by tf.Print
 result = t + 1  # Now when result is evaluated the value of `t` will be printed.
 \end{python}
 当你计算result你将计算result依赖的每个结果，因为result依赖于t，然后计算t，打印它的输入，t被打印。
 \section{Variable}
 Tensorflow变量是最好的在你的程序用表现共享，永久状态的方法，Vaiables通过tf.Variable类操作。一个Tf.Variable代表随着在它上面的操作的进行他的值可能被改变
-和tf.Tensor不同在于tf.Variable存在于session.run之外。一个tf.vaiable存储永久tensor，制定操作允许你读和修改他的值修改能通过多个tf.Session可视化，因此多个worker对于同一个tf.Variable可以查看到同样的值。
+和tf.Tensor不同在于tf.Variable存在于session.run之外。一个tf.vaiable存储永久tensor，指定操作允许你读和修改他的值修改能通过多个tf.Session可视化，因此多个worker对于同一个tf.Variable可以查看到同样的值。
 \subsection{创建变量}
-创建变量最好的方法是调用tf.get\_variable函数。这个函数要求你指定变量的名字，名字将作为副本访问相同的变量，和checkpointing和导入模型是变量的名字一样。tf.get\_variable也允许你重用一个先前创建的有同样名字的变量，使得定义重用层很方便。
+创建变量最好的方法是调用tf.get\_variable函数。这个函数要求你指定变量的名字，名字将作为副本访问相同的变量，和checkpoint和导入模型是变量的名字一样。tf.get\_variable也允许你重用一个先前创建的有同样名字的变量，使得定义重用层很方便。
 创建变量提供名字和形状。
 \begin{python}
 	my_variable = tf.get_variable("my_variable",[1,2,3])
@@ -162,7 +178,7 @@ TensorFlow提供很一些方便的初始化器，你也可以通过有值的tf.T
 \begin{python}
 	other_variable = tf.get_variable("other_variable",dtype=tf.int32,initializer=tf.constant([23,42]))
 \end{python}
-鼠疫当你用tf.Tensor作为初始化器你不要制定变量的形状，因为初始化器用你的Ttensor的形状。
+鼠疫当你用tf.Tensor作为初始化器你不要指定变量的形状，因为初始化器用你的Ttensor的形状。
 \subsection{变量集合}
 因为断开一部分TensorFlow程序也许是想创建变量，这有时候是一个简单的访问他们的方法。因此TensorFlow提供了collections(集合)代表有名字的tensor列表或者其他对象，向tf.Variable实体。
 
@@ -197,7 +213,7 @@ with tf.device(tf.train.replica_device_setter(cluster=cluster_spec)):
     v = tf.get_variable("v",shape=[20,20])#这个变量被replica_device_setter放置在参数server上
 \end{python}
 \subsection{初始化变量}
-\color{red}{在使用变量之前，你必须对变量进行初始化。}如果你在低级的TensorFlow API(明确的创建自己的图和会话)上编程，你必须明确的初始化变量。最高级的框架像tf.contrib.slim,tf.estimator.Estimator和Keras在你训练模型前自动初始化变量。
+{\color{red}{在使用变量之前，你必须对变量进行初始化。}}如果你在低级的TensorFlow API(明确的创建自己的图和会话)上编程，你必须明确的初始化变量。最高级的框架像tf.contrib.slim,tf.estimator.Estimator和Keras在你训练模型前自动初始化变量。
 
 明确的初始化是很有用的，因为他让你从checkpointer载入模型不用重复运行代价高昂的初始化其同时允许决定什么时候随机初始化的变量在分布式设置上被共享。
 
@@ -213,7 +229,7 @@ session.run(my_variable.initializer)
 \begin{python}
 print(session.run(tf.report_uninitialized_vaariables()))
 \end{python}
-注意，默认情况下tf.global\_variables\_initializer不制定变量的初始化顺序。因此一个初始化值依赖于另一个初始化值，你可能得到错误。任何时候你在一个不是所有的变量被初始化（用一个变量的值时候另一个变量正在初始化）的环境下最好用variable.initialized\_value()代替variable。
+注意，默认情况下tf.global\_variables\_initializer不指定变量的初始化顺序。因此一个初始化值依赖于另一个初始化值，你可能得到错误。任何时候你在一个不是所有的变量被初始化（用一个变量的值时候另一个变量正在初始化）的环境下最好用variable.initialized\_value()代替variable。
 \begin{python}
 v = tf.get_variable("v",shape=(),initializer=tf.zeros_initializer())
 w = tf.get_variable("w",initializer=tf.initialized_value()+1)
@@ -240,7 +256,7 @@ with tf.control_dependencuies([assignment]):
     w = v.read_value()
 \end{python}
 \subsection{保存和恢复}
-用tf.train.Saver对象保存恢复模型是一种最简单的方法。这个构造提为图上所有的或者制定的变量添加save和restore操作。Saver提供了方法运行这些操作，指定checkpointer文件读写的路径。为了恢复模型的checkpointe而不是图，你必须首先从MetaGraph(.meta扩展的)文件。通过调用tf.train.import\_meta\_graph,从执行一个restore返回一个Saver。
+用tf.train.Saver对象保存恢复模型是一种最简单的方法。这个构造提为图上所有的或者指定的变量添加save和restore操作。Saver提供了方法运行这些操作，指定checkpointer文件读写的路径。为了恢复模型的checkpointe而不是图，你必须首先从MetaGraph(.meta扩展的)文件。通过调用tf.train.import\_meta\_graph,从执行一个restore返回一个Saver。
 \subsection{checkpoint文件}
 TensorFlow保存变量在一个二进制文件中，大体上是映射变量的名字到tensor的值。当你创建一个Saver对象，你可以从checkpoint文件选择变量，默认对每个变量用tf.Variable.name的值。
 \subsection{保存变量}
