@@ -31,13 +31,87 @@ DEFINE\_boolean(flag\_name,default\_value,docstring):定义一个'boolean'类型
 \item default\_value:flag的默认值，应该是字符串。
 \item docstring:用flag的一个有用的帮助信息。
 \end{itemize}
+\subsection{tf.gather}
+\begin{python}
+gather(
+    params,
+    indices,
+    validate_indices=None,
+    name=None,
+    axis=0
+	)
+\end{python}
+根据indices从params和axis轴获取slices。
+indices必须是任何维度(通常是0维或者一维)的一个整数tensor生成输出tensor的形状params.shape[:axis]+indices.shape+params.shape[axis+1:],这里
+\begin{python}
+# Scalar indices (output is rank(params) - 1).
+output[a_0, ..., a_n, b_0, ..., b_n] =
+params[a_0, ..., a_n, indices, b_0, ..., b_n]
+# Vector indices (output is rank(params)).
+output[a_0, ..., a_n, i, b_0, ..., b_n] =
+params[a_0, ..., a_n, indices[i], b_0, ..., b_n]
+# Higher rank indices (output is rank(params) + rank(indices) - 1).
+output[a_0, ..., a_n, i, ..., j, b_0, ... b_n] =
+params[a_0, ..., a_n, indices[i, ..., j], b_0, ..., b_n]
+\end{python}
+\begin{figure}[H]
+	\includegraphics[scale=0.5]{Gather.png}
+\end{figure}
+参数:
+\begin{itemize}
+	\item params:一个Tensor，从它那里收集值，rank必须是axis+1
+	\item indices:一个tensor。必须是int32,int64.索引tensor，必须是在[0,params.shape[axis])
+	\item axis:一个Tensor，必须是下面的数据类型:int32,int64.params的轴，从params中获得收集索引，默认是第一维，支持负索引。
+	\item name:操作的名字
+	\item{返回}:一个tensor，和params有相同的数据类型，通过给定indeces从params收集，形状为[params.shape[:axis]+indices.shape+params.shape[axis+1:]
+\end{itemize}
+例子:
+\begin{python}
+import tensorflow as tf
+a = tf.constant([[1,2,3,4],[5,6,7,8],[9,10,11,12],[13,14,15,16]])
+b = tf.constant([1,0,2])
+g = tf.gather(a,b)
+with tf.Session() as sess:
+    print(sess.run(g))#获取第一轴[1,0,2]行的数据
+\end{python}
+输出:
+\begin{python}
+[[ 5  6  7  8]
+ [ 1  2  3  4]
+ [ 9 10 11 12]]
+\end{python}
+\subsection{tf.placeholder}
+\begin{python}
+placeholder(
+    dtype,
+    shape=None,
+    name=None
+)
+\end{python}
+为placeholder输入需要被插入的tensor。
+如果这个tensor被计算将产生错误。他的值必须通过feed\_dict选项在Session.run(),Tensor.eval()或者是Operation.eval()输入。
+\begin{python}
+x = tf.placeholder(tf.float32, shape=(1024, 1024))
+y = tf.matmul(x, x)
+with tf.Session() as sess:
+    print(sess.run(y))  # ERROR: will fail because x was not fed.
+    rand_array = np.random.rand(1024, 1024)
+    print(sess.run(y, feed_dict={x: rand_array}))  # Will succeed.
+\end{python}
+参数:
+\begin{itemize}
+\item dtype:被输入的tensor元素的数据类型。
+\item shape:被fed的tensor的形状，如果形状没有被指定，你可以输入任何形状的tensor。
+\item:操作的名字
+\item{Return} 一个可能被用作输入数据处理的Tensor，值不能被直接计算。
+\end{itemize}
 \subsection{tf.squeeze}
 tf.squeeze(input,axis=None,name=None,squeeze\_dims=None)
 说明:从指定的Tensor中移除1维度。
 \begin{itemize}
 \item input:tensor,输入Tensor。
 \item axis:列表，指定需要移除的位置的列表，默认为空列表[],索引从0开始squeeze不为1的索引会报错。
-\item name:caozuoide名字
+\item name:操作的名字
 \item squeeze\_dims:否决当前轴的参数。
 \item 返回一个Tensor，形状和input相同，包含和input相同的数据，但是不包含有1的元素。
 \item 异常：squeeze\_dims和axis同时指定时会有ValueError。
@@ -237,7 +311,7 @@ random_poisson(
     name=None
 )
 \end{python}
-从Poisson分布中湖区制定形状的样本，lam是描述分布的参数。
+从Poisson分布中获取制定形状的样本，lam是描述分布的参数。
 
 输入参数:
 \begin{itemize}
