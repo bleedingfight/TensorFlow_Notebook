@@ -64,7 +64,7 @@ shape&这个变量的tensorShape\\
 \end{tabular}
 \end{center}
 \subsection{方法}
-\subsubsection{\_\_init\_\_}
+\_\_init\_\_
 \begin{python}
 __init__(
     initial_value=None,
@@ -98,7 +98,7 @@ __init__(
 	\item valueError:如果初始值没有指定或者没有形状同时validate\_shape是True。
 \end{itemize}
 \end{itemize}
-\subsubsection{\_\_abs\_\_}
+\_\_abs\_\_
 计算tensor的绝对值，给定一个复数x，这个操作将返回一个float32或者float64类型的Tensor，它的值是元素的模($\sqrt{a^2+b^2}$)
 \begin{python}
 # tensor 'x' is [[-2.25 + 4.75j], [-3.25 + 5.75j]]
@@ -110,7 +110,7 @@ tf.complex_abs(x) ==> [5.25594902, 6.60492229]
 	\item name:操作的名字
 	\item[Returns]一个Tensor或者相同尺寸和类型的的SparseTensor作为x的绝对值。注意对于complex65或者complex128输入，返回的Tensor将是分别是float32和float64。
 \end{itemize}
-\subsubsection{\_\_add\_\_}
+\_\_add\_\_\newline
 \begin{python}
 __add__(
     a,
@@ -126,7 +126,7 @@ __add__(
 	\item name:操作的名字
 	\item[Returns]:和x相同类型的Tensor。
 \end{itemize}
-\subsubsection{\_\_adn\_\_}
+\_\_adn\_\_\newline
 \begin{python}
 __and__(
     a,
@@ -142,7 +142,7 @@ __and__(
 	\item name:操作的名字。
 	\item[Returns]:bool型的返回值。
 \end{itemize}
-\subsubsection{\_\_div\_\_}
+\_\_div\_\_\newline
 \begin{python}
 __div__(
     a,
@@ -158,7 +158,8 @@ __div__(
 	\item name:操作的名字
 \end{itemize}
 返回:x除以y的商。
-\subsubsection{\_\_floordiv\_\_}
+
+\_\_floordiv\_\_\newline
 x和y按元素相除截取为接近最小负整数(c语言实现，十分高效)。
 x和y必须有相同的类型，结果也有相同的类型。
 参数:
@@ -169,7 +170,8 @@ x和y必须有相同的类型，结果也有相同的类型。
 	\item[Returns]x/y截取后的结果
 	\item[Raises]:TypeError(如果输入为复数)。
 \end{itemize}
-\subsubsection{\_\_ge\_\_}
+
+\_\_ge\_\_\newline
 \begin{python}
 __ge__(
     a,
@@ -185,7 +187,8 @@ __ge__(
 	\item name:操作的名字。
 	\item[name]:bool型的tensor。
 \end{itemize}
-\subsubsection{\_\_getitem\_\_}
+
+\_\_getitem\_\_\newline
 \begin{python}
 __getitem__(
     var,
@@ -216,7 +219,7 @@ with tf.Session() as sess:
 		\item TypeError：如果切片索引不是整数,或者省略。
 	\end{itemize}
 \end{itemize}
-\subsubsection{\_\_gt\_\_}
+\_\_gt\_\_\newline
 \begin{python}
 __gt__(
     a,
@@ -230,7 +233,8 @@ __gt__(
 	\item 操作的名字
 	\item[Returns]:bool型的Tensor。
 \end{itemize}
-\subsubsection{\_\_invet\_\_}
+
+\_\_invet\_\_\newline
 \begin{python}
 __invert__(
     a,
@@ -245,10 +249,12 @@ __invert__(
 \item name:操作的名字。
 \item[Returns]:bool型的Tensor。
 \end{itemize}
-\subsubsection{\_\_iter\_\_}
+
+\_\_iter\_\_\newline
 阻止迭代的伪方法，不要调用。注意我们如果注册getitem作为重载操作，Python将尝试在0到无穷大迭代，声明这个方法阻止无意识的行为。
 异常：TypeError：调用的时候。
-\subsubsection{\_\_le\_\_}
+
+\_\_le\_\_\newline
 \begin{python}
 __le__(
     a,
@@ -264,7 +270,8 @@ __le__(
 	\item name:操作的名字。
 	\item[Returns]:返回bool型的Tensor。
 	\end{itemize}
-\subsubsection{\_\_it\_\_}
+
+\_\_it\_\_\newline
 \begin{python}
 __lt__(
     a,
@@ -280,7 +287,8 @@ an元素返回x<y的值。Less支持广播运算。
 	\item name:操作的名字。
 	\item[Returns]:bool型的Tensor。
 \end{itemize}
-\subsubsection{\_\_matmul\_\_}
+
+\_\_matmul\_\_\newline
 \begin{python}
 __matmul__(
     a,
@@ -341,7 +349,8 @@ d = tf.matmul(tf.matmul(a, b), [[10.], [11.]])
 	\item[Returns]:一个和a，b有相同类型的Tensor，a，b的乘。矩阵乘。
 	\item[Raises]:ValueError:如果transpose\_a和adjoint\_a或者transpose\_b和adjoint\_b都设置为True。
 	\end{itemize}
-\subsubsection{\_\_mod\_\_}
+\_\_mod\_\_\newline
+
 \begin{python}
 __mod__(
     a,
@@ -356,7 +365,7 @@ __mod__(
 	\item name:操作的名字
 	\item[Returns]:和x相同类型的Tensor。
 \end{itemize}
-\subsubsection{\_\_mul\_\_}
+\_\_mul\_\_\newline
 \begin{python}
 __mul__(
     a,
@@ -470,7 +479,7 @@ initialized\_value():返回初始化变量后的值。
 \begin{python}
 # Initialize 'v' with a random tensor.
 v = tf.Variable(tf.truncated_normal([10, 40]))
-# Use `initialized_value` to guarantee that `v` has been
+# Use `initialized\_value` to guarantee that `v` has been
 # initialized before its value is used to initialize `w`.
 # The random values are picked only once.
 w = tf.Variable(v.initialized_value() * 2.0)
@@ -505,7 +514,7 @@ scatter_sub(
     use_locking=False
 )
 \end{python}
-从变量中减去IndexedSlices，parse_delta:从这个变量减去的IndexedSlices，use\_locking:如果为True在操作过程中用locking。如果parse_delta不是一个IndexedSlices将出现ValueError。
+从变量中减去IndexedSlices，parse\_delta:从这个变量减去的IndexedSlices，use\_locking:如果为True在操作过程中用locking。如果parse\_delta不是一个IndexedSlices将出现ValueError。
 set\_shape(shape):重载变量的形状。\newline
 to\_proto(export\_scope=None):转化变量为一个variableDef protocal buffer。export\_scope：字符串，移除的范围的名字，返回一个variableDef protocal buffer，如果Variable不在指定范围内为None。\newline
 value():返回这些变量的快照，你不需要调用这个放放，当所有的操作需要变量的值时通过convert\_to\_tensor()自动调用它。返回一个保持变量值得Tensor，你不能指定一个新的值给这个tensor当它没有引用变量的时候。为了避免复制如果利用的返回值在同一个设备上作为变量，这实际上返回实时的值而不是复制的值。用过使用更新变量。如果使用在不同的设备上使用将得到不同的值，返回包含变量值的Tensor。
