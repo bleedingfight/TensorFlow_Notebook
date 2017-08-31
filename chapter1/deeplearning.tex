@@ -317,7 +317,47 @@ XX^T = W\Sigma\Sigma^TW^T
 \end{equation}
 在欧几里得空间给定一组点数，第一主成分对应于通过多维空间平均点的一条线，同时保证各个点到这条直线距离的平方和最小。去除掉第一主成分后，用同样的方法得到第二主成分。依此类推。在Σ中的奇异值均为矩阵 $XX^T$的本征值的平方根。每一个本征值都与跟它们相关的方差是成正比的，而且所有本征值的总和等于所有点到它们的多维空间平均点距离的平方和。PCA提供了一种降低维度的有效办法，本质上，它利用正交变换将围绕平均点的点集中尽可能多的变量投影到第一维中去，因此，降低维度必定是失去讯息最少的方法。PCA具有保持子空间拥有最大方差的最优正交变换的特性。然而，当与离散余弦变换相比时，它需要更大的计算需求代价。非线性降维技术相对于PCA来说则需要更高的计算要求。
 PCA对变量的缩放很敏感。如果我们只有两个变量，而且它们具有相同的样本方差，并且成正相关，那么PCA将涉及两个变量的主成分的旋转。但是，如果把第一个变量的所有值都乘以100，那么第一主成分就几乎和这个变量一样，另一个变量只提供了很小的贡献，第二主成分也将和第二个原始变量几乎一致。这就意味着当不同的变量代表不同的单位（如温度和质量）时，PCA是一种比较武断的分析方法。但是在Pearson的题为 "On Lines and Planes of Closest Fit to Systems of Points in Space"的原始文件里，是假设在欧几里得空间里不考虑这些。一种使PCA不那么武断的方法是使用变量缩放以得到单位方差。
-\section{kl散度}
+\section{KL散度}
+\begin{equation}
+	H_p(q)=\sum_{x}q(x)log_2(\frac{1}{p(x)})
+\end{equation}
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=0.4]{CrossEntropyDef.png}
+	\caption{Cross\_Entropy\_exp}
+\end{figure}
+如果按照分别按照$p(x)$和$q(x)$出现的概率计算:
+\begin{itemize}
+\item $H(p)=\frac{1}{2}\times 1+\frac{1}{4}\times 2+\frac{1}{8}\times 3+\frac{1}{8}\times 3=1.75bit$
+\item $H_p(q)=\frac{1}{8}\times 1+\frac{1}{2}\times 2+\frac{1}{4}\times 3+\frac{1}{8}\times 3=2.25bit$
+\item $H(q)=\frac{1}{8}\times 3+\frac{1}{2}\times 1+\frac{1}{4}\times 2+\frac{1}{8}\times 3= 1.75bit$
+\item $H_q(p)=\frac{1}{2}\times 3+\frac{1}{4}\times 1+\frac{1}{8}\times 2+\frac{1}{8}\times 3 = 2.375bit$
+\end{itemize}
+将上面的四种情况用图画出来，如果两组概率服从统一分布，他们将相邻:
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=0.5]{CrossEntropyCompare.png}
+	\caption{比较四种情况算得的信息bit}
+\end{figure}
+上图可以看出$H_p(q)\neq H_q(p)$,为什么？$H_q(p)$更大，因为蓝色被分配了更多的bit，交叉熵给我们了一种方法来衡量两个概率分布的不同。p和q越多不同，p和q对应的交叉熵比p的熵就越大。
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=0.9]{CrossEntropyQP.png}
+	\caption{p对q的交叉熵和p的熵}
+\end{figure}
+类似的，p和q的差别越大，相应的q对p的交叉熵比q的熵越大。
+\begin{figure}[H]
+		\centering
+			\includegraphics[scale=0.9]{CrossEntropyPQ.png}
+				\caption{q对p的交叉熵和q的熵}
+\end{figure}
+\subsection{KL分歧}
+\begin{equation}
+	D_p(Q)=H_q(p)-H(p)=\sum_x p(x)log_2(\frac{p(x)}{q{x}})
+\end{equation}
+$log_2(\frac{p(x)}{q(x)})$表示q表示的代码和q表示的代码有多少个bit不同，整个表达式表示两个代码有多少bit不同。
+KL divergence实际上相当于两个分布之间的距离。
+
 相对熵(relative entropy)又称为KL散度(Kullback-Leibler divergence，简称KLD)，信息散度(information divergence),信息增益
 (information fain)
 KL散度是两个概率分布P和Q差别的非对称性度量。KL散度是用来度量基于Q的编码来编码来自P的样本平均所需的额外的位元数。典型情况下，P表示数据的真实分布，Q表示数据的理论分布，模型分布或P的近似分布。
