@@ -1,0 +1,158 @@
+\section{线程和队列}
+\begin{quote}
+	\emph{注意在TensorFlow1.2之前我们推荐用多线程，队列输入pipeline,在TensorFlow1.2开始我们推荐使用tf.contrib.data模块。tf.contrib.data提供了一个更加简单的结构构建高效的输入pipeline，我们已经停止了之前正在开发的多线程和队列输入pipeline，我们帮依然维护旧的代码的开发者维护文档。}
+\end{quote}
+%多线程及时是一个强有力的而且广泛使用的支持一步计算的机制，入上面章节所述，TensorFlow计算图节点和计算图实现，一个队列是一个已经准备好的节点，向一个变量;以他节点可以修改它的内容。类似的，节点可以入队新的元素到队列或者从队列中出去已近存在的元素，TensorFlow队列提供了一个方法结合多个计算步。如果队列为空依然出队或者队列已满依然入队豆浆产生阻塞，挡这两个条件不满足的时候阻塞解除基础处理。TensorFlow实现了多个队列类，不同的类之间的不同是元素从队列移除的顺序。为了更好的理解我们考虑一个简单的情况我们创建"First in first out"队列然后填充0.然后我们构造一张图从队列中获取元素增加1，然后将它放在队列的尾部，慢慢地队列中的数字增加。
+\begin{python}
+q = tf.FIFOQueue(3,"float")
+init = q.enqueue_many(([0.,0.,0.],))
+x = q.dequeue()
+y = x+1
+q_inc = q.enqueue([y])
+init.run()
+q_inc.run()
+q_inc.run()
+q_inc.run()
+q_inc.run()
+\end{python}
+Enqueue,EnqueueMany和Dequeue是一个特别的节点。他们的代队列真实值的指针，允许他们改变状态。我们推荐你考虑这些操作的时候用面向对象的理解，事实上在Python API中这些操作通过调用队列的方法。
+\begin{quote}
+	\emph{注意Queue方法必须运行在相同的设备上，不兼容的设备放置将在创建这些操作的时候被忽略}
+\end{quote}
+\subsection{队列用法}
+像tf.FIFOQueue和tf.RandomShuffleQueue是在图上执行异步计算的重要的TensorFlow对象。典型的队列输入pipline用RandomShuffleQueue为训练模型准备输入:
+\begin{itemize}
+	\item 多线程准备训练数据和将数据入队
+	\item 训练线程执行训练操作从队列出队mini-batch
+\end{itemize}
+我们推荐使用Dataset的shuffle和batch方法完成这个任务。然而，如果你仍然愿意使用队列版本，你可以在tf.train.shuffle\_batch中找到完美的实现。
+
+下面展示一个简单的实现，这个函数获取一个source tensor，capacity和batch size作为参数返回一个批量打乱的出队tensor。
+\begin{python}
+def simple_shuffle_batch(source, capacity, batch_size=10):
+  # Create a random shuffle queue.
+    queue = tf.RandomShuffleQueue(capacity=capacity,
+                                  min_after_dequeue=int(0.9*capacity),
+                                  shapes=source.shape, dtypes=source.dtype)
+
+    # Create an op to enqueue one item.
+    enqueue = queue.enqueue(source)
+
+    # Create a queue runner that, when started, will launch 4 threads applying
+    # that enqueue op.
+    num_threads = 4
+    qr = tf.train.QueueRunner(queue, [enqueue] * num_threads)
+
+    # Register the queue runner so it can be found and started by
+    # `tf.train.start\_queue\_runners` later (the threads are not launched yet).
+    tf.train.add_queue_runner(qr)
+
+    # Create an op to dequeue a batch
+    return queue.dequeue_many(batch_size)
+\end{python}
+当tf.train.start\_queue\_runners开始的时候，或者直接通过tf.train.MonitoredSession,QueueRunner将在后台开启进程填充队列，同时主线程执行dequeue\_many操作从中拉取数据，现在这些操作不相互依赖，除非间接地通过队列的内部依赖。简单的用这个函数像这样:
+\begin{python}
+# create a dataset that counts from 0 to 99
+input = tf.constant(list(range(100)))
+input = tf.contrib.data.Dataset.from_tensor_slices(input)
+input = input.make_one_shot_iterator().get_next()
+
+# Create a slightly shuffled batch from the sorted elements
+get_batch = simple_shuffle_batch(input, capacity=20)
+
+# `MonitoredSession` will start and manage the `QueueRunner` threads.
+with tf.train.MonitoredSession() as sess:
+    # Since the `QueueRunners` have been started, data is available in the
+    # queue, so the `sess.run(get\_batch)` call will not hang.
+    while not sess.should_stop():
+        print(sess.run(get_batch))
+\end{python}
+输出
+\begin{python}
+[ 8 10  7  5  4 13 15 14 25  0]
+[23 29 28 31 33 18 19 11 34 27]
+[12 21 37 39 35 22 44 36 20 46]
+\end{python}
+对于更多的情况有tf.train.MonitoredSession提供的自动线程启动和管理是足够的，在极少的情况下不行，TensorFlow提供了手动管理你的线程的工具。
+\subsection{手动线程管理}
+正如我们看到的，TensorFlow Session是多线程的而且是线程安全的，因此多线程能够容易的在相同的会话和运行操作中使用。然而，不总是很容易实现一个Python程序按照要求驱动线程，所有的线程必须能同时停止，特别是必须捕获和报告，队列停止的时候必须被合适的关闭。TensorFlow提供了两个类:tf.trainCoordinator和tf.train.QueueRunner。这两个类帮助多线程一起停止向程序报告异常等待他们停止，QueueRunner类被用于创建一个线程协作同一队列中的入队tensor。
+\subsection{Coordinator}
+tf.train.Coordinator类管理TensorFlow程序的后台线程帮助多线程一起停止，关键的方法是:
+\begin{itemize}
+	\item tf.train.Coordinator.should\_stop:如果线程应该被停止返回True。
+	\item tf.train.Coordinator.request\_stop:请求应该停止的线程。
+	\item tf.train.Coordinator.join:等待直到指定的线程被停止。
+\end{itemize}
+你首先创建一个Coordinator对象然后创建一些用于协调的线程。线程通常循环运行当shold\_stop为True是停止。任何线程都可以决定计算应该被停止。它仅仅必须调用request\_stop()，should\_stop()返回True是其它线程停止。
+\begin{python}
+# Using Python's threading library.
+import threading
+
+# Thread body: loop until the coordinator indicates a stop was requested.
+# If some condition becomes true, ask the coordinator to stop.
+def MyLoop(coord):
+    while not coord.should_stop():
+    ...do something...
+    if ...some condition...:
+        coord.request_stop()
+
+# Main thread: create a coordinator.
+coord = tf.train.Coordinator()
+
+# Create 10 threads that run 'MyLoop()'
+threads = [threading.Thread(target=MyLoop, args=(coord,)) for i in range(10)]
+
+# Start the threads and wait for all of them to stop.
+for t in threads:
+  t.start()
+coord.join(threads)
+\end{python}
+显然，coordinator可以管理线程做不同的事。他们不是不许和上面的例子一样。coordinator也支持捕获和报告异常，查看\href{https://www.tensorflow.org/api_docs/python/tf/train/Coordinator}{tf.train.Coordinator}文档查看更多信息。
+\subsection{QueueRunner}
+tf.train.QueueRunner类创建一些线程重复执行入队操作。这些线程可以用coordinator一起停止，另外一个队列runner将运行一个closer操作，如果在coordinator中的队列被报告异常将关闭队列。你可以用一个队列runner实现下面的架构，首先用一个TensorFlow为输入样本建立一个图，添加操作处理将样本送入队列，添加训练操作从队列出队。
+\begin{python}
+example = ...ops to create one example...
+# Create a queue, and an op that enqueues examples one at a time in the queue.
+queue = tf.RandomShuffleQueue(...)
+enqueue_op = queue.enqueue(example)
+# Create a training graph that starts by dequeueing a batch of examples.
+inputs = queue.dequeue_many(batch_size)
+train_op = ...use 'inputs' to build the training part of the graph...	
+\end{python}
+在Python的训练程序中，创建一个QueueRunner将运行一些线程处理入队样本、创建一个Coordinator要求queue runner用coordinator开启它的线程。用coordinator写一个训练循环。
+\begin{python}
+# Create a queue runner that will run 4 threads in parallel to enqueue
+# examples.
+qr = tf.train.QueueRunner(queue, [enqueue_op] * 4)
+
+# Launch the graph.
+sess = tf.Session()
+# Create a coordinator, launch the queue runner threads.
+coord = tf.train.Coordinator()
+enqueue_threads = qr.create_threads(sess, coord=coord, start=True)
+# Run the training loop, controlling termination with the coordinator.
+for step in range(1000000):
+    if coord.should_stop():
+        break
+    sess.run(train_op)
+# When done, ask the threads to stop.
+coord.request_stop()
+# And wait for them to actually do it.
+coord.join(enqueue_threads)
+\end{python}
+\subsection{处理异常}
+线程通过队列runner启动做的比仅仅运行入队操作要多。他们捕获处理队列生成的异常，包括用于报告队列被关闭的tf.errors.OutOfRangeError异常。一个训练中的程序用一个coordinator必须类似的在主循环中捕获和报告异常。下面是上面训练循环的一个改进的例子:
+\begin{python}
+try:
+    for step in range(1000000):
+      if coord.should_stop():
+        break
+      sess.run(train_op)
+except Exception, e:
+    # Report exceptions to the coordinator.
+    coord.request_stop(e)
+finally:
+    # Terminate as usual. It is safe to call `coord.request\_stop()` twice.
+    coord.request_stop()
+    coord.join(threads)
+\end{python}
