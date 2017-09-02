@@ -456,7 +456,11 @@ OUTPUT ./chapter2/embedding.aux
 OUTPUT ./chapter2/tf_basics2.aux
 INPUT ./chapter2/tf_basics2.tex
 INPUT ./chapter2/tf_basics2.tex
+INPUT ./chapter2/code/iris_dnn_demo.py
+INPUT ./chapter2/code/iris_dnn_demo.py
+INPUT ./chapter2/code/iris_dnn_demo.py
 INPUT ./pic/chapter2/iris_three_species.jpg
+INPUT ./pic/chapter2/validation_monitor_tensorboard_accuracy.png
 INPUT ./pic/chapter1/relu.png
 INPUT ./pic/chapter1/relu6.png
 INPUT ./pic/chapter1/activate_fun.png
