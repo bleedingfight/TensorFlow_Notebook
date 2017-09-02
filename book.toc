@@ -7,209 +7,298 @@
 \contentsline {subsection}{\numberline {1.2.1}稀疏编码的概率表示}{8}{subsection.1.2.1}
 \contentsline {section}{\numberline {1.3}PCA}{10}{section.1.3}
 \contentsline {subsection}{\numberline {1.3.1}数学定义}{10}{subsection.1.3.1}
-\contentsline {section}{\numberline {1.4}kl散度}{11}{section.1.4}
-\contentsline {subsection}{\numberline {1.4.1}相对熵}{12}{subsection.1.4.1}
-\contentsline {chapter}{\numberline {2}Tensorflow基础}{13}{chapter.2}
-\contentsline {section}{\numberline {2.1}Tensorflow基础函数}{13}{section.2.1}
-\contentsline {subsection}{\numberline {2.1.1}Variable}{13}{subsection.2.1.1}
-\contentsline {subsection}{\numberline {2.1.2}placeholder}{13}{subsection.2.1.2}
-\contentsline {subsection}{\numberline {2.1.3}batch normalization}{14}{subsection.2.1.3}
-\contentsline {section}{\numberline {2.2}常见的激活函数}{14}{section.2.2}
-\contentsline {subsection}{\numberline {2.2.1}relu}{14}{subsection.2.2.1}
-\contentsline {subsection}{\numberline {2.2.2}relu6}{15}{subsection.2.2.2}
-\contentsline {subsection}{\numberline {2.2.3}sigmoid}{17}{subsection.2.2.3}
-\contentsline {subsection}{\numberline {2.2.4}relu和softplus}{18}{subsection.2.2.4}
-\contentsline {subsection}{\numberline {2.2.5}dropout}{20}{subsection.2.2.5}
-\contentsline {section}{\numberline {2.3}CNN常用函数}{20}{section.2.3}
-\contentsline {subsection}{\numberline {2.3.1}卷积函数}{20}{subsection.2.3.1}
-\contentsline {subsection}{\numberline {2.3.2}常见的分类函数}{21}{subsection.2.3.2}
-\contentsline {section}{\numberline {2.4}优化方法}{22}{section.2.4}
-\contentsline {subsection}{\numberline {2.4.1}BGD}{22}{subsection.2.4.1}
-\contentsline {subsection}{\numberline {2.4.2}SGD}{22}{subsection.2.4.2}
-\contentsline {subsection}{\numberline {2.4.3}momentum}{23}{subsection.2.4.3}
-\contentsline {subsection}{\numberline {2.4.4}Nesterov Momentum}{23}{subsection.2.4.4}
-\contentsline {subsection}{\numberline {2.4.5}Adagrad}{23}{subsection.2.4.5}
-\contentsline {subsection}{\numberline {2.4.6}RMSprop}{23}{subsection.2.4.6}
-\contentsline {subsection}{\numberline {2.4.7}Adam}{23}{subsection.2.4.7}
-\contentsline {subsection}{\numberline {2.4.8}构造简单的神经网络拟合数据}{25}{subsection.2.4.8}
-\contentsline {section}{\numberline {2.5}TensorBoard}{27}{section.2.5}
-\contentsline {subsection}{\numberline {2.5.1}TensorBoard Histogram Dashboard}{29}{subsection.2.5.1}
-\contentsline {subsection}{\numberline {2.5.2}一个简单的例子}{29}{subsection.2.5.2}
-\contentsline {subsection}{\numberline {2.5.3}Overlay Mode}{32}{subsection.2.5.3}
-\contentsline {subsection}{\numberline {2.5.4}多个分布}{33}{subsection.2.5.4}
-\contentsline {subsection}{\numberline {2.5.5}更多分布}{35}{subsection.2.5.5}
-\contentsline {subsection}{\numberline {2.5.6}poisson分布}{38}{subsection.2.5.6}
-\contentsline {subsection}{\numberline {2.5.7}结合所有的数据到一张图向上}{39}{subsection.2.5.7}
-\contentsline {section}{\numberline {2.6}CNN手写体数据识别}{40}{section.2.6}
-\contentsline {subsection}{\numberline {2.6.1}mnist数据集}{40}{subsection.2.6.1}
-\contentsline {section}{\numberline {2.7}RNN}{44}{section.2.7}
-\contentsline {subsection}{\numberline {2.7.1}The Problem Long-Term Dependencies}{45}{subsection.2.7.1}
-\contentsline {subsection}{\numberline {2.7.2}LSTM网络}{45}{subsection.2.7.2}
-\contentsline {subsection}{\numberline {2.7.3}LSTMs想法的核心}{46}{subsection.2.7.3}
-\contentsline {subsection}{\numberline {2.7.4}一步步的设置}{46}{subsection.2.7.4}
-\contentsline {subsection}{\numberline {2.7.5}LSTM的多种变体}{47}{subsection.2.7.5}
-\contentsline {subsection}{\numberline {2.7.6}向量字表示}{49}{subsection.2.7.6}
-\contentsline {subsubsection}{Vector Representation of Words}{49}{subsubsection*.38}
-\contentsline {subsubsection}{处理噪声的对比训练}{50}{subsubsection*.39}
-\contentsline {subsubsection}{Skip-gram模型}{52}{subsubsection*.42}
-\contentsline {subsubsection}{训练过程}{55}{subsubsection*.44}
-\contentsline {subsubsection}{嵌套学习结果可视化}{56}{subsubsection*.45}
-\contentsline {subsubsection}{嵌套学习的评估:类比推理}{56}{subsubsection*.47}
-\contentsline {subsubsection}{优化实现}{57}{subsubsection*.48}
-\contentsline {subsection}{\numberline {2.7.7}RNN}{57}{subsection.2.7.7}
-\contentsline {subsubsection}{下载及准备数据}{58}{subsubsection*.49}
-\contentsline {subsubsection}{LSTM}{58}{subsubsection*.50}
-\contentsline {subsubsection}{截断反向传播}{58}{subsubsection*.51}
-\contentsline {subsubsection}{输入}{59}{subsubsection*.52}
-\contentsline {subsubsection}{损失函数}{59}{subsubsection*.53}
-\contentsline {subsubsection}{多个LSTM层堆叠}{59}{subsubsection*.54}
-\contentsline {subsubsection}{编译并运行代码}{60}{subsubsection*.55}
-\contentsline {chapter}{\numberline {3}Tensorflow进阶}{61}{chapter.3}
-\contentsline {section}{\numberline {3.1}模型存储和加载}{61}{section.3.1}
-\contentsline {section}{\numberline {3.2}用GPU}{62}{section.3.2}
-\contentsline {subsection}{\numberline {3.2.1}手工配置设备}{62}{subsection.3.2.1}
-\contentsline {subsection}{\numberline {3.2.2}允许GPU的内存增长}{63}{subsection.3.2.2}
-\contentsline {section}{\numberline {3.3}如何利用Inception的最后一层重新训练新的分类}{65}{section.3.3}
-\contentsline {subsection}{\numberline {3.3.1}训练花}{65}{subsection.3.3.1}
-\contentsline {subsection}{\numberline {3.3.2}瓶颈}{66}{subsection.3.3.2}
-\contentsline {subsection}{\numberline {3.3.3}训练}{66}{subsection.3.3.3}
-\contentsline {subsection}{\numberline {3.3.4}用TensorBoard可视化}{67}{subsection.3.3.4}
-\contentsline {subsection}{\numberline {3.3.5}用重新训练的模型}{67}{subsection.3.3.5}
-\contentsline {subsection}{\numberline {3.3.6}在你自己的分类上训练}{67}{subsection.3.3.6}
-\contentsline {subsection}{\numberline {3.3.7}创建一个训练图像集合}{68}{subsection.3.3.7}
-\contentsline {subsection}{\numberline {3.3.8}训练步骤}{68}{subsection.3.3.8}
-\contentsline {subsection}{\numberline {3.3.9}扭曲}{68}{subsection.3.3.9}
-\contentsline {subsection}{\numberline {3.3.10}超参数}{69}{subsection.3.3.10}
-\contentsline {subsection}{\numberline {3.3.11}训练，验证，测试集}{69}{subsection.3.3.11}
-\contentsline {subsection}{\numberline {3.3.12}更对模型架构}{70}{subsection.3.3.12}
-\contentsline {section}{\numberline {3.4}TF layer向导：建立一个卷积神经网络}{70}{section.3.4}
-\contentsline {subsection}{\numberline {3.4.1}开始}{70}{subsection.3.4.1}
-\contentsline {subsection}{\numberline {3.4.2}介绍卷积神经网络}{71}{subsection.3.4.2}
-\contentsline {subsection}{\numberline {3.4.3}建立CNN MNIST分类器}{71}{subsection.3.4.3}
-\contentsline {subsection}{\numberline {3.4.4}输入层}{72}{subsection.3.4.4}
-\contentsline {subsection}{\numberline {3.4.5}第一层卷积层}{72}{subsection.3.4.5}
-\contentsline {subsection}{\numberline {3.4.6}池化层1}{73}{subsection.3.4.6}
-\contentsline {subsection}{\numberline {3.4.7}二层卷积和池化}{73}{subsection.3.4.7}
-\contentsline {subsection}{\numberline {3.4.8}Dense layer}{74}{subsection.3.4.8}
-\contentsline {subsection}{\numberline {3.4.9}Logits Layers}{74}{subsection.3.4.9}
-\contentsline {subsection}{\numberline {3.4.10}常见的预测}{75}{subsection.3.4.10}
-\contentsline {subsection}{\numberline {3.4.11}计算Loss}{75}{subsection.3.4.11}
-\contentsline {subsection}{\numberline {3.4.12}配置训练操作}{76}{subsection.3.4.12}
-\contentsline {subsection}{\numberline {3.4.13}增加评估度量}{76}{subsection.3.4.13}
-\contentsline {section}{\numberline {3.5}训练评估CNN MNIST分类器}{76}{section.3.5}
-\contentsline {subsection}{\numberline {3.5.1}载入训练和测试数据}{77}{subsection.3.5.1}
-\contentsline {subsection}{\numberline {3.5.2}创建Estimator}{77}{subsection.3.5.2}
-\contentsline {subsection}{\numberline {3.5.3}建立Logging Hook}{77}{subsection.3.5.3}
-\contentsline {subsection}{\numberline {3.5.4}选练模型}{78}{subsection.3.5.4}
-\contentsline {subsection}{\numberline {3.5.5}评估模型}{78}{subsection.3.5.5}
-\contentsline {subsection}{\numberline {3.5.6}运行模型}{78}{subsection.3.5.6}
-\contentsline {chapter}{\numberline {4}扩展}{81}{chapter.4}
-\contentsline {section}{\numberline {4.1}TensorFlow架构}{81}{section.4.1}
-\contentsline {section}{\numberline {4.2}概述}{81}{section.4.2}
-\contentsline {subsection}{\numberline {4.2.1}Client}{83}{subsection.4.2.1}
-\contentsline {subsection}{\numberline {4.2.2}Distributed master}{83}{subsection.4.2.2}
-\contentsline {subsection}{\numberline {4.2.3}Worker Service}{84}{subsection.4.2.3}
-\contentsline {section}{\numberline {4.3}内核实现}{85}{section.4.3}
-\contentsline {chapter}{\numberline {5}Performance}{87}{chapter.5}
-\contentsline {section}{\numberline {5.1}最好的实践}{87}{section.5.1}
-\contentsline {section}{\numberline {5.2}从源代码创建安装}{87}{section.5.2}
-\contentsline {subsection}{\numberline {5.2.1}利用队列读取数据}{88}{subsection.5.2.1}
-\contentsline {subsection}{\numberline {5.2.2}在CPU上的预处理}{88}{subsection.5.2.2}
-\contentsline {subsection}{\numberline {5.2.3}用大文件}{89}{subsection.5.2.3}
-\contentsline {subsection}{\numberline {5.2.4}用NCHW图像数据格式}{89}{subsection.5.2.4}
-\contentsline {subsection}{\numberline {5.2.5}用融批规范}{89}{subsection.5.2.5}
-\contentsline {section}{\numberline {5.3}性能向导}{90}{section.5.3}
-\contentsline {section}{\numberline {5.4}好性能模型}{90}{section.5.4}
-\contentsline {section}{\numberline {5.5}Benchmark}{90}{section.5.5}
-\contentsline {section}{\numberline {5.6}如何用TensorFlow量化神经网络}{90}{section.5.6}
-\contentsline {subsection}{\numberline {5.6.1}为什么做量化工作}{90}{subsection.5.6.1}
-\contentsline {subsection}{\numberline {5.6.2}为什么量化}{90}{subsection.5.6.2}
-\contentsline {subsection}{\numberline {5.6.3}为什么不直接训练低精度}{91}{subsection.5.6.3}
-\contentsline {subsection}{\numberline {5.6.4}你能如何量化你的模型}{91}{subsection.5.6.4}
-\contentsline {subsection}{\numberline {5.6.5}如何量化处理工作}{92}{subsection.5.6.5}
-\contentsline {subsection}{\numberline {5.6.6}量化Tensor将呈现什么}{94}{subsection.5.6.6}
-\contentsline {subsection}{\numberline {5.6.7}下一步}{95}{subsection.5.6.7}
-\contentsline {chapter}{\numberline {6}常用的python模块}{97}{chapter.6}
-\contentsline {section}{\numberline {6.1}Argparse}{97}{section.6.1}
-\contentsline {subsection}{\numberline {6.1.1}ArgumentParser 对象}{98}{subsection.6.1.1}
-\contentsline {subsection}{\numberline {6.1.2}prog}{98}{subsection.6.1.2}
-\contentsline {subsection}{\numberline {6.1.3}add\_argument()方法}{103}{subsection.6.1.3}
-\contentsline {section}{\numberline {6.2}path}{131}{section.6.2}
-\contentsline {subsection}{\numberline {6.2.1}函数说明}{131}{subsection.6.2.1}
-\contentsline {subsection}{\numberline {6.2.2}例子}{133}{subsection.6.2.2}
-\contentsline {subsection}{\numberline {6.2.3}常见问题}{134}{subsection.6.2.3}
-\contentsline {section}{\numberline {6.3}正则表达式介绍}{144}{section.6.3}
-\contentsline {section}{\numberline {6.4}RE库的主要功能函数}{147}{section.6.4}
-\contentsline {subsection}{\numberline {6.4.1}re表达式中的flags}{149}{subsection.6.4.1}
-\contentsline {section}{\numberline {6.5}常用的sys函数}{154}{section.6.5}
-\contentsline {section}{\numberline {6.6}collections}{161}{section.6.6}
-\contentsline {section}{\numberline {6.7}base64}{162}{section.6.7}
-\contentsline {section}{\numberline {6.8}struct}{163}{section.6.8}
-\contentsline {section}{\numberline {6.9}hashlib}{164}{section.6.9}
-\contentsline {section}{\numberline {6.10}itertools}{165}{section.6.10}
-\contentsline {section}{\numberline {6.11}contexlib}{166}{section.6.11}
-\contentsline {section}{\numberline {6.12}XML}{167}{section.6.12}
-\contentsline {section}{\numberline {6.13}HTMLParser}{168}{section.6.13}
-\contentsline {section}{\numberline {6.14}ZipFile}{169}{section.6.14}
-\contentsline {section}{\numberline {6.15}url}{170}{section.6.15}
-\contentsline {subsection}{\numberline {6.15.1}urllib.request}{170}{subsection.6.15.1}
-\contentsline {section}{\numberline {6.16}requests}{171}{section.6.16}
-\contentsline {subsection}{\numberline {6.16.1}发送请求}{171}{subsection.6.16.1}
-\contentsline {subsection}{\numberline {6.16.2}requests库的7个主要方法}{171}{subsection.6.16.2}
-\contentsline {subsection}{\numberline {6.16.3}request对象的属性}{171}{subsection.6.16.3}
-\contentsline {subsection}{\numberline {6.16.4}理解encoding和apparent\_encoding}{172}{subsection.6.16.4}
-\contentsline {subsection}{\numberline {6.16.5}理解Requests库的异常}{172}{subsection.6.16.5}
-\contentsline {subsection}{\numberline {6.16.6}HTTP协议}{172}{subsection.6.16.6}
-\contentsline {chapter}{\numberline {7}Bazel}{175}{chapter.7}
-\contentsline {section}{\numberline {7.1}Bazel start}{175}{section.7.1}
-\contentsline {subsection}{\numberline {7.1.1}用工作空间}{175}{subsection.7.1.1}
-\contentsline {chapter}{\numberline {8}Tensorflow技巧}{177}{chapter.8}
-\contentsline {section}{\numberline {8.1}文件读取}{177}{section.8.1}
-\contentsline {chapter}{\numberline {9}Tensorflow API}{179}{chapter.9}
-\contentsline {section}{\numberline {9.1}tf.app.flags}{179}{section.9.1}
-\contentsline {subsection}{\numberline {9.1.1}DEFINE\_boolean}{179}{subsection.9.1.1}
-\contentsline {subsection}{\numberline {9.1.2}DEFINE\_boolean}{179}{subsection.9.1.2}
-\contentsline {subsection}{\numberline {9.1.3}DEFINE\_float}{179}{subsection.9.1.3}
-\contentsline {subsection}{\numberline {9.1.4}DEFINE\_integer}{180}{subsection.9.1.4}
-\contentsline {subsection}{\numberline {9.1.5}DEFINE\_string}{180}{subsection.9.1.5}
-\contentsline {subsection}{\numberline {9.1.6}tf.squeeze}{180}{subsection.9.1.6}
-\contentsline {subsection}{\numberline {9.1.7}tf.metrics}{181}{subsection.9.1.7}
-\contentsline {subsection}{\numberline {9.1.8}tf.stack}{181}{subsection.9.1.8}
-\contentsline {subsection}{\numberline {9.1.9}tf.reshape}{182}{subsection.9.1.9}
-\contentsline {subsection}{\numberline {9.1.10}tf.random\_crop}{182}{subsection.9.1.10}
-\contentsline {subsection}{\numberline {9.1.11}tf.random\_gamma}{183}{subsection.9.1.11}
-\contentsline {subsection}{\numberline {9.1.12}tf.random\_normal}{184}{subsection.9.1.12}
-\contentsline {subsection}{\numberline {9.1.13}\textbf {tf.random\_normal\_initializer}}{185}{subsection.9.1.13}
-\contentsline {subsection}{\numberline {9.1.14}tf.random\_possion}{186}{subsection.9.1.14}
-\contentsline {subsection}{\numberline {9.1.15}random\_shuffle}{187}{subsection.9.1.15}
-\contentsline {subsection}{\numberline {9.1.16}tf.random\_uniform}{187}{subsection.9.1.16}
-\contentsline {subsection}{\numberline {9.1.17}\textbf {tf.random\_uniform\_initializer}}{188}{subsection.9.1.17}
-\contentsline {subsection}{\numberline {9.1.18}tf.one\_hot}{189}{subsection.9.1.18}
-\contentsline {subsection}{\numberline {9.1.19}tf.unstack}{191}{subsection.9.1.19}
-\contentsline {section}{\numberline {9.2}tf.image}{193}{section.9.2}
-\contentsline {subsection}{\numberline {9.2.1}tf.image.decode\_gif}{193}{subsection.9.2.1}
-\contentsline {subsection}{\numberline {9.2.2}tf.image.decode\_jpeg}{193}{subsection.9.2.2}
-\contentsline {subsection}{\numberline {9.2.3}tf.image.encode\_jpeg}{194}{subsection.9.2.3}
-\contentsline {subsection}{\numberline {9.2.4}tf.image.decode\_png}{194}{subsection.9.2.4}
-\contentsline {subsection}{\numberline {9.2.5}tf.image.encode\_png}{195}{subsection.9.2.5}
-\contentsline {subsection}{\numberline {9.2.6}tf.image.decode\_image}{195}{subsection.9.2.6}
-\contentsline {subsection}{\numberline {9.2.7}tf.image.resize\_images}{195}{subsection.9.2.7}
-\contentsline {section}{\numberline {9.3}layer}{197}{section.9.3}
-\contentsline {subsection}{\numberline {9.3.1}tf.layers.average\_pooling1d}{197}{subsection.9.3.1}
-\contentsline {subsection}{\numberline {9.3.2}tf.layers.average\_pooling2d}{197}{subsection.9.3.2}
-\contentsline {subsection}{\numberline {9.3.3}tf.layers.average\_pooling3d}{198}{subsection.9.3.3}
-\contentsline {subsection}{\numberline {9.3.4}tf.layers.batch\_normalization}{199}{subsection.9.3.4}
-\contentsline {subsection}{\numberline {9.3.5}conv1d}{201}{subsection.9.3.5}
-\contentsline {subsection}{\numberline {9.3.6}conv2d}{202}{subsection.9.3.6}
-\contentsline {subsection}{\numberline {9.3.7}conv2d\_transpose}{204}{subsection.9.3.7}
-\contentsline {subsection}{\numberline {9.3.8}conv3d}{205}{subsection.9.3.8}
-\contentsline {subsection}{\numberline {9.3.9}conv3d\_transpose}{207}{subsection.9.3.9}
-\contentsline {subsection}{\numberline {9.3.10}dense}{208}{subsection.9.3.10}
-\contentsline {subsection}{\numberline {9.3.11}dropout}{209}{subsection.9.3.11}
-\contentsline {subsection}{\numberline {9.3.12}max\_pool1d}{210}{subsection.9.3.12}
-\contentsline {subsection}{\numberline {9.3.13}max\_pool2d}{210}{subsection.9.3.13}
-\contentsline {subsection}{\numberline {9.3.14}max\_pool3d}{211}{subsection.9.3.14}
-\contentsline {subsection}{\numberline {9.3.15}separable\_conv2d}{212}{subsection.9.3.15}
-\contentsline {section}{\numberline {9.4}tf.train}{214}{section.9.4}
-\contentsline {subsection}{\numberline {9.4.1}优化器}{214}{subsection.9.4.1}
-\contentsline {subsubsection}{Optimizer}{214}{subsubsection*.65}
+\contentsline {section}{\numberline {1.4}KL散度}{11}{section.1.4}
+\contentsline {subsection}{\numberline {1.4.1}交叉熵}{13}{subsection.1.4.1}
+\contentsline {subsection}{\numberline {1.4.2}相对熵}{13}{subsection.1.4.2}
+\contentsline {chapter}{\numberline {2}Tensorflow基础}{15}{chapter.2}
+\contentsline {section}{\numberline {2.1}Tensorflow基础概念}{15}{section.2.1}
+\contentsline {subsection}{\numberline {2.1.1}Rank}{15}{subsection.2.1.1}
+\contentsline {subsection}{\numberline {2.1.2}获取Tensor对象的rank}{16}{subsection.2.1.2}
+\contentsline {subsection}{\numberline {2.1.3}Tensor的切片}{16}{subsection.2.1.3}
+\contentsline {subsection}{\numberline {2.1.4}形状}{17}{subsection.2.1.4}
+\contentsline {subsection}{\numberline {2.1.5}获取tf.Tensor对象的形状}{17}{subsection.2.1.5}
+\contentsline {subsection}{\numberline {2.1.6}改变Tensor的形状}{17}{subsection.2.1.6}
+\contentsline {subsection}{\numberline {2.1.7}数据类型}{18}{subsection.2.1.7}
+\contentsline {subsection}{\numberline {2.1.8}计算Tensor}{18}{subsection.2.1.8}
+\contentsline {subsection}{\numberline {2.1.9}打印Tensor}{19}{subsection.2.1.9}
+\contentsline {section}{\numberline {2.2}Variable}{19}{section.2.2}
+\contentsline {subsection}{\numberline {2.2.1}创建变量}{19}{subsection.2.2.1}
+\contentsline {subsection}{\numberline {2.2.2}变量集合}{20}{subsection.2.2.2}
+\contentsline {subsection}{\numberline {2.2.3}配置设备}{20}{subsection.2.2.3}
+\contentsline {subsection}{\numberline {2.2.4}初始化变量}{21}{subsection.2.2.4}
+\contentsline {subsection}{\numberline {2.2.5}用变量}{21}{subsection.2.2.5}
+\contentsline {subsection}{\numberline {2.2.6}保存和恢复}{22}{subsection.2.2.6}
+\contentsline {subsection}{\numberline {2.2.7}checkpoint文件}{22}{subsection.2.2.7}
+\contentsline {subsection}{\numberline {2.2.8}保存变量}{22}{subsection.2.2.8}
+\contentsline {subsection}{\numberline {2.2.9}恢复变量}{23}{subsection.2.2.9}
+\contentsline {subsection}{\numberline {2.2.10}选择变量恢复}{23}{subsection.2.2.10}
+\contentsline {subsection}{\numberline {2.2.11}共享变量}{24}{subsection.2.2.11}
+\contentsline {section}{\numberline {2.3}图(Graphs)和会话(Session)}{26}{section.2.3}
+\contentsline {subsection}{\numberline {2.3.1}为什么用数据流图？}{26}{subsection.2.3.1}
+\contentsline {subsection}{\numberline {2.3.2}建立一个tf.Graph}{26}{subsection.2.3.2}
+\contentsline {subsection}{\numberline {2.3.3}命名你的操作}{27}{subsection.2.3.3}
+\contentsline {subsection}{\numberline {2.3.4}放置操作在不同的设备上}{27}{subsection.2.3.4}
+\contentsline {subsection}{\numberline {2.3.5}Tensor-like对象}{29}{subsection.2.3.5}
+\contentsline {subsection}{\numberline {2.3.6}在tf.Session执行图}{29}{subsection.2.3.6}
+\contentsline {subsection}{\numberline {2.3.7}创建tf.Session}{29}{subsection.2.3.7}
+\contentsline {subsection}{\numberline {2.3.8}用tf.Session.run执行操作}{30}{subsection.2.3.8}
+\contentsline {subsection}{\numberline {2.3.9}GraphDef和MetaGraphDef}{31}{subsection.2.3.9}
+\contentsline {subsection}{\numberline {2.3.10}可视化你的图}{32}{subsection.2.3.10}
+\contentsline {subsection}{\numberline {2.3.11}用多图编程}{35}{subsection.2.3.11}
+\contentsline {section}{\numberline {2.4}数据集}{36}{section.2.4}
+\contentsline {subsection}{\numberline {2.4.1}基本的机制}{36}{subsection.2.4.1}
+\contentsline {subsection}{\numberline {2.4.2}数据结构}{36}{subsection.2.4.2}
+\contentsline {subsection}{\numberline {2.4.3}创建一个迭代器}{37}{subsection.2.4.3}
+\contentsline {subsection}{\numberline {2.4.4}消耗迭代器的值}{40}{subsection.2.4.4}
+\contentsline {subsection}{\numberline {2.4.5}读输入数据}{41}{subsection.2.4.5}
+\contentsline {subsubsection}{消耗NumPy数据}{41}{subsubsection*.9}
+\contentsline {subsection}{\numberline {2.4.6}消耗TFRecord数据}{42}{subsection.2.4.6}
+\contentsline {subsection}{\numberline {2.4.7}用Dataset.map()处理数据}{42}{subsection.2.4.7}
+\contentsline {subsection}{\numberline {2.4.8}解析tf.Example protocal buffer消息}{43}{subsection.2.4.8}
+\contentsline {subsection}{\numberline {2.4.9}解码图像数据变换大小}{43}{subsection.2.4.9}
+\contentsline {subsection}{\numberline {2.4.10}用专门的Python logic}{43}{subsection.2.4.10}
+\contentsline {subsection}{\numberline {2.4.11}简单的批处理}{44}{subsection.2.4.11}
+\contentsline {subsection}{\numberline {2.4.12}批量的tensorpadding}{45}{subsection.2.4.12}
+\contentsline {subsection}{\numberline {2.4.13}处理多epoch}{45}{subsection.2.4.13}
+\contentsline {subsection}{\numberline {2.4.14}随机打乱输入数据}{46}{subsection.2.4.14}
+\contentsline {subsection}{\numberline {2.4.15}用高级APIs}{46}{subsection.2.4.15}
+\contentsline {section}{\numberline {2.5}线程和队列}{48}{section.2.5}
+\contentsline {subsection}{\numberline {2.5.1}队列用法}{48}{subsection.2.5.1}
+\contentsline {subsection}{\numberline {2.5.2}手动线程管理}{50}{subsection.2.5.2}
+\contentsline {subsection}{\numberline {2.5.3}Coordinator}{50}{subsection.2.5.3}
+\contentsline {subsection}{\numberline {2.5.4}QueueRunner}{51}{subsection.2.5.4}
+\contentsline {subsection}{\numberline {2.5.5}处理异常}{52}{subsection.2.5.5}
+\contentsline {section}{\numberline {2.6}tf.estimator快速导航}{53}{section.2.6}
+\contentsline {subsection}{\numberline {2.6.1}完成神经网络源代码}{53}{subsection.2.6.1}
+\contentsline {subsection}{\numberline {2.6.2}载入CSV数据进入TensorFlow}{55}{subsection.2.6.2}
+\contentsline {subsection}{\numberline {2.6.3}构造神经网络分类器}{57}{subsection.2.6.3}
+\contentsline {subsection}{\numberline {2.6.4}描述训练的输入pipline}{58}{subsection.2.6.4}
+\contentsline {subsection}{\numberline {2.6.5}为iris训练集拟合DNNClassfier}{58}{subsection.2.6.5}
+\contentsline {subsection}{\numberline {2.6.6}评估模型的精度}{58}{subsection.2.6.6}
+\contentsline {subsection}{\numberline {2.6.7}分类新的样本}{59}{subsection.2.6.7}
+\contentsline {section}{\numberline {2.7}用tf.estimator创建一个输入函数}{60}{section.2.7}
+\contentsline {subsection}{\numberline {2.7.1}用input\_fn自定义Pipeline}{60}{subsection.2.7.1}
+\contentsline {subsection}{\numberline {2.7.2}input\_fn的分解}{60}{subsection.2.7.2}
+\contentsline {subsection}{\numberline {2.7.3}转换特征数据为Tensor}{61}{subsection.2.7.3}
+\contentsline {subsection}{\numberline {2.7.4}传递input\_fn数据到你的模型}{62}{subsection.2.7.4}
+\contentsline {subsection}{\numberline {2.7.5}波士顿房价的神经网络模型}{63}{subsection.2.7.5}
+\contentsline {subsection}{\numberline {2.7.6}建立}{63}{subsection.2.7.6}
+\contentsline {subsection}{\numberline {2.7.7}导入的房子数据}{64}{subsection.2.7.7}
+\contentsline {subsection}{\numberline {2.7.8}定义特征列创建回归器}{64}{subsection.2.7.8}
+\contentsline {subsection}{\numberline {2.7.9}构建input\_fn}{65}{subsection.2.7.9}
+\contentsline {subsection}{\numberline {2.7.10}训练回归器}{65}{subsection.2.7.10}
+\contentsline {subsection}{\numberline {2.7.11}评估模型}{65}{subsection.2.7.11}
+\contentsline {subsection}{\numberline {2.7.12}做出预测}{66}{subsection.2.7.12}
+\contentsline {subsection}{\numberline {2.7.13}batch normalization}{66}{subsection.2.7.13}
+\contentsline {section}{\numberline {2.8}常见的激活函数}{67}{section.2.8}
+\contentsline {subsection}{\numberline {2.8.1}relu}{67}{subsection.2.8.1}
+\contentsline {subsection}{\numberline {2.8.2}relu6}{68}{subsection.2.8.2}
+\contentsline {subsection}{\numberline {2.8.3}sigmoid}{70}{subsection.2.8.3}
+\contentsline {subsection}{\numberline {2.8.4}relu和softplus}{71}{subsection.2.8.4}
+\contentsline {subsection}{\numberline {2.8.5}dropout}{73}{subsection.2.8.5}
+\contentsline {section}{\numberline {2.9}CNN常用函数}{73}{section.2.9}
+\contentsline {subsection}{\numberline {2.9.1}卷积函数}{73}{subsection.2.9.1}
+\contentsline {subsection}{\numberline {2.9.2}常见的分类函数}{74}{subsection.2.9.2}
+\contentsline {section}{\numberline {2.10}优化方法}{75}{section.2.10}
+\contentsline {subsection}{\numberline {2.10.1}BGD}{75}{subsection.2.10.1}
+\contentsline {subsection}{\numberline {2.10.2}SGD}{75}{subsection.2.10.2}
+\contentsline {subsection}{\numberline {2.10.3}momentum}{76}{subsection.2.10.3}
+\contentsline {subsection}{\numberline {2.10.4}Nesterov Momentum}{76}{subsection.2.10.4}
+\contentsline {subsection}{\numberline {2.10.5}Adagrad}{76}{subsection.2.10.5}
+\contentsline {subsection}{\numberline {2.10.6}RMSprop}{76}{subsection.2.10.6}
+\contentsline {subsection}{\numberline {2.10.7}Adam}{76}{subsection.2.10.7}
+\contentsline {subsection}{\numberline {2.10.8}构造简单的神经网络拟合数据}{78}{subsection.2.10.8}
+\contentsline {section}{\numberline {2.11}TensorBoard}{80}{section.2.11}
+\contentsline {subsection}{\numberline {2.11.1}TensorBoard Histogram Dashboard}{82}{subsection.2.11.1}
+\contentsline {subsection}{\numberline {2.11.2}一个简单的例子}{82}{subsection.2.11.2}
+\contentsline {subsection}{\numberline {2.11.3}Overlay Mode}{85}{subsection.2.11.3}
+\contentsline {subsection}{\numberline {2.11.4}多个分布}{86}{subsection.2.11.4}
+\contentsline {subsection}{\numberline {2.11.5}更多分布}{88}{subsection.2.11.5}
+\contentsline {subsection}{\numberline {2.11.6}poisson分布}{91}{subsection.2.11.6}
+\contentsline {subsection}{\numberline {2.11.7}结合所有的数据到一张图向上}{92}{subsection.2.11.7}
+\contentsline {section}{\numberline {2.12}CNN手写体数据识别}{93}{section.2.12}
+\contentsline {subsection}{\numberline {2.12.1}mnist数据集}{93}{subsection.2.12.1}
+\contentsline {section}{\numberline {2.13}RNN}{97}{section.2.13}
+\contentsline {subsection}{\numberline {2.13.1}The Problem Long-Term Dependencies}{98}{subsection.2.13.1}
+\contentsline {subsection}{\numberline {2.13.2}LSTM网络}{98}{subsection.2.13.2}
+\contentsline {subsection}{\numberline {2.13.3}LSTMs想法的核心}{99}{subsection.2.13.3}
+\contentsline {subsection}{\numberline {2.13.4}一步步的设置}{99}{subsection.2.13.4}
+\contentsline {subsection}{\numberline {2.13.5}LSTM的多种变体}{100}{subsection.2.13.5}
+\contentsline {subsection}{\numberline {2.13.6}向量字表示}{102}{subsection.2.13.6}
+\contentsline {subsubsection}{Vector Representation of Words}{102}{subsubsection*.45}
+\contentsline {subsubsection}{处理噪声的对比训练}{103}{subsubsection*.46}
+\contentsline {subsubsection}{Skip-gram模型}{105}{subsubsection*.49}
+\contentsline {subsubsection}{训练过程}{108}{subsubsection*.51}
+\contentsline {subsubsection}{嵌套学习结果可视化}{109}{subsubsection*.52}
+\contentsline {subsubsection}{嵌套学习的评估:类比推理}{109}{subsubsection*.54}
+\contentsline {subsubsection}{优化实现}{110}{subsubsection*.55}
+\contentsline {subsection}{\numberline {2.13.7}RNN}{110}{subsection.2.13.7}
+\contentsline {subsubsection}{下载及准备数据}{111}{subsubsection*.56}
+\contentsline {subsubsection}{LSTM}{111}{subsubsection*.57}
+\contentsline {subsubsection}{截断反向传播}{111}{subsubsection*.58}
+\contentsline {subsubsection}{输入}{112}{subsubsection*.59}
+\contentsline {subsubsection}{损失函数}{112}{subsubsection*.60}
+\contentsline {subsubsection}{多个LSTM层堆叠}{112}{subsubsection*.61}
+\contentsline {subsubsection}{编译并运行代码}{113}{subsubsection*.62}
+\contentsline {chapter}{\numberline {3}Tensorflow进阶}{115}{chapter.3}
+\contentsline {section}{\numberline {3.1}模型存储和加载}{115}{section.3.1}
+\contentsline {section}{\numberline {3.2}用GPU}{116}{section.3.2}
+\contentsline {subsection}{\numberline {3.2.1}手工配置设备}{116}{subsection.3.2.1}
+\contentsline {subsection}{\numberline {3.2.2}允许GPU的内存增长}{117}{subsection.3.2.2}
+\contentsline {section}{\numberline {3.3}如何利用Inception的最后一层重新训练新的分类}{119}{section.3.3}
+\contentsline {subsection}{\numberline {3.3.1}训练花}{119}{subsection.3.3.1}
+\contentsline {subsection}{\numberline {3.3.2}瓶颈}{120}{subsection.3.3.2}
+\contentsline {subsection}{\numberline {3.3.3}训练}{120}{subsection.3.3.3}
+\contentsline {subsection}{\numberline {3.3.4}用TensorBoard可视化}{121}{subsection.3.3.4}
+\contentsline {subsection}{\numberline {3.3.5}用重新训练的模型}{121}{subsection.3.3.5}
+\contentsline {subsection}{\numberline {3.3.6}在你自己的分类上训练}{121}{subsection.3.3.6}
+\contentsline {subsection}{\numberline {3.3.7}创建一个训练图像集合}{122}{subsection.3.3.7}
+\contentsline {subsection}{\numberline {3.3.8}训练步骤}{122}{subsection.3.3.8}
+\contentsline {subsection}{\numberline {3.3.9}扭曲}{122}{subsection.3.3.9}
+\contentsline {subsection}{\numberline {3.3.10}超参数}{123}{subsection.3.3.10}
+\contentsline {subsection}{\numberline {3.3.11}训练，验证，测试集}{123}{subsection.3.3.11}
+\contentsline {subsection}{\numberline {3.3.12}更对模型架构}{124}{subsection.3.3.12}
+\contentsline {section}{\numberline {3.4}TF layer向导：建立一个卷积神经网络}{124}{section.3.4}
+\contentsline {subsection}{\numberline {3.4.1}开始}{124}{subsection.3.4.1}
+\contentsline {subsection}{\numberline {3.4.2}介绍卷积神经网络}{125}{subsection.3.4.2}
+\contentsline {subsection}{\numberline {3.4.3}建立CNN MNIST分类器}{125}{subsection.3.4.3}
+\contentsline {subsection}{\numberline {3.4.4}输入层}{126}{subsection.3.4.4}
+\contentsline {subsection}{\numberline {3.4.5}第一层卷积层}{126}{subsection.3.4.5}
+\contentsline {subsection}{\numberline {3.4.6}池化层1}{127}{subsection.3.4.6}
+\contentsline {subsection}{\numberline {3.4.7}二层卷积和池化}{127}{subsection.3.4.7}
+\contentsline {subsection}{\numberline {3.4.8}Dense layer}{128}{subsection.3.4.8}
+\contentsline {subsection}{\numberline {3.4.9}Logits Layers}{128}{subsection.3.4.9}
+\contentsline {subsection}{\numberline {3.4.10}常见的预测}{129}{subsection.3.4.10}
+\contentsline {subsection}{\numberline {3.4.11}计算Loss}{129}{subsection.3.4.11}
+\contentsline {subsection}{\numberline {3.4.12}配置训练操作}{130}{subsection.3.4.12}
+\contentsline {subsection}{\numberline {3.4.13}增加评估度量}{130}{subsection.3.4.13}
+\contentsline {section}{\numberline {3.5}训练评估CNN MNIST分类器}{130}{section.3.5}
+\contentsline {subsection}{\numberline {3.5.1}载入训练和测试数据}{131}{subsection.3.5.1}
+\contentsline {subsection}{\numberline {3.5.2}创建Estimator}{131}{subsection.3.5.2}
+\contentsline {subsection}{\numberline {3.5.3}建立Logging Hook}{131}{subsection.3.5.3}
+\contentsline {subsection}{\numberline {3.5.4}选练模型}{132}{subsection.3.5.4}
+\contentsline {subsection}{\numberline {3.5.5}评估模型}{132}{subsection.3.5.5}
+\contentsline {subsection}{\numberline {3.5.6}运行模型}{132}{subsection.3.5.6}
+\contentsline {chapter}{\numberline {4}扩展}{135}{chapter.4}
+\contentsline {section}{\numberline {4.1}TensorFlow架构}{135}{section.4.1}
+\contentsline {section}{\numberline {4.2}概述}{135}{section.4.2}
+\contentsline {subsection}{\numberline {4.2.1}Client}{137}{subsection.4.2.1}
+\contentsline {subsection}{\numberline {4.2.2}Distributed master}{137}{subsection.4.2.2}
+\contentsline {subsection}{\numberline {4.2.3}Worker Service}{138}{subsection.4.2.3}
+\contentsline {section}{\numberline {4.3}内核实现}{139}{section.4.3}
+\contentsline {chapter}{\numberline {5}Performance}{141}{chapter.5}
+\contentsline {section}{\numberline {5.1}最好的实践}{141}{section.5.1}
+\contentsline {section}{\numberline {5.2}从源代码创建安装}{141}{section.5.2}
+\contentsline {subsection}{\numberline {5.2.1}利用队列读取数据}{142}{subsection.5.2.1}
+\contentsline {subsection}{\numberline {5.2.2}在CPU上的预处理}{142}{subsection.5.2.2}
+\contentsline {subsection}{\numberline {5.2.3}用大文件}{143}{subsection.5.2.3}
+\contentsline {subsection}{\numberline {5.2.4}用NCHW图像数据格式}{143}{subsection.5.2.4}
+\contentsline {subsection}{\numberline {5.2.5}用融批规范}{143}{subsection.5.2.5}
+\contentsline {section}{\numberline {5.3}性能向导}{144}{section.5.3}
+\contentsline {section}{\numberline {5.4}好性能模型}{144}{section.5.4}
+\contentsline {section}{\numberline {5.5}Benchmark}{144}{section.5.5}
+\contentsline {section}{\numberline {5.6}如何用TensorFlow量化神经网络}{144}{section.5.6}
+\contentsline {subsection}{\numberline {5.6.1}为什么做量化工作}{144}{subsection.5.6.1}
+\contentsline {subsection}{\numberline {5.6.2}为什么量化}{144}{subsection.5.6.2}
+\contentsline {subsection}{\numberline {5.6.3}为什么不直接训练低精度}{145}{subsection.5.6.3}
+\contentsline {subsection}{\numberline {5.6.4}你能如何量化你的模型}{145}{subsection.5.6.4}
+\contentsline {subsection}{\numberline {5.6.5}如何量化处理工作}{146}{subsection.5.6.5}
+\contentsline {subsection}{\numberline {5.6.6}量化Tensor将呈现什么}{148}{subsection.5.6.6}
+\contentsline {subsection}{\numberline {5.6.7}下一步}{149}{subsection.5.6.7}
+\contentsline {chapter}{\numberline {6}常用的python模块}{151}{chapter.6}
+\contentsline {section}{\numberline {6.1}Argparse}{151}{section.6.1}
+\contentsline {subsection}{\numberline {6.1.1}ArgumentParser 对象}{152}{subsection.6.1.1}
+\contentsline {subsection}{\numberline {6.1.2}prog}{152}{subsection.6.1.2}
+\contentsline {subsection}{\numberline {6.1.3}add\_argument()方法}{157}{subsection.6.1.3}
+\contentsline {section}{\numberline {6.2}path}{185}{section.6.2}
+\contentsline {subsection}{\numberline {6.2.1}函数说明}{185}{subsection.6.2.1}
+\contentsline {subsection}{\numberline {6.2.2}例子}{187}{subsection.6.2.2}
+\contentsline {subsection}{\numberline {6.2.3}常见问题}{188}{subsection.6.2.3}
+\contentsline {section}{\numberline {6.3}正则表达式介绍}{198}{section.6.3}
+\contentsline {section}{\numberline {6.4}RE库的主要功能函数}{201}{section.6.4}
+\contentsline {subsection}{\numberline {6.4.1}re表达式中的flags}{203}{subsection.6.4.1}
+\contentsline {section}{\numberline {6.5}常用的sys函数}{208}{section.6.5}
+\contentsline {section}{\numberline {6.6}collections}{215}{section.6.6}
+\contentsline {subsection}{\numberline {6.6.1}namedtuple}{215}{subsection.6.6.1}
+\contentsline {subsection}{\numberline {6.6.2}deque}{215}{subsection.6.6.2}
+\contentsline {subsection}{\numberline {6.6.3}defaultdict}{216}{subsection.6.6.3}
+\contentsline {subsection}{\numberline {6.6.4}OrderdDict}{216}{subsection.6.6.4}
+\contentsline {subsection}{\numberline {6.6.5}Counter}{217}{subsection.6.6.5}
+\contentsline {section}{\numberline {6.7}base64}{218}{section.6.7}
+\contentsline {section}{\numberline {6.8}struct}{220}{section.6.8}
+\contentsline {section}{\numberline {6.9}hashlib}{221}{section.6.9}
+\contentsline {section}{\numberline {6.10}itertools}{223}{section.6.10}
+\contentsline {subsection}{\numberline {6.10.1}cycle}{223}{subsection.6.10.1}
+\contentsline {subsection}{\numberline {6.10.2}chain()}{224}{subsection.6.10.2}
+\contentsline {section}{\numberline {6.11}contextlib}{225}{section.6.11}
+\contentsline {section}{\numberline {6.12}XML}{228}{section.6.12}
+\contentsline {section}{\numberline {6.13}HTMLParser}{229}{section.6.13}
+\contentsline {section}{\numberline {6.14}ZipFile}{230}{section.6.14}
+\contentsline {section}{\numberline {6.15}url}{231}{section.6.15}
+\contentsline {subsection}{\numberline {6.15.1}urllib.request}{231}{subsection.6.15.1}
+\contentsline {section}{\numberline {6.16}requests}{232}{section.6.16}
+\contentsline {subsection}{\numberline {6.16.1}发送请求}{232}{subsection.6.16.1}
+\contentsline {subsection}{\numberline {6.16.2}requests库的7个主要方法}{232}{subsection.6.16.2}
+\contentsline {subsection}{\numberline {6.16.3}request对象的属性}{232}{subsection.6.16.3}
+\contentsline {subsection}{\numberline {6.16.4}理解encoding和apparent\_encoding}{233}{subsection.6.16.4}
+\contentsline {subsection}{\numberline {6.16.5}理解Requests库的异常}{233}{subsection.6.16.5}
+\contentsline {subsection}{\numberline {6.16.6}HTTP协议}{233}{subsection.6.16.6}
+\contentsline {chapter}{\numberline {7}Bazel}{237}{chapter.7}
+\contentsline {section}{\numberline {7.1}Bazel start}{237}{section.7.1}
+\contentsline {subsection}{\numberline {7.1.1}用工作空间}{237}{subsection.7.1.1}
+\contentsline {chapter}{\numberline {8}Tensorflow技巧}{239}{chapter.8}
+\contentsline {section}{\numberline {8.1}文件读取}{239}{section.8.1}
+\contentsline {chapter}{\numberline {9}Tensorflow API}{241}{chapter.9}
+\contentsline {section}{\numberline {9.1}tf.app.flags}{241}{section.9.1}
+\contentsline {subsection}{\numberline {9.1.1}DEFINE\_boolean}{241}{subsection.9.1.1}
+\contentsline {subsection}{\numberline {9.1.2}DEFINE\_boolean}{241}{subsection.9.1.2}
+\contentsline {subsection}{\numberline {9.1.3}DEFINE\_float}{241}{subsection.9.1.3}
+\contentsline {subsection}{\numberline {9.1.4}DEFINE\_integer}{242}{subsection.9.1.4}
+\contentsline {subsection}{\numberline {9.1.5}DEFINE\_string}{242}{subsection.9.1.5}
+\contentsline {subsection}{\numberline {9.1.6}tf.gather}{242}{subsection.9.1.6}
+\contentsline {subsection}{\numberline {9.1.7}tf.placeholder}{243}{subsection.9.1.7}
+\contentsline {subsection}{\numberline {9.1.8}tf.squeeze}{244}{subsection.9.1.8}
+\contentsline {subsection}{\numberline {9.1.9}tf.metrics}{245}{subsection.9.1.9}
+\contentsline {subsection}{\numberline {9.1.10}tf.stack}{245}{subsection.9.1.10}
+\contentsline {subsection}{\numberline {9.1.11}tf.reshape}{246}{subsection.9.1.11}
+\contentsline {subsection}{\numberline {9.1.12}tf.random\_crop}{247}{subsection.9.1.12}
+\contentsline {subsection}{\numberline {9.1.13}tf.random\_gamma}{247}{subsection.9.1.13}
+\contentsline {subsection}{\numberline {9.1.14}tf.random\_normal}{248}{subsection.9.1.14}
+\contentsline {subsection}{\numberline {9.1.15}\textbf {tf.random\_normal\_initializer}}{249}{subsection.9.1.15}
+\contentsline {subsection}{\numberline {9.1.16}tf.random\_possion}{250}{subsection.9.1.16}
+\contentsline {subsection}{\numberline {9.1.17}random\_shuffle}{251}{subsection.9.1.17}
+\contentsline {subsection}{\numberline {9.1.18}tf.random\_uniform}{251}{subsection.9.1.18}
+\contentsline {subsection}{\numberline {9.1.19}\textbf {tf.random\_uniform\_initializer}}{252}{subsection.9.1.19}
+\contentsline {subsection}{\numberline {9.1.20}tf.one\_hot}{253}{subsection.9.1.20}
+\contentsline {subsection}{\numberline {9.1.21}tf.unstack}{255}{subsection.9.1.21}
+\contentsline {section}{\numberline {9.2}tf.Vairable}{257}{section.9.2}
+\contentsline {subsection}{\numberline {9.2.1}Variable类}{257}{subsection.9.2.1}
+\contentsline {subsection}{\numberline {9.2.2}方法}{258}{subsection.9.2.2}
+\contentsline {subsection}{\numberline {9.2.3}参数}{264}{subsection.9.2.3}
+\contentsline {section}{\numberline {9.3}tf.image}{271}{section.9.3}
+\contentsline {subsection}{\numberline {9.3.1}tf.image.decode\_gif}{271}{subsection.9.3.1}
+\contentsline {subsection}{\numberline {9.3.2}tf.image.decode\_jpeg}{271}{subsection.9.3.2}
+\contentsline {subsection}{\numberline {9.3.3}tf.image.encode\_jpeg}{272}{subsection.9.3.3}
+\contentsline {subsection}{\numberline {9.3.4}tf.image.decode\_png}{272}{subsection.9.3.4}
+\contentsline {subsection}{\numberline {9.3.5}tf.image.encode\_png}{273}{subsection.9.3.5}
+\contentsline {subsection}{\numberline {9.3.6}tf.image.decode\_image}{273}{subsection.9.3.6}
+\contentsline {subsection}{\numberline {9.3.7}tf.image.resize\_images}{273}{subsection.9.3.7}
+\contentsline {section}{\numberline {9.4}layer}{275}{section.9.4}
+\contentsline {subsection}{\numberline {9.4.1}tf.layers.average\_pooling1d}{275}{subsection.9.4.1}
+\contentsline {subsection}{\numberline {9.4.2}tf.layers.average\_pooling2d}{275}{subsection.9.4.2}
+\contentsline {subsection}{\numberline {9.4.3}tf.layers.average\_pooling3d}{276}{subsection.9.4.3}
+\contentsline {subsection}{\numberline {9.4.4}tf.layers.batch\_normalization}{277}{subsection.9.4.4}
+\contentsline {subsection}{\numberline {9.4.5}conv1d}{279}{subsection.9.4.5}
+\contentsline {subsection}{\numberline {9.4.6}conv2d}{280}{subsection.9.4.6}
+\contentsline {subsection}{\numberline {9.4.7}conv2d\_transpose}{282}{subsection.9.4.7}
+\contentsline {subsection}{\numberline {9.4.8}conv3d}{283}{subsection.9.4.8}
+\contentsline {subsection}{\numberline {9.4.9}conv3d\_transpose}{285}{subsection.9.4.9}
+\contentsline {subsection}{\numberline {9.4.10}dense}{286}{subsection.9.4.10}
+\contentsline {subsection}{\numberline {9.4.11}dropout}{287}{subsection.9.4.11}
+\contentsline {subsection}{\numberline {9.4.12}max\_pool1d}{288}{subsection.9.4.12}
+\contentsline {subsection}{\numberline {9.4.13}max\_pool2d}{288}{subsection.9.4.13}
+\contentsline {subsection}{\numberline {9.4.14}max\_pool3d}{289}{subsection.9.4.14}
+\contentsline {subsection}{\numberline {9.4.15}separable\_conv2d}{290}{subsection.9.4.15}
+\contentsline {section}{\numberline {9.5}tf.train}{292}{section.9.5}
+\contentsline {subsection}{\numberline {9.5.1}优化器}{292}{subsection.9.5.1}
+\contentsline {subsubsection}{Optimizer}{292}{subsubsection*.74}

@@ -1,14 +1,14 @@
-This is XeTeX, Version 3.14159265-2.6-0.99998 (TeX Live 2017) (preloaded format=xelatex 2017.8.18)  23 AUG 2017 20:05
+This is XeTeX, Version 3.14159265-2.6-0.99998 (TeX Live 2017/W32TeX) (preloaded format=xelatex 2017.6.14)  2 SEP 2017 15:20
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
-**book.tex
+**./book.tex
 (./book.tex
 LaTeX2e <2017-04-15>
 Babel <3.10> and hyphenation patterns for 84 language(s) loaded.
-(/usr/local/texlive/2017/texmf-dist/tex/latex/base/book.cls
+(f:/TexLive/texmf-dist/tex/latex/base/book.cls
 Document Class: book 2014/09/29 v1.4h Standard LaTeX document class
-(/usr/local/texlive/2017/texmf-dist/tex/latex/base/fleqn.clo
+(f:/TexLive/texmf-dist/tex/latex/base/fleqn.clo
 File: fleqn.clo 2016/12/29 v1.2a Standard LaTeX option (flush left equations)
 \mathindent=\dimen102
 Applying: [2015/01/01] Make \[ robust on input line 50.
@@ -18,7 +18,7 @@ Applying: [2015/01/01] Make \] robust on input line 74.
 LaTeX Info: Redefining \] on input line 75.
 Already applied: [0000/00/00] Make \] robust on input line 83.
 )
-(/usr/local/texlive/2017/texmf-dist/tex/latex/base/bk11.clo
+(f:/TexLive/texmf-dist/tex/latex/base/bk11.clo
 File: bk11.clo 2014/09/29 v1.4h Standard LaTeX file (size option)
 )
 \c@part=\count79
@@ -34,21 +34,21 @@ File: bk11.clo 2014/09/29 v1.4h Standard LaTeX file (size option)
 \belowcaptionskip=\skip42
 \bibindent=\dimen103
 )
-(/usr/local/texlive/2017/texmf-dist/tex/latex/geometry/geometry.sty
+(f:/TexLive/texmf-dist/tex/latex/geometry/geometry.sty
 Package: geometry 2010/09/12 v5.6 Page Geometry
 
-(/usr/local/texlive/2017/texmf-dist/tex/latex/graphics/keyval.sty
+(f:/TexLive/texmf-dist/tex/latex/graphics/keyval.sty
 Package: keyval 2014/10/28 v1.15 key=value parser (DPC)
 \KV@toks@=\toks14
 )
-(/usr/local/texlive/2017/texmf-dist/tex/generic/oberdiek/ifpdf.sty
+(f:/TexLive/texmf-dist/tex/generic/oberdiek/ifpdf.sty
 Package: ifpdf 2017/03/15 v3.2 Provides the ifpdf switch
 )
-(/usr/local/texlive/2017/texmf-dist/tex/generic/oberdiek/ifvtex.sty
+(f:/TexLive/texmf-dist/tex/generic/oberdiek/ifvtex.sty
 Package: ifvtex 2016/05/16 v1.6 Detect VTeX and its facilities (HO)
 Package ifvtex Info: VTeX not detected.
 )
-(/usr/local/texlive/2017/texmf-dist/tex/generic/ifxetex/ifxetex.sty
+(f:/TexLive/texmf-dist/tex/generic/ifxetex/ifxetex.sty
 Package: ifxetex 2010/09/12 v0.6 Provides ifxetex conditional
 )
 \Gm@cnth=\count88
@@ -64,11 +64,11 @@ Package: ifxetex 2010/09/12 v0.6 Provides ifxetex conditional
 \Gm@layoutvoffset=\dimen111
 \Gm@dimlist=\toks15
 )
-(/usr/local/texlive/2017/texmf-dist/tex/latex/ctex/ctex.sty
-(/usr/local/texlive/2017/texmf-dist/tex/latex/l3kernel/expl3.sty
+(f:/TexLive/texmf-dist/tex/latex/ctex/ctex.sty
+(f:/TexLive/texmf-dist/tex/latex/l3kernel/expl3.sty
 Package: expl3 2017/05/13 L3 programming layer (loader) 
 
-(/usr/local/texlive/2017/texmf-dist/tex/latex/l3kernel/expl3-code.tex
+(f:/TexLive/texmf-dist/tex/latex/l3kernel/expl3-code.tex
 Package: expl3 2017/05/13 L3 programming layer (code)
 \c_max_int=\count91
 \l_tmpa_int=\count92
@@ -161,13 +161,13 @@ Package: expl3 2017/05/13 L3 programming layer (code)
 \l__coffin_scaled_total_height_dim=\dimen141
 \l__coffin_scaled_width_dim=\dimen142
 )
-(/usr/local/texlive/2017/texmf-dist/tex/latex/l3kernel/l3xdvipdfmx.def
+(f:/TexLive/texmf-dist/tex/latex/l3kernel/l3xdvipdfmx.def
 File: l3xdvidpfmx.def 2017/03/18 v L3 Experimental driver: xdvipdfmx
 \l__driver_tmp_box=\box41
 ))
 Package: ctex 2017/04/01 v2.4.9 Chinese adapter in LaTeX (CTEX)
 
-(/usr/local/texlive/2017/texmf-dist/tex/latex/l3packages/xparse/xparse.sty
+(f:/TexLive/texmf-dist/tex/latex/l3packages/xparse/xparse.sty
 Package: xparse 2017/05/13 L3 Experimental document command parser
 \l__xparse_current_arg_int=\count123
 \g__xparse_grabber_int=\count124
@@ -175,39 +175,40 @@ Package: xparse 2017/05/13 L3 Experimental document command parser
 \l__xparse_mandatory_args_int=\count126
 \l__xparse_v_nesting_int=\count127
 )
-(/usr/local/texlive/2017/texmf-dist/tex/latex/l3packages/l3keys2e/l3keys2e.sty
+(f:/TexLive/texmf-dist/tex/latex/l3packages/l3keys2e/l3keys2e.sty
 Package: l3keys2e 2017/05/13 LaTeX2e option processing using LaTeX3 keys
 )
 \g__file_internal_ior=\read1
-(/usr/local/texlive/2017/texmf-dist/tex/latex/ctex/ctexhook.sty
+
+(f:/TexLive/texmf-dist/tex/latex/ctex/ctexhook.sty
 Package: ctexhook 2017/04/01 v2.4.9 Document and package hooks (CTEX)
 )
-(/usr/local/texlive/2017/texmf-dist/tex/latex/ctex/ctexpatch.sty
+(f:/TexLive/texmf-dist/tex/latex/ctex/ctexpatch.sty
 Package: ctexpatch 2017/04/01 v2.4.9 Patching commands (CTEX)
 )
-(/usr/local/texlive/2017/texmf-dist/tex/latex/base/fix-cm.sty
+(f:/TexLive/texmf-dist/tex/latex/base/fix-cm.sty
 Package: fix-cm 2015/01/14 v1.1t fixes to LaTeX
 
-(/usr/local/texlive/2017/texmf-dist/tex/latex/base/ts1enc.def
+(f:/TexLive/texmf-dist/tex/latex/base/ts1enc.def
 File: ts1enc.def 2001/06/05 v3.0e (jk/car/fm) Standard LaTeX file
 ))
-(/usr/local/texlive/2017/texmf-dist/tex/latex/ms/everysel.sty
+(f:/TexLive/texmf-dist/tex/latex/ms/everysel.sty
 Package: everysel 2011/10/28 v1.2 EverySelectfont Package (MS)
 )
 \l__ctex_tmp_int=\count128
 \l__ctex_tmp_box=\box42
 \l__ctex_tmp_dim=\dimen143
 
-(/usr/local/texlive/2017/texmf-dist/tex/latex/ctex/config/ctexopts.cfg
+(f:/TexLive/texmf-dist/tex/latex/ctex/config/ctexopts.cfg
 File: ctexopts.cfg 2017/04/01 v2.4.9 Option configuration file (CTEX)
 )
-(/usr/local/texlive/2017/texmf-dist/tex/latex/ctex/engine/ctex-engine-xetex.def
+(f:/TexLive/texmf-dist/tex/latex/ctex/engine/ctex-engine-xetex.def
 File: ctex-engine-xetex.def 2017/04/01 v2.4.9 XeLaTeX adapter (CTEX)
-(/usr/local/texlive/2017/texmf-dist/tex/xelatex/xecjk/xeCJK.sty
+
+(f:/TexLive/texmf-dist/tex/xelatex/xecjk/xeCJK.sty
 Package: xeCJK 2017/05/15 v3.4.8 Typesetting CJK scripts with XeLaTeX
 
-(/usr/local/texlive/2017/texmf-dist/tex/latex/l3packages/xtemplate/xtemplate.st
-y
+(f:/TexLive/texmf-dist/tex/latex/l3packages/xtemplate/xtemplate.sty
 Package: xtemplate 2017/05/13 L3 Experimental prototype document functions
 \l__xtemplate_tmp_dim=\dimen144
 \l__xtemplate_tmp_int=\count129
@@ -430,10 +431,11 @@ Package: xtemplate 2017/05/13 L3 Experimental prototype document functions
 . Defining command \xeCJKOffVerbAddon with sig. '' on line 3519.
 .................................................
 \l__xeCJK_verb_exspace_skip=\skip54
- (/usr/local/texlive/2017/texmf-dist/tex/latex/fontspec/fontspec.sty
+
+(f:/TexLive/texmf-dist/tex/latex/fontspec/fontspec.sty
 Package: fontspec 2017/03/31 v2.6a Font selection for XeLaTeX and LuaLaTeX
 
-(/usr/local/texlive/2017/texmf-dist/tex/latex/fontspec/fontspec-xetex.sty
+(f:/TexLive/texmf-dist/tex/latex/fontspec/fontspec-xetex.sty
 Package: fontspec-xetex 2017/03/31 v2.6a Font selection for XeLaTeX and LuaLaTe
 X
 \l__fontspec_script_int=\count140
@@ -448,10 +450,10 @@ X
 \l__fontspec_tmpb_dim=\dimen172
 \l__fontspec_tmpc_dim=\dimen173
 
-(/usr/local/texlive/2017/texmf-dist/tex/latex/base/fontenc.sty
+(f:/TexLive/texmf-dist/tex/latex/base/fontenc.sty
 Package: fontenc 2017/04/05 v2.0i Standard LaTeX package
 
-(/usr/local/texlive/2017/texmf-dist/tex/latex/base/tuenc.def
+(f:/TexLive/texmf-dist/tex/latex/base/tuenc.def
 File: tuenc.def 2017/04/05 v2.0i Standard LaTeX file
 LaTeX Font Info:    Redeclaring font encoding TU on input line 82.
 ))
@@ -611,7 +613,7 @@ LaTeX Font Info:    Redeclaring font encoding TU on input line 82.
 . Defining command \UndeclareComposite with sig. 'mm' on line 3501.
 .................................................
 
-(/usr/local/texlive/2017/texmf-dist/tex/latex/fontspec/fontspec.cfg)
+(f:/TexLive/texmf-dist/tex/latex/fontspec/fontspec.cfg)
 LaTeX Info: Redefining \itshape on input line 3686.
 LaTeX Info: Redefining \slshape on input line 3691.
 LaTeX Info: Redefining \scshape on input line 3696.
@@ -630,35 +632,35 @@ LaTeX Info: Redefining \- on input line 3807.
 . Defining command \liningnums with sig. 'm' on line 3906.
 .................................................
 ))
-(/usr/local/texlive/2017/texmf-dist/tex/xelatex/xecjk/xunicode-addon.sty
+(f:/TexLive/texmf-dist/tex/xelatex/xecjk/xunicode-addon.sty
 Package: xunicode-addon 2017/05/15 v3.4.8 addon file for xunicode
 
-(/usr/local/texlive/2017/texmf-dist/tex/xelatex/xunicode/xunicode.sty
+(f:/TexLive/texmf-dist/tex/xelatex/xunicode/xunicode.sty
 File: xunicode.sty 2011/09/09 v0.981 provides access to latin accents and many 
 other characters in Unicode lower plane
 
-(/usr/local/texlive/2017/texmf-dist/tex/latex/tipa/t3enc.def
+(f:/TexLive/texmf-dist/tex/latex/tipa/t3enc.def
 File: t3enc.def 2001/12/31 T3 encoding
 )
 \tipaTiiicode=\count148
 \tipasavetokens=\toks16
 \tipachecktokens=\toks17
 
-(/usr/local/texlive/2017/texmf-dist/tex/latex/graphics/graphicx.sty
+(f:/TexLive/texmf-dist/tex/latex/graphics/graphicx.sty
 Package: graphicx 2014/10/28 v1.0g Enhanced LaTeX Graphics (DPC,SPQR)
 
-(/usr/local/texlive/2017/texmf-dist/tex/latex/graphics/graphics.sty
+(f:/TexLive/texmf-dist/tex/latex/graphics/graphics.sty
 Package: graphics 2017/04/14 v1.1b Standard LaTeX Graphics (DPC,SPQR)
 
-(/usr/local/texlive/2017/texmf-dist/tex/latex/graphics/trig.sty
+(f:/TexLive/texmf-dist/tex/latex/graphics/trig.sty
 Package: trig 2016/01/03 v1.10 sin cos tan (DPC)
 )
-(/usr/local/texlive/2017/texmf-dist/tex/latex/graphics-cfg/graphics.cfg
+(f:/TexLive/texmf-dist/tex/latex/graphics-cfg/graphics.cfg
 File: graphics.cfg 2016/06/04 v1.11 sample graphics configuration
 )
 Package graphics Info: Driver file: xetex.def on input line 99.
 
-(/usr/local/texlive/2017/texmf-dist/tex/latex/graphics-def/xetex.def
+(f:/TexLive/texmf-dist/tex/latex/graphics-def/xetex.def
 File: xetex.def 2016/07/11 v4.10 LaTeX color/graphics driver for XeTeX (L3/RRM/
 JK)
 ))
@@ -806,12 +808,12 @@ JK)
 . 576.
 .................................................
 )
-(/usr/local/texlive/2017/texmf-dist/tex/xelatex/xunicode/xunicode.sty
+(f:/TexLive/texmf-dist/tex/xelatex/xunicode/xunicode.sty
 File: xunicode.sty 2011/09/09 v0.981 provides access to latin accents and many 
 other characters in Unicode lower plane
 
 *** Reloading Xunicode for encoding 'TU' ***
-) (/usr/local/texlive/2017/texmf-dist/tex/xelatex/xecjk/xunicode-extra.def
+) (f:/TexLive/texmf-dist/tex/xelatex/xecjk/xunicode-extra.def
 File: xunicode-extra.def 2017/05/15 v3.4.8 extra definition for xunicode
 )
 .................................................
@@ -890,13 +892,13 @@ File: xunicode-extra.def 2017/05/15 v3.4.8 extra definition for xunicode
 . Redefining command \fontfamily with sig. 'm' on line 4029.
 .................................................
 
-(/usr/local/texlive/2017/texmf-dist/tex/xelatex/xecjk/xeCJK.cfg
+(f:/TexLive/texmf-dist/tex/xelatex/xecjk/xeCJK.cfg
 File: xeCJK.cfg 2017/05/15 v3.4.8 Configuration file for xeCJK package
 ))
-(/usr/local/texlive/2017/texmf-dist/tex/xelatex/xecjk/xeCJKfntef.sty
+(f:/TexLive/texmf-dist/tex/xelatex/xecjk/xeCJKfntef.sty
 Package: xeCJKfntef 2017/05/15 v3.4.8 xeCJK font effect
 
-(/usr/local/texlive/2017/texmf-dist/tex/generic/ulem/ulem.sty
+(f:/TexLive/texmf-dist/tex/generic/ulem/ulem.sty
 \UL@box=\box46
 \UL@hyphenbox=\box47
 \UL@skip=\skip55
@@ -908,15 +910,15 @@ Package: xeCJKfntef 2017/05/15 v3.4.8 xeCJK font effect
 Package: ulem 2012/05/18
 \ULdepth=\dimen178
 )
-(/usr/local/texlive/2017/texmf-dist/tex/latex/environ/environ.sty
+(f:/TexLive/texmf-dist/tex/latex/environ/environ.sty
 Package: environ 2014/05/04 v0.3 A new way to define environments
 
-(/usr/local/texlive/2017/texmf-dist/tex/latex/trimspaces/trimspaces.sty
+(f:/TexLive/texmf-dist/tex/latex/trimspaces/trimspaces.sty
 Package: trimspaces 2009/09/17 v1.1 Trim spaces around a token list
 )
 \@envbody=\toks19
 )
-(/usr/local/texlive/2017/texmf-dist/tex/latex/cjk/texinput/CJKfntef.sty
+(f:/TexLive/texmf-dist/tex/latex/cjk/texinput/CJKfntef.sty
 Package: CJKfntef 2015/04/18 4.8.4
 \CJK@fntefSkip=\skip56
 \CJK@nest=\count150
@@ -1027,7 +1029,7 @@ Package: CJKfntef 2015/04/18 4.8.4
 . Defining command \CTEXnoindent with sig. '' on line 525.
 .................................................
 
-(/usr/local/texlive/2017/texmf-dist/tex/latex/zhnumber/zhnumber.sty
+(f:/TexLive/texmf-dist/tex/latex/zhnumber/zhnumber.sty
 Package: zhnumber 2016/05/14 v2.4 Typesetting numbers with Chinese glyphs
 .................................................
 . LaTeX info: "xparse/define-command"
@@ -1087,7 +1089,7 @@ Package: zhnumber 2016/05/14 v2.4 Typesetting numbers with Chinese glyphs
 . Defining command \zhnumsetup with sig. '+m' on line 938.
 .................................................
 
-(/usr/local/texlive/2017/texmf-dist/tex/latex/zhnumber/zhnumber-utf8.cfg
+(f:/TexLive/texmf-dist/tex/latex/zhnumber/zhnumber-utf8.cfg
 File: zhnumber-utf8.cfg 2016/05/14 v2.4 Chinese numerals with UTF8 encoding
 ))
 .................................................
@@ -1101,13 +1103,14 @@ File: zhnumber-utf8.cfg 2016/05/14 v2.4 Chinese numerals with UTF8 encoding
 . Defining command \CTEXdigits with sig. 'mm' on line 544.
 .................................................
 
-(/usr/local/texlive/2017/texmf-dist/tex/latex/ctex/scheme/ctex-scheme-chinese.d
-ef
+(f:/TexLive/texmf-dist/tex/latex/ctex/scheme/ctex-scheme-chinese.def
 File: ctex-scheme-chinese.def 2017/04/01 v2.4.9 Chinese scheme for generic (CTE
 X)
- (/usr/local/texlive/2017/texmf-dist/tex/latex/ctex/config/ctex-name-utf8.cfg
+
+(f:/TexLive/texmf-dist/tex/latex/ctex/config/ctex-name-utf8.cfg
 File: ctex-name-utf8.cfg 2017/04/01 v2.4.9 Caption with encoding UTF8 (CTEX)
-)) (/usr/local/texlive/2017/texmf-dist/tex/latex/tools/indentfirst.sty
+))
+(f:/TexLive/texmf-dist/tex/latex/tools/indentfirst.sty
 Package: indentfirst 1995/11/23 v1.03 Indent first paragraph (DPC)
 )
 .................................................
@@ -1121,31 +1124,42 @@ Package: indentfirst 1995/11/23 v1.03 Indent first paragraph (DPC)
 . Defining command \CTeX with sig. '' on line 745.
 .................................................
 
-(/usr/local/texlive/2017/texmf-dist/tex/latex/ctex/fontset/ctex-fontset-fandol.
-def
-File: ctex-fontset-fandol.def 2017/04/01 v2.4.9 Fandol fonts definition (CTEX)
+(f:/TexLive/texmf-dist/tex/latex/ctex/fontset/ctex-fontset-windows.def
+File: ctex-fontset-windows.def 2017/04/01 v2.4.9 Windows fonts definition (CTEX
+)
 
-*************************************************
-* fontspec warning: "script-not-exist"
-* 
-* Font 'FandolSong-Regular' does not contain script 'CJK'.
-*************************************************
-\g__fontspec_family_FandolSong-Regular_int=\count152
+(f:/TexLive/texmf-dist/tex/latex/ctex/fontset/ctex-fontset-windowsnew.def
+File: ctex-fontset-windowsnew.def 2017/04/01 v2.4.9 Windows fonts definition fo
+r Vista or later version (CTEX)
+\g__fontspec_family_SimSun_int=\count152
+.................................................
+. fontspec info: "no-font-shape"
+. 
+. Could not resolve font "KaiTi/B" (it probably doesn't exist).
+.................................................
+.................................................
+. fontspec info: "no-font-shape"
+. 
+. Could not resolve font "SimHei/I" (it probably doesn't exist).
+.................................................
+.................................................
+. fontspec info: "no-font-shape"
+. 
+. Could not resolve font "SimSun/BI" (it probably doesn't exist).
+.................................................
 .................................................
 . fontspec info: "defining-font"
 . 
-. Font family 'FandolSong-Regular(0)' created for font 'FandolSong-Regular'
-. with options
-. [Script={CJK},Extension={.otf},BoldFont={FandolSong-Bold},ItalicFont={FandolK
-ai-Regular}].
+. Font family 'SimSun(0)' created for font 'SimSun' with options
+. [Script={CJK},BoldFont={SimHei},ItalicFont={KaiTi}].
 .  
 .  This font family consists of the following NFSS series/shapes:
 .  
-. - 'normal' (m/n) with NFSS spec.: <->"[FandolSong-Regular.otf]/OT"
+. - 'normal' (m/n) with NFSS spec.: <->"SimSun/OT:script=hani;language=DFLT;"
 . - 'small caps'  (m/sc) with NFSS spec.: 
-. - 'bold' (bx/n) with NFSS spec.: <->"[FandolSong-Bold.otf]/OT"
+. - 'bold' (bx/n) with NFSS spec.: <->"SimHei/OT:script=hani;language=DFLT;"
 . - 'bold small caps'  (bx/sc) with NFSS spec.: 
-. - 'italic' (m/it) with NFSS spec.: <->"[FandolKai-Regular.otf]/OT"
+. - 'italic' (m/it) with NFSS spec.: <->"KaiTi/OT:script=hani;language=DFLT;"
 . - 'italic small caps'  (m/itsc) with NFSS spec.: 
 .................................................
 .................................................
@@ -1168,27 +1182,43 @@ ai-Regular}].
 . 
 . Defining command \kaishu with sig. '' on line 113.
 .................................................
-)) (/usr/local/texlive/2017/texmf-dist/tex/latex/ctex/config/ctex.cfg
+.................................................
+. LaTeX info: "xparse/define-command"
+. 
+. Defining command \lishu with sig. '' on line 114.
+.................................................
+.................................................
+. LaTeX info: "xparse/define-command"
+. 
+. Defining command \youyuan with sig. '' on line 115.
+.................................................
+.................................................
+. LaTeX info: "xparse/define-command"
+. 
+. Defining command \yahei with sig. '' on line 116.
+.................................................
+)))
+(f:/TexLive/texmf-dist/tex/latex/ctex/config/ctex.cfg
 File: ctex.cfg 2017/04/01 v2.4.9 Configuration file (CTEX)
 )
-(/usr/local/texlive/2017/texmf-dist/tex/latex/amsmath/amsmath.sty
+(f:/TexLive/texmf-dist/tex/latex/amsmath/amsmath.sty
 Package: amsmath 2016/11/05 v2.16a AMS math features
 \@mathmargin=\skip60
 
 For additional information on amsmath, use the `?' option.
-(/usr/local/texlive/2017/texmf-dist/tex/latex/amsmath/amstext.sty
+(f:/TexLive/texmf-dist/tex/latex/amsmath/amstext.sty
 Package: amstext 2000/06/29 v2.01 AMS text
 
-(/usr/local/texlive/2017/texmf-dist/tex/latex/amsmath/amsgen.sty
+(f:/TexLive/texmf-dist/tex/latex/amsmath/amsgen.sty
 File: amsgen.sty 1999/11/30 v2.0 generic functions
 \@emptytoks=\toks20
 \ex@=\dimen184
 ))
-(/usr/local/texlive/2017/texmf-dist/tex/latex/amsmath/amsbsy.sty
+(f:/TexLive/texmf-dist/tex/latex/amsmath/amsbsy.sty
 Package: amsbsy 1999/11/29 v1.2d Bold Symbols
 \pmbraise@=\dimen185
 )
-(/usr/local/texlive/2017/texmf-dist/tex/latex/amsmath/amsopn.sty
+(f:/TexLive/texmf-dist/tex/latex/amsmath/amsopn.sty
 Package: amsopn 2016/03/08 v2.02 operator names
 )
 \inf@bad=\count153
@@ -1229,20 +1259,20 @@ LaTeX Font Info:    Redeclaring font encoding OMS on input line 713.
 LaTeX Info: Redefining \[ on input line 2817.
 LaTeX Info: Redefining \] on input line 2818.
 )
-(/usr/local/texlive/2017/texmf-dist/tex/latex/amsfonts/amssymb.sty
+(f:/TexLive/texmf-dist/tex/latex/amsfonts/amssymb.sty
 Package: amssymb 2013/01/14 v3.01 AMS font symbols
 
-(/usr/local/texlive/2017/texmf-dist/tex/latex/amsfonts/amsfonts.sty
+(f:/TexLive/texmf-dist/tex/latex/amsfonts/amsfonts.sty
 Package: amsfonts 2013/01/14 v3.01 Basic AMSFonts support
 \symAMSa=\mathgroup4
 \symAMSb=\mathgroup5
 LaTeX Font Info:    Overwriting math alphabet `\mathfrak' in version `bold'
 (Font)                  U/euf/m/n --> U/euf/b/n on input line 106.
 ))
-(/usr/local/texlive/2017/texmf-dist/tex/latex/psnfss/times.sty
+(f:/TexLive/texmf-dist/tex/latex/psnfss/times.sty
 Package: times 2005/04/12 PSNFSS-v9.2a (SPQR) 
 )
-(/usr/local/texlive/2017/texmf-dist/tex/latex/titlesec/titlesec.sty
+(f:/TexLive/texmf-dist/tex/latex/titlesec/titlesec.sty
 Package: titlesec 2016/03/21 v2.10.2 Sectioning titles
 \ttl@box=\box56
 \beforetitleunit=\skip63
@@ -1254,19 +1284,19 @@ Package: titlesec 2016/03/21 v2.10.2 Sectioning titles
 \titlewidthlast=\dimen196
 \titlewidthfirst=\dimen197
 )
-(/usr/local/texlive/2017/texmf-dist/tex/latex/subfiles/subfiles.sty
+(f:/TexLive/texmf-dist/tex/latex/subfiles/subfiles.sty
 Package: subfiles 2012/05/23 Federico Garcia
 
-(/usr/local/texlive/2017/texmf-dist/tex/latex/tools/verbatim.sty
+(f:/TexLive/texmf-dist/tex/latex/tools/verbatim.sty
 Package: verbatim 2014/10/28 v1.5q LaTeX2e package for verbatim enhancements
 \every@verbatim=\toks26
 \verbatim@line=\toks27
 \verbatim@in@stream=\read2
 ))
-(/usr/local/texlive/2017/texmf-dist/tex/latex/blindtext/blindtext.sty
+(f:/TexLive/texmf-dist/tex/latex/blindtext/blindtext.sty
 Package: blindtext 2012/01/06 V2.0 blindtext-Package
 
-(/usr/local/texlive/2017/texmf-dist/tex/latex/tools/xspace.sty
+(f:/TexLive/texmf-dist/tex/latex/tools/xspace.sty
 Package: xspace 2014/10/28 v1.13 Space after command names (DPC,MH)
 )
 \c@blindtext=\count165
@@ -1288,7 +1318,7 @@ Package: xspace 2014/10/28 v1.13 Space after command names (DPC,MH)
 \c@blind@pangramcount=\count181
 \c@blind@pangrammax=\count182
 )
-(/usr/local/texlive/2017/texmf-dist/tex/latex/listings/listings.sty
+(f:/TexLive/texmf-dist/tex/latex/listings/listings.sty
 \lst@mode=\count183
 \lst@gtempboxa=\box57
 \lst@token=\toks28
@@ -1302,21 +1332,21 @@ Package: xspace 2014/10/28 v1.13 Space after command names (DPC,MH)
 \lst@lineno=\count188
 \lst@maxwidth=\dimen257
 
-(/usr/local/texlive/2017/texmf-dist/tex/latex/listings/lstmisc.sty
+(f:/TexLive/texmf-dist/tex/latex/listings/lstmisc.sty
 File: lstmisc.sty 2015/06/04 1.6 (Carsten Heinz)
 \c@lstnumber=\count189
 \lst@skipnumbers=\count190
 \lst@framebox=\box58
 )
-(/usr/local/texlive/2017/texmf-dist/tex/latex/listings/listings.cfg
+(f:/TexLive/texmf-dist/tex/latex/listings/listings.cfg
 File: listings.cfg 2015/06/04 1.6 listings configuration
 ))
 Package: listings 2015/06/04 1.6 (Carsten Heinz)
 
-(/usr/local/texlive/2017/texmf-dist/tex/latex/csquotes/csquotes.sty
+(f:/TexLive/texmf-dist/tex/latex/csquotes/csquotes.sty
 Package: csquotes 2017/03/11 v5.2b context-sensitive quotations (JAW)
 
-(/usr/local/texlive/2017/texmf-dist/tex/latex/etoolbox/etoolbox.sty
+(f:/TexLive/texmf-dist/tex/latex/etoolbox/etoolbox.sty
 Package: etoolbox 2017/01/02 v2.4 e-TeX tools for LaTeX (JAW)
 \etb@tempcnta=\count191
 )
@@ -1328,16 +1358,16 @@ Package: etoolbox 2017/01/02 v2.4 e-TeX tools for LaTeX (JAW)
 \csq@tshold=\count197
 \csq@ltx@everypar=\toks29
 
-(/usr/local/texlive/2017/texmf-dist/tex/latex/csquotes/csquotes.def
+(f:/TexLive/texmf-dist/tex/latex/csquotes/csquotes.def
 File: csquotes.def 2017/03/11 v5.2b csquotes generic definitions (JAW)
 )
 Package csquotes Info: Trying to load configuration file 'csquotes.cfg'...
 Package csquotes Info: ... configuration file loaded successfully.
 
-(/usr/local/texlive/2017/texmf-dist/tex/latex/csquotes/csquotes.cfg
+(f:/TexLive/texmf-dist/tex/latex/csquotes/csquotes.cfg
 File: csquotes.cfg 
 ))
-(/usr/local/texlive/2017/texmf-dist/tex/latex/float/float.sty
+(f:/TexLive/texmf-dist/tex/latex/float/float.sty
 Package: float 2001/11/08 v1.3d Float enhancements (AL)
 \c@float@type=\count198
 \float@exts=\toks30
@@ -1345,14 +1375,14 @@ Package: float 2001/11/08 v1.3d Float enhancements (AL)
 \@float@everytoks=\toks31
 \@floatcapt=\box60
 )
-(/usr/local/texlive/2017/texmf-dist/tex/latex/pythonhighlight/pythonhighlight.s
-ty
+(f:/TexLive/texmf-dist/tex/latex/pythonhighlight/pythonhighlight.sty
 Package: pythonhighlight 2017/02/09 python code highlighting; provided by Olivi
 er Verdier <olivier.verdier@gmail.com>
- (/usr/local/texlive/2017/texmf-dist/tex/latex/xcolor/xcolor.sty
+
+(f:/TexLive/texmf-dist/tex/latex/xcolor/xcolor.sty
 Package: xcolor 2016/05/11 v2.12 LaTeX color extensions (UK)
 
-(/usr/local/texlive/2017/texmf-dist/tex/latex/graphics-cfg/color.cfg
+(f:/TexLive/texmf-dist/tex/latex/graphics-cfg/color.cfg
 File: color.cfg 2016/01/02 v1.6 sample color configuration
 )
 Package xcolor Info: Driver file: xetex.def on input line 225.
@@ -1365,10 +1395,10 @@ Package xcolor Info: Model `HSB' substituted by `hsb' on input line 1369.
 Package xcolor Info: Model `Gray' substituted by `gray' on input line 1370.
 Package xcolor Info: Model `wave' substituted by `hsb' on input line 1371.
 ))
-(/usr/local/texlive/2017/texmf-dist/tex/latex/caption/caption.sty
+(f:/TexLive/texmf-dist/tex/latex/caption/caption.sty
 Package: caption 2016/02/21 v3.3-144 Customizing captions (AR)
 
-(/usr/local/texlive/2017/texmf-dist/tex/latex/caption/caption3.sty
+(f:/TexLive/texmf-dist/tex/latex/caption/caption3.sty
 Package: caption3 2016/05/22 v1.7-166 caption3 kernel (AR)
 Package caption3 Info: TeX engine: e-TeX on input line 67.
 \captionmargin=\dimen258
@@ -1383,7 +1413,7 @@ Package caption3 Info: TeX engine: e-TeX on input line 67.
 Package caption Info: float package is loaded.
 Package caption Info: listings package is loaded.
 )
-(/usr/local/texlive/2017/texmf-dist/tex/latex/subfigure/subfigure.sty
+(f:/TexLive/texmf-dist/tex/latex/subfigure/subfigure.sty
 Package: subfigure 2002/03/15 v2.1.5 subfigure package
 \subfigtopskip=\skip65
 \subfigcapskip=\skip66
@@ -1399,11 +1429,11 @@ Package: subfigure 2002/03/15 v2.1.5 subfigure package
 ****************************************
 * Local config file subfigure.cfg used *
 ****************************************
-(/usr/local/texlive/2017/texmf-dist/tex/latex/subfigure/subfigure.cfg)
+(f:/TexLive/texmf-dist/tex/latex/subfigure/subfigure.cfg)
 \subfig@top=\skip69
 \subfig@bottom=\skip70
 )
-(/usr/local/texlive/2017/texmf-dist/tex/latex/tools/longtable.sty
+(f:/TexLive/texmf-dist/tex/latex/tools/longtable.sty
 Package: longtable 2014/10/28 v4.11 Multi-page Table package (DPC)
 \LTleft=\skip71
 \LTright=\skip72
@@ -1421,14 +1451,14 @@ Package: longtable 2014/10/28 v4.11 Multi-page Table package (DPC)
 \c@LT@chunks=\count274
 \LT@p@ftn=\toks32
 )
-(/usr/local/texlive/2017/texmf-dist/tex/latex/hyperref/hyperref.sty
+(f:/TexLive/texmf-dist/tex/latex/hyperref/hyperref.sty
 Package: hyperref 2017/03/14 v6.85a Hypertext links for LaTeX
 
-(/usr/local/texlive/2017/texmf-dist/tex/generic/oberdiek/hobsub-hyperref.sty
+(f:/TexLive/texmf-dist/tex/generic/oberdiek/hobsub-hyperref.sty
 Package: hobsub-hyperref 2016/05/16 v1.14 Bundle oberdiek, subset hyperref (HO)
 
 
-(/usr/local/texlive/2017/texmf-dist/tex/generic/oberdiek/hobsub-generic.sty
+(f:/TexLive/texmf-dist/tex/generic/oberdiek/hobsub-generic.sty
 Package: hobsub-generic 2016/05/16 v1.14 Bundle oberdiek, subset generic (HO)
 Package: hobsub 2016/05/16 v1.14 Construct package bundles (HO)
 Package: infwarerr 2016/05/16 v1.4 Providing info/warning/error messages (HO)
@@ -1467,27 +1497,27 @@ Package: atbegshi 2016/06/09 v1.18 At begin shipout hook (HO)
 Package: refcount 2016/05/16 v3.5 Data extraction from label references (HO)
 Package: hycolor 2016/05/16 v1.8 Color options for hyperref/bookmark (HO)
 )
-(/usr/local/texlive/2017/texmf-dist/tex/latex/oberdiek/auxhook.sty
+(f:/TexLive/texmf-dist/tex/latex/oberdiek/auxhook.sty
 Package: auxhook 2016/05/16 v1.4 Hooks for auxiliary files (HO)
 )
-(/usr/local/texlive/2017/texmf-dist/tex/latex/oberdiek/kvoptions.sty
+(f:/TexLive/texmf-dist/tex/latex/oberdiek/kvoptions.sty
 Package: kvoptions 2016/05/16 v3.12 Key value format for package options (HO)
 )
 \@linkdim=\dimen268
 \Hy@linkcounter=\count275
 \Hy@pagecounter=\count276
 
-(/usr/local/texlive/2017/texmf-dist/tex/latex/hyperref/pd1enc.def
+(f:/TexLive/texmf-dist/tex/latex/hyperref/pd1enc.def
 File: pd1enc.def 2017/03/14 v6.85a Hyperref: PDFDocEncoding definition (HO)
 )
 \Hy@SavedSpaceFactor=\count277
 
-(/usr/local/texlive/2017/texmf-dist/tex/latex/latexconfig/hyperref.cfg
+(f:/TexLive/texmf-dist/tex/latex/latexconfig/hyperref.cfg
 File: hyperref.cfg 2002/06/06 v1.2 hyperref configuration of TeXLive
 )
 Package hyperref Info: Option `unicode' set `true' on input line 4374.
 
-(/usr/local/texlive/2017/texmf-dist/tex/latex/hyperref/puenc.def
+(f:/TexLive/texmf-dist/tex/latex/hyperref/puenc.def
 File: puenc.def 2017/03/14 v6.85a Hyperref: PDF Unicode definition (HO)
 )
 Package hyperref Info: Hyper figures OFF on input line 4498.
@@ -1499,7 +1529,7 @@ Package hyperref Info: Implicit mode ON; LaTeX internals redefined.
 Package hyperref Info: Bookmarks ON on input line 4751.
 \c@Hy@tempcnt=\count278
 
-(/usr/local/texlive/2017/texmf-dist/tex/latex/url/url.sty
+(f:/TexLive/texmf-dist/tex/latex/url/url.sty
 \Urlmuskip=\muskip18
 Package: url 2013/09/16  ver 3.4  Verb mode for urls, etc.
 )
@@ -1524,10 +1554,10 @@ LaTeX Info: Redefining \pageref on input line 6432.
 
 Package hyperref Message: Driver (autodetected): hxetex.
 
-(/usr/local/texlive/2017/texmf-dist/tex/latex/hyperref/hxetex.def
+(f:/TexLive/texmf-dist/tex/latex/hyperref/hxetex.def
 File: hxetex.def 2017/03/14 v6.85a Hyperref driver for XeTeX
 
-(/usr/local/texlive/2017/texmf-dist/tex/generic/oberdiek/stringenc.sty
+(f:/TexLive/texmf-dist/tex/generic/oberdiek/stringenc.sty
 Package: stringenc 2016/05/16 v1.11 Convert strings between diff. encodings (HO
 )
 )
@@ -1537,7 +1567,7 @@ Package: stringenc 2016/05/16 v1.11 Convert strings between diff. encodings (HO
 \Fld@listcount=\count285
 \c@bookmark@seq@number=\count286
 
-(/usr/local/texlive/2017/texmf-dist/tex/latex/oberdiek/rerunfilecheck.sty
+(f:/TexLive/texmf-dist/tex/latex/oberdiek/rerunfilecheck.sty
 Package: rerunfilecheck 2016/05/16 v1.8 Rerun checks for auxiliary files (HO)
 Package rerunfilecheck Info: Feature \pdfmdfivesum is not available
 (rerunfilecheck)             (e.g. pdfTeX or LuaTeX with package `pdftexcmds').
@@ -1550,10 +1580,10 @@ tly
 )
 Package hyperref Info: Option `colorlinks' set `true' on input line 30.
 
-(/usr/local/texlive/2017/texmf-dist/tex/latex/psnfss/avant.sty
+(f:/TexLive/texmf-dist/tex/latex/psnfss/avant.sty
 Package: avant 2005/04/12 PSNFSS-v9.2a (SPQR) 
 )
-(/usr/local/texlive/2017/texmf-dist/tex/latex/psnfss/mathptmx.sty
+(f:/TexLive/texmf-dist/tex/latex/psnfss/mathptmx.sty
 Package: mathptmx 2005/04/12 PSNFSS-v9.2a Times w/ Math, improved (SPQR, WaS) 
 LaTeX Font Info:    Redeclaring symbol font `operators' on input line 28.
 LaTeX Font Info:    Overwriting symbol font `operators' in version `normal'
@@ -1589,10 +1619,10 @@ LaTeX Font Info:    Overwriting math alphabet `\mathit' in version `bold'
 (Font)                  OT1/cmr/bx/it --> OT1/ptm/m/it on input line 35.
 LaTeX Info: Redefining \hbar on input line 50.
 )
-(/usr/local/texlive/2017/texmf-dist/tex/latex/tkz-graph/tkz-graph.sty
+(f:/TexLive/texmf-dist/tex/latex/tkz-graph/tkz-graph.sty
 Package: tkz-graph 2011/06/01 ctan v 1.00 base for graphs
 
-(/usr/local/texlive/2017/texmf-dist/tex/latex/etex-pkg/etex.sty
+(f:/TexLive/texmf-dist/tex/latex/etex-pkg/etex.sty
 Package: etex 2016/08/01 v2.7 eTeX basic definition package (PEB,DPC)
 
 
@@ -1602,50 +1632,50 @@ Package etex Warning: Extended allocation already in use.
 (etex)                \RequirePackage{etex}
 (etex)                at the start of the document.
 
-) (/usr/local/texlive/2017/texmf-dist/tex/latex/base/ifthen.sty
+) (f:/TexLive/texmf-dist/tex/latex/base/ifthen.sty
 Package: ifthen 2014/09/29 v1.1c Standard LaTeX ifthen package (DPC)
 )
-(/usr/local/texlive/2017/texmf-dist/tex/latex/xkeyval/xkeyval.sty
+(f:/TexLive/texmf-dist/tex/latex/xkeyval/xkeyval.sty
 Package: xkeyval 2014/12/03 v2.7a package option processing (HA)
 
-(/usr/local/texlive/2017/texmf-dist/tex/generic/xkeyval/xkeyval.tex
-(/usr/local/texlive/2017/texmf-dist/tex/generic/xkeyval/xkvutils.tex
+(f:/TexLive/texmf-dist/tex/generic/xkeyval/xkeyval.tex
+(f:/TexLive/texmf-dist/tex/generic/xkeyval/xkvutils.tex
 \XKV@toks=\toks33
 \XKV@tempa@toks=\toks34
 )
 \XKV@depth=\count287
 File: xkeyval.tex 2014/12/03 v2.7a key=value parser (HA)
 ))
-(/usr/local/texlive/2017/texmf-dist/tex/latex/pgf/frontendlayer/tikz.sty
-(/usr/local/texlive/2017/texmf-dist/tex/latex/pgf/basiclayer/pgf.sty
-(/usr/local/texlive/2017/texmf-dist/tex/latex/pgf/utilities/pgfrcs.sty
-(/usr/local/texlive/2017/texmf-dist/tex/generic/pgf/utilities/pgfutil-common.te
-x
+(f:/TexLive/texmf-dist/tex/latex/pgf/frontendlayer/tikz.sty
+(f:/TexLive/texmf-dist/tex/latex/pgf/basiclayer/pgf.sty
+(f:/TexLive/texmf-dist/tex/latex/pgf/utilities/pgfrcs.sty
+(f:/TexLive/texmf-dist/tex/generic/pgf/utilities/pgfutil-common.tex
 \pgfutil@everybye=\toks35
 \pgfutil@tempdima=\dimen272
 \pgfutil@tempdimb=\dimen273
 
-(/usr/local/texlive/2017/texmf-dist/tex/generic/pgf/utilities/pgfutil-common-li
-sts.tex))
-(/usr/local/texlive/2017/texmf-dist/tex/generic/pgf/utilities/pgfutil-latex.def
+(f:/TexLive/texmf-dist/tex/generic/pgf/utilities/pgfutil-common-lists.tex))
+(f:/TexLive/texmf-dist/tex/generic/pgf/utilities/pgfutil-latex.def
 \pgfutil@abb=\box66
-(/usr/local/texlive/2017/texmf-dist/tex/latex/ms/everyshi.sty
+
+(f:/TexLive/texmf-dist/tex/latex/ms/everyshi.sty
 Package: everyshi 2001/05/15 v3.00 EveryShipout Package (MS)
 ))
-(/usr/local/texlive/2017/texmf-dist/tex/generic/pgf/utilities/pgfrcs.code.tex
+(f:/TexLive/texmf-dist/tex/generic/pgf/utilities/pgfrcs.code.tex
 Package: pgfrcs 2015/08/07 v3.0.1a (rcs-revision 1.31)
 ))
 Package: pgf 2015/08/07 v3.0.1a (rcs-revision 1.15)
-(/usr/local/texlive/2017/texmf-dist/tex/latex/pgf/basiclayer/pgfcore.sty
-(/usr/local/texlive/2017/texmf-dist/tex/latex/pgf/systemlayer/pgfsys.sty
-(/usr/local/texlive/2017/texmf-dist/tex/generic/pgf/systemlayer/pgfsys.code.tex
+
+(f:/TexLive/texmf-dist/tex/latex/pgf/basiclayer/pgfcore.sty
+(f:/TexLive/texmf-dist/tex/latex/pgf/systemlayer/pgfsys.sty
+(f:/TexLive/texmf-dist/tex/generic/pgf/systemlayer/pgfsys.code.tex
 Package: pgfsys 2014/07/09 v3.0.1a (rcs-revision 1.48)
-(/usr/local/texlive/2017/texmf-dist/tex/generic/pgf/utilities/pgfkeys.code.tex
+
+(f:/TexLive/texmf-dist/tex/generic/pgf/utilities/pgfkeys.code.tex
 \pgfkeys@pathtoks=\toks36
 \pgfkeys@temptoks=\toks37
 
-(/usr/local/texlive/2017/texmf-dist/tex/generic/pgf/utilities/pgfkeysfiltered.c
-ode.tex
+(f:/TexLive/texmf-dist/tex/generic/pgf/utilities/pgfkeysfiltered.code.tex
 \pgfkeys@tmptoks=\toks38
 ))
 \pgf@x=\dimen274
@@ -1666,41 +1696,37 @@ ode.tex
 \t@pgf@tokb=\toks40
 \t@pgf@tokc=\toks41
 
-(/usr/local/texlive/2017/texmf-dist/tex/generic/pgf/systemlayer/pgf.cfg
+(f:/TexLive/texmf-dist/tex/generic/pgf/systemlayer/pgf.cfg
 File: pgf.cfg 2008/05/14  (rcs-revision 1.7)
 )
 Driver file for pgf: pgfsys-xetex.def
 
-(/usr/local/texlive/2017/texmf-dist/tex/generic/pgf/systemlayer/pgfsys-xetex.de
-f
+(f:/TexLive/texmf-dist/tex/generic/pgf/systemlayer/pgfsys-xetex.def
 File: pgfsys-xetex.def 2014/07/09  (rcs-revision 1.11)
 
-(/usr/local/texlive/2017/texmf-dist/tex/generic/pgf/systemlayer/pgfsys-dvipdfmx
-.def
+(f:/TexLive/texmf-dist/tex/generic/pgf/systemlayer/pgfsys-dvipdfmx.def
 File: pgfsys-dvipdfmx.def 2014/07/09  (rcs-revision 1.14)
 
-(/usr/local/texlive/2017/texmf-dist/tex/generic/pgf/systemlayer/pgfsys-common-p
-df.def
+(f:/TexLive/texmf-dist/tex/generic/pgf/systemlayer/pgfsys-common-pdf.def
 File: pgfsys-common-pdf.def 2013/10/10  (rcs-revision 1.13)
 )
 \pgfsys@objnum=\count292
 )))
-(/usr/local/texlive/2017/texmf-dist/tex/generic/pgf/systemlayer/pgfsyssoftpath.
-code.tex
+(f:/TexLive/texmf-dist/tex/generic/pgf/systemlayer/pgfsyssoftpath.code.tex
 File: pgfsyssoftpath.code.tex 2013/09/09  (rcs-revision 1.9)
 \pgfsyssoftpath@smallbuffer@items=\count293
 \pgfsyssoftpath@bigbuffer@items=\count294
 )
-(/usr/local/texlive/2017/texmf-dist/tex/generic/pgf/systemlayer/pgfsysprotocol.
-code.tex
+(f:/TexLive/texmf-dist/tex/generic/pgf/systemlayer/pgfsysprotocol.code.tex
 File: pgfsysprotocol.code.tex 2006/10/16  (rcs-revision 1.4)
 ))
-(/usr/local/texlive/2017/texmf-dist/tex/generic/pgf/basiclayer/pgfcore.code.tex
+(f:/TexLive/texmf-dist/tex/generic/pgf/basiclayer/pgfcore.code.tex
 Package: pgfcore 2010/04/11 v3.0.1a (rcs-revision 1.7)
-(/usr/local/texlive/2017/texmf-dist/tex/generic/pgf/math/pgfmath.code.tex
-(/usr/local/texlive/2017/texmf-dist/tex/generic/pgf/math/pgfmathcalc.code.tex
-(/usr/local/texlive/2017/texmf-dist/tex/generic/pgf/math/pgfmathutil.code.tex)
-(/usr/local/texlive/2017/texmf-dist/tex/generic/pgf/math/pgfmathparser.code.tex
+
+(f:/TexLive/texmf-dist/tex/generic/pgf/math/pgfmath.code.tex
+(f:/TexLive/texmf-dist/tex/generic/pgf/math/pgfmathcalc.code.tex
+(f:/TexLive/texmf-dist/tex/generic/pgf/math/pgfmathutil.code.tex)
+(f:/TexLive/texmf-dist/tex/generic/pgf/math/pgfmathparser.code.tex
 \pgfmath@dimen=\dimen282
 \pgfmath@count=\count295
 \pgfmath@box=\box67
@@ -1708,29 +1734,19 @@ Package: pgfcore 2010/04/11 v3.0.1a (rcs-revision 1.7)
 \pgfmath@stack@operand=\toks43
 \pgfmath@stack@operation=\toks44
 )
-(/usr/local/texlive/2017/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.code.
-tex
-(/usr/local/texlive/2017/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.basic
-.code.tex)
-(/usr/local/texlive/2017/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.trigo
-nometric.code.tex)
-(/usr/local/texlive/2017/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.rando
-m.code.tex)
-(/usr/local/texlive/2017/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.compa
-rison.code.tex)
-(/usr/local/texlive/2017/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.base.
-code.tex)
-(/usr/local/texlive/2017/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.round
-.code.tex)
-(/usr/local/texlive/2017/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.misc.
-code.tex)
-(/usr/local/texlive/2017/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.integ
-erarithmetics.code.tex)))
-(/usr/local/texlive/2017/texmf-dist/tex/generic/pgf/math/pgfmathfloat.code.tex
+(f:/TexLive/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.code.tex
+(f:/TexLive/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.basic.code.tex)
+(f:/TexLive/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.trigonometric.code
+.tex)
+(f:/TexLive/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.random.code.tex)
+(f:/TexLive/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.comparison.code.te
+x) (f:/TexLive/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.base.code.tex)
+(f:/TexLive/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.round.code.tex)
+(f:/TexLive/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.misc.code.tex)
+(f:/TexLive/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.integerarithmetics
+.code.tex))) (f:/TexLive/texmf-dist/tex/generic/pgf/math/pgfmathfloat.code.tex
 \c@pgfmathroundto@lastzeros=\count296
-))
-(/usr/local/texlive/2017/texmf-dist/tex/generic/pgf/basiclayer/pgfcorepoints.co
-de.tex
+)) (f:/TexLive/texmf-dist/tex/generic/pgf/basiclayer/pgfcorepoints.code.tex
 File: pgfcorepoints.code.tex 2013/10/07  (rcs-revision 1.27)
 \pgf@picminx=\dimen283
 \pgf@picmaxx=\dimen284
@@ -1747,121 +1763,99 @@ File: pgfcorepoints.code.tex 2013/10/07  (rcs-revision 1.27)
 \pgf@zx=\dimen295
 \pgf@zy=\dimen296
 )
-(/usr/local/texlive/2017/texmf-dist/tex/generic/pgf/basiclayer/pgfcorepathconst
-ruct.code.tex
+(f:/TexLive/texmf-dist/tex/generic/pgf/basiclayer/pgfcorepathconstruct.code.tex
 File: pgfcorepathconstruct.code.tex 2013/10/07  (rcs-revision 1.29)
 \pgf@path@lastx=\dimen297
 \pgf@path@lasty=\dimen298
-)
-(/usr/local/texlive/2017/texmf-dist/tex/generic/pgf/basiclayer/pgfcorepathusage
-.code.tex
+) (f:/TexLive/texmf-dist/tex/generic/pgf/basiclayer/pgfcorepathusage.code.tex
 File: pgfcorepathusage.code.tex 2014/11/02  (rcs-revision 1.24)
 \pgf@shorten@end@additional=\dimen299
 \pgf@shorten@start@additional=\dimen300
 )
-(/usr/local/texlive/2017/texmf-dist/tex/generic/pgf/basiclayer/pgfcorescopes.co
-de.tex
+(f:/TexLive/texmf-dist/tex/generic/pgf/basiclayer/pgfcorescopes.code.tex
 File: pgfcorescopes.code.tex 2015/05/08  (rcs-revision 1.46)
 \pgfpic=\box68
 \pgf@hbox=\box69
 \pgf@layerbox@main=\box70
 \pgf@picture@serial@count=\count297
 )
-(/usr/local/texlive/2017/texmf-dist/tex/generic/pgf/basiclayer/pgfcoregraphicst
-ate.code.tex
+(f:/TexLive/texmf-dist/tex/generic/pgf/basiclayer/pgfcoregraphicstate.code.tex
 File: pgfcoregraphicstate.code.tex 2014/11/02  (rcs-revision 1.12)
 \pgflinewidth=\dimen301
 )
-(/usr/local/texlive/2017/texmf-dist/tex/generic/pgf/basiclayer/pgfcoretransform
-ations.code.tex
+(f:/TexLive/texmf-dist/tex/generic/pgf/basiclayer/pgfcoretransformations.code.t
+ex
 File: pgfcoretransformations.code.tex 2015/08/07  (rcs-revision 1.20)
 \pgf@pt@x=\dimen302
 \pgf@pt@y=\dimen303
 \pgf@pt@temp=\dimen304
-)
-(/usr/local/texlive/2017/texmf-dist/tex/generic/pgf/basiclayer/pgfcorequick.cod
-e.tex
+) (f:/TexLive/texmf-dist/tex/generic/pgf/basiclayer/pgfcorequick.code.tex
 File: pgfcorequick.code.tex 2008/10/09  (rcs-revision 1.3)
 )
-(/usr/local/texlive/2017/texmf-dist/tex/generic/pgf/basiclayer/pgfcoreobjects.c
-ode.tex
+(f:/TexLive/texmf-dist/tex/generic/pgf/basiclayer/pgfcoreobjects.code.tex
 File: pgfcoreobjects.code.tex 2006/10/11  (rcs-revision 1.2)
 )
-(/usr/local/texlive/2017/texmf-dist/tex/generic/pgf/basiclayer/pgfcorepathproce
-ssing.code.tex
+(f:/TexLive/texmf-dist/tex/generic/pgf/basiclayer/pgfcorepathprocessing.code.te
+x
 File: pgfcorepathprocessing.code.tex 2013/09/09  (rcs-revision 1.9)
-)
-(/usr/local/texlive/2017/texmf-dist/tex/generic/pgf/basiclayer/pgfcorearrows.co
-de.tex
+) (f:/TexLive/texmf-dist/tex/generic/pgf/basiclayer/pgfcorearrows.code.tex
 File: pgfcorearrows.code.tex 2015/05/14  (rcs-revision 1.43)
 \pgfarrowsep=\dimen305
 )
-(/usr/local/texlive/2017/texmf-dist/tex/generic/pgf/basiclayer/pgfcoreshade.cod
-e.tex
+(f:/TexLive/texmf-dist/tex/generic/pgf/basiclayer/pgfcoreshade.code.tex
 File: pgfcoreshade.code.tex 2013/07/15  (rcs-revision 1.15)
 \pgf@max=\dimen306
 \pgf@sys@shading@range@num=\count298
 )
-(/usr/local/texlive/2017/texmf-dist/tex/generic/pgf/basiclayer/pgfcoreimage.cod
-e.tex
+(f:/TexLive/texmf-dist/tex/generic/pgf/basiclayer/pgfcoreimage.code.tex
 File: pgfcoreimage.code.tex 2013/07/15  (rcs-revision 1.18)
 
-(/usr/local/texlive/2017/texmf-dist/tex/generic/pgf/basiclayer/pgfcoreexternal.
-code.tex
+(f:/TexLive/texmf-dist/tex/generic/pgf/basiclayer/pgfcoreexternal.code.tex
 File: pgfcoreexternal.code.tex 2014/07/09  (rcs-revision 1.21)
 \pgfexternal@startupbox=\box71
 ))
-(/usr/local/texlive/2017/texmf-dist/tex/generic/pgf/basiclayer/pgfcorelayers.co
-de.tex
+(f:/TexLive/texmf-dist/tex/generic/pgf/basiclayer/pgfcorelayers.code.tex
 File: pgfcorelayers.code.tex 2013/07/18  (rcs-revision 1.7)
 )
-(/usr/local/texlive/2017/texmf-dist/tex/generic/pgf/basiclayer/pgfcoretranspare
-ncy.code.tex
+(f:/TexLive/texmf-dist/tex/generic/pgf/basiclayer/pgfcoretransparency.code.tex
 File: pgfcoretransparency.code.tex 2013/09/30  (rcs-revision 1.5)
-)
-(/usr/local/texlive/2017/texmf-dist/tex/generic/pgf/basiclayer/pgfcorepatterns.
-code.tex
+) (f:/TexLive/texmf-dist/tex/generic/pgf/basiclayer/pgfcorepatterns.code.tex
 File: pgfcorepatterns.code.tex 2013/11/07  (rcs-revision 1.5)
 )))
-(/usr/local/texlive/2017/texmf-dist/tex/generic/pgf/modules/pgfmoduleshapes.cod
-e.tex
+(f:/TexLive/texmf-dist/tex/generic/pgf/modules/pgfmoduleshapes.code.tex
 File: pgfmoduleshapes.code.tex 2014/03/21  (rcs-revision 1.35)
 \pgfnodeparttextbox=\box72
 )
-(/usr/local/texlive/2017/texmf-dist/tex/generic/pgf/modules/pgfmoduleplot.code.
-tex
+(f:/TexLive/texmf-dist/tex/generic/pgf/modules/pgfmoduleplot.code.tex
 File: pgfmoduleplot.code.tex 2015/08/03  (rcs-revision 1.13)
 )
-(/usr/local/texlive/2017/texmf-dist/tex/latex/pgf/compatibility/pgfcomp-version
--0-65.sty
+(f:/TexLive/texmf-dist/tex/latex/pgf/compatibility/pgfcomp-version-0-65.sty
 Package: pgfcomp-version-0-65 2007/07/03 v3.0.1a (rcs-revision 1.7)
 \pgf@nodesepstart=\dimen307
 \pgf@nodesepend=\dimen308
 )
-(/usr/local/texlive/2017/texmf-dist/tex/latex/pgf/compatibility/pgfcomp-version
--1-18.sty
+(f:/TexLive/texmf-dist/tex/latex/pgf/compatibility/pgfcomp-version-1-18.sty
 Package: pgfcomp-version-1-18 2007/07/23 v3.0.1a (rcs-revision 1.1)
 ))
-(/usr/local/texlive/2017/texmf-dist/tex/latex/pgf/utilities/pgffor.sty
-(/usr/local/texlive/2017/texmf-dist/tex/latex/pgf/utilities/pgfkeys.sty
-(/usr/local/texlive/2017/texmf-dist/tex/generic/pgf/utilities/pgfkeys.code.tex)
-) (/usr/local/texlive/2017/texmf-dist/tex/latex/pgf/math/pgfmath.sty
-(/usr/local/texlive/2017/texmf-dist/tex/generic/pgf/math/pgfmath.code.tex))
-(/usr/local/texlive/2017/texmf-dist/tex/generic/pgf/utilities/pgffor.code.tex
+(f:/TexLive/texmf-dist/tex/latex/pgf/utilities/pgffor.sty
+(f:/TexLive/texmf-dist/tex/latex/pgf/utilities/pgfkeys.sty
+(f:/TexLive/texmf-dist/tex/generic/pgf/utilities/pgfkeys.code.tex))
+(f:/TexLive/texmf-dist/tex/latex/pgf/math/pgfmath.sty
+(f:/TexLive/texmf-dist/tex/generic/pgf/math/pgfmath.code.tex))
+(f:/TexLive/texmf-dist/tex/generic/pgf/utilities/pgffor.code.tex
 Package: pgffor 2013/12/13 v3.0.1a (rcs-revision 1.25)
 
-(/usr/local/texlive/2017/texmf-dist/tex/generic/pgf/math/pgfmath.code.tex)
+(f:/TexLive/texmf-dist/tex/generic/pgf/math/pgfmath.code.tex)
 \pgffor@iter=\dimen309
 \pgffor@skip=\dimen310
 \pgffor@stack=\toks45
 \pgffor@toks=\toks46
 ))
-(/usr/local/texlive/2017/texmf-dist/tex/generic/pgf/frontendlayer/tikz/tikz.cod
-e.tex
+(f:/TexLive/texmf-dist/tex/generic/pgf/frontendlayer/tikz/tikz.code.tex
 Package: tikz 2015/08/07 v3.0.1a (rcs-revision 1.151)
 
-(/usr/local/texlive/2017/texmf-dist/tex/generic/pgf/libraries/pgflibraryplothan
-dlers.code.tex
+(f:/TexLive/texmf-dist/tex/generic/pgf/libraries/pgflibraryplothandlers.code.te
+x
 File: pgflibraryplothandlers.code.tex 2013/08/31 v3.0.1a (rcs-revision 1.20)
 \pgf@plot@mark@count=\count299
 \pgfplotmarksize=\dimen311
@@ -1880,9 +1874,7 @@ File: pgflibraryplothandlers.code.tex 2013/08/31 v3.0.1a (rcs-revision 1.20)
 \tikznumberofchildren=\count301
 \tikznumberofcurrentchild=\count302
 \tikz@fig@count=\count303
-
-(/usr/local/texlive/2017/texmf-dist/tex/generic/pgf/modules/pgfmodulematrix.cod
-e.tex
+ (f:/TexLive/texmf-dist/tex/generic/pgf/modules/pgfmodulematrix.code.tex
 File: pgfmodulematrix.code.tex 2013/09/17  (rcs-revision 1.8)
 \pgfmatrixcurrentrow=\count304
 \pgfmatrixcurrentcolumn=\count305
@@ -1890,16 +1882,15 @@ File: pgfmodulematrix.code.tex 2013/09/17  (rcs-revision 1.8)
 )
 \tikz@expandcount=\count307
 
-(/usr/local/texlive/2017/texmf-dist/tex/generic/pgf/frontendlayer/tikz/librarie
-s/tikzlibrarytopaths.code.tex
+(f:/TexLive/texmf-dist/tex/generic/pgf/frontendlayer/tikz/libraries/tikzlibrary
+topaths.code.tex
 File: tikzlibrarytopaths.code.tex 2008/06/17 v3.0.1a (rcs-revision 1.2)
 )))
-(/usr/local/texlive/2017/texmf-dist/tex/generic/pgf/frontendlayer/tikz/librarie
-s/tikzlibraryarrows.code.tex
+(f:/TexLive/texmf-dist/tex/generic/pgf/frontendlayer/tikz/libraries/tikzlibrary
+arrows.code.tex
 File: tikzlibraryarrows.code.tex 2008/01/09 v3.0.1a (rcs-revision 1.1)
 
-(/usr/local/texlive/2017/texmf-dist/tex/generic/pgf/libraries/pgflibraryarrows.
-code.tex
+(f:/TexLive/texmf-dist/tex/generic/pgf/libraries/pgflibraryarrows.code.tex
 File: pgflibraryarrows.code.tex 2013/09/23 v3.0.1a (rcs-revision 1.16)
 \arrowsize=\dimen318
 ))
@@ -1917,12 +1908,14 @@ File: pgflibraryarrows.code.tex 2013/09/23 v3.0.1a (rcs-revision 1.16)
 Package csquotes Info: Checking for multilingual support...
 Package csquotes Info: ... none found.
 
-(/usr/local/texlive/2017/texmf-dist/tex/xelatex/xecjk/xeCJK-listings.sty
+(f:/TexLive/texmf-dist/tex/xelatex/xecjk/xeCJK-listings.sty
 Package: xeCJK-listings 2017/05/15 v3.4.8 xeCJK patch file for listings
 \l__xeCJK_listings_max_char_int=\count318
 \l__xeCJK_listings_flag_int=\count319
-)
-(./book.aux (./chapter1/deeplearning.aux) (./chapter1/tf_basics.aux)
+) (./book.aux
+(./chapter1/deeplearning.aux) (./chapter2/tf_basics1.aux) (./chapter2/Graph.aux
+) (./chapter2/tf_dataset.aux) (./chapter2/Treading.aux)
+(./chapter2/embedding.aux) (./chapter2/tf_basics2.aux)
 (./chapter2/tf_advance.aux) (./chapter2/tutorials.aux) (./chapter2/extend.aux)
 (./chapter2/performance.aux) (./chapter3/common_module.aux)
 (./chapter3/path.aux) (./chapter3/re.aux) (./chapter3/sys.aux)
@@ -1931,7 +1924,8 @@ Package: xeCJK-listings 2017/05/15 v3.4.8 xeCJK patch file for listings
 (./chapter3/contexlib.aux) (./chapter3/XML.aux) (./chapter3/HTMLParser.aux)
 (./chapter3/ZipFile.aux) (./chapter3/url.aux) (./chapter3/requests.aux)
 (./chapter3/bazel.aux) (./chapter4/tf_tricks.aux) (./chapter4/tf_common.aux)
-(./chapter4/tf_image.aux) (./chapter4/tf_layer.aux) (./chapter4/tf_train.aux))
+(./chapter4/Variable.aux) (./chapter4/tf_image.aux) (./chapter4/tf_layer.aux)
+(./chapter4/tf_train.aux))
 \openout1 = `book.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 47.
@@ -1952,8 +1946,7 @@ LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 47.
 LaTeX Font Info:    ... okay on input line 47.
 LaTeX Font Info:    Checking defaults for T3/cmr/m/n on input line 47.
 LaTeX Font Info:    Try loading font information for T3+cmr on input line 47.
-
-(/usr/local/texlive/2017/texmf-dist/tex/latex/tipa/t3cmr.fd
+ (f:/TexLive/texmf-dist/tex/latex/tipa/t3cmr.fd
 File: t3cmr.fd 2001/12/31 TIPA font definitions
 )
 LaTeX Font Info:    ... okay on input line 47.
@@ -2009,7 +2002,7 @@ Package caption Info: Begin \AtBeginDocument code.
 Package caption Info: hyperref package is loaded.
 Package caption Info: longtable package is loaded.
 
-(/usr/local/texlive/2017/texmf-dist/tex/latex/caption/ltcaption.sty
+(f:/TexLive/texmf-dist/tex/latex/caption/ltcaption.sty
 Package: ltcaption 2013/06/09 v1.4-94 longtable captions (AR)
 )
 Package caption Info: subfigure package is loaded.
@@ -2017,10 +2010,10 @@ Package caption Info: End \AtBeginDocument code.
 \AtBeginShipoutBox=\box77
 Package hyperref Info: Link coloring ON on input line 47.
 
-(/usr/local/texlive/2017/texmf-dist/tex/latex/hyperref/nameref.sty
+(f:/TexLive/texmf-dist/tex/latex/hyperref/nameref.sty
 Package: nameref 2016/05/21 v2.44 Cross-referencing by name of section
 
-(/usr/local/texlive/2017/texmf-dist/tex/generic/oberdiek/gettitlestring.sty
+(f:/TexLive/texmf-dist/tex/generic/oberdiek/gettitlestring.sty
 Package: gettitlestring 2016/05/16 v1.5 Cleanup title references (HO)
 )
 \c@section@level=\count321
@@ -2028,8 +2021,8 @@ Package: gettitlestring 2016/05/16 v1.5 Cleanup title references (HO)
 LaTeX Info: Redefining \ref on input line 47.
 LaTeX Info: Redefining \pageref on input line 47.
 LaTeX Info: Redefining \nameref on input line 47.
-
-(./book.out) (./book.out)
+ (./book.out)
+(./book.out)
 \@outlinefile=\write4
 \openout4 = `book.out'.
 
@@ -2041,30 +2034,30 @@ LaTeX Font Warning: Font shape `TU/ptm/bx/n' undefined
 (./book.toc
 LaTeX Font Info:    Try loading font information for OT1+ztmcm on input line 2.
 
- (/usr/local/texlive/2017/texmf-dist/tex/latex/psnfss/ot1ztmcm.fd
+ (f:/TexLive/texmf-dist/tex/latex/psnfss/ot1ztmcm.fd
 File: ot1ztmcm.fd 2000/01/03 Fontinst v1.801 font definitions for OT1/ztmcm.
 )
 LaTeX Font Info:    Try loading font information for OML+ztmcm on input line 2.
 
 
-(/usr/local/texlive/2017/texmf-dist/tex/latex/psnfss/omlztmcm.fd
+(f:/TexLive/texmf-dist/tex/latex/psnfss/omlztmcm.fd
 File: omlztmcm.fd 2000/01/03 Fontinst v1.801 font definitions for OML/ztmcm.
 )
 LaTeX Font Info:    Try loading font information for OMS+ztmcm on input line 2.
 
 
-(/usr/local/texlive/2017/texmf-dist/tex/latex/psnfss/omsztmcm.fd
+(f:/TexLive/texmf-dist/tex/latex/psnfss/omsztmcm.fd
 File: omsztmcm.fd 2000/01/03 Fontinst v1.801 font definitions for OMS/ztmcm.
 )
 LaTeX Font Info:    Try loading font information for OMX+ztmcm on input line 2.
 
 
-(/usr/local/texlive/2017/texmf-dist/tex/latex/psnfss/omxztmcm.fd
+(f:/TexLive/texmf-dist/tex/latex/psnfss/omxztmcm.fd
 File: omxztmcm.fd 2000/01/03 Fontinst v1.801 font definitions for OMX/ztmcm.
 )
 LaTeX Font Info:    Try loading font information for OT1+ptm on input line 2.
 
-(/usr/local/texlive/2017/texmf-dist/tex/latex/psnfss/ot1ptm.fd
+(f:/TexLive/texmf-dist/tex/latex/psnfss/ot1ptm.fd
 File: ot1ptm.fd 2001/06/04 font definitions for OT1/ptm.
 )
 LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <10.95> not available
@@ -2080,17 +2073,17 @@ LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <6> not available
 ]
 
 LaTeX Font Warning: Font shape `TU/ptm/m/sl' undefined
-(Font)              using `TU/ptm/m/n' instead on input line 77.
+(Font)              using `TU/ptm/m/n' instead on input line 64.
 
-LaTeX Font Info:    Font shape `TU/FandolSong-Regular(0)/m/sl' in size <10.95> 
-not available
-(Font)              Font shape `TU/FandolSong-Regular(0)/m/it' tried instead on
- input line 77.
-[2] [3] [4] [5] [6])
+LaTeX Font Info:    Font shape `TU/SimSun(0)/m/sl' in size <10.95> not availabl
+e
+(Font)              Font shape `TU/SimSun(0)/m/it' tried instead on input line 
+64.
+[2] [3] [4] [5] [6] [7] [8])
 \tf@toc=\write5
 \openout5 = `book.toc'.
 
- [7] [8
+ [9] [10
 
 ]
 \openout2 = `./chapter1/deeplearning.aux'.
@@ -2100,17 +2093,28 @@ Chapter 1.
 [1
 
 
-] (/usr/local/texlive/2017/texmf-dist/tex/latex/listings/lstlang1.sty
+] (f:/TexLive/texmf-dist/tex/latex/listings/lstlang1.sty
 File: lstlang1.sty 2015/06/04 1.6 listings language file
 )
-*************************************************
-* fontspec warning: "script-not-exist"
-* 
-* Font 'FandolFang-Regular' does not contain script 'CJK'.
-*************************************************
-\g__fontspec_family_FandolFang-Regular_int=\count322
+\g__fontspec_family_FangSong_int=\count322
+.................................................
+. fontspec info: "no-font-shape"
+. 
+. Could not resolve font "FangSong/BI" (it probably doesn't exist).
+.................................................
+.................................................
+. fontspec info: "no-font-shape"
+. 
+. Could not resolve font "FangSong/B" (it probably doesn't exist).
+.................................................
+.................................................
+. fontspec info: "no-font-shape"
+. 
+. Could not resolve font "FangSong/I" (it probably doesn't exist).
+.................................................
 LaTeX Font Info:    Try loading font information for TU+pcr on input line 27.
 LaTeX Font Info:    No file TUpcr.fd. on input line 27.
+
 
 LaTeX Font Warning: Font shape `TU/pcr/m/n' undefined
 (Font)              using `TU/lmr/m/n' instead on input line 27.
@@ -2118,12 +2122,13 @@ LaTeX Font Warning: Font shape `TU/pcr/m/n' undefined
 .................................................
 . fontspec info: "defining-font"
 . 
-. Font family 'FandolFang-Regular(0)' created for font 'FandolFang-Regular'
-. with options [Script={CJK},Extension={.otf}].
+. Font family 'FangSong(0)' created for font 'FangSong' with options
+. [Script={CJK}].
 .  
 .  This font family consists of the following NFSS series/shapes:
 .  
-. - 'normal' (m/n) with NFSS spec.: <->"[FandolFang-Regular.otf]/OT"
+. - 'normal' (m/n) with NFSS spec.:
+. <->"FangSong/OT:script=hani;language=DFLT;"
 . - 'small caps'  (m/sc) with NFSS spec.: 
 .................................................
 
@@ -2154,16 +2159,261 @@ Underfull \vbox (badness 10000) has occurred while \output is active []
 Missing character: There is no ν in font [lmroman10-regular]:mapping=tex-text;!
  [8] [9]
 Missing character: There is no − in font zptmcm7t!
- [10] [11]) [12]
-\openout2 = `./chapter1/tf_basics.aux'.
+ [10]
+File: ./pic/chapter1/CrossEntropyDef.png Graphic file (type QTm)
+ <use  "./pic/chapter1/CrossEntropyDef.png" > [11]
+File: ./pic/chapter1/CrossEntropyCompare.png Graphic file (type QTm)
 
- (./chapter1/tf_basics.tex
+<use  "./pic/chapter1/CrossEntropyCompare.png" >
+File: ./pic/chapter1/CrossEntropyQP.png Graphic file (type QTm)
+
+<use  "./pic/chapter1/CrossEntropyQP.png" >
+File: ./pic/chapter1/CrossEntropyPQ.png Graphic file (type QTm)
+
+<use  "./pic/chapter1/CrossEntropyPQ.png" > [12] [13]) [14]
+\openout2 = `./chapter2/tf_basics1.aux'.
+
+
+(./chapter2/tf_basics1.tex
 Chapter 2.
-[13
+[15
 
 
 
-] [14] [15]
+]
+
+LaTeX Font Warning: Font shape `TU/FangSong(0)/m/sl' undefined
+(Font)              using `TU/FangSong(0)/m/n' instead on input line 64.
+
+[16] [17] [18]
+Overfull \hbox (18.70042pt too wide) in paragraph at lines 177--178
+\TU/pcr/m/n/10.95 TensorFlow \TU/SimSun(0)/m/n/10.95 提 供 很 一 些 方 便 的 初 始 化 器，| 
+ 你 也 可 以 通 过 有 值 的 \TU/pcr/m/n/10.95 tf.Tensor \TU/SimSun(0)/m/n/10.95 初 始 化 一 
+个 \TU/pcr/m/n/10.95 tf.Variable\TU/SimSun(0)/m/n/10.95 。| 
+ []
+
+[19]
+Overfull \hbox (8.40877pt too wide) in paragraph at lines 185--186
+\TU/SimSun(0)/m/n/10.95 算 梯 度 的 变 量） 。|  如 果 你 不 想 一 个 变 量 被 训 练，|  将 它 增 加 到 \
+TU/pcr/m/n/10.95 tf.GraphKeys.LOCAL_VARIABLE
+ []
+
+[20]
+Overfull \hbox (91.74475pt too wide) in paragraph at lines 216--217
+\TU/SimSun(0)/m/n/10.95 创 建 自 己 的 图 和 会 话\TU/pcr/m/n/10.95 ) \TU/SimSun(0)/m/n/
+10.95 上 编 程，|  你 必 须 明 确 的 初 始 化 变 量。|  最 高 级 的 框 架 像 \TU/pcr/m/n/10.95 tf.cont
+rib.slim,tf.estimator.Estimator
+ []
+
+[21] [22] [23] [24]) [25]
+\openout2 = `./chapter2/Graph.aux'.
+
+ (./chapter2/Graph.tex [26
+
+
+] [27] [28] [29] [30]
+[31]
+Overfull \hbox (10.64906pt too wide) in paragraph at lines 173--174
+[]\TU/pcr/m/n/10.95 tf.GraphDef: \TU/SimSun(0)/m/n/10.95 合 适 图 结 构 的 低 级 表 示，| 
+ 包 含 所 有 操 作 的 秒 数 和 他 们 之 间 的 边。| \TU/pcr/m/n/10.95 tf,GraphDef
+ []
+
+
+Overfull \hbox (66.24841pt too wide) in paragraph at lines 174--175
+\TU/SimSun(0)/m/n/10.95 化 一 个 \TU/pcr/m/n/10.95 tf.Graph \TU/SimSun(0)/m/n/10.9
+5 为 \TU/pcr/m/n/10.95 tf.trainMetaGraphDef\TU/SimSun(0)/m/n/10.95 。| \TU/pcr/m/
+n/10.95 tf.train.Saver.save \TU/SimSun(0)/m/n/10.95 方 法 也 写 一 个 \TU/pcr/m/n/10.
+95 tf.train.MetaGraphDef,
+ []
+
+
+Overfull \hbox (26.07286pt too wide) in paragraph at lines 176--177
+\TU/SimSun(0)/m/n/10.95 通 常 情 况 下 我 们 鼓 励 你 用 \TU/pcr/m/n/10.95 tf.train.MetaGr
+aphDef \TU/SimSun(0)/m/n/10.95 而 不 是 \TU/pcr/m/n/10.95 tf.GraphDef\TU/SimSun(0)
+/m/n/10.95 。|  在 一 些 情 况 下 \TU/pcr/m/n/10.95 tf.GraphDef
+ []
+
+
+Overfull \hbox (77.65807pt too wide) in paragraph at lines 180--181
+[]\TU/SimSun(0)/m/n/10.95 它 将 从 原 始 的 图 集 合 中 恢 复 图 的 内 容。|  像 \TU/pcr/m/n/10.9
+5 tf.global_variable \TU/SimSun(0)/m/n/10.95 和 默 认 的 参 数 像 \TU/pcr/m/n/10.95 tf
+.train.latest_checkpoint
+ []
+
+
+Overfull \hbox (65.05482pt too wide) in paragraph at lines 188--190
+\TU/SimSun(0)/m/n/10.95 个 组 件 它 在 你 的 浏 览 器 中 生 成 你 的 图 的 结 构。|  最 简 单 的 创 建 可 
+视 化 的 方 法 是 当 创 建 \TU/pcr/m/n/10.95 tf.summary.FileWriter
+ []
+
+[32]
+File: ./pic/chapter1/mnist_cnn.png Graphic file (type QTm)
+ <use  "./pic/chapter1/mnist_cnn.png" >
+Overfull \hbox (946.95155pt too wide) in paragraph at lines 210--211
+[][] 
+ []
+
+
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [33]
+Overfull \vbox (612.36353pt too high) has occurred while \output is active []
+
+
+[34]) [35]
+\openout2 = `./chapter2/tf_dataset.aux'.
+
+ (./chapter2/tf_dataset.tex
+Overfull \hbox (91.16478pt too wide) in paragraph at lines 15--17
+\TU/SimSun(0)/m/n/10.95 数 据 集。|  你 可 以 使 用 \TU/pcr/m/n/10.95 tf.contrib.data.Da
+taset.from_tensors() \TU/SimSun(0)/m/n/10.95 或 者 \TU/pcr/m/n/10.95 tf.contrib.d
+ata.Dataset.from_tensor_slices()\TU/SimSun(0)/m/n/10.95 。|
+ []
+
+
+Overfull \hbox (67.70523pt too wide) in paragraph at lines 15--17
+\TU/SimSun(0)/m/n/10.95 如 果 你 的 输 入 数 据 在 磁 盘 上，|  推 荐 你 用 \TU/pcr/m/n/10.95 TF
+Record \TU/SimSun(0)/m/n/10.95 格 式，|  你 可 以 构 造 一 个 \TU/pcr/m/n/10.95 tf.contri
+b.data.TFRecordDataset\TU/SimSun(0)/m/n/10.95 。| 
+ []
+
+
+Overfull \hbox (1.55579pt too wide) in paragraph at lines 21--22
+[]\TU/SimSun(0)/m/n/10.95 一 个 数 据 及 包 含 有 相 同 结 构 的 元 素。|  一 个 元 素 包 含 一 个 或 者 
+更 多 称 为 组 建 的 的 \TU/pcr/m/n/10.95 tf.Tensor
+ []
+
+[36
+
+
+]
+Overfull \hbox (11.34544pt too wide) in paragraph at lines 42--43
+\TU/pcr/m/n/10.95 Dataset \TU/SimSun(0)/m/n/10.95 转 换 支 持 任 何 的 数 据 结 构，|  当 你 
+用 \TU/pcr/m/n/10.95 Dataset.map(),Dataset.flat_map \TU/SimSun(0)/m/n/10.95 和 \T
+U/pcr/m/n/10.95 Dataset.filter()
+ []
+
+[37]
+Overfull \hbox (14.10092pt too wide) in paragraph at lines 66--67
+\TU/SimSun(0)/m/n/10.95 允 许 你 送 入 一 个 或 者 更 多 的 \TU/pcr/m/n/10.95 tf.placeholde
+r() tensor \TU/SimSun(0)/m/n/10.95 初 始 化 你 的 迭 代 器，|  继 续 用 \TU/pcr/m/n/10.95 D
+ataset.range()\TU/SimSun(0)/m/n/10.95 ：| 
+ []
+
+[38] [39]
+Overfull \hbox (11.68489pt too wide) in paragraph at lines 144--146
+\TU/SimSun(0)/m/n/10.95 代 器 被 计 算 的 时 候 他 们 得 到 数 据 集 中 的 下 一 个 元 素，|  在 \TU/pc
+r/m/n/10.95 TensorFlow \TU/SimSun(0)/m/n/10.95 中 调 用 \TU/pcr/m/n/10.95 Iterator
+.get_next()
+ []
+
+[40] [41] [42]
+Overfull \hbox (3.32101pt too wide) in paragraph at lines 268--272
+\TU/pcr/m/sl/9 tf.contrib.data.Dataset.from_tensor_slices((filenames, 
+ []
+
+[43] [44] [45]
+Overfull \hbox (12.04723pt too wide) in paragraph at lines 371--372
+\TU/pcr/m/n/10.95 MonidotedTrainingSession \TU/SimSun(0)/m/n/10.95 用 \TU/pcr/m/
+n/10.95 tf.errors.outOfRangeError \TU/SimSun(0)/m/n/10.95 作 为 训 练 完 成 的 标 记，|  
+因 此 用 \TU/pcr/m/n/10.95 Dataset
+ []
+
+[46]
+Overfull \hbox (100.4894pt too wide) in paragraph at lines 390--391
+\TU/SimSun(0)/m/n/10.95 为 了 在 \TU/pcr/m/n/10.95 tf.estimator.Estimator \TU/SimS
+un(0)/m/n/10.95 的 \TU/pcr/m/n/10.95 input_fn \TU/SimSun(0)/m/n/10.95 中 使 用 一 个 
+\TU/pcr/m/n/10.95 Dataset\TU/SimSun(0)/m/n/10.95 ，|  我 们 推 荐 用 \TU/pcr/m/n/10.9
+5 Dataset.make_one_shot_iterator(),
+ []
+
+) [47]
+\openout2 = `./chapter2/Treading.aux'.
+
+ (./chapter2/Treading.tex
+
+LaTeX Font Warning: Font shape `TU/ptm/m/it' undefined
+(Font)              using `TU/ptm/m/n' instead on input line 3.
+
+[48
+
+
+]
+Overfull \hbox (39.75212pt too wide) in paragraph at lines 53--54
+\TU/SimSun(0)/m/n/10.95 当 \TU/ptm/m/it/10.95 tf.train.start_queue_runners \TU/S
+imSun(0)/m/n/10.95 开 始 的 时 候，|  或 者 直 接 通 过 \TU/ptm/m/it/10.95 tf.train.Monitor
+edSession,QueueRunner
+ []
+
+[49] [50] [51]) [52]
+\openout2 = `./chapter2/embedding.aux'.
+
+
+No file ./chapter2/embedding.tex.
+\openout2 = `./chapter2/tf_basics2.aux'.
+
+(./chapter2/tf_basics2.tex [53
+
+
+
+
+]
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [54]
+File: ./pic/chapter2/iris_three_species.jpg Graphic file (type QTm)
+
+<use  "./pic/chapter2/iris_three_species.jpg" >
+Overfull \hbox (633.79317pt too wide) in paragraph at lines 104--105
+[][] 
+ []
+
+
+LaTeX Warning: `h' float specifier changed to `ht'.
+
+[55]
+Overfull \hbox (1.68771pt too wide) in paragraph at lines 142--143
+\TU/SimSun(0)/m/n/10.95 下 一 步 用 \TU/ptm/m/it/10.95 learn.dataset.base \TU/SimSu
+n(0)/m/n/10.95 中 的 \TU/ptm/m/it/10.95 load_csv_with_header() \TU/SimSun(0)/m/n/
+10.95 方 法 载 入 训 练 数 据 进 入 \TU/ptm/m/it/10.95 Dataset\TU/SimSun(0)/m/n/10.95 ，|
+ []
+
+[56] [57]
+Overfull \hbox (84.67879pt too wide) in paragraph at lines 181--182
+[]\TU/ptm/m/it/10.95 tf.estimator API \TU/SimSun(0)/m/n/10.95 用 输 入 函 数 创 建 \TU
+/ptm/m/it/10.95 TensorFlow \TU/SimSun(0)/m/n/10.95 操 作 为 模 型 生 成 数 据，|  你 可 以 用
+ \TU/ptm/m/it/10.95 tf.estimator.numpy_input-
+ []
+
+[58]
+Overfull \hbox (162.30527pt too wide) in paragraph at lines 226--233
+[]\TU/SimSun(0)/m/n/10.95 用 \TU/ptm/m/it/10.95 estimator \TU/SimSun(0)/m/n/10.9
+5 的 \TU/ptm/m/it/10.95 predict() \TU/SimSun(0)/m/n/10.95 方 法 分 类 新 的 样 本，|  例 如
+ 你 有 两 个 新 的 花 的 样 本\TU/ptm/m/it/10.95 : []
+ []
+
+[59] [60] [61]
+Overfull \hbox (146.88213pt too wide) in paragraph at lines 359--360
+\TU/SimSun(0)/m/n/10.95 这 种 方 法 加 强 的 代 码 的 维 护 性\TU/ptm/m/it/10.95 : \TU/SimSu
+n(0)/m/n/10.95 不 需 要 定 义 多 的 \TU/ptm/m/it/10.95 input_fn \TU/SimSun(0)/m/n/10.9
+5 函 数 \TU/ptm/m/it/10.95 (\TU/SimSun(0)/m/n/10.95 例 如 \TU/ptm/m/it/10.95 input_
+fn_train,input_fn_test,input_fn_prediction)
+ []
+
+[62] [63]
+Overfull \hbox (1.21907pt too wide) in paragraph at lines 427--428
+\TU/SimSun(0)/m/n/10.95 有 在 房 价 数 据 集 中 的 的 特 征 包 含 连 续 的 值，|  你 可 以 用 \TU/ptm/
+m/it/10.95 tf.contrib.layers.real_valued_column()
+ []
+
+
+Overfull \hbox (8.29156pt too wide) in paragraph at lines 431--432
+\TU/SimSun(0)/m/n/10.95 现 在 初 始 化 一 个 神 经 网 络 回 归 模 型 的 实 体 \TU/ptm/m/it/10.95 
+DNNRegressor\TU/SimSun(0)/m/n/10.95 ，|  你 需 要 提 供 两 个 参 数\TU/ptm/m/it/10.95 :hi
+dden_units
+ []
+
+[64] [65] [66] [67]
 File: ./pic/chapter1/relu.png Graphic file (type QTm)
  <use  "./pic/chapter1/relu.png" >
 File: ./pic/chapter1/relu6.png Graphic file (type QTm)
@@ -2171,98 +2421,94 @@ File: ./pic/chapter1/relu6.png Graphic file (type QTm)
 <use  "./pic/chapter1/relu6.png" >
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
- [16]
-[17]
+ [68]
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [69]
+[70]
 File: ./pic/chapter1/activate_fun.png Graphic file (type QTm)
- <use  "./pic/chapter1/activate_fun.png" > [18]
+ <use  "./pic/chapter1/activate_fun.png" > [71]
 File: ./pic/chapter1/relu_softplus.png Graphic file (type QTm)
 
 <use  "./pic/chapter1/relu_softplus.png" >
-Overfull \hbox (24.37352pt too wide) in paragraph at lines 189--191
-\TU/FandolSong-Regular(0)/m/n/10.95 制 是 相 互 独 立 的。|  但 是 是 否 被 抑 制 也 可 以 通 过 \T
-U/pcr/m/n/10.95 noise_shape \TU/FandolSong-Regular(0)/m/n/10.95 来 调 节。|  当 \TU/
-pcr/m/n/10.95 noise_shape[i]=shape(x)[i]
+Overfull \hbox (24.20247pt too wide) in paragraph at lines 668--670
+\TU/SimSun(0)/m/n/10.95 制 是 相 互 独 立 的。|  但 是 是 否 被 抑 制 也 可 以 通 过 \TU/ptm/m/it/1
+0.95 noise_shape \TU/SimSun(0)/m/n/10.95 来 调 节。|  当 \TU/ptm/m/it/10.95 noise_sh
+ape[i]=shape(x)[i]
  []
 
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
- [19]
-Overfull \hbox (90.05165pt too wide) in paragraph at lines 205--206
-[]\TU/pcr/m/n/10.95 tf.nn.conv2d(input,filter,padding,stride=None,diation_rate=
-Nonei \TU/FandolSong-Regular(0)/m/n/10.95 每 \TU/pcr/m/n/10.95 name = None,data_
-format=None) 
+ [72]
+Overfull \hbox (90.05165pt too wide) in paragraph at lines 684--685
+[]\TU/ptm/m/it/10.95 tf.nn.conv2d(input,filter,padding,stride=None,diation_rate
+=Nonei \TU/SimSun(0)/m/n/10.95 每 \TU/ptm/m/it/10.95 name = None,data_format=Non
+e) 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 205--206
+Underfull \hbox (badness 10000) in paragraph at lines 684--685
 
  []
 
-[20]
-Overfull \hbox (5.41907pt too wide) in paragraph at lines 237--241
-\TU/pcr/m/n/10.95 tf.nn.softmax_cross_entropy_with_logits(_setinel=None,labels=
-None,logits=None,dim=-
+[73]
+Overfull \hbox (5.41907pt too wide) in paragraph at lines 716--720
+\TU/ptm/m/it/10.95 tf.nn.softmax_cross_entropy_with_logits(_setinel=None,labels
+=None,logits=None,dim=-
  []
 
 
-Overfull \hbox (288.47655pt too wide) in paragraph at lines 237--241
-\TU/pcr/m/n/10.95 1,name=None) \TU/FandolSong-Regular(0)/m/n/10.95 输 出 \TU/pcr/
-m/n/10.95 loss:[batch_size] \TU/FandolSong-Regular(0)/m/n/10.95 保 存 的 时 \TU/pcr
-/m/n/10.95 batch \TU/FandolSong-Regular(0)/m/n/10.95 中 每 个 样 本 的 交 叉 熵。| \TU/pc
-r/m/n/10.95 tf.nn.sparse_softmax_cross_entropy_with_logic(logits,labels,name=No
-ne) 
+Overfull \hbox (288.391pt too wide) in paragraph at lines 716--720
+\TU/ptm/m/it/10.95 1,name=None) \TU/SimSun(0)/m/n/10.95 输 出 \TU/ptm/m/it/10.95 
+loss:[batch_size] \TU/SimSun(0)/m/n/10.95 保 存 的 时 \TU/ptm/m/it/10.95 batch \TU/
+SimSun(0)/m/n/10.95 中 每 个 样 本 的 交 叉 熵。| \TU/ptm/m/it/10.95 tf.nn.sparse_softmax
+_cross_entropy_with_logic(logits,labels,name=None) 
  []
 
-[21] [22] [23]
+[74] [75] [76]
 File: ./pic/chapter1/Opt.png Graphic file (type QTm)
  <use  "./pic/chapter1/Opt.png" >
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
- [24]
+ [77]
 File: ./pic/chapter1/origin.png Graphic file (type QTm)
 
-<use  "./pic/chapter1/origin.png" >
-
-LaTeX Font Warning: Font shape `TU/FandolFang-Regular(0)/m/sl' undefined
-(Font)              using `TU/FandolFang-Regular(0)/m/n' instead on input line 
-342.
-
-[25]
+<use  "./pic/chapter1/origin.png" > [78]
 File: ./pic/chapter1/final.png Graphic file (type QTm)
  <use  "./pic/chapter1/final.png" >
-Overfull \hbox (104.03743pt too wide) in paragraph at lines 376--377
+Overfull \hbox (104.03743pt too wide) in paragraph at lines 855--856
 [][] 
  []
 
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
- [26]
-[27]
-Overfull \hbox (129.50473pt too wide) in paragraph at lines 407--408
+ [79]
+[80]
+Overfull \hbox (129.50473pt too wide) in paragraph at lines 886--887
 [][] 
  []
 
 File: ./pic/chapter1/tenbor1.png Graphic file (type QTm)
 <use  "./pic/chapter1/tenbor1.png" >
-Overfull \hbox (19.48195pt too wide) in paragraph at lines 423--424
+Overfull \hbox (19.48195pt too wide) in paragraph at lines 902--903
 [][] 
  []
 
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
- [28]
-[29]
+ [81]
+[82]
 File: ./pic/chapter1/tb_hist1.png Graphic file (type QTm)
- <use  "./pic/chapter1/tb_hist1.png" > [30]
+ <use  "./pic/chapter1/tb_hist1.png" > [83]
 File: ./pic/chapter1/tb_hist2.png Graphic file (type QTm)
 
 <use  "./pic/chapter1/tb_hist2.png" >
-Underfull \vbox (badness 1082) has occurred while \output is active []
+Underfull \vbox (badness 1168) has occurred while \output is active []
 
- [31]
+ [84]
 File: ./pic/chapter1/tb_hist3.png Graphic file (type QTm)
 
 <use  "./pic/chapter1/tb_hist3.png" >
@@ -2270,22 +2516,22 @@ File: ./pic/chapter1/tb_hist4.png Graphic file (type QTm)
  <use  "./pic/chapter1/tb_hist4.png" >
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
- [32]
-[33]
+ [85]
+[86]
 File: ./pic/chapter1/tb_hist5.png Graphic file (type QTm)
  <use  "./pic/chapter1/tb_hist5.png" >
-Overfull \hbox (18.89119pt too wide) in paragraph at lines 505--506
+Overfull \hbox (18.89119pt too wide) in paragraph at lines 984--985
 [][] 
  []
 
 File: ./pic/chapter1/tb_hist6.png Graphic file (type QTm)
-<use  "./pic/chapter1/tb_hist6.png" > [34]
+<use  "./pic/chapter1/tb_hist6.png" > [87]
 File: ./pic/chapter1/tb_hist7.png Graphic file (type QTm)
 
 <use  "./pic/chapter1/tb_hist7.png" >
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
- [35]
+ [88]
 File: ./pic/chapter1/tb_hist9.png Graphic file (type QTm)
 
 <use  "./pic/chapter1/tb_hist9.png" >
@@ -2293,31 +2539,31 @@ File: ./pic/chapter1/tb_hist10.png Graphic file (type QTm)
  <use  "./pic/chapter1/tb_hist10.png" >
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
- [36]
+ [89]
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
- [37]
+ [90]
 File: ./pic/chapter1/tb_hist11.png Graphic file (type QTm)
 
 <use  "./pic/chapter1/tb_hist11.png" >
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
- [38]
-[39] [40]
+ [91]
+[92] [93]
 File: ./pic/chapter1/mnist_cnn.png Graphic file (type QTm)
  <use  "./pic/chapter1/mnist_cnn.png" >
-Overfull \hbox (119.45366pt too wide) in paragraph at lines 636--637
+Overfull \hbox (119.45366pt too wide) in paragraph at lines 1115--1116
 [][] 
  []
 
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
- [41]
-[42]
+ [94]
+[95]
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
- [43]
+ [96]
 File: ./pic/chapter1/RNN-rolled.png Graphic file (type QTm)
 
 <use  "./pic/chapter1/RNN-rolled.png" >
@@ -2326,7 +2572,7 @@ File: ./pic/chapter1/RNN-unrolled.png Graphic file (type QTm)
 <use  "./pic/chapter1/RNN-unrolled.png" >
 File: ./pic/chapter1/RNN-longtermdependencies.png Graphic file (type QTm)
 
-<use  "./pic/chapter1/RNN-longtermdependencies.png" > [44]
+<use  "./pic/chapter1/RNN-longtermdependencies.png" > [97]
 File: ./pic/chapter1/LSTM3-SimpleRNN.png Graphic file (type QTm)
 
 <use  "./pic/chapter1/LSTM3-SimpleRNN.png" >
@@ -2341,10 +2587,10 @@ File: ./pic/chapter1/LSTM3-C-line.png Graphic file (type QTm)
 <use  "./pic/chapter1/LSTM3-C-line.png" >
 File: ./pic/chapter1/LSTM3-gate.png Graphic file (type QTm)
 
-<use  "./pic/chapter1/LSTM3-gate.png" > [45]
+<use  "./pic/chapter1/LSTM3-gate.png" > [98]
 File: ./pic/chapter1/LSTM3-focus-f.png Graphic file (type QTm)
 
-<use  "./pic/chapter1/LSTM3-focus-f.png" > [46]
+<use  "./pic/chapter1/LSTM3-focus-f.png" > [99]
 File: ./pic/chapter1/LSTM3-focus-i.png Graphic file (type QTm)
 
 <use  "./pic/chapter1/LSTM3-focus-i.png" >
@@ -2362,72 +2608,71 @@ File: ./pic/chapter1/LSTM3-var-tied.png Graphic file (type QTm)
 <use  "./pic/chapter1/LSTM3-var-tied.png" >
 File: ./pic/chapter1/LSTM3-var-GRU.png Graphic file (type QTm)
 
-<use  "./pic/chapter1/LSTM3-var-GRU.png" > [47] [48] [49]
+<use  "./pic/chapter1/LSTM3-var-GRU.png" > [100] [101] [102]
 File: ./pic/chapter1/softmax-nplm.png Graphic file (type QTm)
 
 <use  "./pic/chapter1/softmax-nplm.png" >
-Overfull \hbox (6.942pt too wide) in paragraph at lines 823--824
+Overfull \hbox (6.942pt too wide) in paragraph at lines 1302--1303
 [][] 
  []
 
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
- [50]
+ [103]
 File: ./pic/chapter1/nce-nplm.png Graphic file (type QTm)
 
 <use  "./pic/chapter1/nce-nplm.png" >
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
- [51]
-[52]
+ [104]
+[105]
 File: ./pic/chapter1/linear-relationships.png Graphic file (type QTm)
  <use  "./pic/chapter1/linear-relationships.png" >
-Overfull \hbox (323.1225pt too wide) in paragraph at lines 866--867
+Overfull \hbox (323.1225pt too wide) in paragraph at lines 1345--1346
 [][] 
  []
 
 
 Underfull \vbox (badness 6542) has occurred while \output is active []
 
- [53]
-[54]
+ [106]
+[107]
 File: ./pic/chapter1/tsne.png Graphic file (type QTm)
  <use  "./pic/chapter1/tsne.png" >
-Overfull \hbox (11.05795pt too wide) in paragraph at lines 913--914
+Overfull \hbox (11.05795pt too wide) in paragraph at lines 1392--1393
 [][] 
  []
 
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
- [55]
-[56] [57] [58] [59]) [60]
+ [108]
+[109] [110] [111] [112]) [113]
 \openout2 = `./chapter2/tf_advance.aux'.
 
- (./chapter2/tf_advance.tex
-Chapter 3.
-
-Overfull \hbox (14.21077pt too wide) in paragraph at lines 4--6
-[]\TU/FandolSong-Regular(0)/m/n/10.95 生 成 \TU/pcr/m/n/10.95 checkpoint \TU/Fand
-olSong-Regular(0)/m/n/10.95 文 件，|  扩 展 名 一 般 为\TU/pcr/m/n/10.95 .ckpt, \TU/Fand
-olSong-Regular(0)/m/n/10.95 通 过 在 \TU/pcr/m/n/10.95 tf.train.Saver \TU/FandolSo
-ng-Regular(0)/m/n/10.95 对 象 上 调 用 \TU/pcr/m/n/10.95 Saver.saver()
- []
-
-
-Overfull \hbox (14.5405pt too wide) in paragraph at lines 6--8
-[]\TU/FandolSong-Regular(0)/m/n/10.95 生 成 \TU/pcr/m/n/10.95 (graph proto file)\
-TU/FandolSong-Regular(0)/m/n/10.95 ，|  这 是 一 个 二 进 制 文 件，|  扩 展 名 一 般 是\TU/pcr/
-m/n/10.95 .pb, \TU/FandolSong-Regular(0)/m/n/10.95 用 \TU/pcr/m/n/10.95 tf.train
-.write_graph()
- []
-
-) [61
+ (./chapter2/tf_advance.tex [114
 
 
 
 ]
+Chapter 3.
+
+Overfull \hbox (13.09866pt too wide) in paragraph at lines 4--6
+[]\TU/SimSun(0)/m/n/10.95 生 成 \TU/ptm/m/it/10.95 checkpoint \TU/SimSun(0)/m/n/1
+0.95 文 件，|  扩 展 名 一 般 为\TU/ptm/m/it/10.95 .ckpt, \TU/SimSun(0)/m/n/10.95 通 过 在 
+\TU/ptm/m/it/10.95 tf.train.Saver \TU/SimSun(0)/m/n/10.95 对 象 上 调 用 \TU/ptm/m/i
+t/10.95 Saver.saver()
+ []
+
+
+Overfull \hbox (12.31625pt too wide) in paragraph at lines 6--8
+[]\TU/SimSun(0)/m/n/10.95 生 成 \TU/ptm/m/it/10.95 (graph proto file)\TU/SimSun(0
+)/m/n/10.95 ，|  这 是 一 个 二 进 制 文 件，|  扩 展 名 一 般 是\TU/ptm/m/it/10.95 .pb, \TU/Sim
+Sun(0)/m/n/10.95 用 \TU/ptm/m/it/10.95 tf.train.write_graph()
+ []
+
+) [115]
 \openout2 = `./chapter2/tutorials.aux'.
 
  (./chapter2/tutorials.tex
@@ -2438,26 +2683,26 @@ Underfull \hbox (badness 10000) in paragraph at lines 20--22
  []
 
 File: ./pic/chapter2/use_gpu2.png Graphic file (type QTm)
-<use  "./pic/chapter2/use_gpu2.png" > [62
+<use  "./pic/chapter2/use_gpu2.png" > [116
 
 
 ]
 File: ./pic/chapter2/use_gpu3.png Graphic file (type QTm)
 
-<use  "./pic/chapter2/use_gpu3.png" > [63]
+<use  "./pic/chapter2/use_gpu3.png" > [117]
 File: ./pic/chapter2/use_gpu4.png Graphic file (type QTm)
 
 <use  "./pic/chapter2/use_gpu4.png" >
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
- [64]
+ [118]
 File: ./pic/chapter2/daisies.jpg Graphic file (type QTm)
 
 <use  "./pic/chapter2/daisies.jpg" >
-(/usr/local/texlive/2017/texmf-dist/tex/latex/listings/lstlang1.sty
+(f:/TexLive/texmf-dist/tex/latex/listings/lstlang1.sty
 File: lstlang1.sty 2015/06/04 1.6 listings language file
 )
-(/usr/local/texlive/2017/texmf-dist/tex/latex/listings/lstmisc.sty
+(f:/TexLive/texmf-dist/tex/latex/listings/lstmisc.sty
 File: lstmisc.sty 2015/06/04 1.6 (Carsten Heinz)
 )
 Overfull \hbox (34.27621pt too wide) in paragraph at lines 107--108
@@ -2470,7 +2715,7 @@ Overfull \hbox (21.13611pt too wide) in paragraph at lines 112--113
 [][][][][][][][][][][][][][][][][][][][] 
  []
 
-[65]
+[119]
 Overfull \hbox (21.13611pt too wide) in paragraph at lines 120--121
 [][][][][][][][][][][][][][][][][][][][] 
  []
@@ -2480,19 +2725,11 @@ Overfull \hbox (106.5468pt too wide) in paragraph at lines 124--125
 [][][][][][][][][][][][][][][][][][][][][] 
  []
 
-[66]
-Overfull \hbox (0.30309pt too wide) in paragraph at lines 139--140
-\TU/pcr/m/n/10.95 TensorBoard \TU/FandolSong-Regular(0)/m/n/10.95 运 行 后 导 航 到 \
-TU/pcr/m/n/10.95 localhost:6006 \TU/FandolSong-Regular(0)/m/n/10.95 查 看 \TU/pcr
-/m/n/10.95 TensorBoard\TU/FandolSong-Regular(0)/m/n/10.95 ，|  脚 本 将 默 认 采 集 \TU
-/pcr/m/n/10.95 TensorBoard
- []
-
-
+[120]
 Overfull \hbox (3.43594pt too wide) in paragraph at lines 141--144
-[]\TU/FandolSong-Regular(0)/m/n/10.95 脚 本 将 用 训 练 好 的 最 后 一 层 写 出 你 的 一 个 \TU/p
-cr/m/n/10.95 Inception v3 \TU/FandolSong-Regular(0)/m/n/10.95 版 本 到\TU/pcr/m/n/
-10.95 /tmp/output_graph,text
+[]\TU/SimSun(0)/m/n/10.95 脚 本 将 用 训 练 好 的 最 后 一 层 写 出 你 的 一 个 \TU/ptm/m/it/10.9
+5 Inception v3 \TU/SimSun(0)/m/n/10.95 版 本 到\TU/ptm/m/it/10.95 /tmp/output_grap
+h,text
  []
 
 
@@ -2501,58 +2738,57 @@ Overfull \hbox (7.996pt too wide) in paragraph at lines 145--146
  []
 
 File: ./pic/chapter2/folder_structure.png Graphic file (type QTm)
-<use  "./pic/chapter2/folder_structure.png" > [67] [68] [69]
+<use  "./pic/chapter2/folder_structure.png" > [121] [122] [123]
 Overfull \hbox (67.12648pt too wide) in paragraph at lines 190--191
 [][][][][][][][][][][][][][][][][][] 
  []
 
-[70] [71]
-Overfull \hbox (142.28313pt too wide) in paragraph at lines 240--241
-[]\TU/FandolSong-Regular(0)/m/n/10.95 这 个 方 法 为 二 维 图 像 数 据 创 建 见 卷 积 和 池 化，|  
-输 入 \TU/pcr/m/n/10.95 tensor \TU/FandolSong-Regular(0)/m/n/10.95 的 形 状 为 \TU/pc
-r/m/n/10.95 [batch_size,image_width,image_height,channels] 
+[124] [125]
+Overfull \hbox (141.171pt too wide) in paragraph at lines 240--241
+[]\TU/SimSun(0)/m/n/10.95 这 个 方 法 为 二 维 图 像 数 据 创 建 见 卷 积 和 池 化，|  输 入 \TU/ptm/
+m/it/10.95 tensor \TU/SimSun(0)/m/n/10.95 的 形 状 为 \TU/ptm/m/it/10.95 [batch_siz
+e,image_width,image_height,channels] 
  []
 
-[72]
+[126]
 Overfull \hbox (68.75388pt too wide) in paragraph at lines 264--266
-[]\TU/pcr/m/n/10.95 inputs \TU/FandolSong-Regular(0)/m/n/10.95 参 数 指 定 我 们 的 输 
-入 \TU/pcr/m/n/10.95 tensor(\TU/FandolSong-Regular(0)/m/n/10.95 形 状 为 \TU/pcr/m/
-n/10.95 [batch_size,image_width,image_height,channels]),
+[]\TU/ptm/m/it/10.95 inputs \TU/SimSun(0)/m/n/10.95 参 数 指 定 我 们 的 输 入 \TU/ptm/m
+/it/10.95 tensor(\TU/SimSun(0)/m/n/10.95 形 状 为 \TU/ptm/m/it/10.95 [batch_size,i
+mage_width,image_height,channels]),
  []
 
 
 Overfull \hbox (153.35358pt too wide) in paragraph at lines 264--266
-\TU/FandolSong-Regular(0)/m/n/10.95 意\TU/pcr/m/n/10.95 : \TU/FandolSong-Regular
-(0)/m/n/10.95 如 果 传 递 参 数 \TU/pcr/m/n/10.95 data_format=channels_first,conv2d()
- \TU/FandolSong-Regular(0)/m/n/10.95 接 受 \TU/pcr/m/n/10.95 [channels,batch_size
-,image_width,image_height]
+\TU/SimSun(0)/m/n/10.95 意\TU/ptm/m/it/10.95 : \TU/SimSun(0)/m/n/10.95 如 果 传 递 参
+ 数 \TU/ptm/m/it/10.95 data_format=channels_first,conv2d() \TU/SimSun(0)/m/n/10.
+95 接 受 \TU/ptm/m/it/10.95 [channels,batch_size,image_width,image_height]
  []
 
 
-Overfull \hbox (24.75682pt too wide) in paragraph at lines 267--271
-\TU/pcr/m/n/10.95 filter \TU/FandolSong-Regular(0)/m/n/10.95 参 数 制 定 卷 积 核 的 个 
-数，|  这 里 卷 积 核 为 \TU/pcr/m/n/10.95 32 \TU/FandolSong-Regular(0)/m/n/10.95 个。| \
-TU/pcr/m/n/10.95 kenel_size \TU/FandolSong-Regular(0)/m/n/10.95 制 定 卷 积 核 的 维 度
- 为 \TU/pcr/m/n/10.95 [width,height]
+Overfull \hbox (23.55916pt too wide) in paragraph at lines 267--271
+\TU/ptm/m/it/10.95 filter \TU/SimSun(0)/m/n/10.95 参 数 制 定 卷 积 核 的 个 数，|  这 里 卷 
+积 核 为 \TU/ptm/m/it/10.95 32 \TU/SimSun(0)/m/n/10.95 个。| \TU/ptm/m/it/10.95 kene
+l_size \TU/SimSun(0)/m/n/10.95 制 定 卷 积 核 的 维 度 为 \TU/ptm/m/it/10.95 [width,heig
+ht]
  []
 
 
-Overfull \hbox (5.58685pt too wide) in paragraph at lines 281--282
-[]\TU/FandolSong-Regular(0)/m/n/10.95 我 们 的 输 出 特 纳 是 哦 然 和 \TU/pcr/m/n/10.95 m
-ax_pooling2d(pool1\TU/FandolSong-Regular(0)/m/n/10.95 ，|  形 状 为 \TU/pcr/m/n/10.
-95 [batch_size,14,14,32]) \TU/FandolSong-Regular(0)/m/n/10.95 相 乘\TU/pcr/m/n/10
-.95 :$\OT1/ztmcm/m/n/10.95 2 \OMS/ztmcm/m/n/10.95 ^^B
+Overfull \hbox (4.47473pt too wide) in paragraph at lines 281--282
+[]\TU/SimSun(0)/m/n/10.95 我 们 的 输 出 特 纳 是 哦 然 和 \TU/ptm/m/it/10.95 max_pooling2
+d(pool1\TU/SimSun(0)/m/n/10.95 ，|  形 状 为 \TU/ptm/m/it/10.95 [batch_size,14,14,3
+2]) \TU/SimSun(0)/m/n/10.95 相 乘\TU/ptm/m/it/10.95 :$\OT1/ztmcm/m/n/10.95 2 \OMS
+/ztmcm/m/n/10.95 ^^B
  []
 
-[73] [74] [75]
-Overfull \hbox (9.97427pt too wide) in paragraph at lines 372--372
-\TU/pcr/m/n/10.95 cross-entropy\TU/FandolSong-Regular(0)/m/n/10.95 。|  让 我 们 配 
-置 我 们 的 模 型 在 训 练 落 成 中 优 化 \TU/pcr/m/n/10.95 loss\TU/FandolSong-Regular(0)/m/n
-/10.95 。|  我 们 将 用 \TU/pcr/m/n/10.95 0.001 \TU/FandolSong-Regular(0)/m/n/10.95 
-学 习 率 和[][]\TU/pcr/m/n/10.95 SGD[][]\TU/FandolSong-Regular(0)/m/n/10.95 作
+[127] [128] [129]
+Overfull \hbox (9.80319pt too wide) in paragraph at lines 372--372
+\TU/ptm/m/it/10.95 cross-entropy\TU/SimSun(0)/m/n/10.95 。|  让 我 们 配 置 我 们 的 模 型
+ 在 训 练 落 成 中 优 化 \TU/ptm/m/it/10.95 loss\TU/SimSun(0)/m/n/10.95 。|  我 们 将 用 \TU
+/ptm/m/it/10.95 0.001 \TU/SimSun(0)/m/n/10.95 学 习 率 和[][]\TU/ptm/m/it/10.95 SGD
+[][]\TU/SimSun(0)/m/n/10.95 作
  []
 
-[76] [77] [78]
+[130] [131] [132]
 Overfull \hbox (67.12648pt too wide) in paragraph at lines 456--457
 [][][][][][][][][][][][][][][][][][][][][][][][][] 
  []
@@ -2567,10 +2803,10 @@ Overfull \hbox (7.996pt too wide) in paragraph at lines 467--468
 [][][][][][][][][][][][][][][][][][][][][] 
  []
 
-) [79]
+) [133]
 \openout2 = `./chapter2/extend.aux'.
 
- (./chapter2/extend.tex [80
+ (./chapter2/extend.tex [134
 
 
 
@@ -2580,7 +2816,7 @@ File: ./pic/chapter2/layers.png Graphic file (type QTm)
 <use  "./pic/chapter2/layers.png" >
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
- [81]
+ [135]
 File: ./pic/chapter2/diag1.png Graphic file (type QTm)
 
 <use  "./pic/chapter2/diag1.png" >
@@ -2588,50 +2824,50 @@ Overfull \hbox (33.54129pt too wide) in paragraph at lines 32--33
 [][] 
  []
 
-[82]
+[136]
 File: ./pic/chapter2/graph_client.png Graphic file (type QTm)
  <use  "./pic/chapter2/graph_client.png" >
 
 LaTeX Warning: `h' float specifier changed to `ht'.
 
-[83]
+[137]
 
 Package hyperref Warning: Suppressing link with empty target on input line 74.
 
-[84]) [85]
+[138]) [139]
 \openout2 = `./chapter2/performance.aux'.
 
- (./chapter2/performance.tex [86
+ (./chapter2/performance.tex [140
 
 
 
 ]
 Chapter 5.
-[87] [88]
+[141] [142]
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
- [89]
-[90]
+ [143]
+[144]
 Overfull \hbox (1.42595pt too wide) in paragraph at lines 97--98
 [][][][][][][][][][][][][][][][][][][][][][] 
  []
 
-[91]
+[145]
 File: ./pic/chapter2/quantization0.png Graphic file (type QTm)
- <use  "./pic/chapter2/quantization0.png" > [92]
+ <use  "./pic/chapter2/quantization0.png" > [146]
 File: ./pic/chapter2/quantization1.png Graphic file (type QTm)
 
 <use  "./pic/chapter2/quantization1.png" >
 File: ./pic/chapter2/quantization2.png Graphic file (type QTm)
 
 <use  "./pic/chapter2/quantization2.png" >
-Underfull \vbox (badness 7740) has occurred while \output is active []
+Underfull \vbox (badness 8056) has occurred while \output is active []
 
- [93]
-[94]) [95]
+ [147]
+[148]) [149]
 \openout2 = `./chapter3/common_module.aux'.
 
- (./chapter3/common_module.tex [96
+ (./chapter3/common_module.tex [150
 
 
 
@@ -2644,18 +2880,18 @@ Underfull \hbox (badness 10000) in paragraph at lines 12--13
  []
 
 
-Overfull \hbox (20.97449pt too wide) in paragraph at lines 22--23
-[]\TU/pcr/m/n/10.95 class argparse.ArgumentParser(prog=None, usage=None, descri
-ption=None, epilog=None,
+Overfull \hbox (20.97446pt too wide) in paragraph at lines 22--23
+[]\TU/ptm/m/it/10.95 class argparse.ArgumentParser(prog=None, usage=None, descr
+iption=None, epilog=None,
  []
 
 
 Overfull \hbox (51.56876pt too wide) in paragraph at lines 22--23
-\TU/pcr/m/n/10.95 parents=[], formatter_class=argparse.HelpFormatter, prefix_ch
-ars=’-’, fromfile_prefix_chars=None,
+\TU/ptm/m/it/10.95 parents=[], formatter_class=argparse.HelpFormatter, prefix_c
+hars=’-’, fromfile_prefix_chars=None,
  []
 
-[97]
+[151]
 File: ./pic/chapter3/demo2.png Graphic file (type QTm)
  <use  "./pic/chapter3/demo2.png" >
 Overfull \hbox (228.11906pt too wide) in paragraph at lines 61--61
@@ -2668,14 +2904,14 @@ Overfull \hbox (47.14531pt too wide) in paragraph at lines 66--66
  [][] 
  []
 
-[98]
+[152]
 File: ./pic/chapter3/demo4.png Graphic file (type QTm)
  <use  "./pic/chapter3/demo4.png" >
 File: ./pic/chapter3/demo5.png Graphic file (type QTm)
  <use  "./pic/chapter3/demo5.png" >
 File: ./pic/chapter3/demo6.png Graphic file (type QTm)
 
-<use  "./pic/chapter3/demo6.png" > [99]
+<use  "./pic/chapter3/demo6.png" > [153]
 File: ./pic/chapter3/demo7.png Graphic file (type QTm)
  <use  "./pic/chapter3/demo7.png" >
 Underfull \hbox (badness 10000) in paragraph at lines 108--112
@@ -2683,7 +2919,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 108--112
  []
 
 File: ./pic/chapter3/demo8.png Graphic file (type QTm)
-<use  "./pic/chapter3/demo8.png" > [100]
+<use  "./pic/chapter3/demo8.png" > [154]
 File: ./pic/chapter3/demo9.png Graphic file (type QTm)
  <use  "./pic/chapter3/demo9.png" >
 Underfull \hbox (badness 10000) in paragraph at lines 130--133
@@ -2691,53 +2927,53 @@ Underfull \hbox (badness 10000) in paragraph at lines 130--133
  []
 
 
-Overfull \hbox (111.42604pt too wide) in paragraph at lines 150--151
-\TU/FandolSong-Regular(0)/m/n/10.95 默 认 从 一 个 文 件 读 取 参 数，|  上 面 的 表 达 式 \TU/pc
-r/m/n/10.95 [’-f’,’foo’,’@args.txt’] \TU/FandolSong-Regular(0)/m/n/10.95 等 于 表 
-达 式 \TU/pcr/m/n/10.95 [’-f’,’foo’,’-f’,’bar’],fromfile_prefix_chars
+Overfull \hbox (110.3139pt too wide) in paragraph at lines 150--151
+\TU/SimSun(0)/m/n/10.95 默 认 从 一 个 文 件 读 取 参 数，|  上 面 的 表 达 式 \TU/ptm/m/it/10.95
+ [’-f’,’foo’,’@args.txt’] \TU/SimSun(0)/m/n/10.95 等 于 表 达 式 \TU/ptm/m/it/10.95 
+[’-f’,’foo’,’-f’,’bar’],fromfile_prefix_chars
  []
 
 
-Overfull \hbox (15.39456pt too wide) in paragraph at lines 152--153
-\TU/FandolSong-Regular(0)/m/n/10.95 有 时 候 通 过 给 参 数 指 定 一 个 简 单 的 \TU/pcr/m/n/1
-0.95 parser-wide \TU/FandolSong-Regular(0)/m/n/10.95 是 有 用 的，|  这 可 以 通 过 传 递 \
-TU/pcr/m/n/10.95 argument_default=
+Overfull \hbox (14.28244pt too wide) in paragraph at lines 152--153
+\TU/SimSun(0)/m/n/10.95 有 时 候 通 过 给 参 数 指 定 一 个 简 单 的 \TU/ptm/m/it/10.95 parser
+-wide \TU/SimSun(0)/m/n/10.95 是 有 用 的，|  这 可 以 通 过 传 递 \TU/ptm/m/it/10.95 argum
+ent_default=
  []
 
-[101]
+[155]
 File: ./pic/chapter3/demo10.png Graphic file (type QTm)
  <use  "./pic/chapter3/demo10.png" >
 File: ./pic/chapter3/demo11.png Graphic file (type QTm)
  <use  "./pic/chapter3/demo11.png" >
 Overfull \hbox (1.29742pt too wide) in paragraph at lines 173--175
-[][] \TU/FandolSong-Regular(0)/m/n/10.95 有 时 候 覆
+[][] \TU/SimSun(0)/m/n/10.95 有 时 候 覆
  []
 
-[102]
+[156]
 File: ./pic/chapter3/demo12.png Graphic file (type QTm)
  <use  "./pic/chapter3/demo12.png" >
 File: ./pic/chapter3/demo13.png Graphic file (type QTm)
  <use  "./pic/chapter3/demo13.png" >
 File: ./pic/chapter3/demo14.png Graphic file (type QTm)
 
-<use  "./pic/chapter3/demo14.png" > [103]
+<use  "./pic/chapter3/demo14.png" > [157]
 File: ./pic/chapter3/demo15.png Graphic file (type QTm)
  <use  "./pic/chapter3/demo15.png" >
-[104] [105]
+[158] [159]
 Underfull \hbox (badness 10000) in paragraph at lines 295--299
 
  []
 
-[106]
+[160]
 Overfull \hbox (2.80182pt too wide) in paragraph at lines 328--334
-\TU/FandolSong-Regular(0)/m/n/10.95 输 出\TU/pcr/m/n/10.95 :Namespace(infile=<_io
-.TextIOWrapper name=’input.txt’,encoding=’UTF-8’>,
+\TU/SimSun(0)/m/n/10.95 输 出\TU/ptm/m/it/10.95 :Namespace(infile=<_io.TextIOWrap
+per name=’input.txt’,encoding=’UTF-8’>,
  []
 
 
 Overfull \hbox (27.99779pt too wide) in paragraph at lines 328--334
-\TU/pcr/m/n/10.95 outfile<_io.TextIOWrapper name=’output.txt’ encoding=’UTF-8’>
-) parser.parse_args([])
+\TU/ptm/m/it/10.95 outfile<_io.TextIOWrapper name=’output.txt’ encoding=’UTF-8’
+>) parser.parse_args([])
  []
 
 
@@ -2745,45 +2981,42 @@ Underfull \hbox (badness 10000) in paragraph at lines 351--354
 
  []
 
-[107]
+[161]
 Overfull \hbox (24.62541pt too wide) in paragraph at lines 368--369
-[]\TU/FandolSong-Regular(0)/m/n/10.95 当 \TU/pcr/m/n/10.95 add_argument() \TU/Fa
-ndolSong-Regular(0)/m/n/10.95 调 用 的 时 候 设 置 了 \TU/pcr/m/n/10.95 action=’store_c
-onst’ \TU/FandolSong-Regular(0)/m/n/10.95 或 者 是 \TU/pcr/m/n/10.95 action=’appen
-d_cost’
+[]\TU/SimSun(0)/m/n/10.95 当 \TU/ptm/m/it/10.95 add_argument() \TU/SimSun(0)/m/n
+/10.95 调 用 的 时 候 设 置 了 \TU/ptm/m/it/10.95 action=’store_const’ \TU/SimSun(0)/m/
+n/10.95 或 者 是 \TU/ptm/m/it/10.95 action=’append_cost’
  []
 
-[108]
+[162]
 Overfull \hbox (4.02846pt too wide) in paragraph at lines 418--420
-\TU/FandolSong-Regular(0)/m/n/10.95 输 出\TU/pcr/m/n/10.95 :Namespace(bar=<_io.Te
-xtIOWrapper name=’temp.txt’ encoding=’UTF-8’,foo=2) \TU/FandolSong-Regular(0)/m
-/n/10.95 为
+\TU/SimSun(0)/m/n/10.95 输 出\TU/ptm/m/it/10.95 :Namespace(bar=<_io.TextIOWrapper
+ name=’temp.txt’ encoding=’UTF-8’,foo=2) \TU/SimSun(0)/m/n/10.95 为
  []
 
 
-Overfull \hbox (42.35225pt too wide) in paragraph at lines 418--420
-\TU/FandolSong-Regular(0)/m/n/10.95 了 能 轻 松 的 使 用 多 种 文 件 类 型，| \TU/pcr/m/n/10.
-95 argparse \TU/FandolSong-Regular(0)/m/n/10.95 模 块 提 供 了 工 厂 \TU/pcr/m/n/10.95
- FileType\TU/FandolSong-Regular(0)/m/n/10.95 ，|  利 用 \TU/pcr/m/n/10.95 mode=,bu
-fsize=,encoding=
+Overfull \hbox (40.128pt too wide) in paragraph at lines 418--420
+\TU/SimSun(0)/m/n/10.95 了 能 轻 松 的 使 用 多 种 文 件 类 型，| \TU/ptm/m/it/10.95 argparse
+ \TU/SimSun(0)/m/n/10.95 模 块 提 供 了 工 厂 \TU/ptm/m/it/10.95 FileType\TU/SimSun(0)
+/m/n/10.95 ，|  利 用 \TU/ptm/m/it/10.95 mode=,bufsize=,encoding=
  []
 
-[109]
-Overfull \hbox (31.68816pt too wide) in paragraph at lines 459--460
-[]\TU/FandolSong-Regular(0)/m/n/10.95 一 些 命 令 行 参 数 从 一 些 限 定 值 的 中 选 定，|  可 以 
-通 过 传 递 \TU/pcr/m/n/10.95 choice \TU/FandolSong-Regular(0)/m/n/10.95 关 键 字 参 数 
-给 \TU/pcr/m/n/10.95 add_argument(),
+[163]
+Overfull \hbox (30.57603pt too wide) in paragraph at lines 459--460
+[]\TU/SimSun(0)/m/n/10.95 一 些 命 令 行 参 数 从 一 些 限 定 值 的 中 选 定，|  可 以 通 过 传 递 \TU/
+ptm/m/it/10.95 choice \TU/SimSun(0)/m/n/10.95 关 键 字 参 数 给 \TU/ptm/m/it/10.95 ad
+d_argument(),
  []
 
-[110]
+[164]
 Underfull \hbox (badness 10000) in paragraph at lines 504--508
 
  []
 
 
-Overfull \hbox (3.46999pt too wide) in paragraph at lines 509--513
-\TU/pcr/m/n/10.95 help \TU/FandolSong-Regular(0)/m/n/10.95 字 符 串 能 包 含 多 种 格 式 
-像 程 序 名 字 或 者 默 认 参 数，|  可 用 的 指 定 包 含 程 序 的 名 字\TU/pcr/m/n/10.95 ,%(prog)s
+Overfull \hbox (2.35786pt too wide) in paragraph at lines 509--513
+\TU/ptm/m/it/10.95 help \TU/SimSun(0)/m/n/10.95 字 符 串 能 包 含 多 种 格 式 像 程 序 名 字 或
+ 者 默 认 参 数，|  可 用 的 指 定 包 含 程 序 的 名 字\TU/ptm/m/it/10.95 ,%(prog)s
  []
 
 
@@ -2791,7 +3024,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 518--520
 
  []
 
-[111]
+[165]
 Underfull \hbox (badness 10000) in paragraph at lines 521--523
 
  []
@@ -2816,7 +3049,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 554--557
 
  []
 
-[112]
+[166]
 Underfull \hbox (badness 10000) in paragraph at lines 566--568
 
  []
@@ -2831,30 +3064,22 @@ Underfull \hbox (badness 10000) in paragraph at lines 582--584
 
  []
 
-[113]
-Overfull \hbox (0.16289pt too wide) in paragraph at lines 616--619
-\TU/FandolSong-Regular(0)/m/n/10.95 都 可 以 被 \TU/pcr/m/n/10.95 zuoiweiaction \TU
-/FandolSong-Regular(0)/m/n/10.95 参 数 传 递 给 \TU/pcr/m/n/10.95 add_argument()\TU/
-FandolSong-Regular(0)/m/n/10.95 。| \TU/pcr/m/n/10.95 class argparse.Action(opti
-on_strings,
- []
-
-
+[167]
 Overfull \hbox (0.2308pt too wide) in paragraph at lines 616--619
-\TU/pcr/m/n/10.95 dest, nargs=None, const=None, default=None, type=None, choice
-s=None, required=False,
+\TU/ptm/m/it/10.95 dest, nargs=None, const=None, default=None, type=None, choic
+es=None, required=False,
  []
 
-[114] [115] [116] [117] [118] [119] [120] [121]
-Overfull \hbox (67.1112pt too wide) in paragraph at lines 907--907
-\TU/FandolSong-Regular(0)/m/n/10.95 输 出\TU/pcr/m/n/10.95 :Namespace(out<_io.Tex
-tIOWapper name=’file.txt’ mode=’w’ encoding=’UTF-8’,raw=<_ioFileIO
+[168] [169] [170] [171] [172] [173] [174] [175]
+Overfull \hbox (67.11119pt too wide) in paragraph at lines 907--907
+\TU/SimSun(0)/m/n/10.95 输 出\TU/ptm/m/it/10.95 :Namespace(out<_io.TextIOWapper n
+ame=’file.txt’ mode=’w’ encoding=’UTF-8’,raw=<_ioFileIO
  []
 
 
-Overfull \hbox (14.10243pt too wide) in paragraph at lines 915--919
-\TU/FandolSong-Regular(0)/m/n/10.95 数 和 选 项 参 数。|  当 有 一 个 比 默 认 更 好 的 概 念 上 的 
-参 数 组，|  合 适 的 组 能 被 \TU/pcr/m/n/10.95 add_argument_group()
+Overfull \hbox (12.90477pt too wide) in paragraph at lines 915--919
+\TU/SimSun(0)/m/n/10.95 数 和 选 项 参 数。|  当 有 一 个 比 默 认 更 好 的 概 念 上 的 参 数 组，|  合 适
+ 的 组 能 被 \TU/ptm/m/it/10.95 add_argument_group()
  []
 
 
@@ -2863,13 +3088,13 @@ Underfull \hbox (badness 10000) in paragraph at lines 927--929
  []
 
 
-Overfull \hbox (5.10155pt too wide) in paragraph at lines 930--934
-\TU/FandolSong-Regular(0)/m/n/10.95 增 加 到 组 中，| \TU/pcr/m/n/10.95 parser \TU/Fa
-ndolSong-Regular(0)/m/n/10.95 就 当 它 为 正 常 参 数，|  但 是 在 帮 助 信 息 中 分 组 显 示。| \TU/
-pcr/m/n/10.95 add_argument_group()
+Overfull \hbox (2.79176pt too wide) in paragraph at lines 930--934
+\TU/SimSun(0)/m/n/10.95 增 加 到 组 中，| \TU/ptm/m/it/10.95 parser \TU/SimSun(0)/m/n
+/10.95 就 当 它 为 正 常 参 数，|  但 是 在 帮 助 信 息 中 分 组 显 示。| \TU/ptm/m/it/10.95 add_argu
+ment_group()
  []
 
-[122]
+[176]
 Underfull \hbox (badness 10000) in paragraph at lines 942--943
 
  []
@@ -2889,37 +3114,36 @@ Underfull \hbox (badness 10000) in paragraph at lines 949--951
 
  []
 
-[123]
-Overfull \hbox (12.43803pt too wide) in paragraph at lines 984--986
-\TU/FandolSong-Regular(0)/m/n/10.95 大 多 数 时 候，| \TU/pcr/m/n/10.95 parse_args() 
-\TU/FandolSong-Regular(0)/m/n/10.95 返 回 的 属 性 对 象 将 被 命 令 行 参 数 和 参 数 行 为 完 全 决
- 定。| \TU/pcr/m/n/10.95 set_default()
+[177]
+Overfull \hbox (11.24037pt too wide) in paragraph at lines 984--986
+\TU/SimSun(0)/m/n/10.95 大 多 数 时 候，| \TU/ptm/m/it/10.95 parse_args() \TU/SimSun(
+0)/m/n/10.95 返 回 的 属 性 对 象 将 被 命 令 行 参 数 和 参 数 行 为 完 全 决 定。| \TU/ptm/m/it/10.95
+ set_default()
  []
 
 
-Overfull \hbox (62.95567pt too wide) in paragraph at lines 1000--1005
-\TU/FandolSong-Regular(0)/m/n/10.95 输 出\TU/pcr/m/n/10.95 : Namespace(foo=’spam’
-) Parser \TU/FandolSong-Regular(0)/m/n/10.95 级 别 在 多 个 \TU/pcr/m/n/10.95 parser
- \TU/FandolSong-Regular(0)/m/n/10.95 时 特 别 有 用。| \TU/pcr/m/n/10.95 ArgumentPars
-er.get_default(dest)
+Overfull \hbox (62.87013pt too wide) in paragraph at lines 1000--1005
+\TU/SimSun(0)/m/n/10.95 输 出\TU/ptm/m/it/10.95 : Namespace(foo=’spam’) Parser \T
+U/SimSun(0)/m/n/10.95 级 别 在 多 个 \TU/ptm/m/it/10.95 parser \TU/SimSun(0)/m/n/10.
+95 时 特 别 有 用。| \TU/ptm/m/it/10.95 ArgumentParser.get_default(dest)
  []
 
 
-Overfull \hbox (36.76776pt too wide) in paragraph at lines 1012--1017
-\TU/FandolSong-Regular(0)/m/n/10.95 令 行 调 用 的 简 单 描 述，|  如 果 \TU/pcr/m/n/10.95 
-file \TU/FandolSong-Regular(0)/m/n/10.95 是 \TU/pcr/m/n/10.95 None\TU/FandolSong
--Regular(0)/m/n/10.95 ，| \TU/pcr/m/n/10.95 sys.stdout \TU/FandolSong-Regular(0)
-/m/n/10.95 被 假 定。| \TU/pcr/m/n/10.95 ArgumentParser.print_help(file=None):
+Overfull \hbox (23.50798pt too wide) in paragraph at lines 1012--1017
+\TU/SimSun(0)/m/n/10.95 行 调 用 的 简 单 描 述，|  如 果 \TU/ptm/m/it/10.95 file \TU/SimS
+un(0)/m/n/10.95 是 \TU/ptm/m/it/10.95 None\TU/SimSun(0)/m/n/10.95 ，| \TU/ptm/m/i
+t/10.95 sys.stdout \TU/SimSun(0)/m/n/10.95 被 假 定。| \TU/ptm/m/it/10.95 ArgumentP
+arser.print_help(file=None):
  []
 
-[124] [125]
+[178] [179]
 File: ./pic/chapter3/arg1.png Graphic file (type QTm)
  <use  "./pic/chapter3/arg1.png" >
 File: ./pic/chapter3/arg2.png Graphic file (type QTm)
 
 <use  "./pic/chapter3/arg2.png" >
 File: ./pic/chapter3/arg3.png Graphic file (type QTm)
- <use  "./pic/chapter3/arg3.png" > [126]
+ <use  "./pic/chapter3/arg3.png" > [180]
 File: ./pic/chapter3/arg4.png Graphic file (type QTm)
 
 <use  "./pic/chapter3/arg4.png" >
@@ -2927,66 +3151,64 @@ Underfull \hbox (badness 10000) in paragraph at lines 1098--1099
 
  []
 
-[127]
+[181]
 Underfull \hbox (badness 10000) in paragraph at lines 1144--1147
 
  []
 
-[128] [129]) [130]
+[182] [183]) [184]
 \openout2 = `./chapter3/path.aux'.
 
  (./chapter3/path.tex
 Missing character: There is no 或 in font zptmcm7t!
 Missing character: There is no 者 in font zptmcm7t!
- [131
+ [185
 
 
 ]
-Overfull \hbox (9.0533pt too wide) in paragraph at lines 25--26
-[]\TU/pcr/m/n/10.95 os.path.samefile(path1,path2): \TU/FandolSong-Regular(0)/m/
-n/10.95 如 果 \TU/pcr/m/n/10.95 pathname \TU/FandolSong-Regular(0)/m/n/10.95 值 访 
-问 相 同 的 文 件 或 者 目 录 则 返 回 \TU/pcr/m/n/10.95 True\TU/FandolSong-Regular(0)/m/n/1
-0.95 ，|
+Overfull \hbox (8.7176pt too wide) in paragraph at lines 25--26
+[]\TU/ptm/m/it/10.95 os.path.samefile(path1,path2): \TU/SimSun(0)/m/n/10.95 如 果
+ \TU/ptm/m/it/10.95 pathname \TU/SimSun(0)/m/n/10.95 值 访 问 相 同 的 文 件 或 者 目 录 则 
+返 回 \TU/ptm/m/it/10.95 True\TU/SimSun(0)/m/n/10.95 ，|
  []
 
-[132] [133] [134]
-Overfull \hbox (14.35289pt too wide) in paragraph at lines 128--128
-\TU/FandolSong-Regular(0)/m/n/10.95 在 这 个 例 子 中，| \TU/pcr/m/n/10.95 io.TextIOWr
-apper \TU/FandolSong-Regular(0)/m/n/10.95 是 一 个 编 码 和 解 码 \TU/pcr/m/n/10.95 Uni
-code \TU/FandolSong-Regular(0)/m/n/10.95 的 文 本 处 理 层，| \TU/pcr/m/n/10.95 io.Buf
-feredWriter
+[186] [187] [188]
+Overfull \hbox (12.12866pt too wide) in paragraph at lines 128--128
+\TU/SimSun(0)/m/n/10.95 在 这 个 例 子 中，| \TU/ptm/m/it/10.95 io.TextIOWrapper \TU/S
+imSun(0)/m/n/10.95 是 一 个 编 码 和 解 码 \TU/ptm/m/it/10.95 Unicode \TU/SimSun(0)/m/n
+/10.95 的 文 本 处 理 层，| \TU/ptm/m/it/10.95 io.BufferedWriter
  []
 
-[135] [136] [137] [138] [139] [140] [141]) [142] [143]
+[189] [190] [191] [192] [193] [194] [195]) [196] [197]
 \openout2 = `./chapter3/re.aux'.
 
  (./chapter3/re.tex
 Underfull \hbox (badness 6047) in paragraph at lines 7--8
-[][]\TU/FandolSong-Regular(0)/m/n/10.95 表 示 \TU/pcr/m/n/10.95 a,b,c,[]\TU/Fando
-lSong-Regular(0)/m/n/10.95 表
+[][]\TU/SimSun(0)/m/n/10.95 表 示 \TU/ptm/m/it/10.95 a,b,c,[]\TU/SimSun(0)/m/n/10
+.95 表
  []
 
 
 Underfull \hbox (badness 10000) in paragraph at lines 15--16
-[]\TU/pcr/m/n/10.95 abc+ \TU/FandolSong-Regular(0)/m/n/10.95 表 示
+[]\TU/ptm/m/it/10.95 abc+ \TU/SimSun(0)/m/n/10.95 表 示
  []
 
 
 Underfull \hbox (badness 10000) in paragraph at lines 29--30
-[]\TU/pcr/m/n/10.95 (abc) \TU/FandolSong-Regular(0)/m/n/10.95 表 示 \TU/pcr/m/n/1
-0.95 abc\TU/FandolSong-Regular(0)/m/n/10.95 ，|
+[]\TU/ptm/m/it/10.95 (abc) \TU/SimSun(0)/m/n/10.95 表 示 \TU/ptm/m/it/10.95 abc\T
+U/SimSun(0)/m/n/10.95 ，|
  []
 
 
 Underfull \hbox (badness 10000) in paragraph at lines 29--30
-\TU/pcr/m/n/10.95 (abc|def) \TU/FandolSong-Regular(0)/m/n/10.95 表 示 \TU/pcr/m/n
-/10.95 abc
+\TU/ptm/m/it/10.95 (abc|def) \TU/SimSun(0)/m/n/10.95 表 示 \TU/ptm/m/it/10.95 abc
+
  []
 
 
-Underfull \hbox (badness 1552) in paragraph at lines 33--33
-\TU/FandolSong-Regular(0)/m/n/10.95 匹 配 空 字 符 串 字 符 给 整 个 正 则 表 达 式 设 置 相 关 的 \
-TU/pcr/m/n/10.95 flags\TU/FandolSong-Regular(0)/m/n/10.95 ：|
+Underfull \hbox (badness 1616) in paragraph at lines 33--33
+\TU/SimSun(0)/m/n/10.95 匹 配 空 字 符 串 字 符 给 整 个 正 则 表 达 式 设 置 相 关 的 \TU/ptm/m/it/
+10.95 flags\TU/SimSun(0)/m/n/10.95 ：|
  []
 
 
@@ -2996,49 +3218,46 @@ Overfull \hbox (87.49934pt too wide) in paragraph at lines 3--36
 
 
 Underfull \hbox (badness 10000) in paragraph at lines 53--53
-[]\TU/FandolSong-Regular(0)/m/n/10.95 匹 配 空 字 符 串，|  但 是 仅 仅 当 它 不 在 单 词 的
+[]\TU/SimSun(0)/m/n/10.95 匹 配 空 字 符 串，|  但 是 仅 仅 当 它 不 在 单 词 的
  []
 
 
 Underfull \hbox (badness 10000) in paragraph at lines 53--53
-\TU/FandolSong-Regular(0)/m/n/10.95 开 头 或 者 结 尾 时，|  这 意 味 着 \TU/pcr/m/n/10.95 
-r’py\B’ \TU/FandolSong-Regular(0)/m/n/10.95 匹
+\TU/SimSun(0)/m/n/10.95 开 头 或 者 结 尾 时，|  这 意 味 着 \TU/ptm/m/it/10.95 r’py\B’ \TU
+/SimSun(0)/m/n/10.95 匹
  []
 
 
 Underfull \hbox (badness 7308) in paragraph at lines 53--53
-\TU/FandolSong-Regular(0)/m/n/10.95 配\TU/pcr/m/n/10.95 ’python’,’py3’,’py2’, \T
-U/FandolSong-Regular(0)/m/n/10.95 而 不 是\TU/pcr/m/n/10.95 ’py’,’py.’ \TU/FandolS
-ong-Regular(0)/m/n/10.95 或 者
+\TU/SimSun(0)/m/n/10.95 配\TU/ptm/m/it/10.95 ’python’,’py3’,’py2’, \TU/SimSun(0)
+/m/n/10.95 而 不 是\TU/ptm/m/it/10.95 ’py’,’py.’ \TU/SimSun(0)/m/n/10.95 或 者
  []
 
 
 Underfull \hbox (badness 1199) in paragraph at lines 57--57
-\TU/FandolSong-Regular(0)/m/n/10.95 相 反，|  如 果 \TU/pcr/m/n/10.95 ASCII flag \TU
-/FandolSong-Regular(0)/m/n/10.95 被 用 这 因 为 等 于 \TU/pcr/m/n/10.95 [ˆ
+\TU/SimSun(0)/m/n/10.95 相 反，|  如 果 \TU/ptm/m/it/10.95 ASCII flag \TU/SimSun(0)/
+m/n/10.95 被 用 这 因 为 等 于 \TU/ptm/m/it/10.95 [ˆ
  []
 
 
 Underfull \hbox (badness 10000) in paragraph at lines 61--61
-[]\TU/pcr/m/n/10.95 (?imsx-
+[]\TU/ptm/m/it/10.95 (?imsx-
  []
 
 
 Underfull \hbox (badness 3557) in paragraph at lines 61--62
-[]\TU/FandolSong-Regular(0)/m/n/10.95 在 字 符 字 母 集 合\TU/pcr/m/n/10.95 ’i’,’m’,’s
-’,’x’ \TU/FandolSong-Regular(0)/m/n/10.95 中，| \TU/pcr/m/n/10.95 ’-’ \TU/FandolS
-ong-Regular(0)/m/n/10.95 跟 着 的
+[]\TU/SimSun(0)/m/n/10.95 在 字 符 字 母 集 合\TU/ptm/m/it/10.95 ’i’,’m’,’s’,’x’ \TU/S
+imSun(0)/m/n/10.95 中，| \TU/ptm/m/it/10.95 ’-’ \TU/SimSun(0)/m/n/10.95 跟 着 的
  []
 
 
 Underfull \hbox (badness 10000) in paragraph at lines 61--62
-\TU/FandolSong-Regular(0)/m/n/10.95 来 自 同 样 字 母 集 合 的 一 个 或 者 更 多 字 母\TU/pcr/m/
-n/10.95 ),
+\TU/SimSun(0)/m/n/10.95 来 自 同 样 字 母 集 合 的 一 个 或 者 更 多 字 母\TU/ptm/m/it/10.95 ),
  []
 
 
 Underfull \hbox (badness 7012) in paragraph at lines 61--62
-\TU/FandolSong-Regular(0)/m/n/10.95 对 于 部 分 表 达 式 字 母 集 合 或 者 移 去 相 关 的
+\TU/SimSun(0)/m/n/10.95 对 于 部 分 表 达 式 字 母 集 合 或 者 移 去 相 关 的
  []
 
 
@@ -3049,31 +3268,30 @@ Overfull \hbox (16.36745pt too wide) in paragraph at lines 39--66
 
 Underfull \vbox (badness 6741) has occurred while \output is active []
 
- [144
+ [198
 
 
 ]
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
- [145]
+ [199]
 Overfull \vbox (75.38565pt too high) has occurred while \output is active []
 
 
-[146]
+[200]
 Overfull \hbox (87.49934pt too wide) in paragraph at lines 68--79
  [] 
  []
 
 
 Overfull \hbox (3.27289pt too wide) in paragraph at lines 117--125
-\TU/pcr/m/n/10.95 IP \TU/FandolSong-Regular(0)/m/n/10.95 地 址 的 正 则 表 达 式\TU/pcr
-/m/n/10.95 :(([1-9]?\d|1\d{2}|2[0-4]\d|25[0-5]).){3}([1-9]?\d|1\d{2}|2[0-4]\d|2
-5[0-
+\TU/ptm/m/it/10.95 IP \TU/SimSun(0)/m/n/10.95 地 址 的 正 则 表 达 式\TU/ptm/m/it/10.95
+ :(([1-9]?\d|1\d{2}|2[0-4]\d|25[0-5]).){3}([1-9]?\d|1\d{2}|2[0-4]\d|25[0-
  []
 
 
 Overfull \hbox (1.45332pt too wide) in paragraph at lines 145--145
-[]\TU/pcr/m/n/10.95 re.escape(pattern)| 
+[]\TU/ptm/m/it/10.95 re.escape(pattern)| 
  []
 
 
@@ -3081,14 +3299,14 @@ Overfull \hbox (18.59381pt too wide) in paragraph at lines 127--150
  [] 
  []
 
-[147]
+[201]
 Underfull \hbox (badness 10000) in paragraph at lines 151--152
 
  []
 
 
 Overfull \hbox (72.94118pt too wide) in paragraph at lines 181--182
-[]\TU/pcr/m/n/10.95 re,error(msg,pattern=None,pos=None) 
+[]\TU/ptm/m/it/10.95 re,error(msg,pattern=None,pos=None) 
  []
 
 
@@ -3098,7 +3316,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 181--182
 
 
 Underfull \hbox (badness 1810) in paragraph at lines 183--184
-[]\TU/pcr/m/n/10.95 msg: \TU/FandolSong-Regular(0)/m/n/10.95 非 正 式 格 式
+[]\TU/ptm/m/it/10.95 msg: \TU/SimSun(0)/m/n/10.95 非 正 式 格 式
  []
 
 
@@ -3109,44 +3327,44 @@ Overfull \hbox (17.51605pt too wide) in paragraph at lines 155--190
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
- [148]
+ [202]
 Overfull \vbox (14.10182pt too high) has occurred while \output is active []
 
 
-[149]
+[203]
 Underfull \hbox (badness 10000) in paragraph at lines 209--212
 
  []
 
-[150]
+[204]
 Overfull \hbox (17.70265pt too wide) in paragraph at lines 245--260
  [] 
  []
 
 
 Underfull \hbox (badness 1668) in paragraph at lines 288--289
-[]\TU/FandolSong-Regular(0)/m/n/10.95 用 \TU/pcr/m/n/10.95 sub() \TU/FandolSong-
-Regular(0)/m/n/10.95 方 法 返 回 一 个 通 过 在 \TU/pcr/m/n/10.95 temple \TU/FandolSong-
-Regular(0)/m/n/10.95 字 符 串 替 代\TU/pcr/m/n/10.95 \\TU/FandolSong-Regular(0)/m/n/
-10.95 的
+[]\TU/SimSun(0)/m/n/10.95 用 \TU/ptm/m/it/10.95 sub() \TU/SimSun(0)/m/n/10.95 方 
+法 返 回 一 个 通 过 在 \TU/ptm/m/it/10.95 temple \TU/SimSun(0)/m/n/10.95 字 符 串 替 代\TU/
+ptm/m/it/10.95 \\TU/SimSun(0)/m/n/10.95 的
  []
 
 
 Overfull \hbox (4.36488pt too wide) in paragraph at lines 292--292
-[]\TU/pcr/m/n/10.95 .groupdict(default=None)| 
+[]\TU/ptm/m/it/10.95 .groupdict(default=None)| 
  []
 
 
 Underfull \hbox (badness 1168) in paragraph at lines 295--297
-[]\TU/FandolSong-Regular(0)/m/n/10.95 最 新 匹 配 的 组 的 整 数 索 引，|  或 者 如 果 没 有 组 被 
-匹 配 就 为
+[]\TU/SimSun(0)/m/n/10.95 最 新 匹 配 的 组 的 整 数 索 引，|  或 者 如 果 没 有 组 被 匹 配 就 为
  []
 
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
- [151]
-[152]
+ [205]
+Underfull \vbox (badness 3271) has occurred while \output is active []
+
+ [206]
 Underfull \hbox (badness 10000) in paragraph at lines 337--342
 
  []
@@ -3161,127 +3379,126 @@ Underfull \hbox (badness 10000) in paragraph at lines 352--353
 
  []
 
-) [153]
+) [207]
 \openout2 = `./chapter3/sys.aux'.
 
- (./chapter3/sys.tex
-Overfull \hbox (5.98851pt too wide) in paragraph at lines 6--7
-\TU/FandolSong-Regular(0)/m/n/10.95 值 将 被 改 变 到 指 向 虚 拟 环 境，|  由 于 \TU/pcr/m/n/
-10.95 base_prefix \TU/FandolSong-Regular(0)/m/n/10.95 和 \TU/pcr/m/n/10.95 base_
-exec_prefix \TU/FandolSong-Regular(0)/m/n/10.95 将 保 留 指 向 \TU/pcr/m/n/10.95 pyt
-hon
- []
-
-[154
+ (./chapter3/sys.tex [208
 
 
 ]
 Overfull \hbox (18.0773pt too wide) in paragraph at lines 36--37
-[]\TU/pcr/m/n/10.95 sys.exceptgook(type,value,traceback): \TU/FandolSong-Regula
-r(0)/m/n/10.95 这 个 函 数 打 印 出 一 个 给 定 的 \TU/pcr/m/n/10.95 traceback \TU/FandolSo
-ng-Regular(0)/m/n/10.95 和 \TU/pcr/m/n/10.95 sys.stderr
+[]\TU/ptm/m/it/10.95 sys.exceptgook(type,value,traceback): \TU/SimSun(0)/m/n/10
+.95 这 个 函 数 打 印 出 一 个 给 定 的 \TU/ptm/m/it/10.95 traceback \TU/SimSun(0)/m/n/10.9
+5 和 \TU/ptm/m/it/10.95 sys.stderr
  []
 
-[155]
+[209]
 Overfull \hbox (26.8592pt too wide) in paragraph at lines 40--41
-\TU/FandolSong-Regular(0)/m/n/10.95 别 是 所 有 的 配 置 文 件 \TU/pcr/m/n/10.95 (\TU/Fa
-ndolSong-Regular(0)/m/n/10.95 像 \TU/pcr/m/n/10.95 pyconfig.h \TU/FandolSong-Reg
-ular(0)/m/n/10.95 头 文 件\TU/pcr/m/n/10.95 ) \TU/FandolSong-Regular(0)/m/n/10.95 
-被 安 装 子 啊 \TU/pcr/m/n/10.95 exec_prefix/lib/pythonX.Y/config
+\TU/SimSun(0)/m/n/10.95 别 是 所 有 的 配 置 文 件 \TU/ptm/m/it/10.95 (\TU/SimSun(0)/m/n
+/10.95 像 \TU/ptm/m/it/10.95 pyconfig.h \TU/SimSun(0)/m/n/10.95 头 文 件\TU/ptm/m/i
+t/10.95 ) \TU/SimSun(0)/m/n/10.95 被 安 装 子 啊 \TU/ptm/m/it/10.95 exec_prefix/lib/
+pythonX.Y/config
  []
 
 
-Overfull \hbox (185.48824pt too wide) in paragraph at lines 61--73
+Overfull \hbox (185.48822pt too wide) in paragraph at lines 61--73
 [][]
  []
 
-[156] [157]
+[210] [211]
 Overfull \hbox (76.32031pt too wide) in paragraph at lines 107--114
-\TU/FandolSong-Regular(0)/m/n/10.95 素 时 \TU/pcr/m/n/10.95 major,minor,build,pla
-tform,service_pack_minor,service_pack_major,suit_mask,product_type
+\TU/SimSun(0)/m/n/10.95 素 时 \TU/ptm/m/it/10.95 major,minor,build,platform,servi
+ce_pack_minor,service_pack_major,suit_mask,product_type
  []
 
 
-Overfull \hbox (238.7709pt too wide) in paragraph at lines 107--114
-\TU/pcr/m/n/10.95 platform \TU/FandolSong-Regular(0)/m/n/10.95 将 被 \TU/pcr/m/n/
-10.95 2(VER_PLATFORM_WIN32_NI) []
+Overfull \hbox (238.76509pt too wide) in paragraph at lines 107--114
+\TU/ptm/m/it/10.95 platform \TU/SimSun(0)/m/n/10.95 将 被 \TU/ptm/m/it/10.95 2(VE
+R_PLATFORM_WIN32_NI) []
  []
 
-[158]
-Overfull \hbox (124.69505pt too wide) in paragraph at lines 116--127
-[]\TU/pcr/m/n/10.95 sys.has_info: \TU/FandolSong-Regular(0)/m/n/10.95 数 值 \TU/p
-cr/m/n/10.95 hash \TU/FandolSong-Regular(0)/m/n/10.95 实 现 参 数 给 一 个 结 构 序 列。| [
-] 
+[212]
+Overfull \hbox (124.60951pt too wide) in paragraph at lines 116--127
+[]\TU/ptm/m/it/10.95 sys.has_info: \TU/SimSun(0)/m/n/10.95 数 值 \TU/ptm/m/it/10.
+95 hash \TU/SimSun(0)/m/n/10.95 实 现 参 数 给 一 个 结 构 序 列。| [] 
  []
 
-[159]) [160]
+[213]) [214]
 \openout2 = `./chapter3/datetime.aux'.
 
  (./chapter3/datetime.tex)
 \openout2 = `./chapter3/collections.aux'.
 
- (./chapter3/collections.tex) [161
+ (./chapter3/collections.tex [215
 
 
 
 
 ]
+[216]) [217]
 \openout2 = `./chapter3/base64.aux'.
 
+ (./chapter3/base64.tex
+Overfull \hbox (78.02168pt too wide) in paragraph at lines 6--8
+[]\TU/ptm/m/it/10.95 Base64 \TU/SimSun(0)/m/n/10.95 的 原 理 很 简 单，|  首 先，|  准 备 一
+ 个 包 含 \TU/ptm/m/it/10.95 64 \TU/SimSun(0)/m/n/10.95 个 字 符 串 的 数 组\TU/ptm/m/it/
+10.95 : [’A’,’B’,’C’,…,’a’,’b’,’c’,…,’0’,’1’,…,’+’,’/’] 
+ []
 
-(./chapter3/base64.tex) [162
+File: ./pic/chapter2/base64.png Graphic file (type QTm)
+<use  "./pic/chapter2/base64.png" > [218
 
 
-]
+]) [219]
 \openout2 = `./chapter3/struct.aux'.
 
- (./chapter3/struct.tex) [163
+ (./chapter3/struct.tex)
+[220
 
 
 ]
 \openout2 = `./chapter3/hashlib.aux'.
 
+ (./chapter3/hashlib.tex [221
 
-(./chapter3/hashlib.tex) [164
 
-
-]
+]) [222]
 \openout2 = `./chapter3/itertools.aux'.
 
- (./chapter3/itertools.tex) [165
+ (./chapter3/itertools.tex [223
 
 
-]
+])
+[224]
 \openout2 = `./chapter3/contexlib.aux'.
 
+ (./chapter3/contexlib.tex [225
 
-(./chapter3/contexlib.tex) [166
 
-
-]
+] [226]) [227]
 \openout2 = `./chapter3/XML.aux'.
 
- (./chapter3/XML.tex) [167
+ (./chapter3/XML.tex)
+[228
 
 
 ]
 \openout2 = `./chapter3/HTMLParser.aux'.
 
-
-(./chapter3/HTMLParser.tex) [168
+ (./chapter3/HTMLParser.tex) [229
 
 
 ]
 \openout2 = `./chapter3/ZipFile.aux'.
 
- (./chapter3/ZipFile.tex) [169
+ (./chapter3/ZipFile.tex) [230
 
 
 ]
 \openout2 = `./chapter3/url.aux'.
 
 
-(./chapter3/url.tex) [170
+(./chapter3/url.tex) [231
 
 
 ]
@@ -3294,7 +3511,7 @@ Overfull \hbox (18.59381pt too wide) in paragraph at lines 10--27
 
 
 Overfull \hbox (0.57498pt too wide) in paragraph at lines 46--46
-[]\TU/pcr/m/n/10.95 r.apparent_encoding| 
+[]\TU/ptm/m/it/10.95 r.apparent_encoding| 
  []
 
 
@@ -3303,11 +3520,11 @@ Overfull \hbox (32.82019pt too wide) in paragraph at lines 36--51
  []
 
 
-Overfull \hbox (2.6695pt too wide) in paragraph at lines 53--55
-[]\TU/pcr/m/n/10.95 r.encoding: \TU/FandolSong-Regular(0)/m/n/10.95 从 \TU/pcr/m
-/n/10.95 HTTp header \TU/FandolSong-Regular(0)/m/n/10.95 中 猜 测 的 响 应 内 容 编 码 方 
-式，|  如 果 \TU/pcr/m/n/10.95 header \TU/FandolSong-Regular(0)/m/n/10.95 中 不 存 在 \
-TU/pcr/m/n/10.95 charset\TU/FandolSong-Regular(0)/m/n/10.95 ，|
+Overfull \hbox (1.22168pt too wide) in paragraph at lines 53--55
+[]\TU/ptm/m/it/10.95 r.encoding: \TU/SimSun(0)/m/n/10.95 从 \TU/ptm/m/it/10.95 H
+TTp header \TU/SimSun(0)/m/n/10.95 中 猜 测 的 响 应 内 容 编 码 方 式，|  如 果 \TU/ptm/m/it/
+10.95 header \TU/SimSun(0)/m/n/10.95 中 不 存 在 \TU/ptm/m/it/10.95 charset\TU/SimS
+un(0)/m/n/10.95 ，|
  []
 
 
@@ -3315,17 +3532,17 @@ Underfull \hbox (badness 10000) in paragraph at lines 53--55
 
  []
 
-[171
+[232
 
 
 ]
 Overfull \hbox (3.75676pt too wide) in paragraph at lines 67--67
-[]\TU/pcr/m/n/10.95 requests.TooManyRedirects| 
+[]\TU/ptm/m/it/10.95 requests.TooManyRedirects| 
  []
 
 
 Overfull \hbox (2.54132pt too wide) in paragraph at lines 73--73
-[]\TU/pcr/m/n/10.95 requests.raise_for_status()| 
+[]\TU/ptm/m/it/10.95 requests.raise_for_status()| 
  []
 
 
@@ -3343,69 +3560,191 @@ Overfull \hbox (18.59381pt too wide) in paragraph at lines 89--106
  [] 
  []
 
-[172] [173]
+[233] [234]
 Overfull \hbox (18.59381pt too wide) in paragraph at lines 156--185
  [] 
  []
 
-) [174]
+) [235]
 \openout2 = `./chapter3/bazel.aux'.
 
- (./chapter3/bazel.tex
-Chapter 7.
-) [175
+ (./chapter3/bazel.tex [236
 
 
 
 ]
+Chapter 7.
+) [237]
 \openout2 = `./chapter4/tf_tricks.aux'.
 
- (./chapter4/tf_tricks.tex [176
+ (./chapter4/tf_tricks.tex [238
 
 
 
 ]
 Chapter 8.
-) [177]
+) [239]
 \openout2 = `./chapter4/tf_common.aux'.
 
- (./chapter4/tf_common.tex [178
+ (./chapter4/tf_common.tex [240
 
 
 
 ]
 Chapter 9.
 
-Overfull \hbox (4.38982pt too wide) in paragraph at lines 4--5
-[]\TU/pcr/m/n/10.95 DEFINE_boolean(flag_name,default_value,docstring): \TU/Fand
-olSong-Regular(0)/m/n/10.95 定 义 一 个\TU/pcr/m/n/10.95 ’boolean’ \TU/FandolSong-R
-egular(0)/m/n/10.95 类 型 的 \TU/pcr/m/n/10.95 flag\TU/FandolSong-Regular(0)/m/n/1
-0.95 。| 
+Overfull \hbox (4.384pt too wide) in paragraph at lines 4--5
+[]\TU/ptm/m/it/10.95 DEFINE_boolean(flag_name,default_value,docstring): \TU/Sim
+Sun(0)/m/n/10.95 定 义 一 个\TU/ptm/m/it/10.95 ’boolean’ \TU/SimSun(0)/m/n/10.95 类 
+型 的 \TU/ptm/m/it/10.95 flag\TU/SimSun(0)/m/n/10.95 。| 
  []
 
-[179]
-Underfull \hbox (badness 10000) in paragraph at lines 45--49
+[241]
+Overfull \hbox (51.87996pt too wide) in paragraph at lines 44--46
+\TU/SimSun(0)/m/n/10.95 的 一 个 整 数 \TU/ptm/m/it/10.95 tensor \TU/SimSun(0)/m/n/1
+0.95 生 成 输 出 \TU/ptm/m/it/10.95 tensor \TU/SimSun(0)/m/n/10.95 的 形 状 \TU/ptm/m/
+it/10.95 params.shape[:axis]+indices.shape+params.shape[axis+1:],
+ []
+
+File: ./pic/chapter3/Gather.png Graphic file (type QTm)
+<use  "./pic/chapter3/Gather.png" >
+Overfull \hbox (25.51132pt too wide) in paragraph at lines 58--59
+[][] 
+ []
+
+[242] [243]
+Underfull \hbox (badness 10000) in paragraph at lines 119--123
 
  []
 
-
-Overfull \hbox (75.99182pt too wide) in paragraph at lines 50--51
-[]\TU/pcr/m/n/10.95 accuracy(labels,predictions,weights=none,metrics_collection
-s,updates_collections=none,name=none) 
+[244]
+Overfull \hbox (75.9918pt too wide) in paragraph at lines 124--125
+[]\TU/ptm/m/it/10.95 accuracy(labels,predictions,weights=none,metrics_collectio
+ns,updates_collections=none,name=none) 
  []
 
-[180] [181] [182] [183] [184] [185] [186] [187]
+[245] [246] [247] [248] [249] [250] [251]
 
-Package Listings Warning: Text dropped after begin of listing on input line 322
+Package Listings Warning: Text dropped after begin of listing on input line 396
 .
 
-[188] [189] [190] [191]) [192]
+[252] [253] [254] [255]) [256]
+\openout2 = `./chapter4/Variable.aux'.
+
+ (./chapter4/Variable.tex [257
+
+
+]
+Overfull \hbox (17.11266pt too wide) in paragraph at lines 40--41
+\TU/SimSun(0)/m/n/10.95 如 果 你 创 建 一 个 变 量 的 时 候 它 的 初 始 值 依 赖 于 另 一 个 变 量，|  用 
+其 它 的 变 量 的 \TU/ptm/m/it/10.95 initialized_value()\TU/SimSun(0)/m/n/10.95 。|
+ []
+
+
+Overfull \hbox (0.46562pt too wide) in paragraph at lines 42--43
+\TU/SimSun(0)/m/n/10.95 练 步 数 \TU/ptm/m/it/10.95 global step \TU/SimSun(0)/m/n/
+10.95 变 量 是 很 方 便 的。|  为 了 使 这 个 更 简 单，|  变 量 构 造 体 支 持 \TU/ptm/m/it/10.95 trai
+nable=<bool>
+ []
+
+[258]
+Overfull \hbox (139.53946pt too wide) in paragraph at lines 82--84
+\TU/ptm/m/it/10.95 GraphKeys.GLOBAL_VARIABLES\TU/SimSun(0)/m/n/10.95 。|  如 果 \T
+U/ptm/m/it/10.95 trainable \TU/SimSun(0)/m/n/10.95 是 \TU/ptm/m/it/10.95 True \T
+U/SimSun(0)/m/n/10.95 变 量 被 添 加 到 集 合 \TU/ptm/m/it/10.95 GraphKeys,TRAINABLE_VA
+RIABLE\TU/SimSun(0)/m/n/10.95 。|
+ []
+
+
+Overfull \hbox (79.8789pt too wide) in paragraph at lines 87--88
+[]\TU/ptm/m/it/10.95 collections: \TU/SimSun(0)/m/n/10.95 集 合 \TU/ptm/m/it/10.9
+5 keys \TU/SimSun(0)/m/n/10.95 的 列 表，|  新 的 变 量 被 添 加 到 这 些 集 合。|  默 认 是 \TU/pt
+m/m/it/10.95 GraphKeys.GLOBAL_VARIABLE\TU/SimSun(0)/m/n/10.95 。| 
+ []
+
+[259]
+Underfull \hbox (badness 10000) in paragraph at lines 113--114
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 129--130
+
+ []
+
+[260]
+Underfull \hbox (badness 10000) in paragraph at lines 145--146
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 174--175
+
+ []
+
+[261]
+Underfull \hbox (badness 10000) in paragraph at lines 191--192
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 222--223
+
+ []
+
+[262]
+Underfull \hbox (badness 10000) in paragraph at lines 237--238
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 257--258
+
+ []
+
+[263]
+Underfull \hbox (badness 10000) in paragraph at lines 274--275
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 291--292
+
+ []
+
+[264] [265]
+Underfull \hbox (badness 10000) in paragraph at lines 352--353
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 368--369
+
+ []
+
+[266] [267]
+Overfull \hbox (222.30362pt too wide) in paragraph at lines 431--433
+\TU/ptm/m/it/10.95 x,y \TU/SimSun(0)/m/n/10.95 分 别 是 分 子 分 母 \TU/ptm/m/it/10.95
+ tensor\TU/SimSun(0)/m/n/10.95 ，| \TU/ptm/m/it/10.95 name \TU/SimSun(0)/m/n/10.
+95 是 操 作 的 名 字。| \TU/ptm/m/it/10.95 x/y \TU/SimSun(0)/m/n/10.95 像 \TU/ptm/m/it/
+10.95 0 \TU/SimSun(0)/m/n/10.95 或 者 负 整 数 靠 近。| \TU/ptm/m/it/10.95 __rmatmul__,
+__rmod__,__rmul__,__ror__,__rpow__
+ []
+
+[268] [269])
+Overfull \hbox (2.16388pt too wide) in paragraph at lines 517--82
+\TU/ptm/m/it/10.95 to_proto(export_scope=None): \TU/SimSun(0)/m/n/10.95 转 化 变 量
+ 为 一 个 \TU/ptm/m/it/10.95 variableDef protocal buffer\TU/SimSun(0)/m/n/10.95 。|
+ \TU/ptm/m/it/10.95 export_scope\TU/SimSun(0)/m/n/10.95 ：|
+ []
+
+[270]
 \openout2 = `./chapter4/tf_image.aux'.
 
  (./chapter4/tf_image.tex
 Overfull \hbox (8.40822pt too wide) in paragraph at lines 10--13
-\TU/pcr/m/n/10.95 try_recover_truncated=None,acceptable_fraction=None,dct_metch
-ed=None,name=None)
+\TU/ptm/m/it/10.95 try_recover_truncated=None,acceptable_fraction=None,dct_metc
+hed=None,name=None)
  []
 
 
@@ -3415,94 +3754,91 @@ Underfull \hbox (badness 10000) in paragraph at lines 10--13
 
 
 Overfull \hbox (52.94206pt too wide) in paragraph at lines 25--27
-[]\TU/pcr/m/n/10.95 tf.image.encode_jpeg(image,format=None,quality=None,progres
-sive=None,optimize_size=None 
+[]\TU/ptm/m/it/10.95 tf.image.encode_jpeg(image,format=None,quality=None,progre
+ssive=None,optimize_size=None 
  []
 
 
 Overfull \hbox (154.87561pt too wide) in paragraph at lines 25--27
-\TU/pcr/m/n/10.95 chroma_downsampling=None,density_uint=None,x_density=None,y_d
-ensity=None,xmp_metadata=None,name=None) 
+\TU/ptm/m/it/10.95 chroma_downsampling=None,density_uint=None,x_density=None,y_
+density=None,xmp_metadata=None,name=None) 
  []
 
-[193
+[271
 
 
 ]
-Overfull \hbox (4.04918pt too wide) in paragraph at lines 42--44
-[]\TU/pcr/m/n/10.95 tf.image.decode_png(contents,channels=None,dtype=None,name=
-None) \TU/FandolSong-Regular(0)/m/n/10.95 解 码 \TU/pcr/m/n/10.95 PNG \TU/FandolS
-ong-Regular(0)/m/n/10.95 编
+Overfull \hbox (4.04915pt too wide) in paragraph at lines 42--44
+[]\TU/ptm/m/it/10.95 tf.image.decode_png(contents,channels=None,dtype=None,name
+=None) \TU/SimSun(0)/m/n/10.95 解 码 \TU/ptm/m/it/10.95 PNG \TU/SimSun(0)/m/n/10.
+95 编
  []
 
-[194]
-Overfull \hbox (31.53484pt too wide) in paragraph at lines 70--71
-[]\TU/pcr/m/n/10.95 tf.image.resize_images(images,size,method=ResizeMethed.BILI
-NEAR,align_corners=False) 
+[272]
+Overfull \hbox (31.53482pt too wide) in paragraph at lines 70--71
+[]\TU/ptm/m/it/10.95 tf.image.resize_images(images,size,method=ResizeMethed.BIL
+INEAR,align_corners=False) 
  []
 
 
-Overfull \hbox (67.33897pt too wide) in paragraph at lines 72--73
-[]\TU/pcr/m/n/10.95 images: \TU/FandolSong-Regular(0)/m/n/10.95 形 状 为 \TU/pcr/m
-/n/10.95 [batch,height,width,channels]4 \TU/FandolSong-Regular(0)/m/n/10.95 维 \
-TU/pcr/m/n/10.95 Tensor,3 \TU/FandolSong-Regular(0)/m/n/10.95 为 \TU/pcr/m/n/10.
-95 Tensor\TU/FandolSong-Regular(0)/m/n/10.95 ，|  形 状 为 \TU/pcr/m/n/10.95 [heigh
-t,width,channels] 
+Overfull \hbox (66.22685pt too wide) in paragraph at lines 72--73
+[]\TU/ptm/m/it/10.95 images: \TU/SimSun(0)/m/n/10.95 形 状 为 \TU/ptm/m/it/10.95 [
+batch,height,width,channels]4 \TU/SimSun(0)/m/n/10.95 维 \TU/ptm/m/it/10.95 Tens
+or,3 \TU/SimSun(0)/m/n/10.95 为 \TU/ptm/m/it/10.95 Tensor\TU/SimSun(0)/m/n/10.95
+ ，|  形 状 为 \TU/ptm/m/it/10.95 [height,width,channels] 
  []
 
-[195]) [196]
+[273]) [274]
 \openout2 = `./chapter4/tf_layer.aux'.
 
  (./chapter4/tf_layer.tex
-Overfull \hbox (54.28896pt too wide) in paragraph at lines 21--22
-\TU/pcr/m/n/10.95 channels_last \TU/FandolSong-Regular(0)/m/n/10.95 输 入 形 状 为 \
-TU/pcr/m/n/10.95 (batch,length,channels)\TU/FandolSong-Regular(0)/m/n/10.95 ，| 
-\TU/pcr/m/n/10.95 channels_first \TU/FandolSong-Regular(0)/m/n/10.95 形 状 为 \TU/
-pcr/m/n/10.95 (batch,channels,length) 
+Overfull \hbox (53.17683pt too wide) in paragraph at lines 21--22
+\TU/ptm/m/it/10.95 channels_last \TU/SimSun(0)/m/n/10.95 输 入 形 状 为 \TU/ptm/m/it
+/10.95 (batch,length,channels)\TU/SimSun(0)/m/n/10.95 ，| \TU/ptm/m/it/10.95 cha
+nnels_first \TU/SimSun(0)/m/n/10.95 形 状 为 \TU/ptm/m/it/10.95 (batch,channels,le
+ngth) 
  []
 
-[197
+[275
 
 
-] [198]
-Overfull \hbox (6.8098pt too wide) in paragraph at lines 95--96
-[]\TU/pcr/m/n/10.95 batch normalization layer \TU/FandolSong-Regular(0)/m/n/10.
-95 的 函 数[][]参 考[][]，|  当 训 练 的 时 候 \TU/pcr/m/n/10.95 moving_mean \TU/FandolSong
--Regular(0)/m/n/10.95 和 \TU/pcr/m/n/10.95 moving_variance
- []
-
-
-Overfull \hbox (20.38658pt too wide) in paragraph at lines 103--104
-[]\TU/pcr/m/n/10.95 inputs:2 \TU/FandolSong-Regular(0)/m/n/10.95 维 以 上 \TU/pcr/
-m/n/10.95 Tensor\TU/FandolSong-Regular(0)/m/n/10.95 ，|  进 行 \TU/pcr/m/n/10.95 n
-ormalizeation\TU/FandolSong-Regular(0)/m/n/10.95 ，|  第 一 个 维 度 是 \TU/pcr/m/n/10
-.95 batch_size, \TU/FandolSong-Regular(0)/m/n/10.95 如 果 \TU/pcr/m/n/10.95 data_
-format
+] [276]
+Overfull \hbox (5.69766pt too wide) in paragraph at lines 95--96
+[]\TU/ptm/m/it/10.95 batch normalization layer \TU/SimSun(0)/m/n/10.95 的 函 数[][
+]参 考[][]，|  当 训 练 的 时 候 \TU/ptm/m/it/10.95 moving_mean \TU/SimSun(0)/m/n/10.95 
+和 \TU/ptm/m/it/10.95 moving_variance
  []
 
 
-Overfull \hbox (46.13118pt too wide) in paragraph at lines 104--105
-\TU/FandolSong-Regular(0)/m/n/10.95 如 果 模 型 训 练 性 能 好 但 是 在 验 证 和 测 试 性 能 差，|  
-尝 试 着 设 置 \TU/pcr/m/n/10.95 zeros_debias_moving_mean=True
- []
-
-[199] [200] [201]
-Overfull \hbox (54.28896pt too wide) in paragraph at lines 165--166
-\TU/pcr/m/n/10.95 channels_last \TU/FandolSong-Regular(0)/m/n/10.95 输 入 形 状 为 \
-TU/pcr/m/n/10.95 (batch,length,channels)\TU/FandolSong-Regular(0)/m/n/10.95 ，| 
-\TU/pcr/m/n/10.95 channels_first \TU/FandolSong-Regular(0)/m/n/10.95 形 状 为 \TU/
-pcr/m/n/10.95 (batch,channels,length) 
+Overfull \hbox (18.16235pt too wide) in paragraph at lines 103--104
+[]\TU/ptm/m/it/10.95 inputs:2 \TU/SimSun(0)/m/n/10.95 维 以 上 \TU/ptm/m/it/10.95 
+Tensor\TU/SimSun(0)/m/n/10.95 ，|  进 行 \TU/ptm/m/it/10.95 normalizeation\TU/SimS
+un(0)/m/n/10.95 ，|  第 一 个 维 度 是 \TU/ptm/m/it/10.95 batch_size, \TU/SimSun(0)/m/
+n/10.95 如 果 \TU/ptm/m/it/10.95 data_format
  []
 
 
-Overfull \hbox (11.83461pt too wide) in paragraph at lines 179--180
-[]\TU/FandolSong-Regular(0)/bx/n/10.95 函 数 功 能\TU/pcr/m/n/10.95 : \TU/FandolSon
-g-Regular(0)/m/n/10.95 这 层 创 建 一 个 卷 积 核 和 输 入 相 卷 积 输 出。|  如 果 \TU/pcr/m/n/10.
-95 use_bias \TU/FandolSong-Regular(0)/m/n/10.95 是 \TU/pcr/m/n/10.95 True(bias_i
-nitializer
+Overfull \hbox (34.06906pt too wide) in paragraph at lines 104--105
+\TU/SimSun(0)/m/n/10.95 果 模 型 训 练 性 能 好 但 是 在 验 证 和 测 试 性 能 差，|  尝 试 着 设 置 \TU/
+ptm/m/it/10.95 zeros_debias_moving_mean=True
  []
 
-[202] [203] [204] [205] [206] [207] [208] [209] [210] [211] [212]) [213]
+[277] [278] [279]
+Overfull \hbox (53.17683pt too wide) in paragraph at lines 165--166
+\TU/ptm/m/it/10.95 channels_last \TU/SimSun(0)/m/n/10.95 输 入 形 状 为 \TU/ptm/m/it
+/10.95 (batch,length,channels)\TU/SimSun(0)/m/n/10.95 ，| \TU/ptm/m/it/10.95 cha
+nnels_first \TU/SimSun(0)/m/n/10.95 形 状 为 \TU/ptm/m/it/10.95 (batch,channels,le
+ngth) 
+ []
+
+
+Overfull \hbox (11.74907pt too wide) in paragraph at lines 179--180
+[]\TU/SimSun(0)/bx/n/10.95 函 数 功 能\TU/ptm/m/it/10.95 : \TU/SimSun(0)/m/n/10.95 
+这 层 创 建 一 个 卷 积 核 和 输 入 相 卷 积 输 出。|  如 果 \TU/ptm/m/it/10.95 use_bias \TU/SimSun
+(0)/m/n/10.95 是 \TU/ptm/m/it/10.95 True(bias_initializer
+ []
+
+[280] [281] [282] [283] [284] [285] [286] [287] [288] [289] [290]) [291]
 \openout2 = `./chapter4/tf_train.aux'.
 
 
@@ -3511,28 +3847,30 @@ Underfull \hbox (badness 10000) in paragraph at lines 7--9
 
  []
 
-[214
+[292
 
 
-] [215]
-Overfull \hbox (149.74979pt too wide) in paragraph at lines 103--104
-[]\TU/pcr/m/n/10.95 var_list:tf.Variable \TU/FandolSong-Regular(0)/m/n/10.95 更 
-新 最 小 化 \TU/pcr/m/n/10.95 loss \TU/FandolSong-Regular(0)/m/n/10.95 的 列 表 或 者 元 
-组。|  默 认 图 中 的 变 量 列 表 在 \TU/pcr/m/n/10.95 GraphKey.TRAINABLE_VARIABLES
+] [293]
+Overfull \hbox (149.66425pt too wide) in paragraph at lines 103--104
+[]\TU/ptm/m/it/10.95 var_list:tf.Variable \TU/SimSun(0)/m/n/10.95 更 新 最 小 化 \TU
+/ptm/m/it/10.95 loss \TU/SimSun(0)/m/n/10.95 的 列 表 或 者 元 组。|  默 认 图 中 的 变 量 列 表
+ 在 \TU/ptm/m/it/10.95 GraphKey.TRAINABLE_VARIABLES
  []
 
 
-Overfull \hbox (55.90717pt too wide) in paragraph at lines 104--105
-[]\TU/pcr/m/n/10.95 gate_gradients: \TU/FandolSong-Regular(0)/m/n/10.95 如 何 \TU
-/pcr/m/n/10.95 gate \TU/FandolSong-Regular(0)/m/n/10.95 梯 度 计 算，|  可 以 是 \TU/pc
-r/m/n/10.95 GATE_NONE,GATE_OP \TU/FandolSong-Regular(0)/m/n/10.95 或 者 是 \TU/pcr
-/m/n/10.95 GATE_GRAPH\TU/FandolSong-Regular(0)/m/n/10.95 。| 
+Overfull \hbox (54.78922pt too wide) in paragraph at lines 104--105
+[]\TU/ptm/m/it/10.95 gate_gradients: \TU/SimSun(0)/m/n/10.95 如 何 \TU/ptm/m/it/1
+0.95 gate \TU/SimSun(0)/m/n/10.95 梯 度 计 算，|  可 以 是 \TU/ptm/m/it/10.95 GATE_NONE
+,GATE_OP \TU/SimSun(0)/m/n/10.95 或 者 是 \TU/ptm/m/it/10.95 GATE_GRAPH\TU/SimSun(
+0)/m/n/10.95 。| 
  []
 
-) [216]
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 81.
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 81.
- (./book.aux (./chapter1/deeplearning.aux) (./chapter1/tf_basics.aux)
+) [294]
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 87.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 87.
+ (./book.aux (./chapter1/deeplearning.aux) (./chapter2/tf_basics1.aux)
+(./chapter2/Graph.aux) (./chapter2/tf_dataset.aux) (./chapter2/Treading.aux)
+(./chapter2/embedding.aux) (./chapter2/tf_basics2.aux)
 (./chapter2/tf_advance.aux) (./chapter2/tutorials.aux) (./chapter2/extend.aux)
 (./chapter2/performance.aux) (./chapter3/common_module.aux)
 (./chapter3/path.aux) (./chapter3/re.aux) (./chapter3/sys.aux)
@@ -3541,21 +3879,22 @@ Package atveryend Info: Empty hook `AfterLastShipout' on input line 81.
 (./chapter3/contexlib.aux) (./chapter3/XML.aux) (./chapter3/HTMLParser.aux)
 (./chapter3/ZipFile.aux) (./chapter3/url.aux) (./chapter3/requests.aux)
 (./chapter3/bazel.aux) (./chapter4/tf_tricks.aux) (./chapter4/tf_common.aux)
-(./chapter4/tf_image.aux) (./chapter4/tf_layer.aux) (./chapter4/tf_train.aux))
-Package atveryend Info: Empty hook `AtVeryEndDocument' on input line 81.
-Package atveryend Info: Empty hook `AtEndAfterFileList' on input line 81.
+(./chapter4/Variable.aux) (./chapter4/tf_image.aux) (./chapter4/tf_layer.aux)
+(./chapter4/tf_train.aux))
+Package atveryend Info: Empty hook `AtVeryEndDocument' on input line 87.
+Package atveryend Info: Empty hook `AtEndAfterFileList' on input line 87.
 
 
 LaTeX Font Warning: Some font shapes were not available, defaults substituted.
 
  ) 
 Here is how much of TeX's memory you used:
- 45332 strings out of 493005
- 870990 string characters out of 6134596
- 1117331 words of memory out of 5000000
- 48463 multiletter control sequences out of 15000+600000
- 13636 words of font info for 62 fonts, out of 8000000 for 9000
+ 46823 strings out of 493005
+ 882511 string characters out of 6140056
+ 1123110 words of memory out of 5000000
+ 49884 multiletter control sequences out of 15000+600000
+ 13660 words of font info for 65 fonts, out of 8000000 for 9000
  1348 hyphenation exceptions out of 8191
- 62i,10n,98p,10430b,2356s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 62i,10n,98p,10432b,2356s stack positions out of 5000i,500n,10000p,200000b,80000s
 
-Output written on book.pdf (224 pages).
+Output written on book.xdv (304 pages, 7365780 bytes).
