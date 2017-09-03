@@ -68,9 +68,9 @@ test_set = tf.contrib.learn.datasets.base.load_csv_with_header(
     target_dtype=np.int,
     features_dtype=np.float32)
 \end{python}
-在tf.contrib.learn中的Dataset是\href{https://docs.python.org/2/library/collections.html#collections.namedtuple}{named tuples};你可以通过data和target访问特征数据和目标值，这里training\_set和training\_set.target包含训练集的特征数据和目标数据，对应的test\_set.data和test\_set.target包含测试集特征和目标。
+在tf.contrib.learn中的Dataset是\href{https://docs.python.org/2/library/collections.html#collections.namedtuple}{named tuples};你可以通过data和target访问特征数据和目标值，这里training\_set.data和training\_set.target包含训练集的特征数据和目标数据，对应的test\_set.data和test\_set.target包含测试集特征和目标。
 \subsection{构造神经网络分类器}
-tf.estimator提供多种预定义方法，称为Estimator，你可以在同国内你的数据"盒，子"运行训练，评估操作，你可以实例化tf.estimator.DNNClassfier：
+tf.estimator提供多种预定义方法，称为Estimator，你可以通过它在你的数据上运行训练，评估操作，你可以实例化tf.estimator.DNNClassfier：
 \begin{python}
 # Specify that all features have real-value data
 feature_columns = [tf.feature_column.numeric_column("x", shape=[4])]
@@ -79,17 +79,18 @@ feature_columns = [tf.feature_column.numeric_column("x", shape=[4])]
 classifier = tf.estimator.DNNClassifier(feature_columns=feature_columns,
                                         hidden_units=[10, 20, 10],
                                         n_classes=3,
-                                        model_dir="/tmp/iris_model")
+                                        model_dir="./iris_model")
 \end{python}
-下面的代码中首先定义模型的特征列，指定在数据集中的特征的数据类型。所有的特征数据是连续的，因此tf.feature\_column.number\_column是构造特征列的合适的函数，数据集中有4个特征，因此我们指定shape为[4]保持所有的数据,然后用下面的参数创建DNNClassfier分类器模型:
+上面的代码中首先定义模型的特征列，指定在数据集中的特征的数据类型。所有的特征数据是连续的，因此tf.feature\_column.number\_column是构造特征列的合适的函数，数据集中有4个特征，因此我们指定shape为[4]保持所有的数据,然后用下面的参数创建DNNClassfier分类器模型:
 \begin{itemize}
     \item feature\_columns=feature\_columns,特征集合的列。
     \item hidden\_units=[10,20,10],三个\href{http://stats.stackexchange.com/questions/181/how-to-choose-the-number-of-hidden-layers-and-nodes-in-a-feedforward-neural-netw}{hidden layer}包含有10,20,10个神经元。
     \item n\_classes=3,三个目标类，对应三个iris种类。
-    \item model\_dir=/temp/iris\_model:训练模型中保存checkpoint文件的路径
+    \item model\_dir=./iris\_model:训练模型中保存checkpoint文件的路径
 \end{itemize}
 \subsection{描述训练的输入pipline}
-tf.estimator API用输入函数创建TensorFlow操作为模型生成数据，你可以用tf.estimator.numpy\_input\-fn生成输入pipeline:
+tf.estimator API用输入函数创建TensorFlow操作为模型生成数据，你可以用\newline
+tf.estimator.numpy\_input\_fn生成输入pipeline:
 \begin{python}
 # Define the training inputs
 train_input_fn = tf.estimator.inputs.numpy_input_fn(
@@ -104,14 +105,14 @@ train_input_fn = tf.estimator.inputs.numpy_input_fn(
 # Train model.
 classifier.train(input_fn=train_input_fn, steps=2000)
 \end{python}
-状态模型每保存在classfier,意味着你可以反复训练，例如下面是合适的:
+状态模型被保存在classfier,意味着你可以反复训练，例如下面是合适的:
 \begin{python}
 classifier.train(input_fn=train_input_fn, steps=1000)
 classifier.train(input_fn=train_input_fn, steps=1000)
 \end{python}
 然而，如果你在训练的时候跟踪模型，你可以用TensorFlow \href{https://www.tensorflow.org/api_docs/python/tf/train/SessionRunHook}{SessionRunHook}执行采集操作.
 \subsection{评估模型的精度}
-你可以在Iris训练集上训练你的DNNClassfier模型；现在你可以在测试集上用evaluate检查它在测试集上个精确度。evaluate返回一个评估结果的字典，下面的代码春娣Irish测数据给test\_set.data和test\_set.target评估和从结果中打印。
+你可以在iris训练集上训练你的DNNClassfier模型；现在你可以在测试集上用evaluate检查它在测试集上个精确度。evaluate返回一个评估结果的字典，下面的代码传递irish测数据给test\_set.data和test\_set.target评估和从结果中打印。
 \begin{python}
 # Define the test inputs
 test_input_fn = tf.estimator.inputs.numpy_input_fn(
@@ -126,7 +127,7 @@ accuracy_score = classifier.evaluate(input_fn=test_input_fn)["accuracy"]
 print("\nTest Accuracy: {0:f}\n".format(accuracy_score))
 \end{python}
 \begin{quote}
-\emph{这里num\_epochs=1参数对于numpy\_input\_fn是很重要的。test\_input\_fn将在数据上迭代一次然后报出OutOfRangeError,这个错误通知分类及停止评估，因此它将计算输入一次}
+\emph{这里num\_epochs=1参数对于numpy\_input\_fn是很重要的。test\_input\_fn将在数据上迭代一次然后报出OutOfRangeError,这个错误通知分类器停止评估，因此它将计算输入一次}
 \end{quote}
 然后你可以运行完整的脚本，它将打印出:
 \begin{python}
@@ -134,13 +135,19 @@ Test Accuracy: 0.966667
 \end{python}
 你的精度结果可能有点不同但是应该大于90\%。
 \subsection{分类新的样本}
-用estimator的predict()方法分类新的样本，例如你有两个新的花的样本:
+用estimator的predict()方法分类新的样本，例如你有两个新的花的样本:\par
+
 \begin{tabular}{|c|c|c|c|}
+\hline
 花萼长度&花萼宽度&花瓣长度&花瓣宽度\\
+\hline
 6.4&3.2&4.5&1.5\\
+\hline
 5.8&3.1&5.0&1.7\\
+\hline
 \end{tabular}
-你可以用predict(方法预测结果，predict返回一个词典生成器，生成器可以容易的被转化成列表，下面的代码访问和打印预测的类:
+\par
+你可以用predict(方法预测结果，predict返回一个词典生成器，生成器可以容易的被转化成列表，下面的代码访问和打印预测的分类:
 \begin{python}
 # Classify two new flower samples.
 new_samples = np.array(
@@ -164,9 +171,9 @@ New Samples, Class Predictions:    [1 2]
 \end{python}
 结果预测样本是 Iris versicolor, Iris virginica。
 \section{用tf.estimator创建一个输入函数}
-在这个导航中向你介绍在tf.estimator创建一个输入函数。你将看到如何构造一个input\_fn去处理和输入数据进你的模型，然后模拟将实现一个input\_函数到神经网络回归器训练，评估预测房价数据
+在这个导航中向你介绍在tf.estimator创建一个输入函数。你将看到如何构造一个input\_fn去处理和输入数据进你的模型，然后模型将为神经网络回归器实现一个input\_fn函数，评估预测房价数据
 \subsection{用input\_fn自定义Pipeline}
-input\_n被用来传递特征和目标数据到Estimator的train,evaluate,predict方法。
+input\_fn被用来传递特征和目标数据到Estimator的train,evaluate,predict方法。
 \begin{python}
 import numpy as np
 
@@ -192,7 +199,7 @@ def my_input_fn():
     # the corresponding feature data, and 2) a Tensor containing labels
     return feature_cols, labels
 \end{python}
-输入函数的函数体包含指定处理你的输入数据的逻辑，像数据清洗和\href{https://en.wikipedia.org/wiki/Feature_scaling}{特征放大}，输入函数必须返回两个包含最终的标签和特征的数据输入进你的模型:
+输入函数的函数体包含指定处理你的输入数据的逻辑，像数据清洗和\href{https://en.wikipedia.org/wiki/Feature_scaling}{特征缩放}，输入函数必须返回两个包含最终的标签和特征的数据输入进你的模型:
 
 featrue\_cols:一个包含有映射特征列名字为Tensor包含有特征数据的键值(key/value)对。
 
@@ -218,7 +225,7 @@ my_input_fn = tf.estimator.inputs.pandas_input_fn(
 \end{python}
 对于\href{https://en.wikipedia.org/wiki/Sparse_matrix}{稀疏,分类数据},你将需要填入下面三个参数:
 \begin{itemize}
-    \item dense\_shape:形状tensor。每个维度的列表的索引。例如dense\_shape=[3,6]指定二维tensor,$3\times6$,dense\_shape=[2,3,4]指定3维$2\times3\times4$tensor,dense\_shape=[9]指定包含9个元素的一维tensor。
+    \item dense\_shape:形状tensor。每个维度的列表的索引。例如dense\_shape=[3,6]指定二维tensor,形状为$3\times6$,dense\_shape=[2,3,4]指定3维tensor,形状为$2\times3\times4$tensor,dense\_shape=[9]指定包含9个元素的一维tensor。
     \item indices:在你的包含有非零值的tensor的元素的索引。接受列表，列表中的每个元素是包含非0元素的索引。（例如[0,0]代表两维Tensor的第0行第0列。indices=[[1,3],[2,4]]指定索引为[1,3],[2,4]的元素有非零值。）
     \item values:一维值得tensor，values中的i对应indices中的i和它指定的值。例如给定值indices=[[1,3],[2,4]],参数values=[18,3.6],指定元素索引[1,3]的位置为18,[2,4]的值为3.6。
 \end{itemize}
@@ -267,13 +274,14 @@ classifier.train(input_fn=lambda: my_input_fn(training_set), steps=2000)
 \begin{python}
 classifier.evaluate(input_fn=lambda: my_input_fn(test_set), steps=2000)
 \end{python}
-这种方法加强的代码的维护性:不需要定义多的input\_fn函数(例如input\_fn\_train,input\_fn\_test,input\_fn\_prediction)给每个操作，最终你可以用tf.estimator.inputs中的方法从numpy或者pandas数据集创建input\_fn。另一个好处是你可以用更多的参数，像num\_epochs和shuffle控制input\_fn如何在数据上迭代，
+这种方法加强的代码的维护性:不需要定义多的input\_fn函数(例如input\_fn\_train,\newline
+input\_fn\_test,input\_fn\_prediction)给每个操作，最终你可以用tf.estimator.inputs中的方法从numpy或者pandas数据集创建input\_fn。另一个好处是你可以用更多的参数，像num\_epochs和shuffle控制input\_fn如何在数据上迭代，
 \begin{python}
 import pandas as pd
 
 def get_input_fn_from_pandas(data_set, num_epochs=None, shuffle=True):
   return tf.estimator.inputs.pandas_input_fn(
-      x=pdDataFrame(...),
+      x=pd.DataFrame(...),
       y=pd.Series(...),
       num_epochs=num_epochs,
       shuffle=shuffle)
@@ -290,19 +298,30 @@ def get_input_fn_from_numpy(data_set, num_epochs=None, shuffle=True):
 \end{python}
 \subsection{波士顿房价的神经网络模型}
 接下来的导航，你将写输入函数处理从\href{https://archive.ics.uci.edu/ml/datasets/Housing}{UCI Gousing Data Set}获取的数据集的子集，传递数据给神经网络回归器预测房价
-你讲用于训练的神经网络包含下面的子集\href{https://www.tensorflow.org/get_started/input_fn#setup}{Boston CSV data sets}包含下面\href{https://archive.ics.uci.edu/ml/machine-learning-databases/housing/housing.names}{特征数据}
+你讲用于训练的神经网络包含下面的子集\href{https://www.tensorflow.org/get_started/input_fn#setup}{Boston CSV data sets}包含下面\href{https://archive.ics.uci.edu/ml/machine-learning-databases/housing/housing.names}{特征数据}\par
+
 \begin{tabular}{|c|c|}
 \hline
 特征&描述\\
+\hline
 CRIM&人均犯罪率\\
+\hline
 ZN&居住地面积划分为25000平方英尺一块\\
+\hline
 INDUS&非商业用地的一部分\\
+\hline
 NOX&一氧化氮的浓度为千万分之一\\
+\hline
 RM&每个房子的房间数\\
+\hline
 AGE&1940年前自有居民的比例\\
+\hline
 DIS&离波士顿就业中心的距离\\
+\hline
 TAX&每10000美元的税率\\
-PTRATIO&学生老师的比率
+\hline
+PTRATIO&学生老师的比率\\
+\hline
 \end{tabular}
 \subsection{建立}
 下载数据集\href{http://download.tensorflow.org/data/boston_train.csv}{boston\_train.csv},\href{http://download.tensorflow.org/data/boston_test.csv}{boston\_test.csv}和\href{http://download.tensorflow.org/data/boston_predict.csv}{boston\_predict.csv}
@@ -355,11 +374,11 @@ def get_input_fn(data_set, num_epochs=None, shuffle=True):
       num_epochs=num_epochs,
       shuffle=shuffle)
 \end{python}
-注意输入数据被传递给input\_fn的data\_set参数，这意味着函数可以处理任何你导入的的DataFrame:training\_set,test\_set和prediction\_set。提供两个额外的参数num\_epochs(控制在数据上的迭代次数)训练的时候设置为None，因此input\_fn保持返回值知道训练步数到达，为了平局和测试设置为1，因此input\_fn将在数据上迭代然后抛出OutOfRangeError,错误将通知Estimator停止评估或者预测:shuffle（是否打乱数据）。对于评估和预测，设置为False，因此input\_fn在数据上顺序迭代，对于训练设置为True。
+注意输入数据被传递给input\_fn的data\_set参数，这意味着函数可以处理任何你导入的的DataFrame,training\_set,test\_set和prediction\_set。提供两个额外的参数num\_epochs(控制在数据上的迭代次数)训练的时候设置为None，因此input\_fn保持返回值知道训练步数到达，为了平局和测试设置为1，因此input\_fn将在数据上迭代然后抛出OutOfRangeError,错误将通知Estimator停止评估或者预测:shuffle（是否打乱数据）。对于评估和预测，设置为False，因此input\_fn在数据上顺序迭代，对于训练设置为True。
 \subsection{训练回归器}
 为了训练神经网络回归器，用training\_set传递给input\_fn运行train：
 \begin{python}
-regressor.train(input_fn=get_input_fn(training_set), steps=5000
+regressor.train(input_fn=get_input_fn(training_set), steps=5000)
 \end{python}
 你应该能看到类似的输出，每100步报告训练的损失:
 \begin{python}

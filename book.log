@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.14159265-2.6-0.99998 (TeX Live 2017/W32TeX) (preloaded format=xelatex 2017.6.14)  3 SEP 2017 00:54
+This is XeTeX, Version 3.14159265-2.6-0.99998 (TeX Live 2017/W32TeX) (preloaded format=xelatex 2017.6.14)  3 SEP 2017 19:22
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1924,8 +1924,8 @@ Package: xeCJK-listings 2017/05/15 v3.4.8 xeCJK patch file for listings
 (./chapter3/contexlib.aux) (./chapter3/XML.aux) (./chapter3/HTMLParser.aux)
 (./chapter3/ZipFile.aux) (./chapter3/url.aux) (./chapter3/requests.aux)
 (./chapter3/bazel.aux) (./chapter4/tf_tricks.aux) (./chapter4/tf_common.aux)
-(./chapter4/Variable.aux) (./chapter4/tf_image.aux) (./chapter4/tf_layer.aux)
-(./chapter4/tf_train.aux))
+(./chapter4/Variable.aux) (./chapter4/tf_image.aux) (./chapter4/tf_feature.aux)
+(./chapter4/tf_layer.aux) (./chapter4/tf_train.aux))
 \openout1 = `book.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 47.
@@ -1946,7 +1946,8 @@ LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 47.
 LaTeX Font Info:    ... okay on input line 47.
 LaTeX Font Info:    Checking defaults for T3/cmr/m/n on input line 47.
 LaTeX Font Info:    Try loading font information for T3+cmr on input line 47.
- (f:/TexLive/texmf-dist/tex/latex/tipa/t3cmr.fd
+
+(f:/TexLive/texmf-dist/tex/latex/tipa/t3cmr.fd
 File: t3cmr.fd 2001/12/31 TIPA font definitions
 )
 LaTeX Font Info:    ... okay on input line 47.
@@ -2079,18 +2080,17 @@ LaTeX Font Info:    Font shape `TU/SimSun(0)/m/sl' in size <10.95> not availabl
 e
 (Font)              Font shape `TU/SimSun(0)/m/it' tried instead on input line 
 64.
-[2] [3] [4] [5] [6] [7] [8])
+[2] [3] [4] [5] [6] [7] [8] [9])
 \tf@toc=\write5
 \openout5 = `book.toc'.
 
- [9] [10
-
-]
+ [10]
 \openout2 = `./chapter1/deeplearning.aux'.
 
  (./chapter1/deeplearning.tex
 Chapter 1.
 [1
+
 
 
 ] (f:/TexLive/texmf-dist/tex/latex/listings/lstlang1.sty
@@ -2373,36 +2373,14 @@ n(0)/m/n/10.95 中 的 \TU/ptm/m/it/10.95 load_csv_with_header() \TU/SimSun(0)/m
 10.95 方 法 载 入 训 练 数 据 进 入 \TU/ptm/m/it/10.95 Dataset\TU/SimSun(0)/m/n/10.95 ，|
  []
 
-[57]
-Overfull \hbox (84.67879pt too wide) in paragraph at lines 92--93
-[]\TU/ptm/m/it/10.95 tf.estimator API \TU/SimSun(0)/m/n/10.95 用 输 入 函 数 创 建 \TU
-/ptm/m/it/10.95 TensorFlow \TU/SimSun(0)/m/n/10.95 操 作 为 模 型 生 成 数 据，|  你 可 以 用
- \TU/ptm/m/it/10.95 tf.estimator.numpy_input-
- []
-
-[58]
-Overfull \hbox (162.30527pt too wide) in paragraph at lines 137--144
-[]\TU/SimSun(0)/m/n/10.95 用 \TU/ptm/m/it/10.95 estimator \TU/SimSun(0)/m/n/10.9
-5 的 \TU/ptm/m/it/10.95 predict() \TU/SimSun(0)/m/n/10.95 方 法 分 类 新 的 样 本，|  例 如
- 你 有 两 个 新 的 花 的 样 本\TU/ptm/m/it/10.95 : []
- []
-
-[59] [60] [61] [62]
-Overfull \hbox (146.88213pt too wide) in paragraph at lines 270--271
-\TU/SimSun(0)/m/n/10.95 这 种 方 法 加 强 的 代 码 的 维 护 性\TU/ptm/m/it/10.95 : \TU/SimSu
-n(0)/m/n/10.95 不 需 要 定 义 多 的 \TU/ptm/m/it/10.95 input_fn \TU/SimSun(0)/m/n/10.9
-5 函 数 \TU/ptm/m/it/10.95 (\TU/SimSun(0)/m/n/10.95 例 如 \TU/ptm/m/it/10.95 input_
-fn_train,input_fn_test,input_fn_prediction)
- []
-
-[63] [64]
-Overfull \hbox (1.21907pt too wide) in paragraph at lines 338--339
+[57] [58] [59] [60] [61] [62] [63] [64]
+Overfull \hbox (1.21907pt too wide) in paragraph at lines 357--358
 \TU/SimSun(0)/m/n/10.95 有 在 房 价 数 据 集 中 的 的 特 征 包 含 连 续 的 值，|  你 可 以 用 \TU/ptm/
 m/it/10.95 tf.contrib.layers.real_valued_column()
  []
 
 
-Overfull \hbox (8.29156pt too wide) in paragraph at lines 342--343
+Overfull \hbox (8.29156pt too wide) in paragraph at lines 361--362
 \TU/SimSun(0)/m/n/10.95 现 在 初 始 化 一 个 神 经 网 络 回 归 模 型 的 实 体 \TU/ptm/m/it/10.95 
 DNNRegressor\TU/SimSun(0)/m/n/10.95 ，|  你 需 要 提 供 两 个 参 数\TU/ptm/m/it/10.95 :hi
 dden_units
@@ -2413,17 +2391,17 @@ Underfull \vbox (badness 10000) has occurred while \output is active []
 
  [68]
 
-Package hyperref Warning: Suppressing link with empty target on input line 493.
+Package hyperref Warning: Suppressing link with empty target on input line 512.
 
 
 
-Overfull \hbox (421.82372pt too wide) in paragraph at lines 495--503
+Overfull \hbox (421.82372pt too wide) in paragraph at lines 514--522
 \TU/SimSun(0)/m/n/10.95 一 步 在 模 型 训 练 中 记 录 度 量 或 者 调 试 低 级 \TU/ptm/m/it/10.95 
 TensorFlow \TU/SimSun(0)/m/n/10.95 操 作。|  包 括\TU/ptm/m/it/10.95 : [] 
  []
 
 [69]
-Overfull \hbox (70.10553pt too wide) in paragraph at lines 511--512
+Overfull \hbox (70.10553pt too wide) in paragraph at lines 530--531
 \TU/SimSun(0)/m/n/10.95 操 作，|  你 将 想 要 修 改 \TU/ptm/m/it/10.95 classifier \TU/Si
 mSun(0)/m/n/10.95 去 增 加 一 个 包 含 有 \TU/ptm/m/it/10.95 save_checkpointers_secs \T
 U/SimSun(0)/m/n/10.95 的 \TU/ptm/m/it/10.95 tf.contrib.learn.RunConfig(\TU/SimSu
@@ -2431,20 +2409,20 @@ n(0)/m/n/10.95 指
  []
 
 
-Overfull \hbox (66.75072pt too wide) in paragraph at lines 511--512
+Overfull \hbox (66.75072pt too wide) in paragraph at lines 530--531
 \TU/SimSun(0)/m/n/10.95 定 训 练 过 程 多 少 秒 保 存 \TU/ptm/m/it/10.95 checkpoint)\TU/S
 imSun(0)/m/n/10.95 。|  因 为 \TU/ptm/m/it/10.95 iris \TU/SimSun(0)/m/n/10.95 数 据 
 集 很 小，|  这 样 训 练 和 快，|  可 以 设 置 \TU/ptm/m/it/10.95 save_checkpoints_secs
  []
 
 [70] [71]
-Overfull \hbox (589.30551pt too wide) in paragraph at lines 585--593
+Overfull \hbox (589.30551pt too wide) in paragraph at lines 604--612
 \TU/ptm/m/it/10.95 Monitor \TU/SimSun(0)/m/n/10.95 容 易 通 过 下 面 的 参 数 实 现 \TU/pt
 m/m/it/10.95 early stopping\TU/SimSun(0)/m/n/10.95 。| []
  []
 
 
-Overfull \hbox (10.43782pt too wide) in paragraph at lines 585--593
+Overfull \hbox (10.43782pt too wide) in paragraph at lines 604--612
 \TU/SimSun(0)/m/n/10.95 按 照 下 面 修 改 \TU/ptm/m/it/10.95 ValidationMonitor \TU/Si
 mSun(0)/m/n/10.95 构 造 体，|  指 定 是 否 损 失 \TU/ptm/m/it/10.95 200 \TU/SimSun(0)/m/n
 /10.95 步 \TU/ptm/m/it/10.95 (early_stopping_rounds=200)
@@ -2454,7 +2432,7 @@ mSun(0)/m/n/10.95 构 造 体，|  指 定 是 否 损 失 \TU/ptm/m/it/10.95 20
 File: ./pic/chapter2/validation_monitor_tensorboard_accuracy.png Graphic file (
 type QTm)
  <use  "./pic/chapter2/validation_monitor_tensorboard_accuracy.png" >
-Overfull \hbox (998.14272pt too wide) in paragraph at lines 613--614
+Overfull \hbox (998.14272pt too wide) in paragraph at lines 632--633
 [][] 
  []
 
@@ -2479,7 +2457,7 @@ File: ./pic/chapter1/activate_fun.png Graphic file (type QTm)
 File: ./pic/chapter1/relu_softplus.png Graphic file (type QTm)
 
 <use  "./pic/chapter1/relu_softplus.png" >
-Overfull \hbox (24.20247pt too wide) in paragraph at lines 772--774
+Overfull \hbox (24.20247pt too wide) in paragraph at lines 791--793
 \TU/SimSun(0)/m/n/10.95 制 是 相 互 独 立 的。|  但 是 是 否 被 抑 制 也 可 以 通 过 \TU/ptm/m/it/1
 0.95 noise_shape \TU/SimSun(0)/m/n/10.95 来 调 节。|  当 \TU/ptm/m/it/10.95 noise_sh
 ape[i]=shape(x)[i]
@@ -2489,25 +2467,25 @@ ape[i]=shape(x)[i]
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
  [80]
-Overfull \hbox (90.05165pt too wide) in paragraph at lines 788--789
+Overfull \hbox (90.05165pt too wide) in paragraph at lines 807--808
 []\TU/ptm/m/it/10.95 tf.nn.conv2d(input,filter,padding,stride=None,diation_rate
 =Nonei \TU/SimSun(0)/m/n/10.95 每 \TU/ptm/m/it/10.95 name = None,data_format=Non
 e) 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 788--789
+Underfull \hbox (badness 10000) in paragraph at lines 807--808
 
  []
 
 [81]
-Overfull \hbox (5.41907pt too wide) in paragraph at lines 820--824
+Overfull \hbox (5.41907pt too wide) in paragraph at lines 839--843
 \TU/ptm/m/it/10.95 tf.nn.softmax_cross_entropy_with_logits(_setinel=None,labels
 =None,logits=None,dim=-
  []
 
 
-Overfull \hbox (288.391pt too wide) in paragraph at lines 820--824
+Overfull \hbox (288.391pt too wide) in paragraph at lines 839--843
 \TU/ptm/m/it/10.95 1,name=None) \TU/SimSun(0)/m/n/10.95 输 出 \TU/ptm/m/it/10.95 
 loss:[batch_size] \TU/SimSun(0)/m/n/10.95 保 存 的 时 \TU/ptm/m/it/10.95 batch \TU/
 SimSun(0)/m/n/10.95 中 每 个 样 本 的 交 叉 熵。| \TU/ptm/m/it/10.95 tf.nn.sparse_softmax
@@ -2523,18 +2501,18 @@ File: ./pic/chapter1/origin.png Graphic file (type QTm)
 File: ./pic/chapter1/final.png Graphic file (type QTm)
 
 <use  "./pic/chapter1/final.png" >
-Overfull \hbox (104.03743pt too wide) in paragraph at lines 959--960
+Overfull \hbox (104.03743pt too wide) in paragraph at lines 978--979
 [][] 
  []
 
 [87]
-Overfull \hbox (129.50473pt too wide) in paragraph at lines 990--991
+Overfull \hbox (129.50473pt too wide) in paragraph at lines 1009--1010
 [][] 
  []
 
 File: ./pic/chapter1/tenbor1.png Graphic file (type QTm)
 <use  "./pic/chapter1/tenbor1.png" >
-Overfull \hbox (19.48195pt too wide) in paragraph at lines 1006--1007
+Overfull \hbox (19.48195pt too wide) in paragraph at lines 1025--1026
 [][] 
  []
 
@@ -2562,7 +2540,7 @@ Underfull \vbox (badness 10000) has occurred while \output is active []
 [93]
 File: ./pic/chapter1/tb_hist5.png Graphic file (type QTm)
  <use  "./pic/chapter1/tb_hist5.png" >
-Overfull \hbox (18.89119pt too wide) in paragraph at lines 1088--1089
+Overfull \hbox (18.89119pt too wide) in paragraph at lines 1107--1108
 [][] 
  []
 
@@ -2594,7 +2572,7 @@ Underfull \vbox (badness 10000) has occurred while \output is active []
 [99] [100]
 File: ./pic/chapter1/mnist_cnn.png Graphic file (type QTm)
  <use  "./pic/chapter1/mnist_cnn.png" >
-Overfull \hbox (119.45366pt too wide) in paragraph at lines 1219--1220
+Overfull \hbox (119.45366pt too wide) in paragraph at lines 1238--1239
 [][] 
  []
 
@@ -2654,7 +2632,7 @@ File: ./pic/chapter1/LSTM3-var-GRU.png Graphic file (type QTm)
 File: ./pic/chapter1/softmax-nplm.png Graphic file (type QTm)
 
 <use  "./pic/chapter1/softmax-nplm.png" >
-Overfull \hbox (6.942pt too wide) in paragraph at lines 1406--1407
+Overfull \hbox (6.942pt too wide) in paragraph at lines 1425--1426
 [][] 
  []
 
@@ -2671,7 +2649,7 @@ Underfull \vbox (badness 10000) has occurred while \output is active []
 [112]
 File: ./pic/chapter1/linear-relationships.png Graphic file (type QTm)
  <use  "./pic/chapter1/linear-relationships.png" >
-Overfull \hbox (323.1225pt too wide) in paragraph at lines 1449--1450
+Overfull \hbox (323.1225pt too wide) in paragraph at lines 1468--1469
 [][] 
  []
 
@@ -2682,7 +2660,7 @@ Underfull \vbox (badness 6542) has occurred while \output is active []
 [114]
 File: ./pic/chapter1/tsne.png Graphic file (type QTm)
  <use  "./pic/chapter1/tsne.png" >
-Overfull \hbox (11.05795pt too wide) in paragraph at lines 1496--1497
+Overfull \hbox (11.05795pt too wide) in paragraph at lines 1515--1516
 [][] 
  []
 
@@ -3788,6 +3766,102 @@ or,3 \TU/SimSun(0)/m/n/10.95 为 \TU/ptm/m/it/10.95 Tensor\TU/SimSun(0)/m/n/10.9
  []
 
 [279]) [280]
+\openout2 = `./chapter4/tf_feature.aux'.
+
+ (./chapter4/tf_feature.tex [281
+
+
+]
+Overfull \hbox (22.49495pt too wide) in paragraph at lines 66--67
+\TU/ptm/m/it/10.95 bucket\TU/SimSun(0)/m/n/10.95 ，| \TU/ptm/m/it/10.95 output_i
+d=Hash(input_feature_string)%bucket_size \TU/SimSun(0)/m/n/10.95 输 入 不 字 典 \TU/
+ptm/m/it/10.95 features,features[key]
+ []
+
+[282] [283] [284]
+Overfull \hbox (21.43636pt too wide) in paragraph at lines 169--170
+[]\TU/ptm/m/it/10.95 default_value: \TU/SimSun(0)/m/n/10.95 超 过 特 征 值 范 围 的 整 数
+ \TU/ptm/m/it/10.95 ID\TU/SimSun(0)/m/n/10.95 ，|  默 认 为\TU/ptm/m/it/10.95 -1\TU
+/SimSun(0)/m/n/10.95 ，|  这 可 能 不 被 一 个 正 \TU/ptm/m/it/10.95 num_oov_buckets
+ []
+
+
+Overfull \hbox (29.65588pt too wide) in paragraph at lines 172--173
+[]\TU/ptm/m/it/10.95 :ValueError\TU/SimSun(0)/m/n/10.95 ：| \TU/ptm/m/it/10.95 V
+acabulary_file \TU/SimSun(0)/m/n/10.95 文 件 缺 失，| \TU/ptm/m/it/10.95 vocabulary_
+size \TU/SimSun(0)/m/n/10.95 缺 失 或 者 小 于 \TU/ptm/m/it/10.95 1\TU/SimSun(0)/m/n/
+10.95 ，| \TU/ptm/m/it/10.95 num_oov_buckets
+ []
+
+[285]
+Overfull \hbox (35.0546pt too wide) in paragraph at lines 184--185
+\TU/ptm/m/it/10.95 num_oov_buckets \TU/SimSun(0)/m/n/10.95 和 \TU/ptm/m/it/10.95
+ default_value \TU/SimSun(0)/m/n/10.95 指 定 如 何 包 含 操 作 词 汇 表 的 值，|  对 于 字 典 \TU
+/ptm/m/it/10.95 features,features[key]
+ []
+
+
+Overfull \hbox (9.77101pt too wide) in paragraph at lines 210--211
+[]\TU/ptm/m/it/10.95 vocabulary_list: \TU/SimSun(0)/m/n/10.95 一 个 定 义 可 顺 序 列 带
+ 的 词 汇 表，|  每 个 特 征 被 映 射 到 它 在 \TU/ptm/m/it/10.95 vocabulary_list
+ []
+
+[286]
+Overfull \hbox (64.38225pt too wide) in paragraph at lines 225--226
+\TU/SimSun(0)/m/n/10.95 返 回 执 行 交 叉 分 类 特 征 的 一 列，|  交 叉 特 征 被 \TU/ptm/m/it/10.
+95 hash_bucket_size \TU/SimSun(0)/m/n/10.95 打 散，|  变 换 可 能 被 \TU/ptm/m/it/10.95
+ Hash%hash_bucket_size
+ []
+
+[287]
+Overfull \hbox (35.75539pt too wide) in paragraph at lines 263--264
+\TU/SimSun(0)/m/n/10.95 如 果 输 入 特 征 是 数 值 类 型，|  你 可 以 用 \TU/ptm/m/it/10.95 cat
+egoriacal_column_with_identity \TU/SimSun(0)/m/n/10.95 或 者 \TU/ptm/m/it/10.95 b
+ucketized_column: 
+ []
+
+[288] [289]
+Overfull \hbox (1.07677pt too wide) in paragraph at lines 323--324
+[]\TU/SimSun(0)/m/n/10.95 代 表 给 定 绝 对 的 \TU/ptm/m/it/10.95 mult-hot\TU/SimSun(0
+)/m/n/10.95 ，|  用 于 打 包 任 何 \TU/ptm/m/it/10.95 categorical_column_* \TU/SimSun(
+0)/m/n/10.95 用 \TU/ptm/m/it/10.95 embedding_column
+ []
+
+[290]
+Overfull \hbox (178.98135pt too wide) in paragraph at lines 362--363
+\TU/SimSun(0)/m/n/10.95 些 都 应 该 是 继 承 自 \TU/ptm/m/it/10.95 _DenseColumn \TU/Sim
+Sun(0)/m/n/10.95 的 实 例，|  像 \TU/ptm/m/it/10.95 numeric_column,embedding_column,
+bucketized_column,indicator_column,
+ []
+
+
+Overfull \hbox (156.03014pt too wide) in paragraph at lines 363--364
+[]\TU/ptm/m/it/10.95 weight_collections: \TU/SimSun(0)/m/n/10.95 一 个 将 被 添 加 到 
+集 合 列 表 的 名 字，|  注 意 变 量 也 被 增 加 到 集 合 \TU/ptm/m/it/10.95 tf.GraphKeys.GLOBAL_V
+ASRIABLE
+ []
+
+
+Overfull \hbox (0.3419pt too wide) in paragraph at lines 379--381
+\TU/SimSun(0)/m/n/10.95 返 回 一 个 基 于 \TU/ptm/m/it/10.95 feature_columns \TU/SimS
+un(0)/m/n/10.95 给 定 的 线 性 预 测 \TU/ptm/m/it/10.95 Tensor\TU/SimSun(0)/m/n/10.95 
+，|  返 回 一 个 基 于 给 定 \TU/ptm/m/it/10.95 feature_column
+ []
+
+[291]
+Overfull \hbox (44.80005pt too wide) in paragraph at lines 395--396
+[]\TU/ptm/m/it/10.95 sparse_combiner: \TU/SimSun(0)/m/n/10.95 一 个 字 符 串 指 定 如 果
+ 稀 疏 列 是 多 值 时 如 何 减 少 的 字 符 串，|  当 前\TU/ptm/m/it/10.95 ”mean”,”sqrtn”
+ []
+
+[292] [293]
+Overfull \hbox (6.6441pt too wide) in paragraph at lines 460--461
+[]\TU/ptm/m/it/10.95 : \TU/SimSun(0)/m/n/10.95 如 果 任 何 维 度 不 是 证 书 有，| \TU/ptm/
+m/it/10.95 default_value \TU/SimSun(0)/m/n/10.95 是 一 个 迭 代 不 但 是 形 状 不 匹 配，| \T
+U/ptm/m/it/10.95 default_value
+ []
+
+[294]) [295]
 \openout2 = `./chapter4/tf_layer.aux'.
 
  (./chapter4/tf_layer.tex
@@ -3798,10 +3872,10 @@ nnels_first \TU/SimSun(0)/m/n/10.95 形 状 为 \TU/ptm/m/it/10.95 (batch,channe
 ngth) 
  []
 
-[281
+[296
 
 
-] [282]
+] [297]
 Overfull \hbox (5.69766pt too wide) in paragraph at lines 95--96
 []\TU/ptm/m/it/10.95 batch normalization layer \TU/SimSun(0)/m/n/10.95 的 函 数[][
 ]参 考[][]，|  当 训 练 的 时 候 \TU/ptm/m/it/10.95 moving_mean \TU/SimSun(0)/m/n/10.95 
@@ -3822,7 +3896,7 @@ Overfull \hbox (34.06906pt too wide) in paragraph at lines 104--105
 ptm/m/it/10.95 zeros_debias_moving_mean=True
  []
 
-[283] [284] [285]
+[298] [299] [300]
 Overfull \hbox (53.17683pt too wide) in paragraph at lines 165--166
 \TU/ptm/m/it/10.95 channels_last \TU/SimSun(0)/m/n/10.95 输 入 形 状 为 \TU/ptm/m/it
 /10.95 (batch,length,channels)\TU/SimSun(0)/m/n/10.95 ，| \TU/ptm/m/it/10.95 cha
@@ -3837,7 +3911,7 @@ Overfull \hbox (11.74907pt too wide) in paragraph at lines 179--180
 (0)/m/n/10.95 是 \TU/ptm/m/it/10.95 True(bias_initializer
  []
 
-[286] [287] [288] [289] [290] [291] [292] [293] [294] [295] [296]) [297]
+[301] [302] [303] [304] [305] [306] [307] [308] [309] [310] [311]) [312]
 \openout2 = `./chapter4/tf_train.aux'.
 
 
@@ -3846,10 +3920,10 @@ Underfull \hbox (badness 10000) in paragraph at lines 7--9
 
  []
 
-[298
+[313
 
 
-] [299]
+] [314]
 Overfull \hbox (149.66425pt too wide) in paragraph at lines 103--104
 []\TU/ptm/m/it/10.95 var_list:tf.Variable \TU/SimSun(0)/m/n/10.95 更 新 最 小 化 \TU
 /ptm/m/it/10.95 loss \TU/SimSun(0)/m/n/10.95 的 列 表 或 者 元 组。|  默 认 图 中 的 变 量 列 表
@@ -3864,9 +3938,9 @@ Overfull \hbox (54.78922pt too wide) in paragraph at lines 104--105
 0)/m/n/10.95 。| 
  []
 
-) [300]
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 87.
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 87.
+) [315]
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 88.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 88.
  (./book.aux (./chapter1/deeplearning.aux) (./chapter2/tf_basics1.aux)
 (./chapter2/Graph.aux) (./chapter2/tf_dataset.aux) (./chapter2/Treading.aux)
 (./chapter2/embedding.aux) (./chapter2/tf_basics2.aux)
@@ -3878,22 +3952,22 @@ Package atveryend Info: Empty hook `AfterLastShipout' on input line 87.
 (./chapter3/contexlib.aux) (./chapter3/XML.aux) (./chapter3/HTMLParser.aux)
 (./chapter3/ZipFile.aux) (./chapter3/url.aux) (./chapter3/requests.aux)
 (./chapter3/bazel.aux) (./chapter4/tf_tricks.aux) (./chapter4/tf_common.aux)
-(./chapter4/Variable.aux) (./chapter4/tf_image.aux) (./chapter4/tf_layer.aux)
-(./chapter4/tf_train.aux))
-Package atveryend Info: Empty hook `AtVeryEndDocument' on input line 87.
-Package atveryend Info: Empty hook `AtEndAfterFileList' on input line 87.
+(./chapter4/Variable.aux) (./chapter4/tf_image.aux) (./chapter4/tf_feature.aux)
+(./chapter4/tf_layer.aux) (./chapter4/tf_train.aux))
+Package atveryend Info: Empty hook `AtVeryEndDocument' on input line 88.
+Package atveryend Info: Empty hook `AtEndAfterFileList' on input line 88.
 
 
 LaTeX Font Warning: Some font shapes were not available, defaults substituted.
 
  ) 
 Here is how much of TeX's memory you used:
- 46931 strings out of 493005
- 884202 string characters out of 6140056
- 1123139 words of memory out of 5000000
- 49986 multiletter control sequences out of 15000+600000
+ 47487 strings out of 493005
+ 891533 string characters out of 6140056
+ 1124085 words of memory out of 5000000
+ 50535 multiletter control sequences out of 15000+600000
  13660 words of font info for 65 fonts, out of 8000000 for 9000
  1348 hyphenation exceptions out of 8191
  62i,10n,98p,10432b,2354s stack positions out of 5000i,500n,10000p,200000b,80000s
 
-Output written on book.xdv (310 pages, 7580944 bytes).
+Output written on book.xdv (325 pages, 8081516 bytes).

@@ -372,6 +372,8 @@ INPUT ./chapter4/Variable.aux
 INPUT ./chapter4/Variable.aux
 INPUT ./chapter4/tf_image.aux
 INPUT ./chapter4/tf_image.aux
+INPUT ./chapter4/tf_feature.aux
+INPUT ./chapter4/tf_feature.aux
 INPUT ./chapter4/tf_layer.aux
 INPUT ./chapter4/tf_layer.aux
 INPUT ./chapter4/tf_train.aux
@@ -611,6 +613,9 @@ INPUT ./chapter4/Variable.tex
 OUTPUT ./chapter4/tf_image.aux
 INPUT ./chapter4/tf_image.tex
 INPUT ./chapter4/tf_image.tex
+OUTPUT ./chapter4/tf_feature.aux
+INPUT ./chapter4/tf_feature.tex
+INPUT ./chapter4/tf_feature.tex
 OUTPUT ./chapter4/tf_layer.aux
 INPUT ./chapter4/tf_layer.tex
 INPUT ./chapter4/tf_layer.tex
@@ -682,6 +687,8 @@ INPUT ./chapter4/Variable.aux
 INPUT ./chapter4/Variable.aux
 INPUT ./chapter4/tf_image.aux
 INPUT ./chapter4/tf_image.aux
+INPUT ./chapter4/tf_feature.aux
+INPUT ./chapter4/tf_feature.aux
 INPUT ./chapter4/tf_layer.aux
 INPUT ./chapter4/tf_layer.aux
 INPUT ./chapter4/tf_train.aux
