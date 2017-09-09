@@ -467,3 +467,371 @@ INFO:tensorflow:Saving evaluation summary for step 20000: accuracy = 0.9733, los
 {'loss': 0.090227105, 'global_step': 20000, 'accuracy': 0.97329998}
 \end{lstlisting}
 我们在测试集上获得了97.3\%的精确度。
+\section{图像识别}
+我们的大脑看东西很简单，他不需要得到任何人的告诉就能分别狮子，鲸钱包，读一个符号或者识别人脸，
+但是计算机解决这个问题却很难。最近几年机器学习已经在这个问题上取得了很大的进步，事实上我们已经发现了一个称谓CNN的模型可以在很难的视觉认知邻域上获得匹敌甚至超过人类的性能。研究人员在ImageNet上展示他们的计算机视觉的成果，模型性能持续提升从\href{http://static.googleusercontent.com/media/research.google.com/en//archive/unsupervised_icml2012.pdf}{QuocNet},\href{http://www.cs.toronto.edu/~fritz/absps/imagenet.pdf}{AlexNet},\href{http://arxiv.org/abs/1409.4842}{Inception(GoogleNet)},\href{http://arxiv.org/abs/1502.03167}{BN-inception-v2}，Google累不和外部的研究人员都已经出版了一些论文描述这些模型，但是结果任然河南再次提升，我们用下面的代码实现我们最新的模型\href{http://arxiv.org/abs/1512.00567}{Inception-v3},Inception-v3 2012年在Imagenet的LVRC上训练，这对计算机来说是一个基本的任务，这里模型尝试着分类整个图形为1000中分类像"斑马","大麦町犬","洗碗机"，下面是AlexNet分类的一些图像:
+\begin{center}
+\begin{figure}[H]
+\includegraphics{AlexClassification.png}
+\end{figure}
+\end{center}
+为了对比模型，我们检查迷行预测正确结果为"top-5 error rate",AlexNet2012年的验证数据及上得到top-5 error rate 15.3\%,Inception(GoogleLeNet)得到6.67\%,BN-Inception-v2得到4.9\%,Inception-v3得到3.46\%。
+\begin{quote}
+\emph{人类在ImageNet中做的怎么样，由 Andrej Karpathy 的\href{http://karpathy.github.io/2014/09/02/what-i-learned-from-competing-against-a-convnet-on-imagenet/}{博客}尝试测量人们的性能，他得到了5.1\%的top-5 error rate}
+\end{quote}
+下面的导航将教你如何使用Inception-v3.你将学习用Python或者C++学习分类图像成1000类，我们也将讨论如何从模型提取高级特征重用到其它的视觉任务。
+\subsection{用Python API}
+第一次运行时classify\_image.py将从tensorflow官网下载训练好的模型，你将需要200M左右的硬盘空间。开始从github上clone\href{https://github.com/tensorflow/models}{Google模型}，然后运行命令:
+\begin{lstlisting}[language=Bash]
+cd models/tutorials/image/imagenet
+python classify_image.py
+\end{lstlisting}
+上面的命令将分类下面的熊猫图片。
+\begin{center}
+\begin{figure}[h]
+\includegraphics{cropped_panda.jpg}
+\end{figure}
+\end{center}
+如果模型正确运行将生成下面的输出:
+\begin{lstlisting}{language=Python}
+giant panda, panda, panda bear, coon bear, Ailuropoda melanoleuca (score = 0.88493)
+indri, indris, Indri indri, Indri brevicaudatus (score = 0.00878)
+lesser panda, red panda, panda, bear cat, cat bear, Ailurus fulgens (score = 0.00317)
+custard apple (score = 0.00149)
+earthstar (score = 0.00127)
+\end{lstlisting}
+如果你希望添加其它的JPEG图片，你也许需要编辑--image\_file参数，如果你需要下载模型数据到不同的目录，你将需要指定--model\_dir到使用的目录。
+\subsection{用C++ API}
+你可以在生产环境上使用C++运行相同的Inception-v3模型。你可以下载包含像这样定义的GraphDef的打包文件
+(从TensorFlow仓库的根目录运行)
+\begin{lstlisting}[language=Bash]
+curl -L "https://storage.googleapis.com/download.tensorflow.org/models/inception_v3_2016_08_28_frozen.pb.tar.gz" |
+  tar -C tensorflow/examples/label_image/data -xz
+\end{lstlisting}
+下一步我们编译包含C++代码载入的二进制运行图，如果你已经按照\href{https://www.tensorflow.org/install/install_sources}{the instructions to download the source installation of TensorFlow}
+配置了你的平台，你将能在shell终端通过下面的命令构建例子运行:
+\begin{lstlisting}[language=Bash]
+bazel build tensorflow/examples/label_image/...
+\end{lstlisting}
+你可以像这样创建一个二进制的执行文件:
+\begin{lstlisting}[language=Bash]
+bazel-bin/tensorflow/examples/label_image/label_image
+\end{lstlisting}
+用框架默认的例子图片，输出下面的结果:
+\begin{lstlisting}[language=Bash]
+I tensorflow/examples/label_image/main.cc:206] military uniform (653): 0.834306
+I tensorflow/examples/label_image/main.cc:206] mortarboard (668): 0.0218692
+I tensorflow/examples/label_image/main.cc:206] academic gown (401): 0.0103579
+I tensorflow/examples/label_image/main.cc:206] pickelhaube (716): 0.00800814
+I tensorflow/examples/label_image/main.cc:206] bulletproof vest (466): 0.00535088
+\end{lstlisting}
+在这个例子中你用一张默认的图片\href{https://en.wikipedia.org/wiki/Grace_Hopper}{Admiral Grace Hopper},你可以看到网络正确识别她的军官制服，得分0.8。
+\begin{center}
+\begin{figure}[H]
+\includegraphics{grace_hopper.jpg}
+\end{figure}
+\end{center}
+下一步提供--image=参数分辨你的图片
+\begin{lstlisting}[language=Bash]
+bazel-bin/tensorflow/examples/label_image/label_image --image=my_image.png
+\end{lstlisting}
+如果你查看\href{https://github.com/tensorflow/tensorflow/blob/master/tensorflow/examples/label_image/main.cc}{tensorflow/examples/label\_image/main.cc}你可以明白它是如何工作的，我们希望代码能帮你整合TensorFlow到你的应用，因此我们将一步步的浏览主函数。命令行参数控制文件从哪里载入，即输入图像的内容。模型希望得到$299\times299$的RGB图像，分别是input\_width,input\_height,我们需要缩放图像的像素从0-255到图能操作的一个浮点值。我们通过input\_mean和input\_std控制缩放：我们首先用像素值减去input\_mean然后除以input\_std,这些值看起来可能有点琢磨不透，但是他们被原始作者定义，她/他想训练的时候什么值被匹配，你可以看看我们如何在\href{https://github.com/tensorflow/tensorflow/blob/master/tensorflow/examples/label_image/main.cc#L88}{ReadTensorFromImageFile()}函数中如何应用一张图像。
+\begin{lstlisting}[language=C++]
+// Given an image file name, read in the data, try to decode it as an image,
+// resize it to the requested size, and then scale the values as desired.
+Status ReadTensorFromImageFile(string file_name, const int input_height,
+                               const int input_width, const float input_mean,
+                               const float input_std,
+                               std::vector<Tensor>* out_tensors) {
+  tensorflow::GraphDefBuilder b;
+\end{lstlisting}
+我们开始撞见亿个GraphDefBuilder对象指定一个运行或者载入的模型。
+\begin{lstlisting}[language=C++]
+  string input_name = "file_reader";
+  string output_name = "normalized";
+  tensorflow::Node* file_reader =
+      tensorflow::ops::ReadFile(tensorflow::ops::Const(file_name, b.opts()),
+                                b.opts().WithName(input_name));
+\end{lstlisting}
+然后我们开始为我们想要运行或者载入的小模型创建节点，变换大小，缩放像素值得到主函数希望得到的结果，我们创建的第一个节点是保持图像名字的tensor想要载入Const操作然后作为第一个输入传入ReadFile操作，你也许注意到我们传递b.opts()操作给所有的创建操作，参数确保节点被添加到GraphDefBuilder的模型定义。这给了一个名字给节点，
+对于给一个名字节点不是严格需要的因为如果你不指定这个将自动命名，但是它使得调试变得简单
+\begin{lstlisting}[language=C++]
+  // Now try to figure out what kind of file it is and decode it.
+  const int wanted_channels = 3;
+  tensorflow::Node* image_reader;
+  if (tensorflow::StringPiece(file_name).ends_with(".png")) {
+    image_reader = tensorflow::ops::DecodePng(
+        file_reader,
+        b.opts().WithAttr("channels", wanted_channels).WithName("png_reader"));
+  } else {
+    // Assume if it's not a PNG then it must be a JPEG.
+    image_reader = tensorflow::ops::DecodeJpeg(
+        file_reader,
+        b.opts().WithAttr("channels", wanted_channels).WithName("jpeg_reader"));
+  }
+  // Now cast the image data to float so we can do normal math on it.
+  tensorflow::Node* float_caster = tensorflow::ops::Cast(
+      image_reader, tensorflow::DT_FLOAT, b.opts().WithName("float_caster"));
+  // The convention for image ops in TensorFlow is that all images are expected
+  // to be in batches, so that they're four-dimensional arrays with indices of
+  // [batch, height, width, channel]. Because we only have a single image, we
+  // have to add a batch dimension of 1 to the start with ExpandDims().
+  tensorflow::Node* dims_expander = tensorflow::ops::ExpandDims(
+      float_caster, tensorflow::ops::Const(0, b.opts()), b.opts());
+  // Bilinearly resize the image to fit the required dimensions.
+  tensorflow::Node* resized = tensorflow::ops::ResizeBilinear(
+      dims_expander, tensorflow::ops::Const({input_height, input_width},
+                                            b.opts().WithName("size")),
+      b.opts());
+  // Subtract the mean and divide by the scale.
+  tensorflow::ops::Div(
+      tensorflow::ops::Sub(
+          resized, tensorflow::ops::Const({input_mean}, b.opts()), b.opts()),
+      tensorflow::ops::Const({input_std}, b.opts()),
+      b.opts().WithName(output_name));
+\end{lstlisting}
+我们然后添加更多的节点解码文件数据为图片，转化整数为浮点值，变形然后最后运行减去和除法操作:
+\begin{lstlisting}[language=C++]
+  // This runs the GraphDef network definition that we've just constructed, and
+  // returns the results in the output tensor.
+  tensorflow::GraphDef graph;
+  TF_RETURN_IF_ERROR(b.ToGraphDef(&graph));
+\end{lstlisting}
+在这最后我们有一个存储在变量b中的模型定义我们用ToGraphDef()转化完整的图定义
+\begin{lstlisting}[language=C++]
+  std::unique_ptr<tensorflow::Session> session(
+      tensorflow::NewSession(tensorflow::SessionOptions()));
+  TF_RETURN_IF_ERROR(session->Create(graph));
+  TF_RETURN_IF_ERROR(session->Run({}, {output_name}, {}, out_tensors));
+  return Status::OK();
+\end{lstlisting}
+我们创建一个运行图的接口tf.Session对象，运行它，指定我们想从那个节点获得输出和放输出数据到哪里，这给我们一个Tensor对象的向量，这个对象将变成一个三个对量，你可以将Tensor认为是多维数组，它保存299像素宽，299像素高。3通道的图像作为浮点值，如果你有自己的图像处理框架，你应该能用它替代，只要你在输入图像到主图中时应用相同的转换。这是用C++创建一个简单的TensorFlow图的例子，但是对于预先训练好的Inception模型我们想从文件载入一个大的定义，你可以在LoadGraph()函数中查看我们如何做的:
+\begin{lstlisting}[language=C++]
+// Reads a model graph definition from disk, and creates a session object you
+// can use to run it.
+Status LoadGraph(string graph_file_name,
+                 std::unique_ptr<tensorflow::Session>* session) {
+  tensorflow::GraphDef graph_def;
+  Status load_graph_status =
+      ReadBinaryProto(tensorflow::Env::Default(), graph_file_name, &graph_def);
+  if (!load_graph_status.ok()) {
+    return tensorflow::errors::NotFound("Failed to load compute graph at '",
+                                        graph_file_name, "'");
+  }
+\end{lstlisting}
+如果你已经查看的图像载入代码，一些名词应该很熟悉。想必须用一个GraphDefBuffer残生一个GraphDef对象，我们载入一个包含GraphDef的protobuf文件。
+\begin{lstlisting}[language=C++]
+  session->reset(tensorflow::NewSession(tensorflow::SessionOptions()));
+  Status session_create_status = (*session)->Create(graph_def);
+  if (!session_create_status.ok()) {
+    return session_create_status;
+  }
+  return Status::OK();
+}
+\end{lstlisting}
+我们从GraphDef创建一个Session对象传递它给调用器以至于我们稍后能使用。GetTopLabels()函数有些像函数载入，但是我们希望运行主图得到结果，存储它进一个按照标签最高评分的结果，像图片载入，它创建一个的GraphDefBuilder,添加一对节点上去然后运行短图割刀一对输出tensor，在这个例子中他们代表排序的分数和最好可能性的结果的索引位置。
+\begin{lstlisting}[language=C++]
+// Analyzes the output of the Inception graph to retrieve the highest scores and
+// their positions in the tensor, which correspond to categories.
+Status GetTopLabels(const std::vector<Tensor>& outputs, int how_many_labels,
+                    Tensor* indices, Tensor* scores) {
+  tensorflow::GraphDefBuilder b;
+  string output_name = "top_k";
+  tensorflow::ops::TopK(tensorflow::ops::Const(outputs[0], b.opts()),
+                        how_many_labels, b.opts().WithName(output_name));
+  // This runs the GraphDef network definition that we've just constructed, and
+  // returns the results in the output tensors.
+  tensorflow::GraphDef graph;
+  TF_RETURN_IF_ERROR(b.ToGraphDef(&graph));
+  std::unique_ptr<tensorflow::Session> session(
+      tensorflow::NewSession(tensorflow::SessionOptions()));
+  TF_RETURN_IF_ERROR(session->Create(graph));
+  // The TopK node returns two outputs, the scores and their original indices,
+  // so we have to append :0 and :1 to specify them both.
+  std::vector<Tensor> out_tensors;
+  TF_RETURN_IF_ERROR(session->Run({}, {output_name + ":0", output_name + ":1"},
+                                  {}, &out_tensors));
+  *scores = out_tensors[0];
+  *indices = out_tensors[1];
+  return Status::OK();
+\end{lstlisting}
+PrintTopLabels()函数得到排序接轨哦用一种友好的方式打印他们。CkeckTopLabel()函数是非常累是，但是仅仅确保顶部的标签是我们想要的，用于调试。
+在最后main()结合所有的函数调用
+\begin{lstlisting}[language=C++]
+int main(int argc, char* argv[]) {
+  // We need to call this to set up global state for TensorFlow.
+  tensorflow::port::InitMain(argv[0], &argc, &argv);
+  Status s = tensorflow::ParseCommandLineFlags(&argc, argv);
+  if (!s.ok()) {
+    LOG(ERROR) << "Error parsing command line flags: " << s.ToString();
+    return -1;
+  }
+
+  // First we load and initialize the model.
+  std::unique_ptr<tensorflow::Session> session;
+  string graph_path = tensorflow::io::JoinPath(FLAGS_root_dir, FLAGS_graph);
+  Status load_graph_status = LoadGraph(graph_path, &session);
+  if (!load_graph_status.ok()) {
+    LOG(ERROR) << load_graph_status;
+    return -1;
+  }
+\end{lstlisting}
+我们载入主图:
+\begin{lstlisting}[language=C++]
+ // Get the image from disk as a float array of numbers, resized and normalized
+  // to the specifications the main graph expects.
+  std::vector<Tensor> resized_tensors;
+  string image_path = tensorflow::io::JoinPath(FLAGS_root_dir, FLAGS_image);
+  Status read_tensor_status = ReadTensorFromImageFile(
+      image_path, FLAGS_input_height, FLAGS_input_width, FLAGS_input_mean,
+      FLAGS_input_std, &resized_tensors);
+  if (!read_tensor_status.ok()) {
+    LOG(ERROR) << read_tensor_status;
+    return -1;
+  }
+  const Tensor& resized_tensor = resized_tensors[0];
+\end{lstlisting}
+载入，变形，处理输入图像
+\begin{lstlisting}[language=C++]
+  // Actually run the image through the model.
+  std::vector<Tensor> outputs;
+  Status run_status = session->Run({ {FLAGS_input_layer, resized_tensor}},
+                                   {FLAGS_output_layer}, {}, &outputs);
+  if (!run_status.ok()) {
+    LOG(ERROR) << "Running model failed: " << run_status;
+    return -1;
+  }
+\end{lstlisting}
+我们用图像作为输入运行载入的图:
+\begin{lstlisting}[language=C++]
+  // This is for automated testing to make sure we get the expected result with
+  // the default settings. We know that label 866 (military uniform) should be
+  // the top label for the Admiral Hopper image.
+  if (FLAGS_self_test) {
+    bool expected_matches;
+    Status check_status = CheckTopLabel(outputs, 866, &expected_matches);
+    if (!check_status.ok()) {
+      LOG(ERROR) << "Running check failed: " << check_status;
+      return -1;
+    }
+    if (!expected_matches) {
+      LOG(ERROR) << "Self-test failed!";
+      return -1;
+    }
+  }
+\end{lstlisting}
+出于测试的目的我们可以检查确保我们得到我们想要的结果:
+\begin{lstlisting}[language=C++]
+// Do something interesting with the results we've generated.
+  Status print_status = PrintTopLabels(outputs, FLAGS_labels);
+\end{lstlisting}
+最后我们打印我们输出的标签:
+\begin{lstlisting}[language=C++]
+ if (!print_status.ok()) {
+    LOG(ERROR) << "Running print failed: " << print_status;
+    return -1;
+  }
+\end{lstlisting}
+我们用TensorFLow的State对象处理错误，它很方便因为它用ok()作为检查器检查是否出现的任何错误，然后打印出可读的错误消息，在这个例子中我们一站式对象识别，但是你应该能用类似的代码在你发现的其他模型上或者自己训练在不同的领域。我们希望这个小的例子给你一些灵感如何用TensorFlow和你的产品。
+\begin{quote}
+转换学习是想法，如果你知道如何很好的解决问题，你应该能转换一些解决相关问题的理解，一种执行转换学习的方法是移除网络最后的分类层提取\href{http://arxiv.org/abs/1310.1531}{next-to-last layer of the CNN},在这个例子中2048维向量，有一个关于这个如何做到的向导\href{https://www.tensorflow.org/tutorials/image_retraining}{in the how-to section}
+\end{quote}
+\subsection{更多学习资源}
+为了学习神经网络，Michael Nielsen的\href{http://neuralnetworksanddeeplearning.com/chap1.html}{free online book},类似对于卷积神经网络Chris Olah有一些\href{http://colah.github.io/posts/2014-07-Conv-Nets-Modular/}{nice blog posts},Michael Nielsen的书有一个关于它的\href{http://neuralnetworksanddeeplearning.com/chap6.html}{greatchapter covering them}为了找出更多的卷积神经网络的实现你可以调到\href{https://www.tensorflow.org/tutorials/deep_cnn}{ deep convolutional networks tutorial},最后如果你想加速在这一领域的研究，你可以读导航中列出的最近的相关工作的论文。
+\section{TensorFlow实现大规模线性模型}
+tf.estimator API 提供了一些丰富的工具在TensorFlow中处理线性模型，这个章节提供了一个官员这些工具的概览，解释如下:
+\begin{itemize}
+  \item 线性模型是什么
+  \item 为什么你想用线性模型
+  \item tf.estimator如何使得在TensorFlow中建立一个线性模型变得简单
+  \item 如何结合线性模型和深度学习的有点
+\end{itemize}
+读这个概览决定了是否tf.estimator对于你来说有用，然后做一下\href{Models tutorial}{https://www.tensorflow.org/tutorials/wide}这个概览的代码来自于这个章节，但是导航更详细的调通代码。为了明白为了理解这个概念熟悉一些基本的机器学习概念和tf.estimator是有帮助的。
+\subsection{什么是线性模型}
+一个线性模型用一个特征权重和作出预测，例如，如果你有关于年龄。教育年数，每周工作小时数的数据，你可以的你可以你可以了解这些权重以至于他们的权重求和评估一个人的薪水。你可以用线性模型分类，一些线性模型转化权重为一个更方便的形式，例如逻辑回归转化权重和维逻辑函数输出0-1之间的数值。但是你依然有对于每个输入特征你依然有一个权重。
+\subsection{为什么你想用线性模型？}
+当最近的研究已经展示了有很多层的复杂神经网络的能力为什么我们想用一个简单的模型?\newline
+线性模型:
+\begin{itemize}
+  \item 比深度神经网络训练快速
+  \item 在大型数据及上也能工作的很好
+  \item 训练的时候不要求微小的学习率
+  \item 相比神经网络能更简单轻松地调试，你可以检查付给给个特征的权重找出那个对于预测结果的影响最大。
+  \item 对于了解机器学习提供了很好的起点
+  \item 工业上广泛的使用
+\end{itemize}
+\subsection{tf.estimator将如何构建线性模型}
+你可以通过TensorFlow建立线性模型不需要特殊的API，但是tf.estimator提供了一些工具帮助你更轻松地构建搞笑的大规模线性模型。
+\subsubsection{特征列和线性模型}
+设计的线性模型的大部分工作是转化原始数据为合适的输入特征，TensorFlow用FeatureColumn概念启动这些转换，一个FeatureColumn代表你的数据的单个特征，一个FeatureColumn也许代表一些像"height"或者也许代表一个像"eye\_color"的种类这里的值是来自离散的可能性像{'blue', 'brown', 'green'}。连续的特征像'height'和绝对的特征'eye\_color',在输入模型前一个单个的值可能被转化为数值序列。FeatureColumn概念让你用但一个语义单元操作特征，你可以转化选择特征来包含没有用指定索引处理的处理。
+\subsubsection{稀疏列}
+绝对的特征在线性模型中被转化为稀疏向量，在向量中每个可能值有一个相关的索引或者id，例如如果仅仅有三个可能的颜色代表'eye\_color'作为长度为3的向量，'brown'将变为[1,0,0],'blue'将变成[0,1,0],'green'将变成[0,0,1],这里向量被称为稀疏因为当可能值很大的时候。它们可能很长但是有很多0。尽管我们不需要用绝对列用tf.estimator线性模型，一个有力的线性模型能处理大型的稀疏向量，tf,estimator线性模型工具的稀疏特征也正是一个主要的用途。
+\subsubsection{编码稀疏列}
+FeatureColumn用下面的代码自动处理传统的绝对的值称为向量:
+\begin{lstlisting}[language=Python]
+eye_color = tf.feature_column.categorical_column_with_vocabulary_list(
+    "eye_color", vocabulary_list=["blue", "brown", "green"])
+\end{lstlisting}
+这里的eye\_color是你的源数据的列的名字，入股你不知道所有的可能值你可以为你的绝对特征以生成FeatureColumn。对于这种情况，你将用categorical\_column\_with\_hash\_bucket(),用一盒散列函数赋值索引给特征值。
+\begin{lstlisting}[language=Python]
+education = tf.feature_column.categorical_column_with_hash_bucket(
+    "education", hash_bucket_size=1000)
+\end{lstlisting}
+\subsection{特征交叉}
+因为线性模型赋值独立的权重给分开的特征，他们不嫩改写东西相对重要的指定特征值的结合。如果你有一个特征'favorite\_sport'和特征'home\_city'然后你想尝试预测一个是是否喜欢船红色的衣服，你的线性模型将不能从喜欢穿红色衣服的圣路易斯的棒球粉丝中学习。你可以通过创建一个新的特征'favorite\_sport\_x\_home\_city'得到这个限制。这些特征的值对一个人仅仅链接两个源特征'baseball\_x\_stlouis',例如这个结合的特征被称为特征交叉，crossed\_column()方法使得建立特征交叉很容易
+\begin{lstlisting}[language=Python]
+sport_x_city = tf.feature_column.crossed_column(
+    ["sport", "city"], hash_bucket_size=int(1e4))
+\end{lstlisting}
+连续的列，你可以像这样指定一个连续的特征:
+\begin{lstlisting}[language=Python]
+age = tf.feature_column.numeric_column("age")
+\end{lstlisting}
+尽管作为一个简单的实数，连续特征经常能直接输入给模型，TensorFlow对于排序这列提供了有用的转化。
+\subsection{Bucketization}
+Bucketization转化一个连续的列为绝对列。这个转换让你在交叉特征中用连续的特征，或者了解那里指定值的范围特别重要，Bucketization分隔可能值的范围为字范围称为buckets。
+\begin{lstlisting}[language=Python]
+age_buckets = tf.feature_column.bucketized_column(
+    age, boundaries=[18, 25, 30, 35, 40, 45, 50, 55, 60, 65])
+\end{lstlisting}
+bucket掉入那个区域变成这个值的绝对标签。
+
+\subsubsection{输入函数}
+FeatureColumn为你的模型提供了一个指定的输入数据。标志着着如何代表和转化数据。但是他们本身不提供数据，你通过输入函数提供数据，输入函数必须返回一个tensor字典，每个键是FeatureColumn的名字。每个键的值是一个对于所有数据实例是包含特征值的tensor。查看\href{https://www.tensorflow.org/get_started/input_fn}{ Building Input Functions with tf.estimator}获取更多的关于输入函数的见解，在\href{https://www.github.com/tensorflow/tensorflow/blob/r1.3/tensorflow/examples/learn/wide_n_deep_tutorial.py}{ linear models tutorial code}中的input\_fn是实现输入函数的一个例子。在输入函数被传递给train()和evaluate()调用初始训练和测试正如下一章描述的。
+\subsubsection{线性estimator}
+TensorFlow的estimator给训练和分类模型提供了一个独一无二的训练评估工具。他们考虑详细的训练和评估训练允许用户集中注意力在模型输入和架构上。
+
+为了建立一个线性estimator，你可以用tf.estimator.LinearClassfier estimator或者tf.estimator.LinearRegressor estimator分别建立分类和回归模型。
+
+创建tensorflow estimator和运行estimator：
+\begin{itemize}
+  \item estimator实例，对于两个线性estimator类，你传递一个FeatureColumn列表给构造器。
+  \item 调用estimator的train()方法训练它
+  \item 调用estimator的evaluate()方法看看它如何工作
+\end{itemize}
+例如:
+\begin{lstlisting}[language=Python]
+e = tf.estimator.LinearClassifier(
+    feature_columns=[
+        native_country, education, occupation, workclass, marital_status,
+        race, age_buckets, education_x_occupation,
+        age_buckets_x_race_x_occupation],
+    model_dir=YOUR_MODEL_DIRECTORY)
+e.train(input_fn=input_fn_train, steps=200)
+# Evaluate for one step (one pass through the test data).
+results = e.evaluate(input_fn=input_fn_test)
+
+# Print the stats for the evaluation.
+for key in sorted(results):
+    print("%s: %s" % (key, results[key]))
+\end{lstlisting}
+\subsection{广泛深入的学习}
+tf.estimator API提供一个estimator类让你结合训练一个模型和深度神经网络。这个出色的方法结合线性模型的能力存储神经网络泛化的能力关键特征。用tf.estimator.DNNLinearCombineClassfier创建一个广而深的模型:
+\begin{lstlisting}[language=Python]
+e = tf.estimator.DNNLinearCombinedClassifier(
+    model_dir=YOUR_MODEL_DIR,
+    linear_feature_columns=wide_columns,
+    dnn_feature_columns=deep_columns,
+    dnn_hidden_units=[100, 50])
+\end{lstlisting}
+更多信息请查看\href{https://www.tensorflow.org/tutorials/wide_and_deep}{Wide and Deep Learning tutorial}。
