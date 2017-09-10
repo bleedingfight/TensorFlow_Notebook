@@ -835,3 +835,276 @@ e = tf.estimator.DNNLinearCombinedClassifier(
     dnn_hidden_units=[100, 50])
 \end{lstlisting}
 更多信息请查看\href{https://www.tensorflow.org/tutorials/wide_and_deep}{Wide and Deep Learning tutorial}。
+\section{tensorflow线性模型导航}
+在这个导航中我们将用TensorFlow中的tf.estimator API解决2分类问题:给关于一个人的年龄，性别，教育，职位统计数据，我们将预测这个人是够得到超过5000美元的年薪(目标标签)。我们用逻辑回归模型，给一个信息我们的模型将输出一个0到1的数用来解释收入超过50000美元的概率。
+\subsubsection{建立}
+尝试下面代码:
+\begin{itemize}
+  \item 如果你没有安装TensorFlow先\href{安装}{https://www.tensorflow.org/install/index}
+  \item 下载\href{https://www.github.com/tensorflow/tensorflow/blob/r1.3/tensorflow/examples/learn/wide_n_deep_tutorial.py}{导航代码}
+  \item 安装pandas数据分析库。tf.estimator不要求pandas，但是支持它，导航用pandas，安装pandas:
+  \begin{enumerate}
+    \item  安装pip
+    \begin{lstlisting}[language=Bash]
+    # Ubuntu/Linux 64-bit
+    $ sudo apt-get install python-pip python-dev
+
+    # Mac OS X
+    $ sudo easy_install pip
+    $ sudo easy_install --upgrade six
+    \end{lstlisting}
+    \item 安装pandas
+    \begin{lstlisting}[language=Python]
+    sudo pip install pandas
+    \end{lstlisting}
+  \end{enumerate}
+  \item 指定导航带吧训练导航表述的线性模型:
+  \begin{lstlisting}[language=Python]
+  python wide_n_deep_tutorial.py --model_type=wide
+  \end{lstlisting}
+\end{itemize}
+\subsection{读取调查数据}
+我们将要使用的数据集是\href{https://archive.ics.uci.edu/ml/datasets/Census+Income}{ Census Income Dataset},你讲需要手动下载\href{https://archive.ics.uci.edu/ml/machine-learning-databases/adult/adult.data}{训练集}和\href{https://archive.ics.uci.edu/ml/machine-learning-databases/adult/adult.test}{测试集}或者用下面的代码:
+\begin{lstlisting}[language=Python]
+import tempfile
+import urllib
+train_file = tempfile.NamedTemporaryFile()
+test_file = tempfile.NamedTemporaryFile()
+urllib.urlretrieve("https://archive.ics.uci.edu/ml/machine-learning-databases/adult/adult.data", train_file.name)
+urllib.urlretrieve("https://archive.ics.uci.edu/ml/machine-learning-databases/adult/adult.test", test_file.name)
+\end{lstlisting}
+当csv文件下载后我们读入pandas DataFrame。
+\begin{lstlisting}[language=Python]
+import pandas as pd
+CSV_COLUMNS = [
+    "age", "workclass", "fnlwgt", "education", "education_num",
+    "marital_status", "occupation", "relationship", "race", "gender",
+    "capital_gain", "capital_loss", "hours_per_week", "native_country",
+    "income_bracket"]
+df_train = pd.read_csv(train_file.name, names=CSV_COLUMNS, skipinitialspace=True)
+df_test = pd.read_csv(test_file.name, names=CSV_COLUMNS, skipinitialspace=True, skiprows=1)
+\end{lstlisting}
+因为是2分类问题，我们构造一个标签label，label的值为1表示收入超过50K，否则为0。
+\begin{lstlisting}[language=Python]
+train_labels = (df_train["income_bracket"].apply(lambda x: ">50K" in x)).astype(int)
+test_labels = (df_test["income_bracket"].apply(lambda x: ">50K" in x)).astype(int)
+\end{lstlisting}
+下一步我们查看dataframe看那一列我们可以预测目标标签。这列可以有两种类型-绝对和连续列:
+\begin{itemize}
+  \item 如果他的值仅仅是有限数据集中的一个类别这一列称为绝对的。例如人的本土（U.S,India,Jpan,etc）或者教育层度（高中，大学等等）是绝对列。
+  \item 如果他的值可以是任何连续的范围这一列称为连续的，例如一个人的资本所得（例如\$14084）是一个连续的列。
+\end{itemize}
+下面是一个连续的收入数据的调查
+\begin{tabular}{ |p{1cm}||p{1cm}|p{8cm}|}
+列的名字&类型&描述\\
+age&Continuous&人的名字\\
+workclass&  Categorical&雇主的类型(政府，军队，私人等等)\\
+fnlwgt& Continuous& 人们相信观察表示（相同的权重）的数量，这个变量将被使用\\
+education&  Categorical&对个人获得最高的学历\\
+education\_num& Continuous& 数字形式的学历\\
+marital\_status&  Categorical&婚姻状况\\
+occupation& Categorical&个人职位\\
+relationship& Categorical &妻子，小孩，丈夫，没有家庭，其他相关等等或者没有结婚\\
+race& Categorical&白人，亚洲人，爱斯基摩人，其他，黑人\\
+gender& Categorical&男，女\\
+capital\_gain&  Continuous& 资本收入记录\\
+capital\_loss&  Continuous& 资本损失记录\\
+hours\_per\_week& Continuous& 每周工作小时数\\
+native\_country&  Categorical&  来自的国家\\
+income& Categorical&">50K"或者"<=50K",意味着一个人是否能赚超过50K\$
+\end{tabular}
+\subsection{转换数据为Tensors}
+当建立一个tf.estimator模型的时候，输入数据通过输入Builder函数指定。Builder函数不被调用知道传入方法train或者evaluate。这个函数的目的是构造代表tf.Tensor或者tf.SparseTensor的输入数据，输入Builder函数返回下面对:
+\begin{itemize}
+  \item feature\_cols:特征列命名为Tensors或者SpareseTensors的字典。
+  \item label:包含标签列的Tensor
+\end{itemize}
+feature\_cols的keys用来在下一章节构造列。因为我们想在不同的数据上调用train和evaluate方法，我们定义基于给定数据返回一个输入函数。注意返回输入函数知道构建TensorFlwo图的时候被调用，而不是当图运行的时候。输入数据返回的是一个代表TensorFLow基本单元的Tensor。
+
+我们用tf.estimator.inputs.pandas\_input\_fn方法从pandas DataFrame创建一个输入函数，每个train dataframe或者test dataframe连续列将转化为一个Tensor（是代表稠密数据的好的形式），对于绝对数据我们必须使用SparseTensor表示。这种数据格式有利于代表稀疏数据，另一个更高级的代表输入数据将是构建一个\href{https://www.tensorflow.org/api_guides/python/io_ops#inputs_and_readers}{Inputs and Reader}代表一个文件或者数据源，通过文件迭代在TensorFlow图中运行。
+\begin{lstlisting}{language=Python}
+def input_fn(data_file, num_epochs, shuffle):
+  """Input builder function."""
+  df_data = pd.read_csv(
+      tf.gfile.Open(data_file),
+      names=CSV_COLUMNS,
+      skipinitialspace=True,
+      engine="python",
+      skiprows=1)
+  # remove NaN elements
+  df_data = df_data.dropna(how="any", axis=0)
+  labels = df_data["income_bracket"].apply(lambda x: ">50K" in x).astype(int)
+  return tf.estimator.inputs.pandas_input_fn(
+      x=df_data,
+      y=labels,
+      batch_size=100,
+      num_epochs=num_epochs,
+      shuffle=shuffle,
+      num_threads=5)
+\end{lstlisting}
+\subsubsection{为模型选择工程特征}
+选择加工正确的特征列是一个高校学习模型的关键，一个feature column可以是原始dataframe中的原始列(我们称之基于特征列)或者任何新的基于一列或者多列变形的derived feature.基本的feature column是一个原始数据和衍生数据的抽象概念来预测目标标签。
+\subsubsection{基于绝对特征列}
+为了定义基于绝对特征的特征列，我们用tf.feature\_column API创建一个CategoricalColumn，如归哦你知道可能的列的特征有一些值，你可以用categorical\_column\_width\_vocabulary\_list。每个列表中的key将得到赋值从0开始自动增加ID。例如对于性别列我们可以复制特征字符串"Female"为整数ID 0“Male”赋值为1。
+\begin{lstlisting}{language=Python}
+gender = tf.feature_column.categorical_column_with_vocabulary_list(
+    "gender", ["Female", "Male"])
+\end{lstlisting}
+如果你预先不知道可能值做怎么办?没问题你可以用categorical\_column\_width\_hash\_bucket代替:
+\begin{lstlisting}[language=Python]
+occupation = tf.feature_column.categorical_column_with_hash_bucket(
+    "occupation", hash_bucket_size=1000)
+\end{lstlisting}
+当我们在训练中遇到它们时在列中的每个值每散列到一个整数ID:
+\begin{tabular}{|c|c|}
+\hline
+ID&feature\\
+\hline
+\ldots&\\
+\hline
+9&"Machine-op-inspct"\\
+\hline
+\ldots&\\
+\hline
+103&"Farming-fishing"\\
+\hline
+\ldots&\\
+\hline
+375&"Protective-serv"\\
+\hline
+\ldots&\\
+\hline
+\end{tabular}
+无论我们选择哪种方法定义一个SparseTensor。每个特征字符创将通过查找一个固定的映射或者散列特征字符串将被映射为一个整数ID。注意散列冲突可能会发生，但是对于模型的质量影响不大。在hood下，LinearModel类掉膘管理映射和为每个特征ID创建tf.Variable存储模型参量。模型参数将通过模型训练过程被学习到。我们将在定义的其他绝对特征做类似的模型训练:
+\begin{lstlisting}[language=Python]
+education = tf.feature_column.categorical_column_with_vocabulary_list(
+    "education", [
+        "Bachelors", "HS-grad", "11th", "Masters", "9th",
+        "Some-college", "Assoc-acdm", "Assoc-voc", "7th-8th",
+        "Doctorate", "Prof-school", "5th-6th", "10th", "1st-4th",
+        "Preschool", "12th"
+    ])
+marital_status = tf.feature_column.categorical_column_with_vocabulary_list(
+    "marital_status", [
+        "Married-civ-spouse", "Divorced", "Married-spouse-absent",
+        "Never-married", "Separated", "Married-AF-spouse", "Widowed"
+    ])
+relationship = tf.feature_column.categorical_column_with_vocabulary_list(
+    "relationship", [
+        "Husband", "Not-in-family", "Wife", "Own-child", "Unmarried",
+        "Other-relative"
+    ])
+workclass = tf.feature_column.categorical_column_with_vocabulary_list(
+    "workclass", [
+        "Self-emp-not-inc", "Private", "State-gov", "Federal-gov",
+        "Local-gov", "?", "Self-emp-inc", "Without-pay", "Never-worked"
+    ])
+native_country = tf.feature_column.categorical_column_with_hash_bucket(
+    "native_country", hash_bucket_size=1000)
+\end{lstlisting}
+\subsubsection{基于连续特征列}
+如果你用在模型用使用类似的你可以为每个连续的特征列定义一个NumbericColumn:
+\begin{lstlisting}[language=Python]
+age = tf.feature_column.numeric_column("age")
+education_num = tf.feature_column.numeric_column("education_num")
+capital_gain = tf.feature_column.numeric_column("capital_gain")
+capital_loss = tf.feature_column.numeric_column("capital_loss")
+hours_per_week = tf.feature_column.numeric_column("hours_per_week")
+\end{lstlisting}
+\subsubsection{通过Bucketization创建连续特征}
+在连续特征和非线性标签之间有一些关系。正如假设的例子，一个人的收入也许在他事业的早期随着年龄增长，然后在这些点的增长也许会变慢，最后退休后收入下降。在这个场景下，用原始的age作为真实值特征列也需要不是一个好的选择因为模型仅仅能从下面三种情况下学习:
+\begin{enumerate}
+\item 收入随着年龄的增加而增加（正相关）
+\item 收入随着年龄的增加减少(负相关)
+\item 收入随着年龄增加不变（不相关）
+\end{enumerate}
+如果我们想单独了解收入和年龄组适当的相关性，我们可以利用bucketization。bucketization是分割整个连续特征成一系列连续的bins/buckets的处理，依赖值调入那个bucket转化原始数值特征成一个bucket ID（正如一个绝对特征）。因此我们可以在age上定义一个bucketized\_column:
+\begin{lstlisting}[language=Python]
+age_buckets = tf.feature_column.bucketized_column(
+    age, boundaries=[18, 25, 30, 35, 40, 45, 50, 55, 60, 65])
+\end{lstlisting}
+这里的boundaries是一个bucket范围列表，这个例子中有10个范围导致11个年龄组buckets（从17岁即以下，18-24,2-29,\ldots,65及以上）
+\subsection{多列交叉的交叉列}
+用每个基础特征列分隔也许不能完全解释数据。例如，教育和标签(earning>50000\$)相关也许不同的职位不同。因此，如果我们仅仅针对education="Backelors"和 education="Masters"学习三个的模型权重,我们将不能捕获单个的职业教育组合(区别ducation="Bachelors"和occupation="Exec-managerial"与 education="Bachelors" 和 occupation="Craft-repair")。为了学习不同的特征组合我们可以增加crossed feature columns到模型上
+\begin{lstlisting}[language=Python]
+education_x_occupation = tf.feature_column.crossed_column(
+    ["education", "occupation"], hash_bucket_size=1000)
+\end{lstlisting}
+我们也可以创建一个超过两列的CrossedColumn。每个组成的列既可以是一个基础的特征列(SpareseColumn),耦合bucketized真实值特征列(BucketizedColumn)或者说是CrossColumn。这里是例子:
+\begin{lstlisting}[language=Python]
+age_buckets_x_education_x_occupation = tf.feature_column.crossed_column(
+    [age_buckets, "education", "occupation"], hash_bucket_size=1000)
+\end{lstlisting}
+\subsubsection{定义一个路基回归模型}
+在处理输入数据和定义所有的特征列后，我们先将准备将他们放在一起建立一个逻辑回归模型。在之前的章节中我么已经看到一些基础和衍生特征列的类型，包括:
+\begin{itemize}
+  \item CategoricalColumn
+  \item NumericaColumn
+  \item BucketizedColumn
+  \item CrossedColumn
+\end{itemize}
+所有的这些抽象的FeatureColumn类的子类可以被添加到模型feature\_columns里:
+\begin{lstlisting}[language=Python]
+base_columns = [
+    gender, native_country, education, occupation, workclass, relationship,
+    age_buckets,
+]
+crossed_columns = [
+    tf.feature_column.crossed_column(
+        ["education", "occupation"], hash_bucket_size=1000),
+    tf.feature_column.crossed_column(
+        [age_buckets, "education", "occupation"], hash_bucket_size=1000),
+    tf.feature_column.crossed_column(
+        ["native_country", "occupation"], hash_bucket_size=1000)
+]
+
+model_dir = tempfile.mkdtemp()
+m = tf.estimator.LinearClassifier(
+    model_dir=model_dir, feature_columns=base_columns + crossed_columns)
+\end{lstlisting}
+模型也自动学习控制预测使得没有观察任何特征的偏移，学习到的模型文件将被存储在model\_dir。
+\subsubsection{训练评估你的模型}
+在添加一个特征到模型后，下周乃让我么你查看如何训练模型，用tf.estimator API训练一个模型仅仅是一个简单的事
+\begin{lstlisting}[language=Python]
+# set num_epochs to None to get infinite stream of data.
+m.train(
+    input_fn=input_fn(train_file_name, num_epochs=None, shuffle=True),
+    steps=train_steps)
+\end{lstlisting}
+在模型被训练后，你可以评估我们的模型在预测数据时候如何好
+\begin{lstlisting}[language=Python]
+results = m.evaluate(
+    input_fn=input_fn(test_file_name, num_epochs=1, shuffle=False),
+    steps=None)
+print("model directory = %s" % model_dir)
+for key in sorted(results):
+  print("%s: %s" % (key, results[key]))
+\end{lstlisting}
+输出的第一行像accuracy: 0.83557522，意味着精确度大约83.6\%，如果你想看更好的结构尝试更多特征和转换。如果你想看从头到尾的实现，你可以下载\href{https://www.github.com/tensorflow/tensorflow/blob/r1.3/tensorflow/examples/learn/wide_n_deep_tutorial.py}{示例代码}设置model\_type flag为wide。
+\subsubsection{添加正则化防止过拟合}
+正则化是阻止过拟合的一种技术。当你的数据在训练集上表现很好但是在没有见过的测试机上表现很糟糕时郭力赫发生。股拟合通常当模型很复杂时发生，像有一些关于观测训练数据的参数。正则化允许你控制模型的复杂度使得模型在没有见过的数据上能更加的泛化。
+
+在线性模型库，你可以添加L1和L2证这话到模型上:
+\begin{lstlisting}[language=Python]
+m = tf.estimator.LinearClassifier(
+    model_dir=model_dir, feature_columns=base_columns + crossed_columns,
+    optimizer=tf.train.FtrlOptimizer(
+      learning_rate=0.1,
+      l1_regularization_strength=1.0,
+      l2_regularization_strength=1.0),
+    model_dir=model_dir)
+\end{lstlisting}
+L1和L2正则化一个重要的区别是L1正则化尝试使得模型的权重保持在0，创建系数模型，由于L2证这话也尝试使得模型权重更接近于0但是不需要0.因此如果如果你增强L1正则化的强度你讲有一个小的模型尺寸因为一些模型的权重变为了0.因此，特征空间和大却不稀疏时和有一些资源限制阻止你离开一个太大的模型时需要，事实上你讲尝试多种L1，L2正则化组合强度找到最好的参数最好的控制过拟合给你一个想要的模型尺寸。
+\subsection{逻辑回归如何工作}
+最后让我们花几分钟了解一下实际的逻辑回归模型看起来像什么。我们用Y表示标签，观察值$\mathbf{x}={x_1,x_2,\ldots,d_d}$我们定义如果个人所得超过50K\$,Y=1,否则Y=0。
+\begin{equation*}
+P(Y=1|\mathbf{x})=\frac{1}{1+exp(-(\mathbf{W^Tx}+b)}
+\end{equation*}
+这里的$\mathbf{w}=[w_1,w_2,\ldots,w_d]$是模型特征$\mathbf{x}=[x_1,x_2,\ldots,x_d]$的权重b是称为偏重的常数。方程由两部分组成，线性模型和回归模型。
+\begin{itemize}
+  \item 线性模型：首先我们看到$\mathbf{w^Tx}+b=b+w_1x_1+\ldots+x_d$,这里输出是输入特征的一个线性函数，偏置$\mathbf{b}$是没有任何特征输入时的预测。模型的权重$w_i$反映了特征$x_i$是如何和特征相关，如果$x_i$十一二正相关的标签，权重$w_i$增加$P(\mathbf{Y=1|x})$将接近于1，对应负相关时权重$w_i$增加$P(\mathbf{Y=1|x})$将接近于0.
+  \item 逻辑函数：你可以看到一个逻辑函数$\mathbf{S(t)=\frac{1}{1+exp(-t)}}$应用的线性模型，逻辑函数用于转换输出线性模型$\mathbf{w^Tx}+b$从任意实数值到[0,1]之间，这个值可以被解释为概率。
+\end{itemize}
+模型训练是一个优化问题：目标是找到模型的权重最小化训练数据上定义的损失函数，像逻辑回归的逻辑损失。损失函数描述了预测值和真实值的差别。如果预测接近指示标签，村是指将很小。如果预测值离标签很近，损失将很大。
+\subsubsection{深入学习}
+如果你想学习更多，查看下一章\href{https://www.tensorflow.org/tutorials/wide_and_deep}{Wide \& Deep Learning Tutorial }我们将高数你如何用tf.estimator结合线性模型的力量和深度神经网络。

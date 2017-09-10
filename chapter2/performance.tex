@@ -160,4 +160,34 @@ bazel-bin/tensorflow/examples/label_image/label_image \
 最小和最大值范围可以提前计算，权重参数是常数在载入时就知道，因此他们的范围可以作为常数被存储。我们经常知道输入范围例如(RGB的值在0-255)，一些激活函数也知道范围。这可以避免必须分析操作的输出决定范围，我们需要从8位输出像卷积或者矩阵乘法这样的做数学操作形成32Bit累加结果。
 \subsection{下一步}
 我们发现通过8为算法而不是不浮点数可以在移动短和嵌入式设备上得到机器好的性能。你可以看到这个框架我们优化矩阵乘在\href{https://github.com/google/gemmlowp}{gemmlowp},我们仍然需要应用所有的我们需要学习的TensorFlow操作去在移动短得到最大型能，但是我们很兴奋正在为次努力。马上，量化实现是一个合理的快和精确度实现我们希望将能在更多的设备上广泛的支持8位模型。我们也希望着站时将鼓励社区探索更低精度的神经网络的可能性。
+\section{XLA概览}
+\begin{quote}
+\emph{XLA是实验性的可以认为是alhpa版，多数情况下将不能看到性能提升（速度或者内存占有率），我们开房了XLA以至于开源社团能贡献他的发展，而且创建一个路径整合硬件加速。}
+\end{quote}
+XLA(Accelerated Linear Algebra)在TensorFlow计算中是一个特殊的针对线性代数的编译器，用来在服务器或者移动平提升速度，内存使用和服务器与移动平台的可移植性。最初多数用户没有看到从XLA的好处，但是我们欢迎通过\href{https://www.tensorflow.org/performance/xla/jit}{just-in-time(JIT)}或者\href{https://www.tensorflow.org/performance/xla/tfcompile}{ahead-of-time (AOT) compilation}编译使用XLA,特别鼓励使用心得精简加速的开发者使用XLA。
+
+XLA框架是试验版还在积极的发展，，特别是尽管它可能改变存在的操作语法，他希望更多的操作将添加进在重要时候使用，团队欢饮来自社区的关于确实功能和社区通过Github的反馈。
+\subsection{为什么建立XLA}
+我们有一些针对TeXLA结合nsorFlow的对象。
+\begin{itemize}
+	\item 提升执行速度、编译子图减少短的存货的操作的执行时间消除从TensorFlow运行时间，融合操作减少内存，指定tensor形状允许更多仅略性的常量的传播。
+	\item 替身内存占用。分析调度内存使用，主要是消除一些中间存储缓存。
+	\item 减少对常见操作的依赖，移除对常用操作的需要提高自动融合低级操作的性能匹配能手动融合的常用操作
+	\item 减小移动足迹，通过提前编译子图和消除一个可以被链接进其它应用的对象文件对消除TensorFlow运行时间，结果可能减少移动有大小排序的推理的足迹
+	\item 提高可一致性，使得他相对容易为多种影响写一个新的后台，大的TensorFlow程序的一部分能不修改在其它硬件上运行。相比于为新的硬件指定集成操作的方法，这种方法要其TensorFlow程序使用这些操作而重写。
+\end{itemize}
+\subsection{XLA如何做}
+XLA的输入语言称为"HLO IR"或者仅仅HLO(High Level Optimize),HLO的语法在\href{https://www.tensorflow.org/performance/xla/operation_semantics}{Operation Semantics}中有描述，很方便的考虑HLO作为一个\href{https://en.wikipedia.org/wiki/Intermediate_representation}{compiler IR}
+
+XLA接受HLI中辛吉德计算图为不同的算法编译他们为机器指令。XLA在这个场景下是一个模块化的，很容易给\href{https://www.tensorflow.org/performance/xla/developing_new_backend}{ target some novel HW architecture}后台去开启一个缝。对于X64和ARM64的CPU的后端和NVIDIA GPU后端都在TensorFlow源数上。下面的图显示了XLA的编译过程:
+\begin{center}
+\begin{figure}[h]
+\includegraphics[scale=0.5]{how-does-xla-work}
+\end{figure}
+\end{center}
+XLA和一些优化器分析独立目标，像\href{https://en.wikipedia.org/wiki/Common_subexpression_elimination}{CSE},独立目标融合，缓存分析分配用于计算运行时间。在独立目标之后，XLA发送HLO计算给后端。后端可移植性更多的HLO级别的分析和优化，这次随着目标指定信息和需要记住。例如XLA GPU后台执行操作融合融合GPU编程的模块的好处决定如何分割计算成流。在这个时候，后台也许模式匹配确定的操作或者组合优化库的调用，下一步是目标制定代码生成。CPU和GPU后台包含用低级IR的\href{http://llvm.org/}{LLVM}XLA，优化，代码生成。后端用高效的方式发送LLVM IR需要表示XLA HLO计算，使用LLVM从LLVM IR发送本地代码。
+
+GPU后端当前支持通过LLVM NVPTX后端支持NVIDIA GPU；CPU后端支持多CPU ISAs。
+\subsection{支持平台}
+CLA当前支持\href{https://www.tensorflow.org/performance/xla/jit}{JIT compilation}X86-64和NVIDIA GPUs和x86-64和ARM\href{https://www.tensorflow.org/performance/xla/tfcompile}{AOT compilation}。
 
