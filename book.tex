@@ -2,6 +2,7 @@
 \usepackage[top=3cm,bottom=3cm,left=3.2cm,right=3.2cm,headsep=10pt,letterpaper]{geometry}
 %中文支持
 \usepackage[space]{ctex}
+\usepackage[utf8]{inputenc}
 \usepackage{amsmath}
 \usepackage{amssymb}
 \usepackage{times}
@@ -18,9 +19,16 @@
 \usepackage{caption}
 \usepackage{subfigure}
 \usepackage{longtable}
-\setlength{\arrayrulewidth}{1mm}
+\setlength{\arrayrulewidth}{0.5mm}
 \usepackage{hyperref}
-\usepackage{amsmath}
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{}
+\rhead{\rightmark}
+\rfoot{\thepage}
+\renewcommand{\headrulewidth}{2pt}%设置页眉标线
+\renewcommand{\footrulewidth}{1pt}%设置页脚标线
+
 \pagenumbering{arabic}
 \hypersetup{
     colorlinks=true,
@@ -30,7 +38,6 @@
 }
 \urlstyle{same}
 %字体设置
-\usepackage{avant} % Use the Avantgarde font for headings
 %\usepackage{times} % Use the Times font for headings
 \usepackage{mathptmx} % Use the Adobe Times Roman as the default text font together with math symbols from the Sym­bol, Chancery and 
 %tktz画图
