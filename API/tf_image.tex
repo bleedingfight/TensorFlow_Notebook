@@ -1,0 +1,89 @@
+\section{tf.image}
+\subsection{tf.image.decode\_gif}
+tf.image.decode\_gif(contents,name=None)
+\begin{itemize}
+\item contents:一个字符串Tensor，GIF编码的图像。
+\item name:操作的名字。
+\item 返回一个8位无符号的Tensor，四维形状为[num\_frames,height,width,3],通道顺序是RGB。
+\end{itemize}
+\subsection{tf.image.decode\_jpeg}
+tf.image.decode\_jpeg(contents,channels=None,ratio=None,fancy\_upscaling=None,\newline
+try\_recover\_truncated=None,acceptable\_fraction=None,dct\_metched=None,name=None)
+解码JPEG编码的图像为无符号的8位整型tensor。\newline
+\begin{itemize}
+	\item contents:一个字符串tensor，JPEG编码的图像。
+	\item channels:一个整数默认为，0代表编码图像的通道数（JPEG编码的图像），1代表灰度图，3带秒RGB图。
+	\item radio:一个整数，默认为1,取值可以是1,2,4,8,表示缩减图像的比例。
+	\item fancy\_upscaling:bool型，默认为True，表示用慢但是更好的提高色彩浓度。
+	\item try\_recover\_truncated:bool型，默认是False，如果时True尝试从截断的输入恢复图像。
+	\item acceptable\_fraction:float型，默认是1,可接受的最小的截断输入的因子。
+	\item dct\_methed:string类型，默认为"".指定一个解压算法，默认是""由系统自行指定。可用的值有["INTEGER\_FAST","INTEGER\_ACCURATE"]
+	\item name:操作的名字。
+	\item 返回值为一个8位无符号整型Tensor，3维形状[height,width,channels]
+\end{itemize}
+\subsection{tf.image.encode\_jpeg}
+tf.image.encode\_jpeg(image,format=None,quality=None,progressive=None,optimize\_size=None\newline
+chroma\_downsampling=None,density\_uint=None,x\_density=None,y\_density=None,xmp\_metadata=None,name=None)
+\begin{itemize}
+	\item image:一个3维[height,width,chennels]，8位无符号整型Tensor。
+	\item format:string类型，可以为"","grayscale","rgb",默认为""。如果format没有指定或者不为空字符串，默认格式从image的通道中选，1:输出灰度图，3:输出RGB图。
+	\item quality:整型，默认值为95,代表压缩质量值[0,100],值越大越好，单速度越慢。
+	\item optimize\_size:bool型,默认为False，如果为True用CPU/RAM减少尺寸同时保证质量。
+	\item chroma\_downsampling:bool型，默认为True。
+	\item density\_unit:一个字符串，可以为"in","cm",指定x\_density和y\_density.in每inch的像素，cm表示每厘米的像素。
+	\item x\_density:一个整数，默认为300,每个density单位的水平像素。
+	\item y\_density:一个整数，默认为6300,数值方向上每density单位的像素。
+	\item xmp\_metadata:string类型,默认为"",如果为空，嵌入XMP metadata到图像头部。
+	\item name:操作的名字。
+	\item name：操作的名字。
+	\item 返回0维字符串型JPED编码的Tensor。
+\end{itemize}
+\subsection{tf.image.decode\_png}
+tf.image.decode\_png(contents,channels=None,dtype=None,name=None)
+解码PNG编码的图像为8位或者16位无符号整型Tensor。
+\begin{itemize}
+	\item contents:一个0维PNG编码的图像的字符串的Tensor。
+	\item chennels:整型默认为0,代表解码图像的通道,0用PNG编码图像数，1:代表输出灰度图像。3:代表输出RBG图像。4:输出RGBA图像。
+	\item dtype:tf.DType,值可以为tf.uint8,tf.uint16,默认为tf.uint8。
+	\item name:操作的名字。
+	\item 返回3维[height,width,channels]的Tensor。
+
+\end{itemize}
+\subsection{tf.image.encode\_png}
+tf.image.encode\_png(image,compression=None,name=None)
+\begin{itemize}
+	\item 一个8位或者16位的3维Tensor，形状为[height,width,channels]
+	\item compression:一个整数，默认为-1,表示压缩等级。
+	\item name:操作的名字。
+	\item 返回一个0维string型的PNG-encoded的Tensor。
+\end{itemize}
+\subsection{tf.image.decode\_image}
+tf.image.decode\_image(contents,channels=None,name=None)
+\begin{itemize}
+	\item contens:0维编码图像的字符串。
+	\item channels:整数，默认为0,解码图像的通道数。
+	\item name:操作的名字。
+	\item 返回JPEG,PNG的8位无符号的形状为[height,width,num\_channels]，GIF文件的形状为[num\_frames,height,width,3]
+	\item ValueError:通道数不正确。
+\end{itemize}
+\subsection{tf.image.resize\_images}
+tf.image.resize\_images(images,size,method=ResizeMethed.BILINEAR,align\_corners=False)
+\begin{itemize}
+	\item images:形状为[batch,height,width,channels]4维Tensor,3为Tensor，形状为[height,width,channels]
+	\item size:一位32整型Tensor元素为new\_height,new\_width,新的图像尺寸。
+	\item methed:ResizeMethod，默认为ResizeMethod.BILINEAR
+		\begin{itemize}
+			\item ResizeMethod.BILINEAR:二进制插值。
+			\item ResizeMethod.NEAGREST\_NEIGHBOR:
+			\item ResizeMethod.BICUBIC:
+			\item ResizeMethod.AREA:
+		\end{itemize}
+	\item align\_corners:bool型，如果为真提取对齐四个角，默认为False。
+	\item 异常
+		\begin{itemize}
+			\item ValueError:图像形状和函数要求的不一样。
+			\item ValueError:size是不可以用的形状或者类型。
+			\item ValueError:指定的方法不支持。
+		\end{itemize}
+	\item 如果图像时4维[batch,new\_height,new\_height,channels],如果图像是3维，形状为[new\_height,new\_width,channels]
+\end{itemize}
