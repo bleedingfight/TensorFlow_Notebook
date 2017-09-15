@@ -1,4 +1,15 @@
 \chapter{Tensorflow API}
+\section{tf.clip\_by\_value}
+clip\_by\_value(t,clip\_value\_min,clip\_value\_max,name=None):剪切值为最大值和最小值，给定一个tensor t，操作返回一个和t同样类型，同样大小的值到clip\_value\_min,和clip\_value\_max.任何值小鱼clip\_value\_min被设置为clip\_value\_min，任何大于clip\_value\_max的值被设置为clip\_value\_max。
+参数:
+\begin{itemize}
+	\item t:一个tensor
+	\item clip\_value\_min:一个0维Tensor或者和t相同形状的tensor，取代的最小值
+	\item clip\_value\_max:一个0维Tensor或者和t有相同形状的Tensor，取代的大值
+	\item name:操作的名字
+	\item[Returns]:一个取代后的tensor。
+	\item[Raises]:如果剪切的tensor将触发数组的广播操作将安徽比输入更大的返回tensor。
+\end{itemize}
 \section{tf.app.flags}
 \subsection{DEFINE\_boolean}
 DEFINE\_boolean(flag\_name,default\_value,docstring):定义一个'boolean'类型的flag。
@@ -133,7 +144,29 @@ accuracy(labels,predictions,weights=none,metrics\_collections,updates\_collectio
 	\item update\_op:返回值适当增加total和count变量和accuracy匹配。
 	\item valueerror:异常如果predictions和labels有不同的形状，或者weight不是none它的形状不合prediction匹配，或者metrics\_collections会哦这updates\_collections不是一个list或者tuple。
 \end{itemize}
-
+\subsection{tf.split}
+split(value,num\_or\_size\_splits,axis=0,num=None,name='split')：分割一个Tensor,如果num\_or\_size\_split是一个整数类型，num\_split然后沿着axis分割value为num\_split更小的tensors。要求num\_split均匀分割为value.shape[axis]。如果num\_or\_size\_splits不是一个整数类型，它被将定位一个Tensorsize\_splits,然后分割值为len(size\_splits)段，第i个形状有相同的大小作为value除了沿着维度axis，这里的size是size\_splits[i]。
+\begin{lstlisting}[language=Python]
+#value是一个形状为[5,30]的tensor
+#分割沿着1轴分割'value'为3个tensor，形状为【4,15,11】
+split0,split1,split2 = tf.split(value,[4,15,11],1)
+tf.shape(split0) ==>[5,4]
+tf.shape(split1) ==>[5,15]
+tf.shape(split2) ==>[5,11]
+#沿着1轴分割‘value’为三个tensor
+split0,split1,split2 = tf.split(value,num_or_size_split=3,axis=1)
+tf.shape(split0) ==>[5,10]
+\end{lstlisting}
+参数:
+\begin{itemize}
+	\item value:要分割的Tensor
+	\item num\_or\_size\_splits:是一个0维整数Tensor，表示沿着split\_dim或者包含每个分割长度的1维整数tensor分割多少份。如果是标量将被均匀分割为value.shape[axis]。否者沿着分割维度求和必须和value匹配。
+	\item axis:0维 int32 tensor，沿着分割的维度，必须在[-rank(value),rank(value)],默认为0。
+	\item num:选项，不能推断出时用于指定size\_split输出数
+	\item name:操作的名字
+	\item [Returns]:如果num\_or\_size\_split是一个标量返回num\_or\_size\_split是一个一维Tensor返回value分割的num\_or\_size\_splits.get\_shape[0] Tensor对象
+	\item [Raises]:如果num不被指定也不能被推断出。将产生ValueError
+\end{itemize}
 \subsection{tf.stack}
 stack(values,axis=0,name='stack')：stack一个n维tensor为n+1维tensor。
 给定一个长度为N的形状为(A,B,C)的tensor，如果axis==0输出tensor的形状为(N,A,B,C),如果axis==1,输出tensor的形状为(A,N,B,C)
@@ -418,6 +451,37 @@ from_config(
 \end{python}
 \item get\_config
 \end{itemize}
+\subsection{tf.transpose}
+tf.transpose(a,perm=none,name='transpose'):根据perm改变a的维度，返回一个tensor，它的维度i和perm[i]对应，如果perm没有给定，它被设置为(n-1,\ldots,0),z这是n是输入tensor的rank，输入是2维tensor是执行常规的转置操作:
+\begin{lstlisting}[language=Python]
+# 'x' is[[1 2 3],[4 5 6]]
+tf.transpose(x)==>[[1 4]
+		   [2 5]
+		   [3 6]]
+#等价于
+tf,transpose(x,[1,0])==>[[1 4]
+			 [2 5]
+			 [3 6]]
+# perm对于n为tensor很有用，n>2
+# x  [[[1,2,3]
+#       [4,5,6]]
+#       [[7 8 9]
+#       [10,11,12]]]
+tf.transpose(x,perm=[0,2,1])==>[[[1 4]
+				[2 5]
+				[3,6]]
+
+				[[7 10]
+				[8 11]
+				[9 12]]]
+\end{lstlisting}
+参数:
+\begin{itemize}
+	\item a:一个Tensor
+	\item perm:一个a的维度的乱序
+	\item name:操作的名字
+	\item[Return] 一个转置后的Tensor
+\end{itemize}
 \subsection{tf.one\_hot}
 \begin{python}
 ne_hot(
@@ -539,3 +603,20 @@ tf.ustack(x,n)=list(x)
 \item ValueError:如果axis超过[-R,R)。
 \end{itemize}
 \end{itemize}
+\subsection{tf.contrib.rnn}
+\subsubsection{AttentionCellWrapper}
+继承自RNNCell，是一个基本的attention cell包装器。\newline
+\begin{tabular}{|c|c|}
+	graph&\_\_init\_\_\\
+	losses&\_\_call\_\_\\
+	non\_trainable\_variables&\_\_deepcopy\_\_\\
+	non\_trainable\_weights&add\_loss\\
+	output\_size&add\_update\\
+	scope\_size&add\_variable\\
+	state\_size&apply\\
+	trainable\_variable&build\\
+	trainable\_weights&call\\
+	updates&get\_losses\_for\\
+	vaiables&get\_updates\_for\\
+	weights&zero\_state\\
+\end{tabular}
