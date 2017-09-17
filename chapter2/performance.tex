@@ -1,193 +1,382 @@
-\chapter{Performance}
-这个导航包含一个优化你的TensorFlow代码的集合。对于Tensorflow用户来说这是最好的应用，正如在这个文档中最好的时间，高性能模式为在不同的硬件上创建模型文档链接到示例代码。
-\section{最好的实践}
-尽管优化实现不同类型的模型可能不同，下面是通过tensorflow实现性能的几个最好的方式，尽管这些暗示在基于图像的模型，我们将增加一些笑技巧到所有类型的模型。下面列出了最好实践的关键:
+\section{性能向导}
+这个向导包含了一些很好的实践来优化你的TensorFlow代码。向导被分成下面的章节:
 \begin{itemize}
-\item 从原来码编译安装
-\item 利用队列读取数据
-\item 在CPU上预处理
-\item 用NCHW图像格式
-\item 在GPU上放共享参数
-\item 用融合的批处理规范
+\item 一般的最佳实践包括常用的多种模型和硬件
+\item 优化GPU详细的技巧和GPU有关
+\item CPU优化 详细的CPU特定信息
 \end{itemize}
-下面章节时处理的详细信息。
-\section{从源代码创建安装}
-为了安装最优化的TensorFlow版本，通过源代码编译安装Tensorflow。从原来码编译优化目标硬件确保最新的CUDA平台和CuDNN库被用高性能安装。
+\subsection{一般的最佳实践}
+最佳的实践包括下面章节:
+\begin{itemize}
+	\item 输入pipline优化
+	\item 数据格式
+	\item 常用的融合操作
+	\item 从源代码构建和安装
+\end{itemize}
+\subsubsection{输入pipeline优化}
+常用的模型从磁盘获取数据在通过网络发送数据之前提前处理它，例如模型按照下面处理JPEG图像:从磁盘载入图像，解码JPEG为tensor，剪切填充，可能还有翻转和扭曲，然后分批处理。下面的图是输入pipeline。正如GPU和其它的硬件极速器会更快，预处理数据可能成为一个瓶颈。如果输入pipeline是瓶颈可能变得很复杂。一个直接的方法是在输入pipeline后减少模型为单个操作，每秒测量样本。如果对于完整的模型和单个的模型没表中样本的差别很小不同的，输入pipeline可能是瓶颈。下面有一些其它的方法识别这个问题。
+\begin{itemize}
+	\item 通过\lstinline[language=Bash]{watch -n 2 nvidia-smi}检查GPU是否被完全使用。如果GPU利用没有达到80-100\%,输入pipeline可能是瓶颈。
+	\item 生成时间线查看大模块空白。一个生成时间线的例子在\href{https://www.tensorflow.org/performance/xla/jit}{XLA JIT}
+	\item 检查CPU使用。他可能有一个优化的pipeline和缺乏CPU循环处理pipeline
+	\item 评估生产力需要和验证在这个生产力条件下磁盘使用。一些云方案有网络添加磁盘速度50MB/sec，这比机械硬盘的150/MS/sec和SATA SSD的500MB/sec,PCIe SSD的2000+
+ MB/sec低得多\end{itemize}
+ \subsubsection{在CPU上处理}
+ 防止输入pipeline在CPU上能极大地提高性能。利用CPU处理输入pipeline，GPU训练。确保预处理在CPU上，按照如下操作打包:
+ \begin{lstlisting}[language=Python]
+ with tf.device('/cpu:0'):
+     # function to get and process images or data.
+     distorted_inputs = load_and_distort_images()
+ \end{lstlisting}
+ 如果你用tf.estimator.Estimator输入函数自动放置到CPU上。
+ \subsubsection{用Dataset API}
+ \href{https://www.tensorflow.org/programmers_guide/datasets}{Dataset API}防止queue\_runner作为推荐的API建立输入pipelines，这个API在TensorFlow 1.2被天际到contrib中之后将被移动到TensorFlow核心。\href{https://github.com/tensorflow/models/blob/master/tutorials/image/cifar10_estimator/cifar10_main.py}{ResNet example}(\href{https://arxiv.org/pdf/1512.03385.pdf}{arXiv:1512.03385})训练CIFAR-10说明通过tf.estimator.Estimator使用Dataset API。Dataset API用C++多线程和一些低层调用而不是限制Python多线程性能的queue\_runner。尽管用feed\_dict输入数据提供了恒高的灵活性，在多数实例中feed\_dict不能规模化的优化。然而，在单个GPU上的实例使用差别可能微不足道。用Dataset API是强雷推荐的，尝试下面的代码:
+ \begin{lstlisting}[language=Python]
+ # feed_dict often results in suboptimal performance when using large inputs.
+sess.run(train_step, feed_dict={x: batch_xs, y_: batch_ys})
+ \end{lstlisting}
+ \subsubsection{用大文件}
+ 读大量的小文件会极大地影响I/O的性能。一个方法是通过处理输入数据为(大约100MB或者更大)的TFRecord文件得到最大得到最大的I/O性能。对于小型数据集(200MB-1GB),最好的方法是载入整个数据集到内存。文档\href{https://github.com/tensorflow/models/tree/master/slim#Data}{ Downloading and converting to TFRecord format}包含一些创建TFRecord和转化CIFAR-10数据集为TFRecords的信息。
+ \subsection{数据格式}
+ 数据格式涉及到传给Op的Tensor的结构。下面的讨论明确4D Tensor代表图像，在TensorFlow中4维Tensor的各个部分分别代表如下:
+ \begin{itemize}
+ 	\item N:图象的批数
+ 	\item H:图象的高
+ 	\item W：代表凸显的宽
+ 	\item C:代表图象的通道数，1代表黑白图像，3代表真彩图像
+ \end{itemize}
+ 在TensorFlow中有两种命名惯例，代表两种常用的格式:
+ \begin{itemize}
+ 	\item NCHW或者channels\_first
+ 	\item NHWC或者channels\_last
+ \end{itemize}
+ NHWC是TensorFlow默认的，NCHW是在NVIDIA GPU上用cuDNN优化后的格式。构建模块的最佳实践是结合两种格式。最简单的是在GPUs上训练然后在CPUs上推理。如果TensorFLow结合\href{https://www.tensorflow.org/performance/performance_guide#tensorflow_with_intel_mkl_dnn}{Intel MKL}优化编译的，一些操作，特别是和基于CNN模型的将被优化支持NCHW。如果不用MKL，用NCHW时一些在操作将不支持在CPU上运行。
+ \subsubsection{常见的融合操作}
+ 融合操作结合多个操作为一个内核提高性能，在TensorFlow有一些融合操作和CLA可能提高性能时创建融合操作。下面被选择的融合操作可能极大地提高性能叶东旭被忽视。
+ \subsubsection{融合批规范}
+ 融合批规范结合多个需要批正规化的操作为一个内核。批规范对那些建立大的操作时间的比例是一个高昂的操作。用融合规范可能导致12\%-30\%的加速。有两个常见的批操作支持融合。核心tf.layers.batch\_normalization在TensorFlow 1.3 开始添加融合
+ \begin{lstlisting}[language=Python]
+ bn = tf.layers.batch_normallization(input_layer,fused=True,data_format = 'NCHW')
+ \end{lstlisting}
+ contrib中的tf.contrib.layers.batch\_norm方法从TensorFlow1.0起也有融合选项
+ \begin{lstlisting}[language=Python]
+ bn = tf.contrib.layers.batch_norm(input_layer, fused=True, data_format='NCHW
+ \end{lstlisting}
+\subsection{从源代码构建安装}
+默认TensorFlow二进制针对最广泛的硬件使得TensorFlow对于每个人都可以使用。如果用CPU进行训练或者推理，推荐结合对于使用的CPU可用的优化去编译CPU。在CPU上加速推理和训练在\href{https://www.tensorflow.org/performance/performance_guide#comparing_compiler_optimizations}{Comparing compiler}被记录。
 
-对于多数稳定的实验，从最新版的\href{https://github.com/tensorflow/tensorflow/releases}{latest release}分支编译。为了得到最新性能改变接受一些稳定性风险，从\href{https://github.com/tensorflow/tensorflow}{master}编译。
-
-  如果你需要在不同的目标硬件平台上编译TensorFLow，交叉编译最优化目标平台。下面的目录是一个例子高数bazel为指定平台编译
-\begin{python}
+安装优化后的TensorFlow版本，从源代码\href{Comparing compiler}{构建安装},如果有在不同的硬件平台上构建TensorFlow的需要，交叉编译对于目标平台有最高的优化。下面没了是一个用bazel为指定平台编译的例子:
+\begin{lstlisting}[language=Python]
 # This command optimizes for Intel’s Broadwell processor
 bazel build -c opt --copt=-march="broadwell" --config=cuda //tensorflow/tools/pip_package:build_pip_package
-\end{python}
-环境，构建，安装技巧
+\end{lstlisting}
+\subsubsection{环境构建和安装技巧}
 \begin{itemize}
-\item 编译最高级别的\href{http://developer.nvidia.com/cuda-gpus}{GPU 支持}，e.g. P100: 6.0, Titan X (pascal): 6.2, Titan X (maxwell): 5.2, and K80: 3.7.
-\item 安装最新版的CUDA平台和cuDNN库
-\item 确保你的gcc版本支持对目标cpu所有的优化，推荐最小的gcc版本为4.8.3
-\item TensorFlow在启动时检查是否在已经在cpu上编译优化过，如果优化不被包含，TensorFlow将chxuian警告，e.g.AVX,AVX2和FMA设备不被包含。
+	\item ./configure 要求计算兼容性在构建的时候被包含。着不影响总体性能但是影响初始化启动。在运行TensorFLow一次以后，编译的内核荣光CUDA缓存。如果用一个docker容器，数据不缓存每次TensorFlow启动时间较长。通过GPUs的最佳实践是包含\href{http://developer.nvidia.com/cuda-gpus}{compute capabilities}，李如意P100:6.0,Titan X(Pascal):6.1,Titan X(Maxwell):5.2和k80:3.7。
+	\item 用支持所有的目标CPU优化的gcc编译器。推荐最小的gcc版本是4.8.3。在OS X上升级最新的Xcode版本用clang版本结合Xcode。
+	\item 安装TensorFlow支持的最新的稳定CUDA平台和cuDNN库。
 \end{itemize}
-\subsection{利用队列读取数据}
-在利用GPUs时性能很差或者没有设置高效的pipeline导致缺乏数据，确保设置输入pipeline高效利用队列和流数据，一种识别GPU处于饥饿状态的方法时生成和查询时间线。一个相信的时间线指南不存在，但是一个快速生成时间线的例子在\href{https://www.tensorflow.org/performance/xla/jit}{XLA JIT}部分存在，另一个检查是否GPU被充分使用时运行nvidia-smi查看，如果GPU利用没有达到100\%这样GPU没有足够快的得到数据。
+\subsubsection{优化GPU}
+这部分包含指定GPU的没有在\href{https://www.tensorflow.org/performance/performance_guide#general_best_practices}{ General best practices}被包含的技巧。在多个GPU上获取优化性能是一个挑战。一个常见的方法是数据并行。通过使用数据并行利用创建多个模型的拷贝，这些模型作为一个tower，放置一个tower在每个GPU上。每个tower在不同的小批数据上操作每个tower得到更新的变量和梯度对性能有什么影响，方法，模型的收敛。下面提供了一个在多个GPUs上放置变量和tower的概览。在下一章将详细的讨论更多用于在tower分享和更新变量复杂的方法。
 
-除非指定一个特殊的情形或者示例代码，没有从Python变量给予数据到会话，e.g.
-\begin{python}
-# Using feed_dict often results in suboptimal performance when using large inputs.
-sess.run(train_step, feed_dict={x: batch_xs, y_: batch_ys})
-\end{python}
-\subsection{在CPU上的预处理}
-将预处理操作放在CPU上可能对性能提升很重要，当预处理发生在GPU，数据流使从CPU->GPU(预处理)->CPU->GPU(训练)。这数据被限制在CPU和GPU之间，当预处理被放在CPU上，数据流是CPU(预处理)->GPU(训练)。另一个好处是在CPU上预处理释放GPU时间让其集中训练。
+最好的处理变量更新的方法是依赖模型，甚至是硬件被如何配置。一个例子是一个例子是两个系统都有NVIDIA Tesla P100s一个是用PCIe另一个用\href{http://www.nvidia.com/object/nvlink.html}{NVLink}在这种场景下对于每个系统的优化方案也许不同。对于真实世界的例子，读\href{https://www.tensorflow.org/performance/benchmarks}{benchmark}详细的设置多平台优化。下面是一个benchmark多平台和配置的总结:
+\begin{itemize}
+	\item Tesla K80:如果GPU在相同的PCI中线跟复杂能够用\href{https://developer.nvidia.com/gpudirect}{NVIDIA GPUDirect}Peer to Peer,然后然后放置多个相等的GPUs用于训练是最好的方法。如果GPUs不能用GPUDirect，然后放置变量在CPU上是最好的选择。
+	\item Titan X(Maxwell 和Pascal)，M40,P100和类似的:详细的像ResNet和InceptionV，放置变量在CPU上是优化设置，但是对于有很多变量的模型像AlexNet和VGG，用GPUs和NCCL是更好。
+\end{itemize}
+一场用的管理变量放置的方法是创建一个方法决定每个操作放置在哪里和通过tf.device()用方法指定设备名字。考虑一个场景是一个模型在两个GPU上训练变量被放在CPU上。则将在每个GPU上循环创建放置tower，一个习惯的设备放置方法将创建监视查看操作的Variable，VariableV2和VarHanddleOp的类型，遗失者他们被放在CPU上。所有的其他操作将放在目标GPU上，构件图将按照下面处理:
+\begin{itemize}
+	\item 第一次循环模型中的一个tower将为gpu:0创建。当值操作期间，通常设备防治方法将指示变量被昂在cpu:0上其他操作放在gpu:0上。
+	\item 第二次循环，resue设置为True预示着变量被重用tower被放置在cpu:0上被重用所有的其他操作将被创建放置在gpu:1上
+\end{itemize}
+最后的结果是所有的变量放在CPU上每个GPU结合模型拷贝计算操作。下面的代码段说明两个不同的变量防治方法:一个放置变量在CPU上，一个放置变量通过GPUs。
+\begin{lstlisting}[language=Python]
+class GpuParamServerDeviceSetter(object):
+  """Used with tf.device() to place variables on the least loaded GPU.
 
-将预处理放在CPU上可能导致对sample/sec处理速度6倍以上的处理性能增加，将导致训练时间缩短为原来的$\frac{1}{6}$,确保预处理在CPU上，按照如下操作:
-\begin{python}
-with tf.device('/cpu:0'):
-  # function to get and process images or data.
-  distorted_inputs = load_and_distort_images()
-\end{python}
-\subsection{用大文件}
-在一些情形下，CPU和GPU可能通过I/O操作获取数据时对数据处于饥饿状态。如果你正用一些小文件形成输入数据集，你也许被你的文件系统限制了速度。如果你在SSD上而不是HDD上存储你的输入数据你的训练循环运行更快。如果是这样你应该通过创建一些大的TFRecord文件预处理你的输入数据。
-\subsection{用NCHW图像数据格式}
-图像数据格式涉及到图像的批量表示。TensorFlow支持NHWC(TensorFlow 默认)和NCHW(cuDNN默认)，N时图像的批数，H时图像垂直方向的像素数量，W是水平方向的像素，C时图像的通道数，尽管cuDNN能处理上面两种格式，但是它处理默认格式更快。最好的实现是用NCHW和NHWC构建模型正如通常在GPU上用NCHW训练然后在CPU上用NHWC推断。
+    A common use for this class is to pass a list of GPU devices, e.g. ['gpu:0',
+    'gpu:1','gpu:2'], as ps_devices.  When each variable is placed, it will be
+    placed on the least loaded gpu. All other Ops, which will be the computation
+    Ops, will be placed on the worker_device.
+  """
 
-TensorFlow用这两个格式是的一个简单的历史因为它在CPUs上运行快点，然后TensorFlow团队发现当NVIDIA cuDNN库时NCHW运行更好。当即用户推荐在他们的模型中支持两种格式，在很长一段时期，我们计划重写图转化两种格式。
-\subsection{用融批规范}
-当用批规范tf.contrib.layers.batch\_norm设置属性fused=True:
-\begin{python}
-bn = tf.contrib.layers.batch_norm(
-          input_layer, fused=True, data_format='NCHW'
-          scope=scope, **kwargs)
-\end{python}
-在没有融合批规范计算几个单独的操作。融合批规范结合单个操作进入内核，运行更快。
-\section{性能向导}
-\section{好性能模型}
-\section{Benchmark}
+  def __init__(self, worker_device, ps_devices):
+    """Initializer for GpuParamServerDeviceSetter.
+    Args:
+      worker_device: the device to use for computation Ops.
+      ps_devices: a list of devices to use for Variable Ops. Each variable is
+      assigned to the least loaded device.
+    """
+    self.ps_devices = ps_devices
+    self.worker_device = worker_device
+    self.ps_sizes = [0] * len(self.ps_devices)
 
-\section{如何用TensorFlow量化神经网络}
-现代神经网络已经被开发出了，最大的挑战是让他们工作！这意味着在训练中的精确度和速度被优先考虑，浮点时是保留精确度的最简单的方法，GPUs擅长简爱素这些计算，因此没有太多的注意被放在其它数据格式上。
+  def __call__(self, op):
+    if op.device:
+      return op.device
+    if op.type not in ['Variable', 'VariableV2', 'VarHandleOp']:
+      return self.worker_device
 
-这些天我们做了一些模型部署在商业应用上，训练的计算要求随着研究人员的数量增加，对于推断的需要正在扩张。这意味着推断效率变成的一些团队最麻烦的问题。
+    # Gets the least loaded ps_device
+    device_index, _ = min(enumerate(self.ps_sizes), key=operator.itemgetter(1))
+    device_name = self.ps_devices[device_index]
+    var_size = op.outputs[0].get_shape().num_elements()
+    self.ps_sizes[device_index] += var_size
 
-这是量化出现了，它覆盖了一些存储数字和计算执行在更多兼容的32bit浮点数。我们将关注固定点下面我将说宁更多细节。
-\subsection{为什么做量化工作}
-训练神经网络通过对权值小的推动，这些小的推动需要浮点精度工作。
+    return device_name
 
-预先训练模型和运行推断有很大不同，一个深度网络的神奇的量化时他们像是复制高级别的噪声在他们的输入。如果考虑识别一个你拍摄照片中的的对象，网络必须在它和训练样本中忽视CCD上的噪声，光线改变其它不重要的差异在它和训练样本被看到前，之一梨放在重要的类似的事上。这个能力意味着他们需要退待地精读计算作为另一个源噪声，产生精度结果升值数值格式抓住更少信息。
-\subsection{为什么量化}
-神经网络模型可能占据一些磁盘空间，原始的AlexNet腹地使能数据占据超过200MB。大多数的这些大小被神经网络连接的权重占据，因为经常单个模型有上百万个神经元。因为他们时有一些不同的浮点数，简单的压缩格式像zip不能很好的压缩他们，他们被安排仅一个大的层，每一层的权重趋向于一定范围的正态分布，比如-3.0到6.0。
+def _create_device_setter(is_cpu_ps, worker, num_gpus):
+  """Create device setter object."""
+  if is_cpu_ps:
+    # tf.train.replica_device_setter supports placing variables on the CPU, all
+    # on one GPU, or on ps_servers defined in a cluster_spec.
+    return tf.train.replica_device_setter(
+        worker_device=worker, ps_device='/cpu:0', ps_tasks=1)
+  else:
+    gpus = ['/gpu:%d' % i for i in range(num_gpus)]
+    return ParamServerDeviceSetter(worker, gpus)
 
-最简单的量化动机是通过存储每一层的最大值和最小值缩小文件大小。然后压缩每个浮点值为8位代表最接近到256内的真实整数。例如范围-3.0-6.0,0代表-3,255代表6.0,128代表1.5。我在之后将进行确切的计算，因此有一些细节，但是这意味着你可以得到缩小文件尺寸75\%的好处，然后你可以通过导入后在不更改任何存在的浮点数代码然后转换为浮点数。
+# The method below is a modified snippet from the full example.
+def _resnet_model_fn():
+    # When set to False, variables are placed on the least loaded GPU. If set
+    # to True, the variables will be placed on the CPU.
+    is_cpu_ps = False
 
-另一个原因是量化前通过在8位输入输出减少你运行前的你需要推理计算资源,获取8位值仅仅需要浮点数25\%的内存带宽，因此你可以更充分使用缓存避免RAM存取瓶颈，你也可以用SIMD操作在每个时钟周期做更多操作。在yxiieqingkuangxia你将有一个DSP芯片可以激素8为计算得到更多好处。
-
-移动嗯计算到8为将帮助你更快地运行模型，用更少的电量，同时它也为不能运行浮点代码的嵌入式系统打开了开了一扇门，因此可以应用到IoT世界。
-
-\subsection{为什么不直接训练低精度}
-我们正在一些更低深度上做了一些实验，结果似乎显示你需要高于8位处理反向传播和梯度，这使得实现训练变得更复杂推理混乱。我们已经有一致的浮点数模型使用，因此能直接方便的转换他们。
-
-\subsection{你能如何量化你的模型}
-TensorFlow支持生成8为计算，它也有一些通过用量化计算推理转换训练模型浮点数到相应的图上。例如这里你可以转换最新的GoogleLeNet模型用8位版本计算：
-\begin{lstlisting}[language={[ANSI]C}]
-curl http://download.tensorflow.org/models/image/imagenet/
-inception-2015-12-05.tgz -o /tmp/inceptionv3.tgz
-tar xzf /tmp/inceptionv3.tgz -C /tmp/
-bazel build tensorflow/tools/quantization:quantize_graph
-bazel-bin/tensorflow/tools/quantization/quantize_graph \
-  --input=/tmp/classify_image_graph\_def.pb \
-  --output_node_names="softmax" --output=/tmp/quantized_graph.pb \
-  --mode=eightbit
+    # Loops over the number of GPUs and creates a copy ("tower") of the model on
+    # each GPU.
+    for i in range(num_gpus):
+      worker = '/gpu:%d' % i
+      # Creates a device setter used to determine where Ops are to be placed.
+      device_setter = _create_device_setter(is_cpu_ps, worker, FLAGS.num_gpus)
+      # Creates variables on the first loop.  On subsequent loops reuse is set
+      # to True, which results in the "towers" sharing variables.
+      with tf.variable_scope('resnet', reuse=bool(i != 0)):
+        with tf.name_scope('tower_%d' % i) as name_scope:
+          # tf.device calls the device_setter for each Op that is created.
+          # device_setter returns the device the Op is to be placed on.
+          with tf.device(device_setter):
+            # Creates the "tower".
+            _tower_fn(is_training, weight_decay, tower_features[i],
+                      tower_labels[i], tower_losses, tower_gradvars,
+                      tower_preds, False)
 \end{lstlisting}
-你将在原始的操作上运行一个新的模型，但是8位计算在内部，所有的权重被量化。如果你查看文件尺寸，你将看到大约是原来的1/4(23MB对比91MB)，你可以用相同的输入输出运行这个模型，你将得到相应的结果，这里是代码:
-\begin{lstlisting}[language={[ANSI]C}]
-# Note: You need to add the dependencies of the quantization
-# operation to the
-#       cc_binary in the BUILD file of the label_image program:
-#
-#     //tensorflow/contrib/quantization:cc_ops
-#     //tensorflow/contrib/quantization/kernels:quantized_ops
+在不远的将来上面的代码将被用于说明意图，这将被很容易用高级方法支持更广泛的方法。这个\href{https://github.com/tensorflow/models/tree/master/tutorials/image/cifar10_estimator}{例子}将更新更新作为API扩展和进展处理多个GPU的场景。
+\subsubsection{优化CPU}
+包含Intel Xeon Phi的CPU，当从TensorFLow原来马构建时获得最优性能所有的说明被目标CPU支持。
 
-bazel build tensorflow/examples/label_image:label_image
-bazel-bin/tensorflow/examples/label_image/label_image \
---image=<input-image> \
---graph=/tmp/quantized_graph.pb \
---labels=/tmp/imagenet_synset_to_human_label_map.txt \
---input_width=299 \
---input_height=299 \
---input_mean=128 \
---input_std=128 \
---input_layer="Mul:0" \
---output_layer="softmax:0"
+超过于使用最新的说明，Intel的Intel Math Kernel Library对TensorFlow深度神经网络添加了支持。尽管名字不返券静却，这些优化经常被简单的写为MKL或者tensorFlow,\href{https://www.tensorflow.org/performance/performance_guide#tensorflow_with_intel_mkl_dnn}{TensorFlow with Intel MKL-DNN}包含了MKL优化的详细说明。
+
+下面的两个配置通过调整线程池优化CPU性能
+\begin{itemize}
+\item intra\_op\_parallelism\_treads:可以用多线程并行执行将调度单个片段进线程池
+\item inter\_op\_parallelism\_threads:线程池所有的节点被调度
+\end{itemize}
+入下面显示这些配置通过tf.ConfigProto,传递给tf.Session中的config属性。对于两个配置选项，如果他们没有设置或者设置为0将默认CPU的逻辑数。测试显示对于逻辑核数为4和到多CPU的70+是高效的。一个常用的优化是设置在池中的线程数等于物理核数而不是逻辑核数。
+\begin{lstlisting}[language=Python]
+config = tf.ConfigProto()
+config.intra_op_parallelism_threads = 44
+config.inter_op_parallelism_threads = 44
+tf.session(config=config)
 \end{lstlisting}
-你将看到最新的量化图的运行，输出和原始输出十分类似。
-
-你可以运行相同的处理在你的模型上报春为GrephDefs，输入输出的名字用在你的网络请求上。我推荐你首先通过freeze\_graph脚本，转化检查点为常数存储在文件中。
-\subsection{如何量化处理工作}
-我们在推理过程中通过写8位量化本本操作实现两话，这包含卷积，矩阵相乘，激活函数，吃花草做和链接，转化脚本首先对所有的操作量化。有一些小的子图之前有转化函数之后在浮点数和8位数之间移动，下面是一个例子，首先原始Relu操作输入输出浮点数。
-\begin{center}
-\begin{figure}[H]
-\includegraphics[scale=0.5]{quantization0.png}
-\end{figure}
-\end{center}
-然后相应的转换子图，仍然是浮点输入输出，内部转换完成后以8位计算:
-\begin{center}
-\begin{figure}[H]
-\includegraphics[scale=0.5]{quantization1.png}
-\end{figure}
-\end{center}
-最小，最大操作实际上查看输入浮点tensor的值，输入他们到量化操作转换tensor为8位。
-
-当单个操作被转换后，下一步是移除必要的转换到浮点。如果有一个连续的序列操作，将有一些链接Dequantize/Quantize操作
-
-\begin{center}
-\begin{figure}[H]
-\includegraphics[scale=0.3]{quantization2.png}
-\end{figure}
-\end{center}
-应用到大规模模型上时所有的操作已经相应的量化，图上所有的计算用8为计算不转换为浮点数。
-\subsection{量化Tensor将呈现什么}
-我们通过转化浮点数组为8位表达式作为压缩问题。我们知道权重和激活Tensor在训练神经网络模型时值的分布在一个小的范围(你也许有一个-15到+15的权重，-500到1000激活)。在实验中我们了解到神经网络通常在处理噪声时非常健壮，由量化产生噪声类似的误差将不会伤害精度。我们像卷则一个表达式这是容易执行计算，特别是大的矩阵惩罚影城需要运行一个模型的块。
-
-这导致我们选择一个表达式有两个浮点数存储最小值和最大值代表最低和最高量化精度，每个在量化数组中的入口代表一个浮点值范围，现行飞蛾分布在最小值和最大值之间。例如我们有最小值=-10.0和最大值30.0f,和8位数据，下面是量化表达式:\newline
-\begin{tabular}{|c|c|}
-量化值&浮点数\\
-0&-10\\
-255&30.0\\
-128&10.
-\end{tabular}
-\newline
-这种表达式的好处是可以代表任一幅度的范围，我们不必须退成，它可以代表有符号和无符号的值，现行扩展使得直接相乘。对转换浮点数前后的一个清晰明确的量化格式定义好处，或者基于调试目的的查看tensor在Tensorflow上一个是线细节时希望提高将来最小值和最大值需要传递分割开得Tensor保持量化值，因此图个变得一点稠密。
-
-最小和最大值范围可以提前计算，权重参数是常数在载入时就知道，因此他们的范围可以作为常数被存储。我们经常知道输入范围例如(RGB的值在0-255)，一些激活函数也知道范围。这可以避免必须分析操作的输出决定范围，我们需要从8位输出像卷积或者矩阵乘法这样的做数学操作形成32Bit累加结果。
-\subsection{下一步}
-我们发现通过8为算法而不是不浮点数可以在移动短和嵌入式设备上得到机器好的性能。你可以看到这个框架我们优化矩阵乘在\href{https://github.com/google/gemmlowp}{gemmlowp},我们仍然需要应用所有的我们需要学习的TensorFlow操作去在移动短得到最大型能，但是我们很兴奋正在为次努力。马上，量化实现是一个合理的快和精确度实现我们希望将能在更多的设备上广泛的支持8位模型。我们也希望着站时将鼓励社区探索更低精度的神经网络的可能性。
-\section{XLA概览}
+下面比较编译器优化章节包含了不同编译器优化测试结果
+\subsubsection{TensorFlow和Intel MKL DNN}
+Intel通过用Intel MKL-DNN为Intel Xeon和Xeon Phi添加了对TensorFlow的优化。优化对于消耗处理器行提供了加速，如i5和I5的Intel处理器。在论文\href{https://software.intel.com/en-us/articles/tensorflow-optimizations-on-modern-intel-architecture}{TensorFlow* Optimizations on Modern Intel® Architecture }包含了详细的实现。
 \begin{quote}
-\emph{XLA是实验性的可以认为是alhpa版，多数情况下将不能看到性能提升（速度或者内存占有率），我们开房了XLA以至于开源社团能贡献他的发展，而且创建一个路径整合硬件加速。}
+\emph{MKL在tensorFlow 1.2就被添加，当前尽在Linux上有小。如果用config=cuda它将不工作}
 \end{quote}
-XLA(Accelerated Linear Algebra)在TensorFlow计算中是一个特殊的针对线性代数的编译器，用来在服务器或者移动平提升速度，内存使用和服务器与移动平台的可移植性。最初多数用户没有看到从XLA的好处，但是我们欢迎通过\href{https://www.tensorflow.org/performance/xla/jit}{just-in-time(JIT)}或者\href{https://www.tensorflow.org/performance/xla/tfcompile}{ahead-of-time (AOT) compilation}编译使用XLA,特别鼓励使用心得精简加速的开发者使用XLA。
+另外对基于CNN的模型提供了极大地性能提升，和MKL编译创建对AVXhe AVX2的优化的一个二进制。结果是一个二进制被优化兼容多数处理器(2011年以后的)。
+TensorFlow可以通过下面的命令在结合MKL优化通过源代码被编译。对于TensorFlow之后的源代码版本:
+\begin{lstlisting}[language=Bash]
+./configure
+# Pick the desired options
+bazel build --config=mkl -c opt //tensorflow/tools/pip_package:build_pip_package
+\end{lstlisting}
+对于TensorFlow版本为到1.3.0:
+\begin{lstlisting}[language=Bash]
+./configure
+Do you wish to build TensorFlow with MKL support? [y/N] Y
+Do you wish to download MKL LIB from the web? [Y/n] Y
+# Select the defaults for the rest of the options.
 
-XLA框架是试验版还在积极的发展，，特别是尽管它可能改变存在的操作语法，他希望更多的操作将添加进在重要时候使用，团队欢饮来自社区的关于确实功能和社区通过Github的反馈。
-\subsection{为什么建立XLA}
-我们有一些针对TeXLA结合nsorFlow的对象。
+bazel build --config=mkl --copt="-DEIGEN_USE_VML" -c opt //tensorflow/tools/pip_package:build_pip_package
+
+\end{lstlisting}
+\subsubsection{调整MKL获得最佳性能}
+这部分将介绍不同的配置和环境变量用于调整MKL得到优化的性能。在调整多环境变量之前确保模型使用NCHW（chennel\_first）数据核实。MKL对于NCHW被优化过当用NCHW时Intel将获得最高性能。
+MKL用下面的环境变量调整西鞥能:
 \begin{itemize}
-	\item 提升执行速度、编译子图减少短的存货的操作的执行时间消除从TensorFlow运行时间，融合操作减少内存，指定tensor形状允许更多仅略性的常量的传播。
-	\item 替身内存占用。分析调度内存使用，主要是消除一些中间存储缓存。
-	\item 减少对常见操作的依赖，移除对常用操作的需要提高自动融合低级操作的性能匹配能手动融合的常用操作
-	\item 减小移动足迹，通过提前编译子图和消除一个可以被链接进其它应用的对象文件对消除TensorFlow运行时间，结果可能减少移动有大小排序的推理的足迹
-	\item 提高可一致性，使得他相对容易为多种影响写一个新的后台，大的TensorFlow程序的一部分能不修改在其它硬件上运行。相比于为新的硬件指定集成操作的方法，这种方法要其TensorFlow程序使用这些操作而重写。
+	\item KMP\_BLOCKTIME-设置时间，毫秒，表示线程应该等待的时间在完成并行执行后，休眠之前
+	\item KMP\_AFFINITY-启动运行时间库绑定线程到物理处理器单元
+	\item KMP\_SETTING-在程序知识中启动或者警用OpenMP*打印运行事件库环形变量
+	\item OMP\_NUM\_THREADS指定使用的线程数
 \end{itemize}
-\subsection{XLA如何做}
-XLA的输入语言称为"HLO IR"或者仅仅HLO(High Level Optimize),HLO的语法在\href{https://www.tensorflow.org/performance/xla/operation_semantics}{Operation Semantics}中有描述，很方便的考虑HLO作为一个\href{https://en.wikipedia.org/wiki/Intermediate_representation}{compiler IR}
+更多的关于KMP变量在\href{https://software.intel.com/en-us/node/522775}{Intel's}网站上OMP变量在\href{https://gcc.gnu.org/onlinedocs/libgomp/Environment-Variables.html}{gnu.org}
+尽管通过调整环境变量可能有极大的提升，下面的讨论简单的建议通过下面的环境变量设置inter\_op\_:parallelism\_threads等于物理CPU的核数用
+\begin{itemize}
+	\item KMP\_BLOCKTIME=0
+	\item KMP\_AFFINITY=granularity=fine,verbose,compact,1,0
+\end{itemize}
+用命令行设置MKL环境变量:
+\begin{lstlisting}[language=Bash]
+KMP_BLOCKTIME=0 KMP_AFFINITY=granularity=fine,verbose,compact,1,0 \
+KMP_SETTINGS=1 python your_python_script.py
+\end{lstlisting}
+通过Python的os.environ设置MKL环境变量:
+\begin{lstlisting}[language=Python]
+os.environ["KMP_BLOCKTIME"] = str(FLAGS.kmp_blocktime)
+os.environ["KMP_SETTINGS"] = str(FLAGS.kmp_settings)
+os.environ["KMP_AFFINITY"]= FLAGS.kmp_affinity
+if FLAGS.num_intra_threads > 0:
+  os.environ["OMP_NUM_THREADS"]= str(FLAGS.num_intra_threads)
+\end{lstlisting}
+有一些模型和硬件平台在不同的设置上得到好处。每个变量影响性能在下面被讨论:
+\begin{itemize}
+\item KMP\_BLOCKTIME:MKL默认为200ms，没有为我们的测试优化 0ms是一个好的默认CNN基础的测试模型AlexNet的最好性能设置为30ms，GoogleNet和VGG11最好设置为1ms。
+\item KMP\_AFFINITY:推荐设置是granularity=fine,verbose,compact,1,0
+\item OMP\_NUM\_THREADS:默认物理核数，当用Intel Phi在模型上是调整参数超过匹配的核数有些印象，更多的模型查看\href{https://software.intel.com/en-us/articles/tensorflow-optimizations-on-modern-intel-architecture}{TensorFlow* Optimizations on Modern Intel Architecture}获得优化性能
+\item intra\_op\_parallelism\_threads:推荐设置这个等于物理核数，设置值为0默认导致值被设置逻辑核的个数，对一些架构是一个尝试选项，值和OMP\_NUM\_THREADS应该相等
+\item inter\_op\_parallelism\_threads:推荐设置等于sockes的数量，默认设置值为0将导致值被设置为逻辑核数
+\end{itemize}
+\subsubsection{比较编译器的优化}
+在不同的CPU平台上用不同的编译器优化收集训练和推理的执行信息。模型被用在ResNet-50\href{https://arxiv.org/abs/1512.03385}{arXiv:1512.03385}和Inception V3\href{https://arxiv.org/abs/1512.00567}{arXiv:1512.00567}
+对于更多的测试，当在环境变量KMP\_BLOCKTIMEMKL优化被使用被设置为0ms，KMP\_AFFINITY为granularity=fine,verbose,compact,1,0
 
-XLA接受HLI中辛吉德计算图为不同的算法编译他们为机器指令。XLA在这个场景下是一个模块化的，很容易给\href{https://www.tensorflow.org/performance/xla/developing_new_backend}{ target some novel HW architecture}后台去开启一个缝。对于X64和ARM64的CPU的后端和NVIDIA GPU后端都在TensorFlow源数上。下面的图显示了XLA的编译过程:
-\begin{center}
-\begin{figure}[h]
-\includegraphics[scale=0.5]{how-does-xla-work}
-\end{figure}
-\end{center}
-XLA和一些优化器分析独立目标，像\href{https://en.wikipedia.org/wiki/Common_subexpression_elimination}{CSE},独立目标融合，缓存分析分配用于计算运行时间。在独立目标之后，XLA发送HLO计算给后端。后端可移植性更多的HLO级别的分析和优化，这次随着目标指定信息和需要记住。例如XLA GPU后台执行操作融合融合GPU编程的模块的好处决定如何分割计算成流。在这个时候，后台也许模式匹配确定的操作或者组合优化库的调用，下一步是目标制定代码生成。CPU和GPU后台包含用低级IR的\href{http://llvm.org/}{LLVM}XLA，优化，代码生成。后端用高效的方式发送LLVM IR需要表示XLA HLO计算，使用LLVM从LLVM IR发送本地代码。
+推理InceptionV3\newline
+\textbf{环境}
+\begin{itemize}
+	\item 实例类型:AWS EC2 m4.xlarge
+	\item CPU：Intel(R) Xeon(R) CPU E5-2686 v4 @ 2.30GHz (Broadwell)
+	\item 数据集：Imagenet
+	\item TensorFlow 版本1.2.0 RC2
+	\item 测试脚本:\href{https://github.com/tensorflow/benchmarks/blob/mkl_experiment/scripts/tf_cnn_benchmarks/tf_cnn_benchmarks.py}{tf\_cnn\_benchmarks.py}
+\end{itemize}
+\textbf{Batch Size}
+为MKL测试执行命令
+\begin{lstlisting}[language=Bash]
+python tf_cnn_benchmarks.py --forward_only=True --device=cpu --mkl=True \
+--kmp_blocktime=0 --nodistortions --model=inception3 --data_format=NCHW \
+--batch_size=1 --num_inter_threads=1 --num_intra_threads=4 \
+--data_dir=<path to ImageNet TFRecords>
+\end{lstlisting}
 
-GPU后端当前支持通过LLVM NVPTX后端支持NVIDIA GPU；CPU后端支持多CPU ISAs。
-\subsection{支持平台}
-CLA当前支持\href{https://www.tensorflow.org/performance/xla/jit}{JIT compilation}X86-64和NVIDIA GPUs和x86-64和ARM\href{https://www.tensorflow.org/performance/xla/tfcompile}{AOT compilation}。
+\begin{tabular}{|c|c|c|c|c|}
+\hline
+优化&数据格式&图像/秒(步时)&Intra线程&Inter线程\\
+\hline
+AVX2&NHWC&6.8(147ms)&4&0\\
+\hline
+MKL&NHWC&6.8(147ms)&4&1\\
+\hline
+MKL&NHWC&5.95(168ms)&4&1\\
+\hline
+AVX&NHWC&4.7(211ms)&4&0\\
+\hline
+SSE3&NHWC&2.7(370ms)&4&0\\
+\hline
+\end{tabular}
 
+\textbf{Batch Size:32}
+执行MKL测试命令:
+\begin{lstlisting}[language=Bash]
+python tf_cnn_benchmarks.py --forward_only=True --device=cpu --mkl=True \
+--kmp_blocktime=0 --nodistortions --model=inception3 --data_format=NCHW \
+--batch_size=32 --num_inter_threads=1 --num_intra_threads=4 \
+--data_dir=<path to ImageNet TFRecords>
+\end{lstlisting}
+
+\begin{tabular}{|c|c|c|c|c|}
+\hline
+优化&数据格式&图像/秒(步时)&Intra线程&Inter线程\\
+\hline
+MKL&NCHW&10.24 (3125ms)	4&1\\
+\hline
+MKL&NHWC&	8.9 (3595ms)&4&1\\
+\hline
+AVX2&NHWC&7.3 (4383ms)&4&0\\
+\hline
+AVX&NHWC&5.1 (6275ms)&4&0\\
+\hline
+SSE3&NHWC&2.8 (11428ms)&4&0\\
+\hline
+\end{tabular}
+
+\textbf{推理ResNet-50}
+\begin{itemize}
+	\item 实例类型： AWS EC2 m4.xlarge
+	\item CPU: Intel(R) Xeon(R) CPU E5-2686 v4 @ 2.30GHz (Broadwell)
+	\item 数据集: ImageNet
+	\item TensorFlow 版本: 1.2.0 RC2
+	\item 测试脚本: \href{https://github.com/tensorflow/benchmarks/blob/mkl_experiment/scripts/tf_cnn_benchmarks/tf_cnn_benchmarks.py}{tf\_cnn\_benchmarks.py}
+\end{itemize}
+
+\begin{tabular}{|c|c|c|c|c|}
+优化&数据格式&图像/秒(步时)&Intra线程&Inter线程\\
+\hline
+AVX2&	NHWC&	6.8 (147ms)&	4&	0\\
+\hline
+MKL&	NCHW&	6.6 (151ms)&	4&	1\\
+\hline
+MKL&	NHWC&	5.95 (168ms)&	4&	1\\
+\hline
+AVX&	NHWC&	4.7 (211ms)&	4&	0\\
+\hline
+SSE3&	NHWC&	2.7 (370ms)&	4&	0\\
+\hline
+\end{tabular}
+
+\textbf{Batch size：32}\newline
+执行MKL测试的命令
+\begin{lstlisting}[language=Python]
+python tf_cnn_benchmarks.py --forward_only=True --device=cpu --mkl=True \
+--kmp_blocktime=0 --nodistortions --model=resnet50 --data_format=NCHW \
+--batch_size=32 --num_inter_threads=1 --num_intra_threads=4 \
+--data_dir=<path to ImageNet TFRecords>
+\end{lstlisting}
+
+\begin{tabular}{|c|c|c|c|c|}
+\hline
+优化&数据格式&图像/秒(步时)&Intra线程&Inter线程\\
+\hline
+MKL&	NCHW&	10.24 (3125ms)&	4&	1\\
+\hline
+MKL&	NHWC&	8.9 (3595ms)&	4&	1\\
+\hline
+AVX2&	NHWC&	7.3 (4383ms)&	4&	0\\
+\hline
+AVX&	NHWC&	5.1 (6275ms)&	4&	0\\
+\hline
+SSE3&	NHWC&	2.8 (11428ms)&	4&	0\\
+\hline
+\end{tabular}
+
+\textbf{训练InceptionV3}\newline
+\textbf{环境}
+\begin{itemize}
+	\item 实例类型: Dedicated AWS EC2 r4.16xlarge (Broadwell)
+	\item CPU: Intel Xeon E5-2686 v4 (Broadwell) Processors
+	\item 数据集: ImageNet
+	\item TensorFlow 版本: 1.2.0 RC2
+	\item 测试脚本: \href{https://github.com/tensorflow/benchmarks/blob/mkl_experiment/scripts/tf_cnn_benchmarks/tf_cnn_benchmarks.py}{tf\_cnn\_benchmarks.py}
+\end{itemize}
+
+执行MKL测试命令
+\begin{lstlisting}[language=Python]
+python tf_cnn_benchmarks.py --device=cpu --mkl=True --kmp_blocktime=0 \
+--nodistortions --model=resnet50 --data_format=NCHW --batch_size=32 \
+--num_inter_threads=2 --num_intra_threads=36 \
+--data_dir=<path to ImageNet TFRecords>
+\end{lstlisting}
+\begin{tabular}{|c|c|c|c|c|}
+\hline
+优化&数据格式&图像/秒(步时)&Intra线程&Inter线程\\
+\hline
+MKL&	NCHW&	20.8&	36&	2\\
+\hline
+AVX2&	NHWC&	6.2&	36&	0\\
+\hline
+AVX&	NHWC&	5.7&	36&	0\\
+\hline
+SSE3&	NHWC&	4.3&	36&	0\\
+\hline
+\end{tabular}
+ResNet和AlexNet在这个噢诶纸上运行但是有一个 ad hoc行为。没有足够运行执行结合标的结果。不完整的结果强烈的暗示了最后的结果将雷士上面的MKL比AVX2大约3x+的提升。

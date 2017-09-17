@@ -1,41 +1,41 @@
 \section{正则表达式介绍}
 \begin{center}
-\begin{tabular}{|p{3cm}|p{10cm}|p{4cm}|}
-\hline
-操作符 & 说明 & 实例\\
-\hline
-\text{[]} &字符集合，对单个字符给出取值范围  & \text{[abc]}表示a,b,c,\text{[a-z]}表示a到z的单个字符\\
-\hline
-.& 任何单个字符 &\\
-\hline
-\text{[\^ \quad]}&非字符集，对单个字符给出排除范围&\text{[\^{} abc]}表示非a或者b或者c的单个字符\\
-\hline
-*&前一个字符0次或者无限次扩展&abc*表示ab,abc,abcc等\\
-\hline
-+&前一个字符1次或无限次扩展&abc+表示abc,abcc,abccc等\\
-\hline
-?&前一个字符0次或者一次扩展&abc?表示ac,abc\\
-\hline
-|&左右表达式任一个&abc|def表示abc或者def\\
-\hline
-\{m\}&扩展前一个字符m次&ab\{2\}c表示abc,abbc\\
-\hline
-\{m,n\}&扩展前一个字符m到n次，包含n&ab\{1,2\}c表示abc,abbc\\
-\hline
-\^&匹配字符串开头&\^{}abc表示abc且在一个字符串开头\\
-\hline
-\$&匹配字符串结尾&abc\$表示abc且在一个字符串的结尾\\
-\hline
-()&分组标记，内部只能使用|操作符&(abc)表示abc，(abc|def)表示abc或者def\\
-\hline
-(?...)&这是一个扩展的符号,第一个字符在'?'后面决定了深层的语法。扩展通常没有创建一个新的group,(?P<name>...时该规则惟一的特例)&\\
-\hline
-(?aiLmsux)&来自集合'a','i','L','m','s','u','x'的一个或者多个字母，group匹配空字符串字符给整个正则表达式设置相关的flags：re.A,re.I,re.L,re.M,re.S,re.X。如果你洗完桑包含flags作为正则表达式的一部分而不是传递一个flag参数到re.compile()函数这就是很有用的，Flasg应该首先用在表达式字符串。&\\
-\hline
-\end{tabular}
-\end{center}
+% \begin{tabular}{|p{3cm}|p{10cm}|p{4cm}|}
+% \hline
+% 操作符 & 说明 & 实例\\
+% \hline
+% [] &字符集合，对单个字符给出取值范围  & [abc]表示a,b,c,[a-z]表示a到z的单个字符\\
+% \hline
+% .& 任何单个字符 &\\
+% \hline
+% [\^ ]&非字符集，对单个字符给出排除范围&[\^{} abc]表示非a或者b或者c的单个字符\\
+% \hline
+% *&前一个字符0次或者无限次扩展&abc*表示ab,abc,abcc等\\
+% \hline
+% +&前一个字符1次或无限次扩展&abc+表示abc,abcc,abccc等\\
+% \hline
+% ?&前一个字符0次或者一次扩展&abc?表示ac,abc\\
+% \hline
+% |&左右表达式任一个&abc|def表示abc或者def\\
+% \hline
+% $\left\{m\right\}$&扩展前一个字符m次&$ab\left\{2\right\}c$表示abc,abbc\\
+% \hline
+% $\left\{m,n\right\}$&扩展前一个字符m到n次，包含n&$ab\left\{1,2\right\}c$表示abc,abbc\\
+% \hline
+% \^ &匹配字符串开头&\^$\left\{\right\}$abc表示abc且在一个字符串开头\\
+% \hline
+% \$&匹配字符串结尾&abc\$表示abc且在一个字符串的结尾\\
+% \hline
+% ()&分组标记，内部只能使用|操作符&(abc)表示abc，(abc|def)表示abc或者def\\
+% \hline
+% (?...)&这是一个扩展的符号,第一个字符在'?'后面决定了深层的语法。扩展通常没有创建一个新的group,(?P<name>...时该规则惟一的特例)&\\
+% \hline
+% (?aiLmsux)&来自集合'a','i','L','m','s','u','x'的一个或者多个字母，group匹配空字符串字符给整个正则表达式设置相关的flags：re.A,re.I,re.L,re.M,re.S,re.X。如果你洗完桑包含flags作为正则表达式的一部分而不是传递一个flag参数到re.compile()函数这就是很有用的，Flasg应该首先用在表达式字符串。&\\
+% \hline
+% \end{tabular}
+% \end{center}
 
-\begin{center}
+% \begin{center}
 \begin{tabular}{|p{2.5cm}|p{8cm}|p{4cm}|}
 操作符 & 说明 & 实例\\
 (?:...)&非捕获版本的正则括号，匹配括号中无论什么正则表达式，但是在执行一个匹配或者查询之后group中子字符串匹配不能被获得&\\
@@ -97,17 +97,17 @@ PY\{:3\}N&'PN','PYN','PYYN','PYYYN',\ldots\\
 \begin{center}
 \begin{tabular}{||l|l||}
 \hline
-\^\text{[A-Za-Z]+\$}&26个字母组成的字符串\\
+\^[A-Za-Z]+\$ &26个字母组成的字符串\\
 \hline
-\^\text{[A-Za-z0-9]}+\$&由26个字母和数字组成的字符串\\
+\^[A-Za-z0-9]+\$&由26个字母和数字组成的字符串\\
 \hline
 \^\quad-?\textbackslash d+\$&整数形式的字符串\\
 \hline
-\^\text{[0-9]}*\text{[1-9][0-9]}* \$&正整数形式的字符串\\
+\^[0-9]*[1-9][0-9]* \$&正整数形式的字符串\\
 \hline
-\text{[1-9]}\textbackslash d{5}&中国境内邮政编码，6位\\
+[1-9]\textbackslash d{5}&中国境内邮政编码，6位\\
 \hline
-\text{[\textbackslash u4e00-\textbackslash u9fa5]}&匹配中文字符\\
+[\textbackslash u4e00-\textbackslash u9fa5]&匹配中文字符\\
 \hline
 \textbackslash d\{3\}-\textbackslash d\{8\}|\textbackslash d\{4\}-\textbackslash d\{7\}&国内电话号码，010-68913536\\
 \hline
@@ -350,4 +350,3 @@ m = re.match(r'(?P<first_name>\w+) (?P<last_name>\w+)','Malcolm Reynolds')
 m.groupdict()
 \end{python}
 输出:{'first\_name':'Malcolm','last\_name':'Reynolds'}\newline
-
