@@ -1,29 +1,30 @@
 \section{数据集}
 Dataset模块允许你从简单的，可重用的片段输入pipeline。例如图像模块的pipeline
-也许集合分布式文件系统的数据，随机扰动每场图片，随机融合选中的图片为一个batch来训练,pipeline的text模型能利用元素提取的文本数据，转换他们为查找表embedding的标志符将不同长度的序列放在一起成为一个batch。Dataset API使得处理大型数据，不同数据格式和复杂的转换变得很容易。
+也许集合分布式文件系统的数据，随机扰动每张图片，随机融合选中的图片为一个batch来训练,pipeline的text模型能利用元素提取的文本数据，转换它们为查找表embedding的标志符将不同长度的序列放在一起成为一个batch。Dataset API使得处理大型数据，不同数据格式和复杂的转换变得很容易。
 一个 Dataset
  API包含两个TebsorFlow抽象。
 \begin{itemize}
-\item 一个tf,contrib.data.Dataset代表一个元素序列，其中的每个元素代表了一个或者更多的Tensor对象。例如在图像pipeline，一个元素可能是单个的训练样本(一对代表了label和属相数据的tensor)有两种方法创建数据集:
+\item 一个tf.contrib.data.Dataset代表一个元素序列，其中的每个元素代表了一个或者更多的Tensor对象。例如在图像pipeline，一个元素可能是单个的训练样本(一对代表了label和图像数据的tensor)有两种方法创建数据集:
 	\begin{enumerate}
-		\item 创建一个源(Dataset.from\_tensor\_slices())从一个或者更多的tf.Tensor独享构造数据集。
+		\item 创建一个源(Dataset.from\_tensor\_slices())从一个或者更多的tf.Tensor图像构造数据集。
 		\item 应用转换格式从一个或者更多的tf.contrib.data.Dataset对象构造数据集。
 	\end{enumerate}
-	\item tf.contrib.data.Iterator提供主要的从数据集提取元素的方法当Iterator.get\_next()操作执行的时候从Dataset生成下一个元素，典型的行为作为输入pipeline和你的模型之间的接口。最简单的迭代器(iterator)是"one-shot iterator"它结合了数据集和迭代。更多高级使用Nike一用Iterator.initializer操作用不同的数据集重新初始化和参数化一个迭代器，例如在一个程序多次迭代训练样本和验证集。
+	\item tf.contrib.data.Iterator提供主要的从数据集提取元素的方法当Iterator.get\_next()操作执行的时候从Dataset生成下一个元素，典型的行为作为输入pipeline和你的模型之间的接口。最简单的迭代器(iterator)是"one-shot iterator"它结合了数据集和迭代。用Iterator.initializer操作用不同的数据集重新初始化和参数化一个迭代器，例如在一个程序多次迭代训练样本和验证集。
 \end{itemize}
 \subsection{基本的机制}
-为了开始一个输入pipeline你需要定义一个源。例如从内存中的一些tensor构造一个数据集。你可以使用tf.contrib.data.Dataset.from\_tensors()或者tf.contrib.data.Dataset.from\_tensor\_slices()。如果你的输入数据在磁盘上，推荐你用TFRecord
+为了开始一个输入pipeline你需要定义一个源。例如从内存中的一些tensor构造一个数据集。你可以使用tf.contrib.data.Dataset.from\_tensors()或者tf.contrib.data.Dataset.from
+\newline \_tensor\_slices()。如果你的输入数据在磁盘上，推荐你用TFRecord
 格式，你可以构造一个tf.contrib.data.TFRecordDataset。
 
-当你有一个Dataset对象的时候，你可以通过链式方法调用tf.contrib.data.Dataset对象转化成新的Dataset。例如例如你可以用之前的元素转换作为Dataset.map()（应用一个函数到每个元素）多元素转换像Dataset.batch()。查看文档\href{https://www.tensorflow.org/api_docs/python/tf/contrib/data/Dataset}{tf.contrib.data.Dataset}完成列表转换。
-最常用的方法是消耗从Dataset来的值是创建一个迭代器对象，提供访问一个元素的数据集的元素一次（调用Dadaset.make\_one\_shot\_iterator()）,一个tf.contrib.data.Iterator提供两个操作:Iterator.initializer重新初始化你的迭代器状态；Iterator.get)next()返回迭代器下一个元素的Tensor。
+当你有一个Dataset对象的时候，你可以通过链式方法调用tf.contrib.data.Dataset对象转化成新的Dataset。例如你可以用之前的元素转换作为Dataset.map()（应用一个函数到每个元素）多元素转换像Dataset.batch()。查看文档\href{https://www.tensorflow.org/api_docs/python/tf/contrib/data/Dataset}{tf.contrib.data.Dataset}完成列表转换。
+最常用的方法是消耗从Dataset来的值是创建一个迭代器对象，提供访问一个元素的数据集的元素一次（调用Dadaset.make\_one\_shot\_iterator()）,一个tf.contrib.data.Iterator提供两个操作:Iterator.initializer重新初始化你的迭代器状态；Iterator.get\_next()返回迭代器下一个元素的Tensor。
 \subsection{数据结构}
-一个数据及包含有相同结构的元素。一个元素包含一个或者更多称为组建的的tf.Tensor对象。每个组件有tf.DTpe代表在tensor中元素的数据类型，Dataset.output\_types和Dataset.output\_shapes属性允许你查看每个数据集元素的组建的类型和形状。这些参数的潜逃结构映射元素的结构(也许是一个tensor，一个tensor元组，或者嵌套的tensor元组)
+一个数据集包含有相同结构的元素。一个元素包含一个或者更多称为组件的的tf.Tensor对象。每个组件有tf.DType代表在tensor中元素的数据类型，Dataset.output\_types和Dataset.output\_shapes属性允许你查看每个数据集元素的组件的类型和形状。这些参数的嵌套结构映射元素的结构(也许是一个tensor，一个tensor元组，或者嵌套的tensor元组)
 \begin{python}
 dataset1 = tf.contrib.data.Dataset.from_tensor_slices(tf.random_uniform([4,10]))
 print(dataset1.output_types)#tf.float32
-print(dataset1.output_shape)#(10,)
-dataset2 = tf.contrib.data.Dadaset.from_tensor_slices(tf.random_uniform([4]),
+print(dataset1.output_shapes)#(10,)
+dataset2 = tf.contrib.data.Dadaset.from_tensor_slices((tf.random_uniform([4]))
 tf.random_uniform([4,100],maxval=100,dtype=tf.int32))
 print(dataset2.output_types)#(tf.float32,tf.int32)
 print(dataset2.output_shapes)#((),(100,))
@@ -31,11 +32,11 @@ datasets = tf.contrib.data.Dataset.zip((dataset1,dataset2))
 print(dataset3.output_types)#(tf.float32,(tf.float32,tf.int32))
 print(dataset3.output_shapes)#(10,((),(100,)))
 \end{python}
-给每个元素的组成名字是很方便的，例如他们代表不同训练样本的特征。另外，你可以用collections.namedtuple或者一个字典映射字符串到tensor代表Dataset的单个元素。
+给每个元素的组成命名是很方便的，例如它们代表不同训练样本的特征。另外，你可以用collections.namedtuple或者一个字典映射字符串到tensor代表Dataset的单个元素。
 \begin{python}
-dataset = tf.contrib.data.Dataset.from_tensor_slices(
+dataset = tf.contrib.data.Dataset.from_tensor_slices((
 	"a":tf.random_uniform([4]),
-	"b":tf.random_uniform([4,100],maxval=100,dtype=tf.int32))
+	"b":tf.random_uniform([4,100],maxval=100,dtype=tf.int32)))
 print(dataset.output_types())#{'a':tf.float32,'b':tf.int32}
 print(dataset.output_shape)#{'a':(),'b':(100,)}
 \end{python}
@@ -47,14 +48,14 @@ dataset2 = dataset2.flat_map(lambda x, y: ...)
 dataset3 = dataset3.filter(lambda x, (y, z): ...)
 \end{python}
 \subsection{创建一个迭代器}
-当你创建一个Dataset代表你的输入数据的时候，下一步是创建一个迭代器从数据集中访问元素，Dataset API当前支持三种迭代器:
+当你创建一个Dataset代表你的输入数据的时候，下一步是创建一个迭代器从数据集中访问元素，Dataset API当前支持一下迭代器:
 \begin{itemize}
 	\item one-shot
 	\item initilizable
 	\item reinitilizable
 	\item feedable
 \end{itemize}
-one-shot迭代器是迭代器中最简单的形式，支持在数据集上迭代一次不需要初始化。One-shoto处理大多数的基于队列的输入pipeline，但是他们不支持参数化。用Dataset.range()作为例子:
+one-shot迭代器是迭代器中最简单的形式，支持在数据集上迭代一次,不需要初始化。One-shot处理大多数的基于队列的输入pipeline，但是它们不支持参数化。用Dataset.range()作为例子:
 \begin{python}
 dataset = tf.contrib.data.Dataset.range(100)
 iterator = dataset.make_one_shot_iterator()
@@ -63,7 +64,7 @@ for i in range(10):
     value = sess.run(next_element)
     assert i == value
 \end{python}
-initializable迭代器要求你使用前明确的运行iterator.initializer操作。作为不方便的交换，它允许你送入一个或者更多的tf.placeholder() tensor初始化你的迭代器，继续用Dataset.range()：
+initializable迭代器要求你使用前明确的运行iterator.initializer操作。为此它允许你送入一个或者更多的tf.placeholder() tensor初始化你的迭代器，继续用Dataset.range()：
 \begin{python}
 max_value = tf.placeholder(tf.int64, shape=[])
 dataset = tf.contrib.data.Dataset.range(max_value)
@@ -80,7 +81,7 @@ for i in range(100):
     value = sess.run(next_element)
     assert i == value
 \end{python}
-一个reinitializable迭代器可以通过多个不同的Dataset对象初始化。例如你可续有一个用随机扰动输入图像提高泛化性的输入pipeline一个验证输入pipeline在没有修改的数据上评价预测。这些pipeline将用有相同结构（每个组件有相同的类型和兼容的形状）的不同的Dataset对象
+一个reinitializable迭代器可以通过多个不同的Dataset对象初始化。例如你也许有一个用随机扰动输入图像提高泛化性的输入pipeline一个验证输入pipeline在没有修改的数据上评价预测。这些pipeline将用于相同结构（每个组件有相同的类型和兼容的形状）的不同的Dataset对象
 \begin{python}
 # Define training and validation datasets with the same structure.
 training_dataset = tf.contrib.data.Dataset.range(100).map(
@@ -106,7 +107,7 @@ for _ in range(20):
     for _ in range(50):
         sess.run(next_element)
 \end{python}
-一个feedable迭代器可以和tf.placeholder用在一起来调用tf.Session.run时选择什么咧带起通过deed\_dict机制。它提供相同的函数作为重新初始化迭代器，但是当你在不同数据及切换的时候不要求你从数据集开始初始化。例如用相同的训练验证样本你可以用tf.contrib.data.Iterator.from\_string\_handle定义一个feedable迭代器允许你在不同的数据集之间切换:
+一个feedable迭代器可以和tf.placeholder用在一起来调用tf.Session.run时选择什么通过deed\_dict机制。它提供相同的函数作为重新初始化迭代器，但是当你在不同数据集切换的时候不要求你从数据集开始初始化。例如用相同的训练验证样本你可以用tf.contrib.data.Iterator.from\_string\_handle定义一个feedable迭代器允许你在不同的数据集之间切换:
 \begin{python}
 # Define training and validation datasets with the same structure.
 training_dataset = tf.contrib.data.Dataset.range(100).map(
@@ -141,7 +142,7 @@ while True:
         sess.run(next_element, feed_dict={handle: validation_handle})
 \end{python}
 \subsection{消耗迭代器的值}
-Iterator.get\_next()方法返回一个或多个迭代器的下一个元素tf.Tensor对象。每次迭代器被计算的时候他们得到数据集中的下一个元素，在TensorFlow中调用Iterator.get\_next()不会立即前进迭代器。相反你需要在一个TensorFlow表达式返回tf.Tensor独享，传递表达式的结果给tf.Session.run得到表达式的结果个下一个迭代器。
+Iterator.get\_next()方法返回一个或多个迭代器的下一个元素tf.Tensor对象。每次迭代器被计算的时候它们得到数据集中的下一个元素，在TensorFlow中调用Iterator.get\_next()不会立即前进迭代器。相反你需要在一个TensorFlow表达式返回tf.Tensor对象，传递表达式的结果给tf.Session.run得到表达式的结果和下一个迭代器。
 如果迭代器到大数据的尾部，执行Iterator.get\_next()操作将报出tf.errors.OutOfRangeError。这个点后迭代器将进入不稳定状态，你必须再次初始化它:
 \begin{python}
 dataset = tf.contrib.data.Dataset.range(5)
@@ -182,7 +183,7 @@ next1, (next2, next3) = iterator.get_next()
 注意计算任何next1,next2或者next3将对所有的组件前进迭代器。一个典型的消耗迭代器将不能包含在单个表达式中的所有组件。
 \subsection{读输入数据}
 \subsubsection{消耗NumPy数据}
-如果你的所有数据都适合于存储，一个简单的方法是用Dataset.from\_tensor\_slices()转换他们为tf.Tensor对象创建一个Dadaset。
+如果你的所有数据都适合于存储，一个简单的方法是用Dataset.from\_tensor\_slices()转换它们为tf.Tensor对象创建一个Dadaset。
 \begin{python}
 # Load the training data into two NumPy arrays, for example using `np.load()`.
 with np.load("/var/data/training_data.npy") as data:
@@ -192,7 +193,7 @@ with np.load("/var/data/training_data.npy") as data:
 assert features.shape[0] == labels.shape[0]
 dataset = tf.contrib.data.Dataset.from_tensor_slices((features, labels))
 \end{python}
-注意上面的带吧将在你的TensorFlow图中创建一个嵌入的features和labels作为一个tf.constant()操作。对于小的数据集这是很有用的，但是比较浪费存储，因为数据的内容将被多次复制可能达到tf.GraphDef protocal buffer的2GB限制。
+注意上面的代码将在你的TensorFlow图中创建一个嵌入的features和labels作为一个tf.constant()操作。对于小的数据集这是很有用的，但是比较浪费存储，因为数据的内容将被多次复制可能达到tf.GraphDef protocal buffer的2GB限制。
 \begin{python}
 # Load the training data into two NumPy arrays, for example using `np.load()`.
 with np.load("/var/data/training_data.npy") as data:
@@ -211,12 +212,12 @@ sess.run(iterator.initializer, feed_dict={features_placeholder: features,
 \end{python}
 \subsection{消耗TFRecord数据}
 一些数据集有一个或者多个文件。tf.contrib.data.TextLineDataset提供了一个简单的方法从一个或者更多text文件提取
-行给定一个或者更多的文件名TextLineDataset将产生一个或者更多的字符串值元素。向TFRecordDataset，TextLineDataset接受ffilenames作为一个tf.Tenspor,因此你可以通过tf.placeholder参数化它
+行给定一个或者更多的文件名TextLineDataset将产生一个或者更多的字符串值元素。像TFRecordDataset，TextLineDataset接受filenames作为一个tf.Tensor,因此你可以通过tf.placeholder参数化它
 \begin{python}
 filenames = ["/var/data/file1.txt", "/var/data/file2.txt"]
 dataset = tf.contrib.data.TextLineDataset(filenames)
 \end{python}
-默认情况下一个TextLineDataset产生文件的每一行，这也许并不是你想要的，例如一个文件的开投行有一些注释。这些行可以用Dataset.skip()移除和Dataset.filter()转换。为了应用这些转换在每个分割的文件，我们用Dataset.flat\_map()为每个文件创建一个迭代的Dataset
+默认情况下一个TextLineDataset产生文件的每一行，这也许并不是你想要的，例如一个文件的开头行有一些注释。这些行可以用Dataset.skip()移除和Dataset.filter()转换。为了在分割的文件应用这些转换，我们用Dataset.flat\_map()为每个文件创建一个迭代的Dataset
 \begin{python}
 filenames = ["/var/data/file1.txt", "/var/data/file2.txt"]
 
@@ -252,7 +253,7 @@ dataset = tf.contrib.data.TFRecordDataset(filenames)
 dataset = dataset.map(_parse_function)
 \end{python}
 \subsection{解码图像数据变换大小}
-当在一个真实世界的图像数据中训练一个神经网络，需要转换不同大小到一个同样的大小，因此他们也许处理为一个固定的尺寸
+当在一个真实世界的图像数据中训练一个神经网络，需要转换不同大小到一个同样的大小，因此它们也许处理为一个固定的尺寸
 \begin{python}
 # Reads an image from a file, decodes it into a dense tensor, and resizes it
 # to a fixed shape.
@@ -265,10 +266,10 @@ def _parse_function(filename, label):
 # A vector of filenames.
 filenames = tf.constant(["/var/data/image1.jpg", "/var/data/image2.jpg", ...])
 
-# `labels[i]` is the label for the image in `filenames[i].
+# `labels[i]` is the label for the image in filenames[i]
 labels = tf.constant([0, 37, ...])
-dataset = tf.contrib.data.Dataset.from\_tensor\_slices((filenames, labels))
-dataset = dataset.map(\_parse\_function)
+dataset = tf.contrib.data.Dataset.from_tensor_slices((filenames, labels))
+dataset = dataset.map(_parse_function)
 \end{python}
 \subsection{用专门的Python logic}
 考虑到性能要求，我们鼓励你尽可能用TensorFlow操作处理你的数据。然而当解析你的数据时有是有调用额外的python操作处理数据是有用的。为了这么做，在Dataset.map()转换中调用tf.py\_func()操作
@@ -297,7 +298,7 @@ dataset = dataset.map(
 dataset = dataset.map(_resize_function)
 \end{python}
 \subsection{简单的批处理}
-一个最简单的批处理是堆叠数据集中n个连续的元素。Dataset.batch()变换就是这么做的，和tf.stac()k一样应用元素的每个组件，每个组件i所有的元素必须有一个相同的形状tensor。
+一个最简单的批处理是堆叠数据集中n个连续的元素。Dataset.batch()变换就是这么做的，和tf.stack()一样应用元素的每个组件，每个组件i所有的元素必须有一个相同的形状tensor。
 \begin{python}
 inc_dataset = tf.contrib.data.Dataset.range(100)
 dec_dataset = tf.contrib.data.Dataset.range(0, -100, -1)
@@ -312,7 +313,7 @@ print(sess.run(next_element))  # ==> ([4, 5, 6,   7],   [-4, -5,  -6,  -7])
 print(sess.run(next_element))  # ==> ([8, 9, 10, 11],   [-8, -9, -10, -11])
 \end{python}
 \subsection{批量的tensorpadding}
-上面的方法要要求所有的元素有相同的尺寸，然而一些模型(sequence模型)中输入数据有不同的形状。为了处理这些情况，Dataset.padded\_batch()使你通过制定一个或者更多维(需要padding)转换不同形状的tensor为一个batch。
+上面的方法要要求所有的元素有相同的尺寸，然而一些模型(sequence模型)中输入数据有不同的形状。为了处理这些情况，Dataset.padded\_batch()使你通过指定一个或者更多维(需要padding)转换不同形状的tensor为一个batch。
 \begin{python}
 dataset = tf.contrib.data.Dataset.range(100)
 dataset = dataset.map(lambda x: tf.fill([tf.cast(x, tf.int32)], x))
@@ -327,7 +328,7 @@ print(sess.run(next_element))  # ==> [[4, 4, 4, 4, 0, 0, 0],
                                #      [6, 6, 6, 6, 6, 6, 0],
                                #      [7, 7, 7, 7, 7, 7, 7]]
 \end{python}
-Dataset.padded\_batch()转换允许你为每组件的一维度设置不同的pading，他柯旭有变化的长度或者固定的长度，他可以覆盖padding的值(默认为0)。
+Dataset.padded\_batch()转换允许你为每组件的一维度设置不同的pading，它也许有变化的长度或者固定的长度，它可以覆盖padding的值(默认为0)。
 \subsection{处理多epoch}
 Dataset API提供了两个主要的方法处理相同数据的多个epochs,最简单的方法是用Dataset.repeat()变换数据集在多个epoch、例如，在输入中创建一个数据集10 epochs
 \begin{python}
@@ -337,7 +338,7 @@ dataset = dataset.map(...)
 dataset = dataset.repeat(10)
 dataset = dataset.batch(32)
 \end{python}
-使用Dataset.repeat()变换没有参数重复输入将不确定。Dataset.repeat()变换连接他的参数每个epochs没有任何结束信号和下一个epoch的开始信号。如果你想接收每个epoch信号，你可以写一个循环在数据集的末尾捕获tf.errors.OutOgRange。
+使用Dataset.repeat()变换没有参数重复输入将不确定。Dataset.repeat()变换连接它的参数每个epochs没有任何结束信号和下一个epoch的开始信号。如果你想接收每个epoch信号，你可以写一个循环在数据集的末尾捕获tf.errors.OutOgRange。
 \begin{python}
 filenames = ["/var/data/file1.tfrecord", "/var/data/file2.tfrecord"]
 dataset = tf.contrib.data.TFRecordDataset(filenames)
@@ -368,12 +369,12 @@ dataset = dataset.batch(32)
 dataset = dataset.repeat()
 \end{python}
 \subsection{用高级APIs}
-tf.train.MonitoredTrainingSession API简化了一些在分布式方面运行方面的处设置。MonidotedTrainingSession用tf.errors.outOfRangeError作为训练完成的标记，因此用Dataset API，我们推荐用Dataset.make\_one\_shot\_iterator()例如:
+tf.train.MonitoredTrainingSession API简化了一些在分布式方面运行方面的设置。MonidotedTrainingSession用tf.errors.outOfRangeError作为训练完成的标记，因此用Dataset API，我们推荐用Dataset.make\_one\_shot\_iterator()例如:
 \begin{python}
 filenames = ["/var/data/file1.tfrecord", "/var/data/file2.tfrecord"]
 dataset = tf.contrib.data.TFRecordDataset(filenames)
 dataset = dataset.map(...)
-dataset = dataset.shuffle(buffer\_size=10000)
+dataset = dataset.shuffle(buffer_size=10000)
 dataset = dataset.batch(32)
 dataset = dataset.repeat(num_epochs)
 iterator = dataset.make_one_shot_iterator()

@@ -1,4 +1,12 @@
 \chapter{Tensorflow API}
+\section{tf.check\_numerics}
+check\_numbercs(tensor,message,none):检查一个tensor是NaN或者Inf值。运行的时候如果tensor有任何职不是NaN或者Inf报告一个InvalidArgument错误，否则传递tensor的值。
+\begin{itemize}
+	\item tensor:一个Tensor，可以使下面的类型:half,float32,float64
+	\item message:一个string，错误的前缀
+	\item name:操作的名字
+	\item[Return]:返回一个和tensor同样类型的Tensor
+\end{itemize}
 \section{tf.clip\_by\_value}
 clip\_by\_value(t,clip\_value\_min,clip\_value\_max,name=None):剪切值为最大值和最小值，给定一个tensor t，操作返回一个和t同样类型，同样大小的值到clip\_value\_min,和clip\_value\_max.任何值小鱼clip\_value\_min被设置为clip\_value\_min，任何大于clip\_value\_max的值被设置为clip\_value\_max。
 参数:
