@@ -1,0 +1,290 @@
+\section{tf.estimator模块}
+模块:
+\begin{itemize}
+\item export模块:输出Estimator的实用方法
+\item inputs模块:创建input\_fns的实用方法
+\end{itemize}
+类:
+\begin{itemize}
+\item DNNClassfier:TensorFlow DNN模型分类器
+\item DNNLinearCombinedClassfier:一个TensorFlow线性和DNN结合的分类方法
+\item DNNLinearCombinedRegressor:一个TensorFlow线性和DNN结合的回归方法
+\item DNNRegressor:一个TensorFlow DNN模型回归器
+\item Estimator:训练评估TensorFlow模型的估计器
+\item EstimatorSpec:一个model\_fn返回的和传递给Estimator的操作和对象
+\item LinearClassfier:线性分类器模型
+\item LinearRegressor:一个针对TensorFlow线性回归问题的estimator
+\item ModeKeys:模块模式的标准名字
+\item RunConfig:制定Estimator运行的配置
+\end{itemize}
+函数:
+\begin{itemize}
+\item classfier\_parse\_example\_spec():为tf.parse\_example用于分类生成解析spec
+\item regressor\_parse\_example\_spec():为tf.parse\_example用于回归生成解析spec
+\end{itemize}
+\subsection{classfier\_parse\_example\_spec}
+\begin{lstlisting}[language=Python]
+classifier\_parse\_example\_spec(
+feature_columns,
+label_key,
+label\_dtype=tf.int64,
+label\_default=None,
+weight_column=None
+)
+\end{lstlisting}
+为tf.parse\_example用于分类的生成解析spec。
+
+如果用户保留数据为tf.Example格式，他们需要用合适的feature spec调用tf.parse\_example,有两个实用的帮助:
+\begin{itemize}
+	\item 用户需要结合解析特征的spec和标签与权重知道他们被来自同一个tf.Example的示例解析，这个实用程序结合了这些spec。
+	\item 映射一个想DNNClassifier的分类器到对应的tf.parse\_example spec是很困难的。这个示例程序通过获取用户的相关信息(key,dtype)编码它
+\end{itemize}
+解析spec输出例子:
+\begin{lstlisting}[language=Python]
+# Define features and transformations
+feature_b = tf.feature_column.numeric_column(...)
+feature_c_bucketized = tf.feature_column.bucketized_column(
+  tf.feature_column.numeric_column("feature_c"), ...)
+  feature_a_x_feature_c = tf.feature_column.crossed_column(
+  columns=["feature_a", feature_c_bucketized], ...)
+
+  feature_columns = [feature_b, feature_c_bucketized, feature_a_x_feature_c]
+  parsing_spec = tf.estimator.classifier_parse_example_spec(
+  feature_columns, label_key='my-label', label_dtype=tf.string)
+
+# For the above example, classifier_parse_example_spec would return the dict:
+assert parsing_spec == {
+    "feature_a": parsing_ops.VarLenFeature(tf.string),
+     "feature_b": parsing_ops.FixedLenFeature([1], dtype=tf.float32),
+     "feature_c": parsing_ops.FixedLenFeature([1], dtype=tf.float32)
+     "my-label" : parsing_ops.FixedLenFeature([1], dtype=tf.string)			  }
+\end{lstlisting}
+用一个分类器的例子:
+\begin{lstlisting}[language=Python]
+feature_columns = # define features via tf.feature_column
+estimator = DNNClassifier(
+    n_classes=1000,
+    feature_columns=feature_columns,
+    weight_column='example-weight',
+    label_vocabulary=['photos', 'keep', ...],
+    hidden_units=[256, 64, 16])
+    # This label configuration tells the classifier the following:
+    # * weights are retrieved with key 'example-weight'
+    # * label is string and can be one of the following ['photos', 'keep', ...]
+    # * integer id for label 'photos' is 0, 'keep' is 1, ...
+
+    # Input builders
+def input_fn_train():  # Returns a tuple of features and labels.
+    features = tf.contrib.learn.read_keyed_batch_features(
+      file_pattern=train_files,
+      batch_size=batch_size,
+      # creates parsing configuration for tf.parse_example
+      features=tf.estimator.classifier_parse_example_spec(
+          feature_columns,
+          label_key='my-label',
+          label_dtype=tf.string,
+          weight_column='example-weight'),
+          reader=tf.RecordIOReader)
+    labels = features.pop('my-label')
+    return features, labels
+estimator.train(input_fn=input_fn_train)
+\end{lstlisting}
+参数:
+\begin{itemize}
+	\item feature\_columns:一个可迭代的包含所有特征列，所有的项目应该是继承与\_FeatureColum的一个实例
+	\item label\_key:一个识别标签的字符串。它意味着存储标签和值
+	\item label\_dtype:一个tf.dtype标识的类型，默认是tf.int64,如果用一个label\_vocabulary,这应该被设置为tf.string。tf.float32标签仅仅支持二分类
+	\item label\_default:如果label\_key不存在与给定的tf.Example使用的标签。一个用法例子是:让label\_key是;clicked;并且tf.Example包含包含key:clicked,value:1格式的位置样本tf.Example.这意味着如果没有数据和key 'clicked',它应通过label\_default=0计数为负样本。值的类型莺歌和label\_dtype兼容。
+	\item weight\_column:一个字符串或者一个tf.feature\_column.numeric)column创建的\_NumericColumn定义代表权重的特征列。它被用于降低权重或加速训练样本，他将被和样本的损失相乘。如果他是一个字符串，它被用作一个key去获取feature中的权重。如果它是一个\_NumericColumn,原始tensor通过key weight\_column.key获取，然后weight\_column.normalizer\_fn被用于获取权重tensor。
+\end{itemize}
+返回:一个映射背个特征key为一个FixedLenFeature或者VarLenFeature值的字典。
+
+异常:
+\begin{itemize}
+	\item ValueError:如果label用在feature\_columns
+	\item ValueError:如果weight\_column用在feature\_columns
+	\item ValueError:如果任何给定的feature\_columns不是一个\_FeatureColumn实例
+	\item ValueError:如果weight\_column不是一个\_NumericColumn示例
+	\item ValueError:如果label\_key是None
+\end{itemize}
+\subsection{DNNClassifier}
+一个TensorFlow DNN模型分类器
+\begin{lstlisting}[language=Python]
+sparse_feature_a = sparse_column_with_hash_bucket(...)
+sparse_feature_b = sparse_column_with_hash_bucket(...)
+
+sparse_feature_a_emb = embedding_column(sparse_id_column=sparse_feature_a,
+                                      ...)
+sparse_feature_b_emb = embedding_column(sparse_id_column=sparse_feature_b,
+                                 ...)
+estimator = DNNClassifier(
+										    feature_columns=[sparse_feature_a_emb, sparse_feature_b_emb],
+										        hidden_units=[1024, 512, 256])
+# Or estimator using the ProximalAdagradOptimizer optimizer with
+# regularization.
+estimator = DNNClassifier(
+    feature_columns=[sparse_feature_a_emb, sparse_feature_b_emb],
+    hidden_units=[1024, 512, 256],
+    optimizer=tf.train.ProximalAdagradOptimizer(
+        learning_rate=0.1,
+        l1_regularization_strength=0.001
+))
+# Input builders
+def input_fn_train: # returns x, y
+    pass
+    estimator.train(input_fn=input_fn_train, steps=100)
+def input_fn_eval: # returns x, y
+    pass
+metrics = estimator.evaluate(input_fn=input_fn_eval, steps=10)
+def input_fn_predict: # returns x, None
+    pass
+predictions = estimator.predict(input_fn=input_fn_predict)
+\end{lstlisting}
+输入的train和evaluate应该有下面的特征否则将被KeyError：
+\begin{itemize}
+	\item 如果weight\_column不是None，一个key=weight\_column的特征有一个Tensor
+	\item 针对feature\_columns中的每一列
+	\item 如果column是一个\_CategoricalColumn,一个特征是key=column.name的值是SparseTensor
+	\item 如果column是一个\_WeightedCategoricalColumn,两个特征，第一个是key列名的id，第二个key权重列的名字，两个特征的值必须是SparseTensor
+	\item 如果column是一个\_DenseColumn,一个key=column.name值是tensor的特征
+\end{itemize}
+损失通过softmax 交叉熵计算。
+特性:
+\begin{itemize}
+	\item config
+	\item model\_dir
+	\item params
+\end{itemize}
+方法:
+\begin{lstlisting}[language=Python]
+__init__(
+    hidden_units,
+    feature_columns,
+    model_dir=None,
+    n_classes=2,
+    weight_column=None,
+    label_vocabulary=None,
+    optimizer='Adagrad',
+    activation_fn=tf.nn.relu,
+    dropout=None,
+    input_layer_partitioner=None,
+    config=None
+)
+\end{lstlisting}
+初始化DNNClassifier实例
+
+参数:
+\begin{itemize}
+	\item hidden\_units:每层隐藏层的单元。所有层都是全连接的。[64,32]表示第一层有64个节点第二层有32个节点
+	\item feature\_columns:一个包含模型私用的特征列，所有的项目都应该是继承自\_FeatureColumn的实例
+	\item model\_dir:保存模型参数，图等等的例子。可以用于从目录载入checkpoint文件进estimator继续训练之前保存的模型。
+	\item n\_classes:标签的类别，默认为2，意味着二分类，必须>1
+	\item weight\_columnL:一个字符串或者一个tf.feature\_column.numeric\_column创建的\_NumericColumn定义代表权重的特征列。用于降低权重或者加速训练样本。他讲被乘上样本的损失，如果是一个字符串，它被用作从features获取权重的tensor。如果它是一个\_NumericColumn,原始tensor通过key weight\_column.key获取，然后weight\_column.normalizer\_fn被用于获取权重tensor。
+	\item label\_vocabulary:一个代表可能标签值的字符串列表。如果给定，label必须是字符类型有值在label\_vocabulary.如果没有给定，这意味着label已经编码为整数或者二分类[0,1]之前的浮点数和编码为在{0,1,\ldots,n\_classes-1}的整数(n\_class>2)如果vocabulary没有被提供并且标签是字符串将报错
+	\item optimizer:一个用于训练模型tf.Optimizer实例。默认为Adagrad优化器
+	\item activation\_fn:一个用于每层的激活函数。如果为None，江北用tf.nn.relu
+	\item dropout:如果不是None，按照给定概率丢掉一部分数据
+	\item input\_layer\_partitioner:可选。分割输入层，默认是min\_max\_variable\_partitioner,mi\_slice\_size<<20
+	\item config:RunCinfig对象配置运行设置
+\end{itemize}
+evaluate
+\begin{python}
+evaluate(
+    input_fn,
+    steps=None,
+    hooks=None,
+    checkpoint_path=None,
+    name=None
+)
+\end{python}
+对于每一步，调用input\_fn返回一批数据。评估steps 批量数据直到被处理或者input\_fn报告end-of-input异常(OutOfRangeError或者StopIteration)
+
+参数:
+\begin{itemize}
+	\item input\_fn:输入函数返回一个元祖:feature-字符串特征名字的字典，Tensor或者SparseTensor。labels-Tensor或者标签字典
+	\item steps:评估模型的步数。如果为None，评估指导input\_fn报告end-of-input异常
+	\item hooks:一个SessionRunHook子类实例列表。用于评估调用里的回调
+	\item checkpoint\_path:为评估制定ckeckpoint路径。如果为None，最新的model\_dir里的checkpointer文件将被使用。
+	\item 如果用户需要在多个不同的数据集评估表示评估的名字，像training data vs test data。测量不同的评估被草存在分割的文件夹，需要在tensorboard中分开显示
+\end{itemize}
+返回:一个由model\_fn key名字指定包含评估方法的字典，和global\_step输入包含评估执行全局step值。
+Raises:
+\begin{itemize}
+	\item ValueError:如果steps<=0
+	\item ValueError:如果没有模型被训练，换句话说model\_dir或者给定的checkpoint\_path是空
+\end{itemize}
+export\_savemodel
+\begin{python}
+export_savedmodel(
+    export_dir_base,
+    serving_input_receiver_fn,
+    assets_extra=None,
+    as_text=False,
+    checkpoint_path=None
+)
+\end{python}
+输出推理图作为SavedModel进入给定的变量。
+这个方法通过调用serving\_input\_receiver构建一个新的图获取特征Tensor，然后调用Estimator's模型model\_fn生成给予这些特征的模型图。它在新的会话恢复给定的checkpoint(或者缺少这个，最近的checkpoint)到这个图。最终它将建一个时间戳导出export\_dir\_base目录下的目录，写一个SavedModel进一个从这个会话保存MetaGtaphDef。导出的MetaGraphDef将提供一个SignatureDed给从model\_fn返回的导出字典的export\_outputs的每个元素，名字用相同的keys。这些值中的一个总是signature\_constants。DEFAULT\_SERVING\_SIGNATURE\_DEF\_KEY指示当服务请求没有指定时哪个signature将被服务。对于每个signature，输出将提供相应的ExportOutputs，和输入总是serving\_input\_receiver\_fn输入接收器提供。
+额外的特性通过extra\_assets参数被写入SavedModel。这应该是一个字典，每个键指定一个目的地路径(包含文件名)对应于assets.extra字典。相对应的值给定源文件复制的完整路径。例如，简单的复制三个文件没有重命名它被指定为{'my\_asset\_file.txt:':'/path/to/my\_asset\_file.txt'}
+参数:
+\begin{itemize}
+	\item export\_dir\_base:一个包含导出SavedModels子目录时间戳的字符串
+	\item serving\_input\_receiver:一个没有参数的函数返回一个ServingInputReceiver
+	\item assets\_extra:如何聚集里面有SavedModel assert.extra目录的字典，如果没有额外的assets需要为None。
+	\item as\_text:是否用文本格式写SavedModel proto
+	\item checkpoint\_path:导出的checkpoint路径。如果None，多数最近的checkpoint发现在模型目录被关闭的时候。
+\end{itemize}
+Return:导出目录的字符串。
+
+Raise:如果没有serving\_input\_receive\_fn被提供，没有export\_output被提供或者没有checkpointe被发现。
+
+predict
+\begin{python}
+predict(
+    input_fn,
+    predict_keys=None,
+    hooks=None,
+    checkpoint_path=None
+)
+\end{python}
+参数:
+\begin{itemize}
+	\item input\_fn:输入函数返回特征，他是一个字符串Tensor或者SparseTensor字典。如果返回一个元组，第一个元素提取为特征。连续预测知道input\_fn抛出end-of-input exception（OutOfRangeError或者是StopIteration）
+	\item predict\_keys:字符串列表，预测关键值的名字。如果EstimatorSpec.predictions是一个字典它被使用。如果predict\_keys被使用然后剩下的预测将被从字典中过滤。如果为None，返回所有。
+	\item hooks:SessionRunHook子类实例列表。用于调用内部而预测
+	\item checkpoint\_path:制定checkpoint预测的路径,如果为None，model\_dir最新的checkpoint被使用
+\end{itemize}
+Yields:估计预测值tensor。
+
+Raise:
+\begin{itemize}
+	\item ValueError:不能再model\_dir找到训练模型
+	\item ValueError:如果预测批的长度不相同
+	\item ValueError:如果predict\_keys和predictions有一个冲突。例如如果predict\_keys不是None但是EstimatorSpec.predctions不是一个字典
+\end{itemize}
+train
+
+\begin{python}
+predict(
+    input_fn,
+    predict_keys=None,
+    hooks=None,
+    checkpoint_path=None
+)
+\end{python}
+训练一个给定训练数据input\_fn的模型。
+
+参数:
+\begin{itemize}
+	\item input\_fn:输入函数返回一个元组，特征-Tensor或者字符串字典，名字为Tensor。label-Tensor或者label为Tensor的字典
+	\item hooks:SessionRunHook子类字典。用于调用内部训练循换
+	\item steps:训练模型的步数。如果为None，永远训练知道input\_fn生成OutOfRange或者StopIterator错误。‘steps’可以叠加。如果你调用两次训练(steps=10)然后训练发生20步。如果OutOfRange或者StopIterator错误出现，训练在20步到达前停止。如果不想训练被叠加可以设置max\_steps代替，如果设置此参数，max\_steps必须为None。
+	\item max\_steps:总的训练部署。如果为None，训练永远知道input\_fn生成OutOfRange或者StopIteration错误。如果设置，steps必须是None。如果OutOfRange或者StopIterator错误中途发生，训练在max\_step到达前训练终止。两次调用train(steps=100)意味着200次迭代训练，另一方面，两次调用到训练(max\_steps=100)意味着第二次调用没有迭代因为第一次调用已经有100步。
+\end{itemize}
+返回：self for chaining
+
+Raises:
+\begin{itemize}
+	\item:ValueError:如果steps和max\_steps不是None
+	\item:ValueError:如果step或者max\_steps<=0
+\end{itemize}
