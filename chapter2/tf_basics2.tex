@@ -1223,86 +1223,6 @@ save()
 tf.reset_default_graph()
 reload()
 \end{python}
-\section{CNN手写体数据识别}
-\subsection{mnist数据集}
-手写体数据训练集有55000张手写体数据图片。测试集有10000张图片。每张图片是大小为32*32的灰度图片。
-卷积神经网络结构：
-\begin{itemize}
-	\item 第一层卷积层：卷积核16个，卷积核大小为$5\times5$,strides=1,padding为SAME，激活函数为relu(输出大小为$28\times28\times16$)。
-	\item 第一层池化层:池化层大小为2,strides为2($14\times14\times16$)。
-第二层卷积层:卷积核32,大小为$5\times5$,strides=1,padding为SAME，激活函数为relu。($14\times14\times32$)
-	\item 第二层池化层:池化层大小为2,strides为2($7\times7\times32$)。
-	\item flatten:1568。
-\end{itemize}
-\begin{figure}[H]
-	\includegraphics[scale=0.4]{./pic/chapter1/mnist_cnn.png}
-\end{figure}
-\begin{python}
-import tensorflow as tf
-import matplotlib.pyplot as plt
-import numpy as np
-from tensorflow.examples.tutorials.mnist import input_data
-
-tf.set_random_seed(0)
-np.random.seed(0)
-
-BATCH_SIZE = 50
-LR = 0.001
-mnist = input_data.read_data_sets('/home/hpc/文档/mnist_tutorial/mnist',one_hot = True)
-test_x = mnist.test.images[:2000]
-test_y = mnist.test.labels[:2000]
-
-tf_x = tf.placeholder(tf.float32,[None,28*28])
-images = tf.reshape(tf_x,[-1,28,28,1])
-tf_y = tf.placeholder(tf.int32,[None,10])
-with tf.variable_scope('Conv1'):
-    conv1 = tf.layers.conv2d(
-            inputs = images,
-            filters = 16,
-            kernel_size = 5,
-            strides = 1,
-            padding = 'same',
-            activation = tf.nn.relu
-        )
-    tf.summary.histogram('conv1',conv1)
-with tf.variable_scope('pool1'):
-    pool1 = tf.layers.max_pooling2d(
-            conv1,
-            pool_size=2,
-            strides =2
-        )
-    tf.summary.histogram('max_pool1',pool1)
-with tf.variable_scope('conv2'):
-    conv2 = tf.layers.conv2d(pool1,32,5,1,'SAME',activation=tf.nn.relu)
-    tf.summary.histogram('conv2',conv2)
-with tf.variable_scope('pool2'):
-    pool2 = tf.layers.max_pooling2d(conv2,2,2)
-    tf.summary.histogram('max_pool',pool2)
-with tf.variable_scope('flatten'):
-    flat = tf.reshape(pool2,[-1,7*7*32])
-with tf.variable_scope('output'):
-    output = tf.layers.dense(flat,10)
-with tf.variable_scope('loss_op'):
-    loss = tf.losses.softmax_cross_entropy(onehot_labels=tf_y,logits=output)
-    train_op = tf.train.AdamOptimizer(LR).minimize(loss)
-    accuracy = tf.metrics.accuracy(labels = tf.argmax(tf_y,axis=1),predictions=tf.argmax(output,axis=1),)[1]
-    tf.summary.scalar('loss',loss)
-    tf.summary.scalar('accuracy',accuracy)
-sess = tf.Session()
-merge_op = tf.summary.merge_all()
-init_op = tf.group(tf.global_variables_initializer(),tf.local_variables_initializer())
-sess.run(init_op)
-writer = tf.summary.FileWriter('./log',sess.graph)
-for step in range(600):
-    b_x,b_y = mnist.train.next_batch(BATCH_SIZE)
-    _,loss_,result = sess.run([train_op,loss,merge_op],{tf_x:b_x,tf_y:b_y})
-    writer.add_summary(result,step)
-    if step%50 == 0:
-        accuracy_,flat_representation = sess.run([accuracy,flat],{tf_x:test_x,tf_y:test_y})
-        print('Step:',step,'| train loss:%.4f'%loss_,'|test accuracy:%.2f'%accuracy_)
-test_output = sess.run(output,{tf_x:test_x[:10]})
-pred_y = np.argmax(test_output,1)
-\end{python}
 \section{RNN}
 人不能抓住每一秒的思考，当你读这篇文章的时候，你能基于你之前的对单词的理解明白文章的每一个单词的意思，你思考的时候不需要丢掉所有的东西，你的思想有持续性。\par
 传统的神经网络很难做到这点，这也是传统神经网络的主要缺点。例如你想分类电影中的不同时间点的事件，传统神经网络用不清楚如何用之前的事件了解新的事件。\par
@@ -1627,3 +1547,4 @@ bazel-bin/tensorflow/models/rnn/ptb/ptb_word_lm \
 教程代码中有 3 个支持的模型配置参数："small"， "medium" 和 "large"。它们指的是 LSTM 的大小，以及用于训练的超参数集。
 
 模型越大，得到的结果应该更好。在测试集中 small 模型应该可以达到低于 120 的困惑度（perplexity），large 模型则是低于 80，但它可能花费数小时来训练。
+
