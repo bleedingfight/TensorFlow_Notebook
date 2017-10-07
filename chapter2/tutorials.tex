@@ -5,7 +5,7 @@
 \item "gpu:0":机器上的GPU
 \item "gpu:1":机器上的第二块GPU
 \end{itemize}
- 如果TensorFLow操作有GPU和CPU实现，GPU将被优先指定，例如matmul有CPU和GPU内核，在系统上 有cpu:0和gpu:0,gpu:0将优先运行matmul。
+ 如果TensorFlow操作有GPU和CPU实现，GPU将被优先指定，例如matmul有CPU和GPU内核，在系统上 有cpu:0和gpu:0,gpu:0将优先运行matmul。
 布置采集设备
 
 找到你的操作和tensor上的设备，创建一个会话log\_device\_placement配置设置为True
@@ -265,7 +265,7 @@ inputs参数指定我们的输入tensor(形状为[batch\_size,image\_width,image
 注意:如果传递参数data\_format=channels\_first,conv2d()接受[channels,batch\_size,image\_width,image\_height]形状的数据。
 \end{displayquote}
 filter参数制定卷积核的个数，这里卷积核为32个。kenel\_size制定卷积核的维度为[width,height]（这里[5,5]）
-padding参数制定两个值:valid(默认)，和same。制定输出tensor应该有和输入特纳是哦然相同的形状，我们设置padding=same,说明TensorFLow增加0值到输出tensor的边缘波啊池宽度和高度为28(没有padding$5\times5$卷积$28\times28$将生成$24\times24tensor$,在$28\times28$用$5\times5$提取出$24\times24$个位置)。
+padding参数制定两个值:valid(默认)，和same。制定输出tensor应该有和输入特纳是哦然相同的形状，我们设置padding=same,说明TensorFlow增加0值到输出tensor的边缘波啊池宽度和高度为28(没有padding$5\times5$卷积$28\times28$将生成$24\times24tensor$,在$28\times28$用$5\times5$提取出$24\times24$个位置)。
 activation参数指定应用到输出的激活函数，这里我们只顶tf.nn.relu。
 conv2d()的输出形状为[batch\_size,28,28,32]:和输入有相同的宽度和高度，但是有32个通道保持每个卷积核的输出。
 \subsection{池化层1}
@@ -732,7 +732,7 @@ int main(int argc, char* argv[]) {
     return -1;
   }
 \end{lstlisting}
-我们用TensorFLow的State对象处理错误，它很方便因为它用ok()作为检查器检查是否出现的任何错误，然后打印出可读的错误消息，在这个例子中我们一站式对象识别，但是你应该能用类似的代码在你发现的其他模型上或者自己训练在不同的领域。我们希望这个小的例子给你一些灵感如何用TensorFlow和你的产品。
+我们用TensorFlow的State对象处理错误，它很方便因为它用ok()作为检查器检查是否出现的任何错误，然后打印出可读的错误消息，在这个例子中我们一站式对象识别，但是你应该能用类似的代码在你发现的其他模型上或者自己训练在不同的领域。我们希望这个小的例子给你一些灵感如何用TensorFlow和你的产品。
 \begin{quote}
 转换学习是想法，如果你知道如何很好的解决问题，你应该能转换一些解决相关问题的理解，一种执行转换学习的方法是移除网络最后的分类层提取\href{http://arxiv.org/abs/1310.1531}{next-to-last layer of the CNN},在这个例子中2048维向量，有一个关于这个如何做到的向导\href{https://www.tensorflow.org/tutorials/image_retraining}{in the how-to section}
 \end{quote}
@@ -841,7 +841,7 @@ e = tf.estimator.DNNLinearCombinedClassifier(
 尝试下面代码:
 \begin{itemize}
   \item 如果你没有安装TensorFlow先\href{安装}{https://www.tensorflow.org/install/index}
-  \item 下载\href{https://www.github.com/tensorflow/tensorflow/blob/r1.3/tensorflow/examples/learn/wide_n_deep_tutorial.py}{导航代码}
+  \item 下载\href{导航代码}{https://www.github.com/tensorflow/tensorflow/blob/r1.3/tensorflow/examples/learn/wide\_n\_deep\_tutorial.py}
   \item 安装pandas数据分析库。tf.estimator不要求pandas，但是支持它，导航用pandas，安装pandas:
   \begin{enumerate}
     \item  安装pip
@@ -919,7 +919,7 @@ income& Categorical&">50K"或者"<=50K",意味着一个人是否能赚超过50K\
   \item feature\_cols:特征列命名为Tensors或者SpareseTensors的字典。
   \item label:包含标签列的Tensor
 \end{itemize}
-feature\_cols的keys用来在下一章节构造列。因为我们想在不同的数据上调用train和evaluate方法，我们定义基于给定数据返回一个输入函数。注意返回输入函数知道构建TensorFlwo图的时候被调用，而不是当图运行的时候。输入数据返回的是一个代表TensorFLow基本单元的Tensor。
+feature\_cols的keys用来在下一章节构造列。因为我们想在不同的数据上调用train和evaluate方法，我们定义基于给定数据返回一个输入函数。注意返回输入函数知道构建TensorFlwo图的时候被调用，而不是当图运行的时候。输入数据返回的是一个代表TensorFlow基本单元的Tensor。
 
 我们用tf.estimator.inputs.pandas\_input\_fn方法从pandas DataFrame创建一个输入函数，每个train dataframe或者test dataframe连续列将转化为一个Tensor（是代表稠密数据的好的形式），对于绝对数据我们必须使用SparseTensor表示。这种数据格式有利于代表稀疏数据，另一个更高级的代表输入数据将是构建一个\href{https://www.tensorflow.org/api_guides/python/io_ops#inputs_and_readers}{Inputs and Reader}代表一个文件或者数据源，通过文件迭代在TensorFlow图中运行。
 \begin{lstlisting}{language=Python}
@@ -1108,3 +1108,212 @@ P(Y=1|\mathbf{x})=\frac{1}{1+exp(-(\mathbf{W^Tx}+b)}
 模型训练是一个优化问题：目标是找到模型的权重最小化训练数据上定义的损失函数，像逻辑回归的逻辑损失。损失函数描述了预测值和真实值的差别。如果预测接近指示标签，村是指将很小。如果预测值离标签很近，损失将很大。
 \subsubsection{深入学习}
 如果你想学习更多，查看下一章\href{https://www.tensorflow.org/tutorials/wide_and_deep}{Wide \& Deep Learning Tutorial }我们将高数你如何用tf.estimator结合线性模型的力量和深度神经网络。
+\section{TensorFlow广泛深入的学习}
+在先前的TensorFlow线性模型教程中，我们训练了一个逻辑回归模型，以使用\href{https://archive.ics.uci.edu/ml/datasets/Census+Income}{人口普查收入数据集}预测个人年收入超过5万美元的概率 。TensorFlow也适用于训练深层神经网络，您可能会考虑选择哪一个 - 那么为什么不这两个呢？是否可以将两者的优势结合在一个模型中？
+在本教程中，我们将介绍如何使用TF.Learn API联合训练广泛的线性模型和深入的前馈神经网络。这种方法结合了记忆和泛化的优势。它对于具有稀疏输入特征的通用大规模回归和分类问题（例如，具有大量可能特征值的分类特征）是有用的。如果您有兴趣了解Wide＆Deep Learning如何运作，请查看我们的\href{http://arxiv.org/abs/1606.07792}{研究论文}。
+\begin{figure}[H]
+	\includegraphics[scale=0.4]{wide_n_deep.png}
+\end{figure}
+上图显示了宽模型（具有稀疏特征和变换的逻辑回归），深度模型（具有嵌入层和多个隐藏层的前馈神经网络）的比较，以及宽＆深度模型（两者的联合训练）。在高层次上，只需3个步骤即可使用TF.Learn API来配置宽，深或宽和深的模型：
+\begin{enumerate}
+\item 选择广泛部分的功能：选择要使用的稀疏基础列和交叉列。
+\item 选择深部分的要素：选择连续列，每个分类列的嵌入维度和隐藏的图层大小。
+\item 把它们全部放在一个Wide＆Deep模型（DNNLinearCombinedClassifier）中。
+就是这样！我们来看一个简单的例子。
+\end{enumerate}
+\subsection{建立}
+要尝试本教程的代码：
+\begin{enumerate}
+\item  如果还没有\href{https://www.tensorflow.org/install/index}{安装TensorFlow}。
+\item 下载教程\href{https://www.github.com/tensorflow/tensorflow/blob/r1.3/tensorflow/examples/learn/wide_n_deep_tutorial.py}{代码}。
+\item 安装熊猫数据分析库。tf.learn不需要大熊猫，但它支持它，本教程使用大熊猫。安装pandas：
+	\begin{enumerate}
+			\item 获取pip：
+			\begin{python}
+				# Ubuntu/Linux 64-bit
+        	                sudo apt-get install python-pip python-dev
+	
+				# Mac OS X
+				sudo easy_install pip
+				sudo easy_install --upgrade six
+			\end{python}
+
+		\item 使用pip安装pandas：
+			\lstinline[language=Python]{sudo pip install pandas}
+	\end{enumerate}
+
+
+如果您在安装pandas麻烦，请查阅\href{http://pandas.pydata.org/pandas-docs/stable/install.html}{pandas网站}。
+\item 使用以下命令执行教程代码来训练本教程中描述的线性模型：
+	\lstinline[language=Python]{python wide_n_deep_tutorial.py --model_type=wide_n_deep}
+\end{enumerate}
+请继续阅读，了解此代码如何构建其线性模型。
+\subsection{定义基本特征列}
+首先，我们来定义我们将使用的基本分类和连续特征列。这些基列将是模型的宽部分和深部使用的构件块。
+\begin{python}
+import tensorflow as tf
+
+gender = tf.feature_column.categorical_column_with_vocabulary_list(
+    "gender", ["Female", "Male"])
+education = tf.feature_column.categorical_column_with_vocabulary_list(
+    "education", [
+        "Bachelors", "HS-grad", "11th", "Masters", "9th",
+        "Some-college", "Assoc-acdm", "Assoc-voc", "7th-8th",
+        "Doctorate", "Prof-school", "5th-6th", "10th", "1st-4th",
+        "Preschool", "12th"
+    ])
+tf.feature_column.categorical_column_with_vocabulary_list(
+    "marital_status", [
+        "Married-civ-spouse", "Divorced", "Married-spouse-absent",
+        "Never-married", "Separated", "Married-AF-spouse", "Widowed"
+    ])
+relationship = tf.feature_column.categorical_column_with_vocabulary_list(
+    "relationship", [
+        "Husband", "Not-in-family", "Wife", "Own-child", "Unmarried",
+        "Other-relative"
+    ])
+workclass = tf.feature_column.categorical_column_with_vocabulary_list(
+    "workclass", [
+        "Self-emp-not-inc", "Private", "State-gov", "Federal-gov",
+        "Local-gov", "?", "Self-emp-inc", "Without-pay", "Never-worked"
+    ])
+
+# To show an example of hashing:
+occupation = tf.feature_column.categorical_column_with_hash_bucket(
+    "occupation", hash_bucket_size=1000)
+native_country = tf.feature_column.categorical_column_with_hash_bucket(
+    "native_country", hash_bucket_size=1000)
+
+# Continuous base columns.
+age = tf.feature_column.numeric_column("age")
+education_num = tf.feature_column.numeric_column("education_num")
+capital_gain = tf.feature_column.numeric_column("capital_gain")
+capital_loss = tf.feature_column.numeric_column("capital_loss")
+hours_per_week = tf.feature_column.numeric_column("hours_per_week")
+
+# Transformations.
+age_buckets = tf.feature_column.bucketized_column(
+    age, boundaries=[18, 25, 30, 35, 40, 45, 50, 55, 60, 65])
+\end{python}
+\subsection{宽模型：具有交叉特征列的线性模型}
+宽模型是一个线性模型，具有广泛的稀疏和交叉特征列：
+\begin{python}
+base_columns = [
+    gender, native_country, education, occupation, workclass, relationship,
+    age_buckets,
+]
+
+crossed_columns = [
+    tf.feature_column.crossed_column(
+        ["education", "occupation"], hash_bucket_size=1000),
+    tf.feature_column.crossed_column(
+        [age_buckets, "education", "occupation"], hash_bucket_size=1000),
+    tf.feature_column.crossed_column(
+        ["native_country", "occupation"], hash_bucket_size=1000)
+]
+\end{python}
+具有交叉特征列的宽模型可以有效地记住功能之间的稀疏交互。也就是说，交叉特征列的一个限制是它们不会推广到没有出现在训练数据中的特征组合。让我们用嵌入式添加一个深层次的模型来解决这个问题。
+ 
+\subsection{深层模型：嵌入式神经网络}
+深层模型是前馈神经网络，如前图所示。每个稀疏的高维度分类特征首先被转换成低维和密集的实值向量，通常被称为嵌入向量。这些低维密集嵌入矢量与连续特征相连，然后在正向传递中馈入神经网络的隐层。嵌入值被随机初始化，并与所有其他模型参数一起训练，以最小化训练损失。如果您有兴趣了解有关嵌入的更多信息，请参阅维基百科上的 TensorFlow关于\href{https://www.tensorflow.org/versions/r0.9/tutorials/word2vec/index.html}{单词向量表示}或\href{https://en.wikipedia.org/wiki/Word_embedding}{Word Embedding}的教程。
+另一个表示绝对列输入神经网络的方法是通过mult-hot表达。对于仅仅有一些可能的绝对列是合适的。"Male"表示[1,0],``Female``表示[0,1].这是一个固定的表达，embedding能更灵活的计算。
+我们将使用 embedding\_column并将它们连接到连续列来配置分类列的嵌入，我们用indicator\_column创建mult-hot代表一些绝对的列
+\begin{python}
+deep_columns = [
+    tf.feature_column.indicator_column(workclass),
+    tf.feature_column.indicator_column(education),
+    tf.feature_column.indicator_column(gender),
+    tf.feature_column.indicator_column(relationship),
+    # To show an example of embedding
+    tf.feature_column.embedding_column(native_country, dimension=8),
+    tf.feature_column.embedding_column(occupation, dimension=8),
+    age,
+    education_num,
+    capital_gain,
+    capital_loss,
+    hours_per_week,
+]
+\end{python}
+较高的dimension嵌入的是，更多的自由度的模式将要学习的功能表示。为了简单起见，我们在这里为所有功能列设置尺寸为8。在经验上，对维度数量的更明智的决定是从一个价值的顺序开始 日志2⁡（ñ） 要么  ķñ4，哪里  ñ 是特征列中的唯一特征的数量  ķ 是一个小常数（通常小于10）。
+通过密集嵌入，深层模型可以更好地概括，并对以前在培训数据中看不到的特征对进行预测。然而，当两个特征列之间的底层交互矩阵稀疏和高等级时，很难学习特征列的有效低维表示。在这种情况下，大多数特征对之间的交互应该为零，除了少数几个，但密集的嵌入将导致所有特征对的非零预测，因此可能会过度泛化。另一方面，具有交叉特征的线性模型可以用更少的模型参数有效地记住这些“异常规则”。
+现在，我们来看看如何联合训练广泛而深入的模式，让他们相互补充优势和劣势。
+ 
+\subsection{将宽和深度模型结合为一体}
+通过将其最终输出对数几率作为预测结合起来，将广泛的模型和深度模型相结合，然后将预测提供给物流损失函数。所有的图形定义和变量分配已经在你的引擎盖下处理，所以你只需要创建一个 DNNLinearCombinedClassifier：
+\begin{python}
+import tempfile
+model_dir = tempfile.mkdtemp()
+m = tf.contrib.learn.DNNLinearCombinedClassifier(
+    model_dir=model_dir,
+    linear_feature_columns=wide_columns,
+    dnn_feature_columns=deep_columns,
+    dnn_hidden_units=[100, 50]) 
+\end{python}
+\subsection{训练和评估模型}
+在我们训练模型之前，让我们一起阅读普查数据集，就像我们在TensorFlow线性模型教程中所做的一样。输入数据处理代码再次提供给您方便：
+\begin{python}
+import pandas as pd
+import urllib
+
+# Define the column names for the data sets.
+CSV_COLUMNS = [
+    "age", "workclass", "fnlwgt", "education", "education_num",
+    "marital_status", "occupation", "relationship", "race", "gender",
+    "capital_gain", "capital_loss", "hours_per_week", "native_country",
+    "income_bracket"
+]
+
+def maybe_download(train_data, test_data):
+  """Maybe downloads training data and returns train and test file names."""
+  if train_data:
+    train_file_name = train_data
+  else:
+    train_file = tempfile.NamedTemporaryFile(delete=False)
+    urllib.request.urlretrieve(
+        "https://archive.ics.uci.edu/ml/machine-learning-databases/adult/adult.data",
+        train_file.name)  # pylint: disable=line-too-long
+    train_file_name = train_file.name
+    train_file.close()
+    print("Training data is downloaded to %s" % train_file_name)
+
+  if test_data:
+    test_file_name = test_data
+  else:
+    test_file = tempfile.NamedTemporaryFile(delete=False)
+    urllib.request.urlretrieve(
+        "https://archive.ics.uci.edu/ml/machine-learning-databases/adult/adult.test",
+        test_file.name)  # pylint: disable=line-too-long
+    test_file_name = test_file.name
+    test_file.close()
+    print("Test data is downloaded to %s"% test_file_name)
+
+  return train_file_name, test_file_name
+
+def input_fn(data_file, num_epochs, shuffle):
+  """Input builder function."""
+  df_data = pd.read_csv(
+      tf.gfile.Open(data_file),
+      names=CSV_COLUMNS,
+      skipinitialspace=True,
+      engine="python",
+      skiprows=1)
+  # remove NaN elements
+  df_data = df_data.dropna(how="any", axis=0)
+  labels = df_data["income_bracket"].apply(lambda x: ">50K" in x).astype(int)
+  return tf.estimator.inputs.pandas_input_fn(
+      x=df_data,
+      y=labels,
+      batch_size=100,
+      num_epochs=num_epochs,
+      shuffle=shuffle,
+      num_threads=5)
+\end{python}
+阅读数据后，您可以对模型进行培训和评估：
+\begin{python}
+m.fit(input_fn=train_input_fn, steps=200)
+results = m.evaluate(input_fn=eval_input_fn, steps=1)
+for key in sorted(results):
+    print("%s: %s" % (key, results[key]))
+\end{python}
+输出的第一行应该是这样的accuracy: 0.84429705。我们可以看到，使用宽和深度模型，使用广泛线性模型，约83.6％的准确度提高到约84.4％。如果您想看到一个有效的端对端示例，您可以下载我们的 示例代码。
+请注意，本教程只是一个小型数据集的简单示例，可让您熟悉API。如果您在具有许多可能的特征值的许多稀疏特征列的大型数据集上尝试，则Wide＆Deep Learning将更加强大。再次，请随时查看我们的 研究论文，了解更多关于如何在现实世界的大型机器学习问题中应用广泛和深度学习的想法。
