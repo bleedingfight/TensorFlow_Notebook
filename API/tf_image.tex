@@ -1,4 +1,138 @@
 \section{tf.image}
+\subsection{adjust\_brightness}
+\begin{lstlisting}[language=Python]
+adjust_brightness(
+image,
+delta)
+\end{lstlisting}
+调整灰度或者RGB图像的亮度。
+
+这是一个方便的转换RGB到浮点表达，调整亮度，然后转换它回原始的数据类型。如果一些调整是限制的它适当的最小化多余转化。delta的值被增加到tensor类型的image的所有组件，不经image和delta在添加（image被放大，如果它是固定点表达的化）前被转化为float。对于通常的图像，delta应该在[0,1)之间，正如浮点表达式被添加到图像上，这里像素值在[0,1)之间。
+
+参数:
+\begin{itemize}
+		\item image:一个tensor
+		\item delta:一个标量，添加上的像素值
+		\item[Return]:和image类型和形状相同的亮度调整
+\end{itemize}
+\subsection{adjust\_contrast
+\begin{lstlisting}[language=Python]
+adjust_contrast{images,contrast_factor}
+\end{lstlisting}
+调整RGB或者灰度图像的对比度。
+
+这是一个方便的庄花RGB图像到浮点表达，调整他的对比度然后转化回原始的数据类型。如果一些调整是限制的它明智的最小化多余转化，image是一个至少3维的tensor。三维解释为[height,width,channels],另一个维度表示是一个图像集合，像[batch,height,width,channels]
+
+对比度调整依赖于每个图像的通道，对每个通道Op计算通道中图像像素的均值然后调整每个组件x为$(x-mean)*contrast_factor+mean$
+参数:
+\begin{itemize}
+		\item images:需要调整的图像，至少是3维
+		\item contrast\_factor:一个调整对比度的浮点数
+		\item[Returns]:调整对比度后的一张或者多张图片
+\end{itemize}
+\subsection{adjust\_gamma}
+\begin{lstlisting}[language=Python]
+adjust_gamma(
+image,
+gamma=1,
+gain=1)
+\end{lstlisting}
+在输入图片上执行Gamma修正，广为人知的Power Law Transform，函数根据方程$Out=In^gamma$变换输入图像像素之后缩放像素到0-1之间。
+\begin{itemize}
+\item 参数:image:一个Tensor。ganna：一个标量，非负实数，gain:一个标量,常量乘子。
+\item[返回]：一个Tensor，Gamma修正后的输出。
+\item[Raises]: ValueError:如果gamma是负数
+\end{itemize}
+注意：如果gamma大于1，直方图将向左移，输出图像将比输入图像暗。如果gamma小鱼1，直方图将向右移，输出图像江北输入图像亮。参考\href{Gamma\_correction}{http://en.wikipedia.org/wiki/Gamma_correction}
+\subsection{adjust\_hug}
+\begin{lstlisting}[language=Python]
+adjust_hue(
+    image,
+    delta,
+    name=None
+)
+\end{lstlisting}
+调整RGB图像的色调。
+
+这是一个很方便的转化RBG图像为浮点表达的方法，转化它为HSV，添加一些偏移到hue通道，转化回RGB变回原来的数据类型。如果一些调整被限制它智能的最小化冗余转化。
+
+image是一个RGB图像。图像的色调通过转化图像为HSV通过delta旋转色调通道H。图像然后转化为RGB。delta必须是在[-1,1]
+
+参数:
+\begin{itemize}
+		\item image:单张或者多张RGB图像，形状的最后一个元素必须是3
+		\item delta:一个浮点数，如歌添加到色调通道
+		\item name:操作的名字
+		\item[Returns]:调整后的一张或者多张图像，和image有相同的DType 
+\end{itemize}
+\subsection{adjust\_saturation}
+\begin{lstlisting}[language=Python]
+adjust_saturation(
+    image,
+    saturation_factor,
+    name=None
+)
+\end{lstlisting}
+调整RGB图像的饱和度。
+
+这是一个很方便的转化RGB图像为浮点表达的方法，转化为HSV，添加一个偏移到S通道，转化回RGB然后变回原来的数据类型。如果多个调整被限制它智能的最小化冗余转化的数量。
+
+image是一个RGB图像，图像饱和度通过转化图像为HSV饭后S通道乘上saturation\_factor饭后接企鹅。图像然后被专户作为RGB。
+
+参数:
+\begin{itemize}
+		\item image:一张或者多张RGB图像，形状最后一维的值必须是3
+		\item saturation\_factor:浮点数，饱和度乘上的因子
+		\item name:一个操作的名字
+		\item[Returns]:调整后的一张或者多张形状和DType与image相同的的图像
+\end{itemize}
+\subsection{centrol\_crop}
+\begin{lstlisting}[language=Python]
+central_crop(
+    image,
+    central_fraction
+)
+\end{lstlisting}
+剪裁图像的中心区域
+
+移除图像的部分外围保留每个维度的中心区域，如果我们制定central\_fraction=0.5,这个函数返回一个如相面图中X表示区域
+\begin{lstlisting}[language=Bash]
+ --------
+ |        |
+ |  XXXX  |
+ |  XXXX  |
+ |        |   where "X" is the central 50% of the image.
+  --------
+\end{lstlisting}
+参数:
+\begin{itemize}
+	\item imahe:三维浮点数，Tensor的形状[height，width,depth]
+	\item central\_fraction:float(0,1],建材区域的比例
+	\item[Raises]:Value:如果central_crop_fraction不在(0,1]范围内。)
+	\item[Returns]:3维浮点Tensor
+\end{itemize}
+\subsection{decode\_bmp}
+\begin{lstlisting}[language=Python]
+decode_bmp(
+contens,
+channels=None,
+name 
+)
+\end{lstlisting}
+解码BMP编码的图像为uint8的tensor，属性channels预示着解码后的图像的通道
+接受下面值:
+\begin{itemize}
+		\item 0:用BMP编码图像的通道
+		\item 3:输出RGB图像
+		\item 4:输出RGBA图像
+\end{itemize}
+参数:
+\begin{itemize}
+		\item contents:一个string类型的Tensor。0维。BMO编码图像
+		\item channels:一个int选项，默认为0
+		\item name:操作的名字
+		\item[输出]：类型为uint8类型的Tensor，形状为[height,width,channels],RGB顺序。
+\end{itemize}
 \subsection{tf.image.decode\_gif}
 tf.image.decode\_gif(contents,name=None)
 \begin{itemize}
@@ -69,8 +203,8 @@ tf.image.decode\_image(contents,channels=None,name=None)
 \subsection{tf.image.resize\_images}
 tf.image.resize\_images(images,size,method=ResizeMethed.BILINEAR,align\_corners=False)
 \begin{itemize}
-	\item images:形状为[batch,height,width,channels]4维Tensor,3为Tensor，形状为[height,width,channels]
-	\item size:一位32整型Tensor元素为new\_height,new\_width,新的图像尺寸。
+	\item images:形状为[batch,height,width,channels]4维Tensor或3维Tensor，形状为[height,width,channels]
+	\item size:一维int32整型Tensor元素:new\_height,new\_width,新的图像尺寸。
 	\item methed:ResizeMethod，默认为ResizeMethod.BILINEAR
 		\begin{itemize}
 			\item ResizeMethod.BILINEAR:二进制插值。

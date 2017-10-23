@@ -30,52 +30,52 @@ n&n-Tensor\\
 \textbf{Rank0}
 
 下面片段展示创建一些0维的变量。
-\begin{python}
+\begin{lstlisting}[language=Python]
 mammal = tf.Variable("Elephant", tf.string)
 ignition = tf.Variable(451, tf.int16)
 floating = tf.Variable(3.14159265359, tf.float64)
 its_complicated = tf.Variable((12.3, -4.85), tf.complex64)
-\end{python}
+\end{lstlisting}
 \textbf{Rank1}
 传递列表作为初始值创建1维tf.Tensor对象
-\begin{python}
+\begin{lstlisting}[language=Python]
 mystr = tf.Variable(["Hello"], tf.string)
 cool_numbers  = tf.Variable([3.14159, 2.71828], tf.float32)
 first_primes = tf.Variable([2, 3, 5, 7, 11], tf.int32)
 its_very_complicated = tf.Variable([(12.3, -4.85), (7.5, -6.23)], tf.complex64)
-\end{python}
+\end{lstlisting}
 \textbf{更高的rank:}
 二维的Tensor至少有一行一列
-\begin{python}
+\begin{lstlisting}[language=Python]
 mymat = tf.Variable([[7],[11]], tf.int16)
 myxor = tf.Variable([[False, True],[True, False]], tf.bool)
 linear_squares = tf.Variable([[4], [9], [16], [25]], tf.int32)
 squarish_squares = tf.Variable([ [4, 9], [16, 25] ], tf.int32)
 rank_of_squares = tf.rank(squarish_squares)
 mymatC = tf.Variable([[7],[11]], tf.int32)
-\end{python}
+\end{lstlisting}
 更高rank的Tensor，有n维数组。例如在图像处理，一些tensor的rank为4,维度通常是example-in-batch,image width,image height,color chennel。
-\begin{python}
+\begin{lstlisting}[language=Python]
 my_image = tf.zeros([10, 299, 299, 3])  # batch x height x width x color
-\end{python}
+\end{lstlisting}
 \subsection{获取Tensor对象的rank}
 你可以使用tf.rank方法获取tensor对象的rank。例如下面获取my3d的rank。
-\begin{python}
+\begin{lstlisting}[language=Python]
 r = tf.rank(my2d)#在图运行后，r将保持值3。
-\end{python}
+\end{lstlisting}
 \subsection{Tensor的切片}
 因为tf.Tensor是n维cell阵列，为了访问tf.Tensor的单个cell，你需要指定索引。
 对于rank为0的tensor，不需要索引，因为它已经是单个值了。\par
 对于rank1(向量)，传递一个索引允许你访问:
-\begin{python}
+\begin{lstlisting}[language=Python]
 my_scale = my_vector[2]
-\end{python}
+\end{lstlisting}
 如果你想动态的选择向量中的元素，你可以指定[]一个tf.Tensor。
 传递一个数值访问矩阵的子向量:
-\begin{python}
+\begin{lstlisting}[language=Python]
 my_row_vetor = my_matrix[2]
 my_column_vector = my_matrix[:, 3]
-\end{python}
+\end{lstlisting}
 \subsection{形状}
 shape是tensor每一维元素的个数。TensorFlow在构造图的时候自动计算形状。有时候自动计算可能不知道rank，如果rank已经知道，每一维的形状可能直到可能不知道。
 \begin{tabular}{|c|c|c|c|}
@@ -97,14 +97,14 @@ n&[D0,D1,\ldots,$D_{n-1}$]&N维tensor的形状[$D_0,D_1,\ldots,D_{n-1}$]&\\
 当建立图的时候tensor的形状已知是很有用的，你可以通过tensor的shape属性得到。得到完全定义的tf.Tensor的形状可以使用Tf.shape操作。这个方法你可以建立一个图操作tensor的形状。
 
 例如，这里是如何如何创建一个和给定矩阵列数相同的全零向量。
-\begin{python}
+\begin{lstlisting}[language=Python]
 zeros = tf.zeros(tf.shape(my_matrix)[1])
-\end{python}
+\end{lstlisting}
 \subsection{改变Tensor的形状}
 tensor的元素个数是所有形状值的乘积。标量的元素总是1.因此，因为有相同元素不同形状的tensor，转变它们的形状是很方便的。可以使用tf.reshape.
 
 下面例子展示了如何reshape tensor。
-\begin{python}
+\begin{lstlisting}[language=Python]
 rank_three_tensor = tf.ones([3, 4, 5])
 matrix = tf.reshape(rank_three_tensor, [6, 10])  # Reshape existing content into
                                                  # a 6x10 matrix
@@ -119,31 +119,31 @@ matrixAlt = tf.reshape(matrixB, [4, 3, -1])  # Reshape existing content into a
 # error because no possible value for the last dimension will match the number
 # of elements.
 yet_another = tf.reshape(matrixAlt, [13, 2, -1])  # ERROR!
-\end{python}
+\end{lstlisting}
 \subsection{数据类型}
 tf.Tensor不可能有一个以上的数据类型。然而序列化数据结构作为字符串尺寸处在tf.Tensor里是可能的。
 
 可以使用tf.cast转换一种数据类型到另一种。
-\begin{python}
+\begin{lstlisting}[language=Python]
 # Cast a constant integer tensor into floating point.
 	float_tensor = tf.cast(tf.constant([1, 2, 3]), dtype=tf.float32)
-\end{python}
+\end{lstlisting}
 通过Tensor的dtype查看tensor的数据类型。你通过python对象创建tf.Tensor的时候需要指定数据类型。如果你不指定TensorFlow选择一个代表你数据的数据类型。TensorFlow转换Python整数为tf.int32,浮点数为tf.float32。转换数组时TensorFlow用和numpy相同的规则。
 \subsection{计算Tensor}
 当计算图被创建后你可以通过运行计算tf.Tensor获取指定的值。用Tensor.eval方法简单的计算:
-\begin{python}
+\begin{lstlisting}[language=Python]
 constant = tf.constant([1,2,3])
 tensor = constant*constant
 print(tensor.eval())
-\end{python}
+\end{lstlisting}
 eval方法仅仅当tf.Session()被激活时可用。Tensor.eval然后会得到一个和tensor相同内容的numpy数组。有时候没有上下文计算tf.Tensor是不可能的。例如，tensor依赖于Placeholder在提供给Placeholder值之前不能计算。
-\begin{python}
+\begin{lstlisting}[language=Python]
 p = tf.placeholder(tf.float32)
 t = p + 1.0
 t.eval()  # This will fail, since the placeholder did not get a value.
 t.eval(feed_dict={p:2.0})  # This will succeed because we're feeding a value
                            # to the placeholder.
-\end{python}
+\end{lstlisting}
 其它的模型结构在计算tf.Tensor时可能很复杂。TensorFlow不能直接计算定义在函数内部的或者控制流结构的tf.Tensor。如果tf.Tensor依赖于队列中的值，计算tf.Tensor仅仅入队的时候工作，负责计算被挂起。当和queue工作的时候，记得在计算任何tf.Tensor之前用tf.train.start\_queue\_runners。
 \subsection{打印Tensor}
 出于调试目的，你想要打印tf.Tesor的值。tfdbg提供了高级的调制支持。TensorFlow用下面的模板打印tf.Tensor:
@@ -155,10 +155,10 @@ print (t)  # This will print the symbolic tensor when the graph is being built.
 这段代码打印tf.Tensor对象不是它的值，TensorFlow提供了tf.Print操作，然后第一个没有改变的Tensor参数然后打印tf.Tensor的第二个参数。
 
 为了正确的使用tf.Print(),必须要用它的返回值,查看下面的例子:
-\begin{python}
+\begin{lstlisting}[language=Python]
 	#we are using the value returned by tf.Print
 result = t + 1  # Now when result is evaluated the value of `t` will be printed.
-\end{python}
+\end{lstlisting}
 当你计算result你将计算result依赖的每个结果，因为result依赖于t，然后计算t，打印它的输入，t被打印。
 \section{Variable}
 Tensorflow变量是最好的在你的程序中表现共享，永久状态的方法，Vaiables通过tf.Variable类操作。一个tf.Variable代表随着在它上面的操作的进行它的值可能被改变
@@ -166,52 +166,52 @@ Tensorflow变量是最好的在你的程序中表现共享，永久状态的方�
 \subsection{创建变量}
 创建变量最好的方法是调用tf.get\_variable函数。这个函数要求你指定变量的名字，名字将作为副本访问相同的变量，和checkpoint和导入模型是变量的名字一样。tf.get\_variable也允许你重用一个先前创建的有同样名字的变量，使得定义重用层很方便。
 创建变量提供名字和形状。
-\begin{python}
+\begin{lstlisting}[language=Python]
 	my_variable = tf.get_variable("my_variable",[1,2,3])
-\end{python}
+\end{lstlisting}
 上面代码创建了一个3维tensor变量my\_variable，它的形状为[1,2,3],默认数据类型为tf.float32,通过随机tf.glorot\_uniform\_initializer初始化值。
 你也可以指定dtype和初始化方式。
-\begin{python}
+\begin{lstlisting}[language=Python]
 	my_variable = tf.get_variable("my_int_variable",[1,2,3],dtype=tf.int32,initializer=tf.zeros_initializer)
-\end{python}
+\end{lstlisting}
 TensorFlow提供很一些方便的初始化器，你也可以通过有值的tf.Tensor初始化一个tf.Variable。
-\begin{python}
+\begin{lstlisting}[language=Python]
 	other_variable = tf.get_variable("other_variable",dtype=tf.int32,initializer=tf.constant([23,42]))
-\end{python}
+\end{lstlisting}
 所以当你用tf.Tensor作为初始化器你不要指定变量的形状，因为初始化器用你的Ttensor的形状。
 \subsection{变量集合}
 因为断开一部分TensorFlow程序也许是想创建变量，这有时候是一个简单的访问它们的方法。因此TensorFlow提供了collections(集合)代表有名字的tensor列表或者其它对象，像tf.Variable实体。
 
 默认每个tf.Variable被放在下面的两个collections：tf.Graphkeys.Global\_VARIABLE（可以被多个设备共享的变量）,tf.Graphkeys.TRAINABLE\_VARIABLE（TensorFlow将计算梯度的变量）。如果你不想一个变量被训练，将它增加到tf.GraphKeys.LOCAL\_VARIABLE集合。例如下面的代码段展示了如何增加一个my\_local变量到这个集合。
-\begin{python}
+\begin{lstlisting}[language=Python]
 my_local = tf.get_variable("my_local",shape=(),collections=[tf.GraphKeys.LOCAL_VARIABLES])
-\end{python}
+\end{lstlisting}
 你也可以指定trainable=False。
-\begin{python}
+\begin{lstlisting}[language=Python]
 my_non_trainable = tf.get_variable("my_non_variable",shape=(),trainable=False)
-\end{python}
+\end{lstlisting}
 你也可以用你自己的collections.任何字符串都是一个可用的集合的名字，不需要明确的创建集合。增加一个变量(或者任何对象)到集合后创建变量，调用tf.add\_to\_collection。例如，你可以用下面的代码增加一个已经存在的变量my\_local到一个my\_collection\_name集合:
-\begin{python}
+\begin{lstlisting}[language=Python]
 	tf.add_to_collection("my_collection_name",my_local)
-\end{python}
+\end{lstlisting}
 你可以用下面的代码获取你放置在collection里面的变量的和对象列表。
-\begin{python}
+\begin{lstlisting}[language=Python]
 tf.get_collection("my_collection_name")
-\end{python}
+\end{lstlisting}
 \subsection{配置设备}
 像任何其它TensorFlow操作一样，你可以放置变量到特别的设备上。例如，下面的代码片在第二个GPU上创建一个变量v。
-\begin{python}
+\begin{lstlisting}[language=Python]
 with tf.device("gpu:1"):
     v = tf.get_variable("v",1)
-\end{python}
+\end{lstlisting}
 对于变量在正确的设备上部署是很重要的。有时候放变量在worker上而不是参数服务器上，例如可能极大的减缓训练，在最坏的情况下让每个worker独立的复制每个变量。为此我们提供了tf.train.replica\_device\_setter。自动防止变量到参数servers上。例如:
-\begin{python}
+\begin{lstlisting}[language=Python]
 cluster_spec={
 	"ps":["ps0:2222","ps1:2222"],
 	"worker":["worker0:2222","woker1:2222","worker2:2222"]}
 with tf.device(tf.train.replica_device_setter(cluster=cluster_spec)):
     v = tf.get_variable("v",shape=[20,20])#这个变量被replica_device_setter放置在参数server上
-\end{python}
+\end{lstlisting}
 \subsection{初始化变量}
 {\color{red}{在使用变量之前，你必须对变量进行初始化。}}如果你在低级的TensorFlow API(明确的创建自己的图和会话)上编程，你必须明确的初始化变量。最高级的框架像tf.contrib.slim,\newline
 tf.estimator.Estimator和Keras在你训练模型前自动初始化变量。
@@ -219,50 +219,50 @@ tf.estimator.Estimator和Keras在你训练模型前自动初始化变量。
 明确的初始化是很有用的，因为它让你从checkpoint载入模型不用重复运行代价高昂的初始化器同时允许决定什么时候随机初始化的变量在分布式设置上被共享。
 
 为了在开始训练之前初始化可训练的变量，调用tf\_global\_variables\_initilizer().这个函数是一个初始化tf.GraphKeys\_variable.GLOBAL\_VARIABLES集合所有变量的操作。运行下面的操作初始化所有的变量:
-\begin{python}
+\begin{lstlisting}[language=Python]
 session.run(tf.global_variable_initializer())
-\end{python}
+\end{lstlisting}
 如果你需要手动初始化变量，你可以运行变量初始化操作:
-\begin{python}
+\begin{lstlisting}[language=Python]
 session.run(my_variable.initializer)
-\end{python}
+\end{lstlisting}
 你可以查询那些变量没有被初始化:
-\begin{python}
+\begin{lstlisting}[language=Python]
 print(session.run(tf.report_uninitialized_variables()))
-\end{python}
+\end{lstlisting}
 注意，默认情况下tf.global\_variables\_initializer不指定变量的初始化顺序。因此一个初始化值依赖于另一个初始化值，你可能得到错误。任何时候你在一个不是所有的变量被初始化（用一个变量的值时候另一个变量正在初始化）的环境下最好用variable.initialized\_value()代替variable。
-\begin{python}
+\begin{lstlisting}[language=Python]
 v = tf.get_variable("v",shape=(),initializer=tf.zeros_initializer())
 w = tf.get_variable("w",initializer=tf.initialized_value()+1)
-\end{python}
+\end{lstlisting}
 \subsection{用变量}
 为了在TensorFlow图总使用tf.Variable,简单的把变量当作tf.Tensor。
-\begin{python}
+\begin{lstlisting}[language=Python]
 v = tf.get_variable("v",shape=(),initializer=tf.zeros_initializer())
 w = v+1#w是一个基于v的值计算的Tensor，任何时候一个用在表达式中的变量自动转化一个tf.Tensor到它的值。
-\end{python}
+\end{lstlisting}
 赋值给一个变量用方法assign,assign\_add和tf.Variable。例如你可以这样调用这些方法:
-\begin{python}
+\begin{lstlisting}[language=Python]
 v = tf.get_variable("v",shape=(),initializer=tf.zeros_initializer)
 	assignment = v.assign_add(1)
 assignment = v.assign_add(1)
 tf.global_variable_initializer().run()
 assignment.run()
-\end{python}
+\end{lstlisting}
 多数TensorFlow优化器根据一些类似梯度下降的算法已经指定了高效的更新变量值的操作。因为变量是可以更改的，有时候知道变量任何时间点被使用的值是很有用的。你可以用tf.Variable.read\_value在有时候变量使用后读取变量的值。
-\begin{python}
+\begin{lstlisting}[language=Python]
 v = tf.get_variable("v",shape=(),initializer=tf.zeros_initializer())
 assignment = v.assign_add(1)
 with tf.control_dependencuies([assignment]):
     w = v.read_value()
-\end{python}
+\end{lstlisting}
 \subsection{保存和恢复}
 用tf.train.Saver对象保存恢复模型是一种最简单的方法。这个构造器为图上所有的或者指定的变量添加save和restore操作。Saver提供了方法运行这些操作，指定checkpoint文件读写的路径。为了恢复模型的checkpointe而不是图，你必须首先从MetaGraph(.meta扩展的)文件。通过调用tf.train.import\_meta\_graph,从执行一个restore返回一个Saver。
 \subsection{checkpoint文件}
 TensorFlow保存变量在一个二进制文件中，大体上是映射变量的名字到tensor的值。当你创建一个Saver对象，你可以从checkpoint文件选择变量，默认对每个变量用tf.Variable.name的值。
 \subsection{保存变量}
 用tf.train.Saver()创建一个Saver管理模型的所有变量。例如，下面的代码段展示了如何调用tf.train.Saver.save()方法保存变量为一个checkpoint文件。
-\begin{python}
+\begin{lstlisting}[language=Python]
 #创建变量
 v1 = tf.get_variable("v1",shape=[3],initializer = tf.zeros_initializer)
 v2 = tf.get_variable("v2",shape=[5],initializer = tf.zeros_initializer)
@@ -279,10 +279,10 @@ with tf.Session() as sess:
     dec_v2.op.run()
     save_path = saver.save(sess,'./model.ckpt')
     print("Model saved in file:%s"%save_path)
-\end{python}
+\end{lstlisting}
 \subsection{恢复变量}
 tf.train.Saver对象不仅可以保存变量到checkpoint文件，也可以恢复变量。注意当你从一个文件恢复变量的时候你没有必要提前初始化它们。例如，下面的代码段展示了如何调用tf.train.Saver.restore方法从checkpoint文件恢复变量。
-\begin{python}
+\begin{lstlisting}[language=Python]
 tf.reset_default_graph()
 v1 = tf.get_variable("v1",shape=[3])
 v2 = tf.get_variable("v2",shape=[5])
@@ -292,10 +292,10 @@ with tf.Session() as sess:
     print("模型恢复")
     print("v1:%s"%v1.eval())
     print("v2:%s"%v2.eval())
-\end{python}
+\end{lstlisting}
 \subsection{选择变量恢复}
 如果你不传递任何参数为tf.train.Saver(),saver处理图上所有的变量。每个变量按照变量创建的时候给定的名字保存。有时候明确的指定checkpoint文件中的变量的名字是有用的。例如你也许训练一个五层神经网络，你现在想重用之前的五层网络训练一个新的6层网络，你可以用saver恢复前面5层的权重。你可以通过传递给tf.train.Saver()构造体变量列表的名字或者(一个key是名字value是值的)Python字典保存和载入变量。
-\begin{python}
+\begin{lstlisting}[language=Python]
 tf.reset_default_graph()
 	v1 = tf.get_variable("v1",[3],initializer = tf.zeros_initializer)
 	v2 = tf.get_variable("v2",[5],initializer = tf.zeros_initializer)
@@ -305,7 +305,7 @@ tf.reset_default_graph()
 	    saver.restore(sess,"./model.ckpt")
 	    print("v1 : %s" % v1.eval())
 	    print("v2 : %s" % v2.eval())
-\end{python}
+\end{lstlisting}
 注意
 \begin{itemize}
 	\item 如果你想保存和恢复模型的变量的子集，你可以创建多个Saver对象，它的值仅仅在Saver.restore()方法运行的时候才被载入。
@@ -318,50 +318,50 @@ TensorFlow支持两种方法的共享变量:
 	\item 在tf.variable\_scope对象中隐式打包tf.Variable对象。
 \end{itemize}
 用Veriable scope允许你控制变量重用调用函数，隐式的创建使用变量。它也允许你在你的文件结构上命名你的变量以方便理解。
-\begin{python}
+\begin{lstlisting}[language=Python]
 def conv_relu(input,kernel_shape,bias_shape):
     weights = tf.get_variable("weight",kernel_shape,initializer=tf.random_normal_initializer())
     biases = tf.get_variable("biase",biase_shape,initializer=tf.constant_initializer(0.0))
     conv = tf.nn.conv2d(input,weights,striders=[1,1,1,1],padding="SAME")
     return tf.nn.relu(conv+biases)
-\end{python}
+\end{lstlisting}
 这个函数用weights和biases好处是清晰。在真实的模型中，我们想要一些卷基层，重复的调用这些函数将not work:
-\begin{python}
+\begin{lstlisting}[language=Python]
 input1 = tf.random_normal([1,10,10,32])
 input2 = tf.random_normal([1,20,20,32])
 x = conv_relu(input1,kernel_shape=[5,5,1,32],bias_shape=[32])
 x = conv_relu(x,kernel_shape=[5,5,32,32],bias_shape=[32])
-\end{python}
+\end{lstlisting}
 因为希望的行为不确定(创建新的变量还是重用之前的变量?)TensorFlow将不能做到。在不同的scope调用conv\_relu，并且我们想创建新的变量:
-\begin{python}
+\begin{lstlisting}[language=Python]
 def my_image_filter(input_images):
     with tf.variable_scope("conv1"):
     #这里被创建的变量名字为"conv1/weights","conv1/biases"
         relu1 = conv_relu(input_images,[5,5,1,32],[32])
     with tf.variable_scope("conv2"):
 	return conv_relu(relu1,[5,5,32,32],[32])
-\end{python}
+\end{lstlisting}
 如果你想你的变量被共享，你有两个字选择。第一，你可以在创建一个scope的时候用resue=True:
-\begin{python}
+\begin{lstlisting}[language=Python]
 with tf.variable_scope("model"):
     output1 = my_image_filter(input1)
 with tf.variable_scope("model",reuse=True):
     output2 = my_image_filter(input2)
-\end{python}
+\end{lstlisting}
 你可以调用scope.resue\_variable()触发一个reuse:
-\begin{python}
+\begin{lstlisting}[language=Python]
 with tf.variable_scope("model") as scope:
     output1 = my_image_filter(input)
     scope.reuse_variables()
     output2 = my_image_filter(input2)
-\end{python}
+\end{lstlisting}
 因为用来提取scope名字提取字符串可能很危险，也可以用下面的方法初始化:
-\begin{python}
+\begin{lstlisting}[language=Python]
 with tf.variable_scope("model") as scope:
     output1 = my_image_filter(input1)
 with tf.variable_scope(scope,reuse=True):
     output2 = my_image_filter(input2)
-\end{python}
+\end{lstlisting}
 \section{图(Graphs)和会话(Session)}
 TensorFlow用数据流图(dataflow graph)代表操作间的相应的计算。这导致首先你需要先定义图，创建TensorFlow Session通过本地设备或远程设备运行图的一部分。这个向导对于你想用低级变量模型是很有用的。要记得像tf.estimator.Estimator和Keras中的API对于用户端隐藏了图和会话的细节。
 \subsection{为什么用数据流图？}
@@ -386,7 +386,7 @@ TensorFlow利用数据流图计算有如下好处:
 tf.Graph对象给它包含的包含tf.Operation对象定义了一个namespace。TensorFlow自动为你图上的操作选择一个独一无二的名字，而且给操作名字使程序易读和方便调试。TensorFlow API提供了两个操作来覆盖操作的名字:
 \begin{itemize}
 \item 每个API函数创建一个新的tf.Operation或者返回一个新的tf.Tensor时接受一个name选项。例如tf.constant(42.0,name="answer")创建一个新的操作名字叫answer，返回一个名字为”answer:0“的tf.Tensor。如果默认图已经包含了名字为"answer"的操作，TensorFlow将添加"-1","-2"等等，例如:
-\begin{python}
+\begin{lstlisting}[language=Python]
 c_0 = tf.constant(0,name="c")#操作的名字为"c"
 c_1 = tf.constant(2,name="c")#操作的名字为"c_1"
 with tf.name_scope("outer"):
@@ -396,7 +396,7 @@ with tf.name_scope("outer"):
     c_4 = tf.constant(4,name="c")#操作名字为"outer/c_1"
     with tf.name_scope("inner"):
         c_5 = tf.constant(5,name="c")
-\end{python}
+\end{lstlisting}
 \end{itemize}
 tf.Tensor对象隐藏为tf.Operation名字，之后tf.Operation将产生tensor作为输出。一个tensor的名字形式"<OP\_NAME>:<i>",这里:
 \begin{itemize}
@@ -406,9 +406,9 @@ tf.Tensor对象隐藏为tf.Operation名字，之后tf.Operation将产生tensor�
 \subsection{放置操作在不同的设备上}
 如果你想TensorFlow用多个不同的设备，tf.device函数提供了方便的方法请求所有的操作在一个特别的上下文被放置现在相同的设备上。
 指定格式如下:
-\begin{python}
+\begin{lstlisting}[language=Python]
 /job:<JOB_NAME>/task:<TASK_INDEX>/device:<DEVICE_TYPE>:<DEVICE_INDEX>
-\end{python}
+\end{lstlisting}
 这里:
 \begin{itemize}
 \item <JOB\_NAME>是一个alpha数字，不是以数字开头
@@ -418,15 +418,15 @@ tf.Tensor对象隐藏为tf.Operation名字，之后tf.Operation将产生tensor�
 \item <DEVICE\_INDEX>:一个代表device索引的非负整数，例如为了区别在同一进程中的不同GPU。
 \end{itemize}
 你不需要指定设备的每一部分，例如，如果你运行在一个单GPU的机器上，你也许用tf.device添加一些操作到CPU和GPU上。
-\begin{python}
+\begin{lstlisting}[language=Python]
 weights = tf.random_normal()
 with tf.device("/device:CPU:0")
     img = tf.decode_jpeg(tf.read_file("img.jpg"))
 with tf.device("/device:GPU:0"):
     result = tf.matmul(weights,img)
-\end{python}
+\end{lstlisting}
 如果你用典型的分布式配置部署TensorFlow，你也许指定job的名字和task ID放置变量在参数服务器job("/job:ps"),其它的操作在worker job("/job:worker")
-\begin{python}
+\begin{lstlisting}[language=Python]
 with tf.device("/job:ps/task:0"):
     weight_1 = tf.Variable(tf.truncated_normal([784,100]))
     biases_1 = tf.Variable(tf.zeros([100]))
@@ -436,9 +436,9 @@ with tf.device("/job:ps/task:1"):
 with tf.device("/job:worker"):
     layer_1 = tf.matmul(train_batch,weight_1)+biases_1
     layer_2 = tf.matmul(train_batch,weight_2)+biases_2
-\end{python}
+\end{lstlisting}
 tf.device给你很高的灵活度度选择放置单个操作或者更广范围的TensorFlow图。在一些情况下，有简单的算法。例如tf.train.replica\_device\_setter API可以用tf.device防止操作data-parallel distributed training.例如下面的代码段显示tf.train.replica\_device\_setter应用不同的放置策略到tf.Vriable对象和其它操作:
-\begin{python}
+\begin{lstlisting}[language=Python]
 with tf.device(tf.train.replica_device_setter(ps_tasks=3)):
 # tf.Variable objects are, by default, placed on tasks in "/job:ps" in a
 # round-robin fashion.
@@ -449,7 +449,7 @@ with tf.device(tf.train.replica_device_setter(ps_tasks=3)):
     input_data = tf.placeholder(tf.float32)     # placed on "/job:worker"
     layer_0 = tf.matmul(input_data, w_0) + b_0  # placed on "/job:worker"
     layer_1 = tf.matmul(input_data, w_1) + b_1  # placed on "/job:worker"
-\end{python}
+\end{lstlisting}
 \subsection{Tensor-like对象}
 一些TensorFlow操作接受一个或者更多的tf.Tensor对象作为参数。例如，tf.matmul得到tf.Tensor对象，tf.add\_n得到一个tf.Tensor列表对象。为了方便使用这些函数在tf.Tensor中接受一个tensor-like对象,用tf.convert\_to\_tensor方法转换它为tf.Tensor，Tensor-like包含下面的元素类型:
 \begin{itemize}
@@ -466,12 +466,12 @@ with tf.device(tf.train.replica_device_setter(ps_tasks=3)):
 TensorFlow用tf.session类代表客户程序（通常是Python程序），通过一个类似的接口在(C++也可用),一个tf.Session对象提供访问在本地机器上的设备，远程设备用分布式的TensorFlow域。它也缓存一些关于你的tf.Graph的信息以至于你能高校的运行相同的计算多次。
 \subsection{创建tf.Session}
 如果你用低层的TensorFlow API，你可以为当前图创建一个tf.Session
-\begin{python}
+\begin{lstlisting}[language=Python]
 #创建一个默认的session
 with tf.Session() as sess:
 #创建一个远程会话
 with tf.Session("grpc://example.org:2222"):
-\end{python}
+\end{lstlisting}
 因为一个tf.Session拥有自己的物理资源(像GPU和网络连接)，它是典型用作上下文管理(with)自动关闭会话。但是你应该确定调用tf.Session.close当你完成后你必须释放资源。
 
 高级API像tf.train.MonitoredTrainingSession或者tf.estimator.Estimator将创建和管理一个tf.Session给你。APIs接受target和config参数(或者作为tf.estimator.RunConfig的一部分)，含义如下:
@@ -487,7 +487,7 @@ tf.Session.\_\_init\_\_接受三个参数:
 \end{itemize}
 \subsection{用tf.Session.run执行操作}
 tf.Session.run是运行tf.Operation和评估tf.Tensor的主要操作，一可以传递一个或者更多的tf.Operation和tf.Tensor或者tensor-like 类型的对象，像tf.Variable。这些fetch决定了tf.Graph的使用于计算fetch的所有子图操作的输出。例如下面的代码片段显示了不同的参数能操作不同的子图执行:
-\begin{python}
+\begin{lstlisting}[language=Python]
 x = tf.constant([[37.0,-23.0],[1.0,4.0]])
 w = tf.Variable(tf.random_uniform([2,2]))
 y = tf.matmul(x,w)
@@ -498,9 +498,9 @@ with tf.Session() as sess:
     sess.run(init_op)
     print(sess.run(output))
     y_val,output_val = sess.run([y,output])
-\end{python}
+\end{lstlisting}
 tf.Session.run也可以用feeds字典，字典映射tf.Tenor(典型的tf.placeholder())对象为合适执行的值(典型的Python标量，列表，Numpy数组)。
-\begin{python}
+\begin{lstlisting}[language=Python]
 x = tf.placeholder(tf.float32,shape=[3])
 y = tf.square(x)
 with tf.Session() as sess:
@@ -509,9 +509,9 @@ with tf.Session() as sess:
     #sess.run(y) 运行z此代码会Raise  `tf.errors.InvalidArgumentError`
     #因为当你计算一个tensor的时候它以来的值应该给定。
     #sess.run(y,{x:37.0})Raises `ValueError`,因为37.0的形状不匹配
-\end{python}
+\end{lstlisting}
 tf.Session.run也接受一个选项options参数使你指定调用的选项，run\_metadata参数使你收集关于执行的metadata。例如你可以用下面的选项处理执行信息:
-\begin{python}
+\begin{lstlisting}[language=Python]
 y = tf.matmul([[37.0,-23.0],[1.0,4.0]],tf.random_uniform([2,2]))
 with tf.Session() as sess:
 	#定义sess.run的选项
@@ -523,7 +523,7 @@ metadata = tf.RunMetadata()
 sess.run(y,options=options,run_metadata=metdadata)
 #打印每个设备执行的子图
 print(metadata.partition_graphs)
-\end{python}
+\end{lstlisting}
 \subsection{GraphDef和MetaGraphDef}
 TensorFlow用数据流图作为程序的表示，一个tf.Graph包含两个相关的信息:
 \begin{itemize}
@@ -549,7 +549,7 @@ TensorFlow用数据流图作为程序的表示，一个tf.Graph包含两个相�
 \subsection{可视化你的图}
 TensorFlow提供一个工具帮助你理解你图中的代码。图的可视化是tensorBoard
 的一个组件它在你的浏览器中生成你的图的结构。最简单的创建可视化的方法是当创建tf.summary.FileWriter时传递tf.Graph
-\begin{python}
+\begin{lstlisting}[language=Python]
 # Build your graph.
 x = tf.constant([[37.0, -23.0], [1.0, 4.0]])
 w = tf.Variable(tf.random_uniform([2, 2]))
@@ -565,7 +565,7 @@ for i in range(1000):
     sess.run(train_op)
       # ...
 writer.close()
-\end{python}
+\end{lstlisting}
 注意当你用tf.estimator.Estimator时,图(上面的任何总结)将被自动采集到你创建estimator时指定的model\_dir。
 你可以在TensorBoard中打开采集，导航到Graph,查看你的图的高级可视化结果。注意典型的TenmsorFlow图，特别是训练图自动计算梯度，同一时间有很多节点可视化。图可视化操作利用scope的名字分组相关的操作到高级节点。你可以点击橙色的+按钮展开里面的子图。
 \begin{figure}[H]
@@ -578,7 +578,7 @@ writer.close()
 	\item 默认的图存储关于每个tf.Operation和tf.Tensor的信息。如果你的程序创建了很多互不连接的子图，用不同的tf.Graph建立子图可能更高效，因此不相关的状态可能被垃圾收集器收集。
 \end{itemize}
 你可以安装一个不同的tf.Graph作为默认的图，用tf.Graph.as\_default上下文管理器:
-\begin{python}
+\begin{lstlisting}[language=Python]
 g_1 = tf.Graph()
 with g_1.as_default():
     c = tf.constant("Node in g_1")
@@ -591,13 +591,13 @@ assert c.graph is g_1
 assert sess_1.graph is g_1
 assert d.graph is g_2
 assert sess_2.graph is g_2
-\end{python}
+\end{lstlisting}
 查看当前默认的图可以使用tf.get\_default\_graph返回一个tf.Graph对象。
-\begin{python}
+\begin{lstlisting}[language=Python]
 # Print all of the operations in the default graph.
 g = tf.get_default_graph()
 print(g.get_operations())
-\end{python}
+\end{lstlisting}
 \section{数据集}
 Dataset模块允许你从简单的，可重用的片段输入pipeline。例如图像模块的pipeline
 也许集合分布式文件系统的数据，随机扰动每张图片，随机融合选中的图片为一个batch来训练,pipeline的text模型能利用元素提取的文本数据，转换它们为查找表embedding的标志符将不同长度的序列放在一起成为一个batch。Dataset API使得处理大型数据，不同数据格式和复杂的转换变得很容易。
@@ -620,7 +620,7 @@ Dataset模块允许你从简单的，可重用的片段输入pipeline。例如�
 最常用的方法是消耗从Dataset来的值创建一个迭代器对象，提供访问一个元素的数据集的元素一次（调用Dataset.make\_one\_shot\_iterator()）,一个tf.contrib.data.Iterator提供两个操作:Iterator.initializer重新初始化你的迭代器状态；Iterator.get\_next()返回迭代器下一个元素的Tensor。
 \subsection{数据结构}
 一个数据集包含有相同结构的元素。一个元素包含一个或者更多称为组件的tf.Tensor对象。每个组件有tf.DType代表在tensor中元素的数据类型，Dataset.output\_types和Dataset.output\_shapes属性允许你查看每个数据集元素的组件的类型和形状。这些参数的嵌套结构映射元素的结构(也许是一个tensor，一个tensor元组，或者嵌套的tensor元组)
-\begin{python}
+\begin{lstlisting}[language=Python]
 dataset1 = tf.contrib.data.Dataset.from_tensor_slices(tf.random_uniform([4,10]))
 print(dataset1.output_types)#tf.float32
 print(dataset1.output_shapes)#(10,)
@@ -631,22 +631,22 @@ print(dataset2.output_shapes)#((),(100,))
 datasets = tf.contrib.data.Dataset.zip((dataset1,dataset2))
 print(dataset3.output_types)#(tf.float32,(tf.float32,tf.int32))
 print(dataset3.output_shapes)#(10,((),(100,)))
-\end{python}
+\end{lstlisting}
 给每个元素的组成命名是很方便的，例如它们代表不同训练样本的特征。另外，你可以用collections.namedtuple或者一个字典映射字符串到tensor代表Dataset的单个元素。
-\begin{python}
+\begin{lstlisting}[language=Python]
 dataset = tf.contrib.data.Dataset.from_tensor_slices({
 	"a":tf.random_uniform([4]),
 	"b":tf.random_uniform([4,100],maxval=100,dtype=tf.int32}))
 print(dataset.output_types())#{'a':tf.float32,'b':tf.int32}
 print(dataset.output_shape)#{'a':(),'b':(100,)}
-\end{python}
+\end{lstlisting}
 Dataset转换支持任何的数据结构，当你用Dataset.map(),Dataset.flat\_map和Dataset.filter()转换应用函数到每个元素，元素结构决定函数的参数:
-\begin{python}
+\begin{lstlisting}[language=Python]
 dataset1 = dataset1.map(lambda x: ...)
 dataset2 = dataset2.flat_map(lambda x, y: ...)
 # Note: Argument destructuring is not available in Python 3.
 dataset3 = dataset3.filter(lambda x, (y, z): ...)
-\end{python}
+\end{lstlisting}
 \subsection{创建一个迭代器}
 当你创建一个Dataset代表你的输入数据的时候，下一步是创建一个迭代器从数据集中访问元素，Dataset API当前支持一下迭代器:
 \begin{itemize}
@@ -656,16 +656,16 @@ dataset3 = dataset3.filter(lambda x, (y, z): ...)
 	\item feedable
 \end{itemize}
 one-shot迭代器是迭代器中最简单的形式，支持在数据集上迭代一次,不需要初始化。One-shot处理大多数的基于队列的输入pipeline，但是它们不支持参数化。用Dataset.range()作为例子:
-\begin{python}
+\begin{lstlisting}[language=Python]
 dataset = tf.contrib.data.Dataset.range(100)
 iterator = dataset.make_one_shot_iterator()
 next_element = iterator.get_next()
 for i in range(10):
     value = sess.run(next_element)
     assert i == value
-\end{python}
+\end{lstlisting}
 initializable迭代器要求你使用前明确的运行iterator.initializer操作。为此它允许你送入一个或者更多的tf.placeholder() tensor\textcolor{red}{初始化你的迭代器}，继续用Dataset.range()：
-\begin{python}
+\begin{lstlisting}[language=Python]
 #Base environ pass
 max_value = tf.placeholder(tf.int64, shape=[])
 dataset = tf.contrib.data.Dataset.range(max_value)
@@ -682,16 +682,16 @@ sess.run(iterator.initializer, feed_dict={max_value: 100})
 for i in range(100):
     value = sess.run(next_element)
     assert i == value
-\end{python}
+\end{lstlisting}
 一个reinitializable迭代器可以通过多个不同的Dataset对象初始化。例如你也许有一个用随机扰动输入图像提高泛化性的输入pipeline一个验证输入pipeline在没有修改的数据上评价预测。这些pipeline将用于相同结构（每个组件有相同的类型和兼容的形状）的不同的Dataset对象
-\begin{python}
+\begin{lstlisting}[language=Python]
 # Define training and validation datasets with the same structure.
 training_dataset = tf.contrib.data.Dataset.range(100).map(
     lambda x: x + tf.random_uniform([], -10, 10, tf.int64))
 validation_dataset = tf.contrib.data.Dataset.range(50)
 # A reinitializable iterator is defined by its structure. We could use the
-# `output\_types` and `output\_shapes` properties of either `training\_dataset`
-# or `validation\_dataset` here, because they are compatible.
+# `output_types` and `output_shapes` properties of either `training_dataset`
+# or `validation_dataset` here, because they are compatible.
 iterator = Iterator.from_structure(training_dataset.output_types,
 training_dataset.output_shapes)
 next_element = iterator.get_next()
@@ -708,16 +708,16 @@ for _ in range(20):
     sess.run(validation_init_op)
     for _ in range(50):
         sess.run(next_element)
-\end{python}
+\end{lstlisting}
 一个feedable迭代器可以和tf.placeholder用在一起来调用tf.Session.run时选择什么通过deed\_dict机制。它提供相同的函数作为重新初始化迭代器，但是当你在不同数据集切换的时候不要求你从数据集开始初始化。例如用相同的训练验证样本你可以用tf.contrib.data.Iterator.from\_string\_handle定义一个feedable迭代器允许你在不同的数据集之间切换:
-\begin{python}
+\begin{lstlisting}[language=Python]
 # Define training and validation datasets with the same structure.
 training_dataset = tf.contrib.data.Dataset.range(100).map(
     lambda x: x + tf.random_uniform([], -10, 10, tf.int64)).repeat()
 validation_dataset = tf.contrib.data.Dataset.range(50)
 # A feedable iterator is defined by a handle placeholder and its structure. We
-# could use the `output\_types` and `output\_shapes` properties of either
-# `training\_dataset` or `validation\_dataset` here, because they have
+# could use the `output_types` and `output_shapes` properties of either
+# `training_dataset` or `validation_dataset` here, because they have
 # identical structure.
 handle = tf.placeholder(tf.string, shape=[])
 iterator = tf.contrib.data.Iterator.from_string_handle(
@@ -727,7 +727,7 @@ next_element = iterator.get_next()
 # (such as one-shot and initializable iterators).
 training_iterator = training_dataset.make_one_shot_iterator()
 validation_iterator = validation_dataset.make_initializable_iterator()
-# The `Iterator.string\_handle()` method returns a tensor that can be evaluated
+# The `Iterator.string_handle()` method returns a tensor that can be evaluated
 # and used to feed the `handle` placeholder.
 training_handle = sess.run(training_iterator.string_handle())
 validation_handle = sess.run(validation_iterator.string_handle())
@@ -742,11 +742,11 @@ while True:
     sess.run(validation_iterator.initializer)
     for _ in range(50):
         sess.run(next_element, feed_dict={handle: validation_handle})
-\end{python}
+\end{lstlisting}
 \subsection{消耗迭代器的值}
 Iterator.get\_next()方法返回一个或多个迭代器的下一个元素tf.Tensor对象。每次迭代器被计算的时候它们得到数据集中的下一个元素，在TensorFlow中调用Iterator.get\_next()不会立即前进迭代器。相反你需要在一个TensorFlow表达式返回tf.Tensor对象，传递表达式的结果给tf.Session.run得到表达式的结果和下一个迭代器。
 如果迭代器到大数据的尾部，执行Iterator.get\_next()操作将报出tf.errors.OutOfRangeError。这个点后迭代器将进入不稳定状态，你必须再次初始化它:
-\begin{python}
+\begin{lstlisting}[language=Python]
 dataset = tf.contrib.data.Dataset.range(5)
 iterator = dataset.make_initializable_iterator()
 next_element = iterator.get_next()
@@ -763,30 +763,30 @@ try:
     sess.run(result)
 except tf.errors.OutOfRangeError:
     print("End of dataset")  # ==> "End of dataset"
-\end{python}
+\end{lstlisting}
 一个常用的模板是创建一个try-except块的训练循环包装器:
-\begin{python}
+\begin{lstlisting}[language=Python]
 sess.run(iterator.initializer)
 while True:
     try:
         sess.run(result)
     except tf.errors.OutOfRangeError:
         break
-\end{python}
+\end{lstlisting}
 如果数据集中的每个元素都有迭代的结构在相同的迭代结果下Iterator.get\_next()将返回一个或者更多的tf.Tensor。
-\begin{python}
+\begin{lstlisting}[language=Python]
 dataset1 = tf.contrib.data.Dataset.from_tensor_slices(tf.random_uniform([4, 10]))
 dataset2 = tf.contrib.data.Dataset.from_tensor_slices((tf.random_uniform([4]), tf.random_uniform([4, 100])))
 dataset3 = tf.contrib.data.Dataset.zip((dataset1, dataset2))
 iterator = dataset3.make_initializable_iterator()
 sess.run(iterator.initializer)
 next1, (next2, next3) = iterator.get_next()
-\end{python}
+\end{lstlisting}
 注意计算任何next1,next2或者next3将对所有的组件前进迭代器。一个典型的消耗迭代器将不能包含在单个表达式中的所有组件。
 \subsection{读输入数据}
 \subsubsection{消耗NumPy数据}
 如果你的所有数据都适合于存储，一个简单的方法是用Dataset.from\_tensor\_slices()转换它们为tf.Tensor对象创建一个Dataset。
-\begin{python}
+\begin{lstlisting}[language=Python]
 # Load the training data into two NumPy arrays, for example using `np.load()`.
 with np.load("/var/data/training_data.npy") as data:
     features = data["features"]
@@ -794,9 +794,9 @@ with np.load("/var/data/training_data.npy") as data:
 # Assume that each row of `features` corresponds to the same row as `labels`.
 assert features.shape[0] == labels.shape[0]
 dataset = tf.contrib.data.Dataset.from_tensor_slices((features, labels))
-\end{python}
+\end{lstlisting}
 注意上面的代码将在你的TensorFlow图中创建一个嵌入的features和labels作为一个tf.constant()操作。对于小的数据集这是很有用的，但是比较浪费存储，因为数据的内容将被多次复制可能达到tf.GraphDef protocal buffer的2GB限制。
-\begin{python}
+\begin{lstlisting}[language=Python]
 # Load the training data into two NumPy arrays, for example using `np.load()`.
 with np.load("/var/data/training_data.npy") as data:
     features = data["features"]
@@ -811,22 +811,22 @@ dataset = ...
 iterator = dataset.make_initializable_iterator()
 sess.run(iterator.initializer, feed_dict={features_placeholder: features,
                                         labels_placeholder: labels})
-\end{python}
+\end{lstlisting}
 \subsection{消耗TFRecord数据}
 一些数据集有一个或者多个文件。tf.contrib.data.TextLineDataset提供了一个简单的方法从一个或者更多text文件提取
 行给定一个或者更多的文件名TextLineDataset将产生一个或者更多的字符串值元素。像TFRecordDataset，TextLineDataset接受filenames作为一个tf.Tensor,因此你可以通过tf.placeholder参数化它
-\begin{python}
+\begin{lstlisting}[language=Python]
 filenames = ["/var/data/file1.txt", "/var/data/file2.txt"]
 dataset = tf.contrib.data.TextLineDataset(filenames)
-\end{python}
+\end{lstlisting}
 默认情况下一个TextLineDataset产生文件的每一行，这也许并不是你想要的，例如一个文件的开头行有一些注释。这些行可以用Dataset.skip()移除和Dataset.filter()转换。为了在分割的文件应用这些转换，我们用Dataset.flat\_map()为每个文件创建一个迭代的Dataset
 \lstinputlisting[language=Python]{./code/read_data.py}
 \subsection{用Dataset.map()处理数据}
 Dataset.map(f)通过使用函数f作用于输入数据集的每个元素生成一个新的数据集。它通过函数编程语言用map函数应用到列表。这个函数f接受tf.tensor对象代表一个单个的输入元素，返回一个代表一个数据集中单个元素tf.Tensor对象。它通过标准的TensorFlow操作转化一个元素为另一个。
 \subsection{解析tf.Example protocal buffer消息}
 一些输入的pipeline从TFRecord格式的文件提取tf.train.Example protocal buffer消息，用tf.python\_io.TFRecordWriter。每个tf.train.Example记录包含一个或者多个特征，输入pipline通常转换这些特征为tensor。
-\begin{python}
-# Transforms a scalar string `example\_proto` into a pair of a scalar string and
+\begin{lstlisting}[language=Python]
+# Transforms a scalar string `example_proto` into a pair of a scalar string and
 # a scalar integer, representing an image and its label, respectively.
 def _parse_function(example_proto):
     features = {"image": tf.FixedLenFeature((), tf.string, default_value=""),
@@ -839,15 +839,16 @@ def _parse_function(example_proto):
 filenames = ["/var/data/file1.tfrecord", "/var/data/file2.tfrecord"]
 dataset = tf.contrib.data.TFRecordDataset(filenames)
 dataset = dataset.map(_parse_function)
-\end{python}
+\end{lstlisting}
 \subsection{解码图像数据变换大小}
 当在一个真实世界的图像数据中训练一个神经网络，需要转换不同大小到一个同样的大小，因此它们也许处理为一个固定的尺寸
-\begin{python}
+\begin{lstlisting}[language=Python]
 # Reads an image from a file, decodes it into a dense tensor, and resizes it
 # to a fixed shape.
 def _parse_function(filename, label):
     image_string = tf.read_file(filename)
-    image_decoded = tf.image.decode_image(image_string)
+    #这里需要根据读取图片的数据编码格式，条用不同的解码函数
+    image_decoded = tf.image.decode_png(image_string)
     image_resized = tf.image.resize_images(image_decoded, [28, 28])
     return image_resized, label
 
@@ -858,14 +859,14 @@ filenames = tf.constant(["/var/data/image1.jpg", "/var/data/image2.jpg", ...])
 labels = tf.constant([0, 37, ...])
 dataset = tf.contrib.data.Dataset.from_tensor_slices((filenames, labels))
 dataset = dataset.map(_parse_function)
-\end{python}
+\end{lstlisting}
 \subsection{用专门的Python logic}
 考虑到性能要求，我们鼓励你尽可能用TensorFlow操作处理你的数据。然而当解析你的数据时有是有调用额外的python操作处理数据是有用的。为了这么做，在Dataset.map()转换中调用tf.py\_func()操作
-\begin{python}
+\begin{lstlisting}[language=Python]
 import cv2
 
 # Use a custom OpenCV function to read the image, instead of the standard
-# TensorFlow `tf.read\_file()` operation.
+# TensorFlow `tf.read_file()` operation.
 def _read_py_function(filename, label):
   image_decoded = cv2.imread(image_string, cv2.IMREAD_GRAYSCALE)
   return image_decoded, label
@@ -884,10 +885,10 @@ dataset = dataset.map(
     lambda filename, label: tf.py_func(
         _read_py_function, [filename, label], [tf.uint8, label.dtype]))
 dataset = dataset.map(_resize_function)
-\end{python}
+\end{lstlisting}
 \subsection{简单的批处理}
 一个最简单的批处理是堆叠数据集中n个连续的元素。Dataset.batch()变换就是这么做的，和tf.stack()一样应用元素的每个组件，每个组件i所有的元素必须有一个相同的形状tensor。
-\begin{python}
+\begin{lstlisting}[language=Python]
 inc_dataset = tf.contrib.data.Dataset.range(100)
 dec_dataset = tf.contrib.data.Dataset.range(0, -100, -1)
 dataset = tf.contrib.data.Dataset.zip((inc_dataset, dec_dataset))
@@ -899,10 +900,10 @@ next_element = iterator.get_next()
 print(sess.run(next_element))  # ==> ([0, 1, 2,   3],   [ 0, -1,  -2,  -3])
 print(sess.run(next_element))  # ==> ([4, 5, 6,   7],   [-4, -5,  -6,  -7])
 print(sess.run(next_element))  # ==> ([8, 9, 10, 11],   [-8, -9, -10, -11])
-\end{python}
+\end{lstlisting}
 \subsection{批量的tensorpadding}
 上面的方法要要求所有的元素有相同的尺寸，然而一些模型(sequence模型)中输入数据有不同的形状。为了处理这些情况，Dataset.padded\_batch()使你通过指定一个或者更多维(需要padding)转换不同形状的tensor为一个batch。
-\begin{python}
+\begin{lstlisting}[language=Python]
 dataset = tf.contrib.data.Dataset.range(100)
 dataset = dataset.map(lambda x: tf.fill([tf.cast(x, tf.int32)], x))
 dataset = dataset.padded_batch(4, padded_shapes=[None])
@@ -915,19 +916,19 @@ print(sess.run(next_element))  # ==> [[4, 4, 4, 4, 0, 0, 0],
                                #      [5, 5, 5, 5, 5, 0, 0],
                                #      [6, 6, 6, 6, 6, 6, 0],
                                #      [7, 7, 7, 7, 7, 7, 7]]
-\end{python}
+\end{lstlisting}
 Dataset.padded\_batch()转换允许你为每组件的一维度设置不同的pading，它也许有变化的长度或者固定的长度，它可以覆盖padding的值(默认为0)。
 \subsection{处理多epoch}
 Dataset API提供了两个主要的方法处理相同数据的多个epochs,最简单的方法是用Dataset.repeat()变换数据集在多个epoch、例如，在输入中创建一个数据集10 epochs
-\begin{python}
+\begin{lstlisting}[language=Python]
 filenames = ["/var/data/file1.tfrecord", "/var/data/file2.tfrecord"]
 dataset = tf.contrib.data.TFRecordDataset(filenames)
 dataset = dataset.map(...)
 dataset = dataset.repeat(10)
 dataset = dataset.batch(32)
-\end{python}
+\end{lstlisting}
 使用Dataset.repeat()变换没有参数重复输入将不确定。Dataset.repeat()变换连接它的参数每个epochs没有任何结束信号和下一个epoch的开始信号。如果你想接收每个epoch信号，你可以写一个循环在数据集的末尾捕获tf.errors.OutOgRange。
-\begin{python}
+\begin{lstlisting}[language=Python]
 filenames = ["/var/data/file1.tfrecord", "/var/data/file2.tfrecord"]
 dataset = tf.contrib.data.TFRecordDataset(filenames)
 dataset = dataset.map(...)
@@ -945,20 +946,20 @@ for _ in range(100):
         break
 
   # [Perform end-of-epoch calculations here.]
-\end{python}
+\end{lstlisting}
 \subsection{随机打乱输入数据}
 Dataset.shuffle()用和tf.RandomShuffleQueue方法随即打乱输入数据集，它保持一个固定的buffer平均的从bugger选择下一个元素(查看完整例子):
-\begin{python}
+\begin{lstlisting}[language=Python]
 filenames = ["/var/data/file1.tfrecord", "/var/data/file2.tfrecord"]
 dataset = tf.contrib.data.TFRecordDataset(filenames)
 dataset = dataset.map(...)
 dataset = dataset.shuffle(buffer_size=10000)
 dataset = dataset.batch(32)
 dataset = dataset.repeat()
-\end{python}
+\end{lstlisting}
 \subsection{用高级APIs}
 tf.train.MonitoredTrainingSession API简化了一些在分布式方面运行方面的设置。MonidotedTrainingSession用tf.errors.outOfRangeError作为训练完成的标记，因此用Dataset API，我们推荐用Dataset.make\_one\_shot\_iterator()例如:
-\begin{python}
+\begin{lstlisting}[language=Python]
 filenames = ["/var/data/file1.tfrecord", "/var/data/file2.tfrecord"]
 dataset = tf.contrib.data.TFRecordDataset(filenames)
 dataset = dataset.map(...)
@@ -975,9 +976,9 @@ training_op = tf.train.AdagradOptimizer(...).minimize(loss)
 with tf.train.MonitoredTrainingSession(...) as sess:
     while not sess.should_stop():
         sess.run(training_op)
-\end{python}
+\end{lstlisting}
 为了在tf.estimator.Estimator的input\_fn中使用一个Dataset，我们推荐用Dataset.make\_one\_shot\_iterator(),例如:
-\begin{python}
+\begin{lstlisting}[language=Python]
 def dataset_input_fn():
     filenames = ["/var/data/file1.tfrecord", "/var/data/file2.tfrecord"]
     dataset = tf.contrib.data.TFRecordDataset(filenames)
@@ -1012,13 +1013,13 @@ def dataset_input_fn():
   # that feature; `labels` is a batch of labels.
   features, labels = iterator.get_next()
   return features, labels
-\end{python}
+\end{lstlisting}
 \section{线程和队列}
 \begin{quote}
 	\emph{注意在TensorFlow1.2之前我们推荐用多线程，队列输入pipeline,在TensorFlow1.2开始我们推荐使用tf.contrib.data模块。tf.contrib.data提供了一个更加简单的结构构建高效的输入pipeline，我们已经停止了之前正在开发的多线程和队列输入pipeline，我们帮依然维护旧的代码的开发者维护文档。}
 \end{quote}
 %多线程及时是一个强有力的而且广泛使用的支持一步计算的机制，入上面章节所述，TensorFlow计算图节点和计算图实现，一个队列是一个已经准备好的节点，向一个变量;以它节点可以修改它的内容。类似的，节点可以入队新的元素到队列或者从队列中出去已近存在的元素，TensorFlow队列提供了一个方法结合多个计算步。如果队列为空依然出队或者队列已满依然入队豆浆产生阻塞，挡这两个条件不满足的时候阻塞解除基础处理。TensorFlow实现了多个队列类，不同的类之间的不同是元素从队列移除的顺序。为了更好的理解我们考虑一个简单的情况我们创建"First in first out"队列然后填充0.然后我们构造一张图从队列中获取元素增加1，然后将它放在队列的尾部，慢慢地队列中的数字增加。
-\begin{python}
+\begin{lstlisting}[language=Python]
 sess = tf.Session()
 q = tf.FIFOQueue(3,"float")
 init = q.enqueue_many(([0.,0.,0.],))
@@ -1030,7 +1031,7 @@ q_inc.run(session=sess)
 q_inc.run(session=sess)
 q_inc.run(session=sess)
 q_inc.run(session=sess)
-\end{python}
+\end{lstlisting}
 Enqueue,EnqueueMany和Dequeue是一个特别的节点。它们是指向队列真实值的指针，允许它们改变状态。我们推荐你考虑这些操作的时候用面向对象的理解，事实上在Python API中这些操作通过调用队列的方法。
 \begin{quote}
 	\emph{注意Queue方法必须运行在相同的设备上，不兼容的设备放置将在创建这些操作的时候被忽略}
@@ -1044,7 +1045,7 @@ Enqueue,EnqueueMany和Dequeue是一个特别的节点。它们是指向队列真
 我们推荐使用Dataset的shuffle和batch方法完成这个任务。然而，如果你仍然愿意使用队列版本，你可以在tf.train.shuffle\_batch中找到完美的实现。
 
 下面展示一个简单的实现，这个函数获取一个source tensor，capacity和batch size作为参数返回一个批量打乱的出队tensor。
-\begin{python}
+\begin{lstlisting}[language=Python]
 def simple_shuffle_batch(source, capacity, batch_size=10):
   # Create a random shuffle queue.
     queue = tf.RandomShuffleQueue(capacity=capacity,
@@ -1065,9 +1066,9 @@ def simple_shuffle_batch(source, capacity, batch_size=10):
 
     # Create an op to dequeue a batch
     return queue.dequeue_many(batch_size)
-\end{python}
+\end{lstlisting}
 当tf.train.start\_queue\_runners开始的时候，或者直接通过tf.train.MonitoredSession,QueueRunner将在后台开启进程填充队列，同时主线程执行dequeue\_many操作从中拉取数据，现在这些操作不相互依赖，除非间接地通过队列的内部依赖。简单的用这个函数像这样:
-\begin{python}
+\begin{lstlisting}[language=Python]
 # create a dataset that counts from 0 to 99
 input = tf.constant(list(range(100)))
 input = tf.contrib.data.Dataset.from_tensor_slices(input)
@@ -1082,13 +1083,13 @@ with tf.train.MonitoredSession() as sess:
     # queue, so the `sess.run(get\_batch)` call will not hang.
     while not sess.should_stop():
         print(sess.run(get_batch))
-\end{python}
+\end{lstlisting}
 输出
-\begin{python}
+\begin{lstlisting}[language=Python]
 [ 8 10  7  5  4 13 15 14 25  0]
 [23 29 28 31 33 18 19 11 34 27]
 [12 21 37 39 35 22 44 36 20 46]
-\end{python}
+\end{lstlisting}
 对于更多的情况有tf.train.MonitoredSession提供的自动线程启动和管理是足够的，在极少的情况下不行，TensorFlow提供了手动管理你的线程的工具。
 \subsection{手动线程管理}
 正如我们看到的，TensorFlow Session是多线程的而且是线程安全的，因此多线程能够容易的在相同的会话和运行操作中使用。然而，不总是很容易实现一个Python程序按照要求驱动线程，所有的线程必须能同时停止，特别是必须捕获和报告，队列停止的时候必须被合适的关闭。TensorFlow提供了两个类:tf.train.Coordinator和tf.train.QueueRunner。这两个类帮助多线程一起停止,向程序报告异常等待它们停止，QueueRunner类被用于创建一个线程协作同一队列中的入队tensor。
@@ -1100,7 +1101,7 @@ tf.train.Coordinator类管理TensorFlow程序的后台线程帮助多线程一�
 	\item tf.train.Coordinator.join:等待直到指定的线程被停止。
 \end{itemize}
 你首先创建一个Coordinator对象然后创建一些用于协调的线程。线程通常循环运行当shold\_stop为True是停止。任何线程都可以决定计算应该被停止。它仅仅必须调用request\_stop()，should\_stop()返回True是其它线程停止。
-\begin{python}
+\begin{lstlisting}[language=Python]
 # Using Python's threading library.
 import threading
 
@@ -1122,11 +1123,11 @@ threads = [threading.Thread(target=MyLoop, args=(coord,)) for i in range(10)]
 for t in threads:
   t.start()
 coord.join(threads)
-\end{python}
+\end{lstlisting}
 显然，coordinator可以管理线程做不同的事。它们不是必须和上面的例子一样。coordinator也支持捕获和报告异常，查看\href{https://www.tensorflow.org/api_docs/python/tf/train/Coordinator}{tf.train.Coordinator}文档查看更多信息。
 \subsection{QueueRunner}
 tf.train.QueueRunner类创建一些线程重复执行入队操作。这些线程可以用coordinator一起停止，另外一个队列runner将运行一个closer操作，如果在coordinator中的队列被报告异常将关闭队列。你可以用一个队列runner实现下面的架构，首先用一个TensorFlow为输入样本建立一个图，添加操作处理将样本送入队列，添加训练操作从队列出队。
-\begin{python}
+\begin{lstlisting}[language=Python]
 example = ...ops to create one example...
 # Create a queue, and an op that enqueues examples one at a time in the queue.
 queue = tf.RandomShuffleQueue(...)
@@ -1134,9 +1135,9 @@ enqueue_op = queue.enqueue(example)
 # Create a training graph that starts by dequeueing a batch of examples.
 inputs = queue.dequeue_many(batch_size)
 train_op = ...use 'inputs' to build the training part of the graph...	
-\end{python}
+\end{lstlisting}
 在Python的训练程序中，创建一个QueueRunner将运行一些线程处理入队样本、创建一个Coordinator要求queue runner用coordinator开启它的线程。用coordinator写一个训练循环。
-\begin{python}
+\begin{lstlisting}[language=Python]
 # Create a queue runner that will run 4 threads in parallel to enqueue
 # examples.
 qr = tf.train.QueueRunner(queue, [enqueue_op] * 4)
@@ -1155,10 +1156,10 @@ for step in range(1000000):
 coord.request_stop()
 # And wait for them to actually do it.
 coord.join(enqueue_threads)
-\end{python}
+\end{lstlisting}
 \subsection{处理异常}
 线程通过队列runner启动做的比仅仅运行入队操作要多。它们捕获处理队列生成的异常，包括用于报告队列被关闭的tf.errors.OutOfRangeError异常。一个训练中的程序用一个coordinator必须类似的在主循环中捕获和报告异常。下面是上面训练循环的一个改进的例子:
-\begin{python}
+\begin{lstlisting}[language=Python]
 try:
     for step in range(1000000):
       if coord.should_stop():
@@ -1171,55 +1172,55 @@ finally:
     # Terminate as usual. It is safe to call `coord.request\_stop()` twice.
     coord.request_stop()
     coord.join(threads)
-\end{python}
+\end{lstlisting}
 \section{embeddings}
 一个embedding是一个从离散对象,像字映射为一个真实值的向量，例如一个英文字符的300维的embedding可能包括:
-\begin{python}
+\begin{lstlisting}[language=Python]
 blue:  (0.01359, 0.00075997, 0.24608, ..., -0.2524, 1.0048, 0.06259)
 blues:  (0.01396, 0.11887, -0.48963, ..., 0.033483, -0.10007, 0.1158)
 orange:  (-0.24776, -0.12359, 0.20986, ..., 0.079717, 0.23865, -0.014213)
 oranges:  (-0.35609, 0.21854, 0.080944, ..., -0.35413, 0.38511, -0.070976)
-\end{python}
+\end{lstlisting}
 embedding让你能在离散的数据上应用机器学习,分类器，更常用的神经网络都被设计为一个高密度的连续向量(所有的值都用来定义一个对象)如果离散对象被编码为一个离散的原子，有独一无二的id号，它们阻止学习和泛化,一种考虑embeddings的方法是转化非向量的对象为有用的机器学习输入。，embeding作为机器学习的输出也是有用的，因为embedding映射对象为向量，在向量空间中的应用是类似的。一个通常的用法是找到一个最接近的邻居。用和相面相同的word embedding，例如对于每个字和相关的角度这里有三个接近的邻居:
-\begin{python}
+\begin{lstlisting}[language=Python]
 blue:  (red, 47.6°), (yellow, 51.9°), (purple, 52.4°)
 blues:  (jazz, 53.3°), (folk, 59.1°), (bluegrass, 60.6°)
 orange:  (yellow, 53.5°), (colored, 58.0°), (bright, 59.9°)
 oranges:  (apples, 45.3°), (lemons, 48.3°), (mangoes, 50.4°)
-\end{python}
+\end{lstlisting}
 这将告诉程序苹果和橙子类似度($45.3^o$)比柠檬和橙子($48.3^o$)更类似。
 \subsection{训练一个embedding}
 为了在TensorFlow中训练word embedding，首先你需要分隔文字成单词赋值给词汇表中的每一个单词一个整数。假设我们已经做了这步，word\_ids是一个整数向量。例如句子"I have a cat."可能被分割成["I","have","a","cat","."]然后相关的word\_ids tensor形状为[5]由5个整数组成。为了得到这些单词ids embeded，我们需要用tf.gather函数按照下面创建embedding变量。
-\begin{python}
+\begin{lstlisting}[language=Python]
 word_embeddings = tf.get_variable(“word_embeddings”,
     [vocabulary_size, embedding_size])
 embedded_word_ids = tf.gather(word_embeddings, word_ids)
-\end{python}
+\end{lstlisting}
 在这之后tensor embedded\_word\_ids在我们的例子中将有形状[5,embedding\_size]同时包含5个单词的embeddings(dense vector)。变量word\_embeddings将被学习,在训练结束后它将包含所有在词汇表中的embeddings。embeddings可能被多种方式训练，依靠数据变量。例如可以用循环神经网络从语料中的句子的前一个单词预测下一个单词或者用两个网络做多种语言的翻译。这个方法在\textbf{字词的向量表示}中有描述，但是上面的所有情况下有一个像上面的embedding变量和用tf.gather的embbedded word。
 \subsection{可视化Embeddings}
 TensorBoard有一个内建的可视化器，称为EmbeddingProjector，用于交互式的embedding可视化。embedding projector将从你的checkpointer文件读取embeddings用PCA映射它们到3维空间。对于PCA的可视化查看\href{http://setosa.io/ev/principal-component-analysis/}{这里}，另一个有用的映射是t-SNE。如果你正在embedding上工作，你可能像添加labels/images到数据点。你可以通过生成一个包含每个点的labels和用我们的Python API映射器的配置\href{https://www.tensorflow.org/programmers_guide/embedding#metadata}{metadata file}，或者在和你的checkpoint文件相同多个目录手动构造和保存一个projector\_config.pbtxt。
 \subsection{创建}
 \begin{enumerate}
 	\item 设置一个2维tensor保存你的embedding。
-		\begin{python}
+		\begin{lstlisting}[language=Python]
 			embedding_var = tf.get_variable(...)
-		\end{python}
+		\end{lstlisting}
 	\item 定期保存你模型的变量到LOG\_DIR目录中
-		\begin{python}
+		\begin{lstlisting}[language=Python]
 			saver = tf.train.Saver()
 			saver.save(session,os.path.join(LOG_DIR,"model.ckpt"),step)
-		\end{python}
+		\end{lstlisting}
 	\item 结合meta data和你的embedding(可选)
 \end{enumerate}
 如果你有任何的metadata(labels,images)结合你的embedding，你可以调用TensorBoard通过指定存储在LOG\_DIR中的一个projector\_config.pbtxt或者用你自己的PythonAPI。例如下面的projector\_config.pbtxt结合word\_embedding tensor和存储在\$LOG\_DIR/metadata.tsv的metadata文件。
-\begin{python}
+\begin{lstlisting}[language=Python]
 embeddings {
 	  tensor_name: 'word_embedding'
 	    metadata_path: '$LOG_DIR/metadata.tsv'
 	   }
-\end{python}
+\end{lstlisting}
 相同的配置可以通过下面的代码段一程序产生:
-\begin{python}
+\begin{lstlisting}[language=Python]
 from tensorflow.contrib.tensorboard.plugins import projector
 # Create randomly initialized embedding weights which will be trained.
 vocabulary_size = 10000
@@ -1237,11 +1238,11 @@ summary_writer = tf.summary.FileWriter(LOG_DIR)
 # The next line writes a projector_config.pbtxt in the LOG_DIR. TensorBoard will
 # read this file during startup.
 projector.visualize_embeddings(summary_writer, config)
-\end{python}
+\end{lstlisting}
 在你运行你的模型和训练你的embedding后，运行TensorBoard和指定job的LOG\_DIR
-\begin{python}
+\begin{lstlisting}[language=Python]
 tensorboard --logdir=LOG_DIR
-\end{python}
+\end{lstlisting}
 点击顶端面板的Embedding选择合适的运行。
 \subsection{metdadata}
 通常embeddings有metedata结合。metadata应该被存储在和模型的checkpoint分隔的文件中,因此metadata不是可训练的模型的参数。这是应该为\href{https://en.wikipedia.org/wiki/Tab-separated_values}{TSV file}（显示红色标签），第一行十粗体显示的表头和包含metadata值得子序列行。
@@ -1273,11 +1274,11 @@ Car\t241
 	\emph{注意我们当前支持$8192px\times8192px$}
 \end{quote}
 在够早了sprite后你需要告诉Embedding Projector到哪里寻找它:
-\begin{python}
+\begin{lstlisting}[language=Python]
 embedding.sprite.image_path = PATH_TO_SPRITE_IMAGE
 	# Specify the width and height of a single thumbnail.
 	embedding.sprite.single_image_dim.extend([w, h])
-\end{python}
+\end{lstlisting}
 \subsection{交互}
 Embedding Projector有三个面板:
 \begin{enumerate}

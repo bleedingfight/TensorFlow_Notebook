@@ -108,7 +108,7 @@ placeholder(
 )
 \end{python}
 为placeholder输入需要被插入的tensor。
-如果这个tensor被计算将产生错误。他的值必须通过feed\_dict选项在Session.run(),Tensor.eval()或者是Operation.eval()输入。
+如果这个tensor被计算将产生错误。它的值必须通过feed\_dict选项在Session.run(),Tensor.eval()或者是Operation.eval()输入。
 \begin{python}
 x = tf.placeholder(tf.float32, shape=(1024, 1024))
 y = tf.matmul(x, x)
@@ -123,6 +123,39 @@ with tf.Session() as sess:
 \item shape:被fed的tensor的形状，如果形状没有被指定，你可以输入任何形状的tensor。
 \item:操作的名字
 \item{Return} 一个可能被用作输入数据处理的Tensor，值不能被直接计算。
+\end{itemize}
+\subsection{tf.py\_func}
+py\_func(func, inp, Tout, stateful=True, name=None)打包一个python函数将它用作一个TensorFlow操作，给一个Python函数'func',接受numpy数组作为它的输入返回numpy数组作为输出，转化函数作为一个TensorFlow图上的操作。下面的代码段构造一个简单的TensorFlow图利用`np.sinh()` Numpy函数作为一个图上的操作:
+\begin{lstlisting}[language=Python]
+ def my_func(x):
+      # x will be a numpy array with the contents of the placeholder below return np.sinh(x)
+    inp = tf.placeholder(tf.float32)
+    y = tf.py_func(my_func, [inp], tf.float32)
+\end{lstlisting}
+\begin{quote}
+	\emph{tf.py\_func()操作有如下已知的限制:}
+	\begin{itemize}
+			\item 在GraphDef中函数将不被序列化，因此，如果你需要序列化你的模型和从不同的模型中恢复它，你不能用这个函数
+			\item 这个操作必须运行在和Python程序相同的地址空间，如果你用分布式的TensorFlow，你必须在痛痛的进程运行tf.train.Saver作为程序调用。
+			\item tf.py\_func()和你必须添加创建的操作到服务器的设备上
+	\end{itemize}
+参数:
+\begin{itemize}
+		\item 一个Python函数接受一个和`inp`对应的tf.Tensor对象元素类型匹配的NumPy ndarray对象列表,返回一个`adarray`对象（或者一个ndarray），它和`Tout`中对应的值有相同的类型。
+		\item inp:一个`Tensor`对象列表
+		\item Tout:一个tensorflow数据类型的列表或者元祖，或者如果仅有一个值的话为一个单个的tensorflow数据
+		\item statefull:bool行，如果为True，函数井盖被认为stateful的，如果是stateless的，当给定相同的输入将返回相同的输出没有可见的副作用。优化像常见的子表达式减少仅仅在stateless上操作
+		\item name：操作的名字
+		\item[返回] 一个Tensor列表或者一个`func`计算的Tensor。
+\end{itemize}
+\end{quote}
+\subsection{tf.read\_file}
+读取输出输入文件filename的整个内容
+参数:
+\begin{itemize}
+		\item filename:一个`string`类型的`Tensor`
+		\item name:操作的名字
+		\item[返回值] 一个`string`类型的`Tensor`
 \end{itemize}
 \subsection{tf.squeeze}
 tf.squeeze(input,axis=None,name=None,squeeze\_dims=None)
@@ -516,7 +549,7 @@ depth x features if axis == 0
   batch x depth x features if axis == 1
   depth x batch x features if axis == 0
 \end{python}
-如果dtype没有被提供，他将假设on\_value或off\_value的数据类型，如果一个或者倍多的值呗传递，，如果没有on\_value,off\_value,或者dtype被提供，dtype将默认tf.float32。
+如果dtype没有被提供，它将假设on\_value或off\_value的数据类型，如果一个或者更多的值被传递，，如果没有on\_value,off\_value,或者dtype被提供，dtype将默认tf.float32。
 例子:
 
 假设：
