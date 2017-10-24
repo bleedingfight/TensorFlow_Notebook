@@ -13,15 +13,13 @@ delta)
 \begin{itemize}
 		\item image:一个tensor
 		\item delta:一个标量，添加上的像素值
-		\item[Return]:和image类型和形状相同的亮度调整
+		\item [Returns]:和image类型和形状相同的亮度调整
 \end{itemize}
-\subsection{adjust\_contrast
-\begin{lstlisting}[language=Python]
-adjust_contrast{images,contrast_factor}
-\end{lstlisting}
+\subsection{adjust\_contrast}
+\lstinline[language=Python]{adjust_contrast(images,contrast_factor)}
 调整RGB或者灰度图像的对比度。
 
-这是一个方便的庄花RGB图像到浮点表达，调整他的对比度然后转化回原始的数据类型。如果一些调整是限制的它明智的最小化多余转化，image是一个至少3维的tensor。三维解释为[height,width,channels],另一个维度表示是一个图像集合，像[batch,height,width,channels]
+这是一个方便的转换RGB图像到浮点表达，调整他的对比度然后转化回原始的数据类型。如果一些调整是限制的它明智的最小化多余转化，image是一个至少3维的tensor。三维解释为[height,width,channels],另一个维度表示是一个图像集合，像[batch,height,width,channels]
 
 对比度调整依赖于每个图像的通道，对每个通道Op计算通道中图像像素的均值然后调整每个组件x为$(x-mean)*contrast_factor+mean$
 参数:
@@ -43,7 +41,7 @@ gain=1)
 \item[返回]：一个Tensor，Gamma修正后的输出。
 \item[Raises]: ValueError:如果gamma是负数
 \end{itemize}
-注意：如果gamma大于1，直方图将向左移，输出图像将比输入图像暗。如果gamma小鱼1，直方图将向右移，输出图像江北输入图像亮。参考\href{Gamma\_correction}{http://en.wikipedia.org/wiki/Gamma_correction}
+注意：如果gamma大于1，直方图将向左移，输出图像将比输入图像暗。如果gamma小鱼1，直方图将向右移，输出图像将比输入图像亮。参考\href{http://en.wikipedia.org/wiki/Gamma_correction}{Gamma\_correction}
 \subsection{adjust\_hug}
 \begin{lstlisting}[language=Python]
 adjust_hue(
@@ -77,7 +75,7 @@ adjust_saturation(
 
 这是一个很方便的转化RGB图像为浮点表达的方法，转化为HSV，添加一个偏移到S通道，转化回RGB然后变回原来的数据类型。如果多个调整被限制它智能的最小化冗余转化的数量。
 
-image是一个RGB图像，图像饱和度通过转化图像为HSV饭后S通道乘上saturation\_factor饭后接企鹅。图像然后被专户作为RGB。
+image是一个RGB图像，图像饱和度通过转化图像为HSV饭后S通道乘上saturation\_factor然后接企鹅。图像然后被转换为RGB。
 
 参数:
 \begin{itemize}
@@ -108,7 +106,7 @@ central_crop(
 \begin{itemize}
 	\item imahe:三维浮点数，Tensor的形状[height，width,depth]
 	\item central\_fraction:float(0,1],建材区域的比例
-	\item[Raises]:Value:如果central_crop_fraction不在(0,1]范围内。)
+	\item[Raises] Value:如果central\_crop\_fraction不在(0,1]范围内。)
 	\item[Returns]:3维浮点Tensor
 \end{itemize}
 \subsection{decode\_bmp}

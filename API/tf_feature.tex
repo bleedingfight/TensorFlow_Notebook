@@ -1,27 +1,27 @@
 \section{tf.feature\_cloumn}
 接收表示特征的工具。
 \subsection{bucketized\_column}
-\begin{python}
+\begin{lstlisting}[language=Python]
 bucketized_column(
     source_column,
     boundaries
 )
-\end{python}
+\end{lstlisting}
 代表离散化的稠密输入，bucket包括左边界不包括右边界，也就是说boundaries=[0.,1.,2.]生成buckets(-ing,0.),[0.,1.),[1.,2.),[2,inf)。例如如果输入是：
-\begin{python}
+\begin{lstlisting}[language=Python]
 boundaries = [0, 10, 100]
 input tensor = [[-5, 10000]
                 [150,   10]
                 [5,    100]]
-\end{python}
+\end{lstlisting}
 输出是:
-\begin{python}
+\begin{lstlisting}[language=Python]
 output = [[0, 3]
           [3, 2]
           [1, 3]]
-\end{python}
+\end{lstlisting}
 例如:\par
-\begin{python}
+\begin{lstlisting}[language=Python]
 price = numeric_column('price')
 bucketized_price = bucketized_column(price, boundaries=[...])
 columns = [bucketized_price, ...]
@@ -32,9 +32,9 @@ linear_prediction = linear_model(features, columns)
 columns = [bucketized_price, ...]
 features = tf.parse_example(..., features=make_parse_example_spec(columns))
 dense_tensor = input_layer(features, columns)
-\end{python}
+\end{lstlisting}
 bucketized\_column也能被用crossed\_column传递:
-\begin{python}
+\begin{lstlisting}[language=Python]
 price = numeric_column('price')
 # bucketized_column converts numerical feature to a categorical one.
 bucketized_price = bucketized_column(price, boundaries=[...])
@@ -43,7 +43,7 @@ price_x_keywords = crossed_column([bucketized_price, 'keywords'], 50K)
 columns = [price_x_keywords, ...]
 features = tf.parse_example(..., features=make_parse_example_spec(columns))
 linear_prediction = linear_model(features, columns)
-\end{python}
+\end{lstlisting}
 参数:
 \begin{itemize}
 	\item source\_column:numeric\_column生成的一维稠密列
@@ -56,15 +56,15 @@ linear_prediction = linear_model(features, columns)
 	\end{itemize}
 \end{itemize}
 \subsection{categorical\_column\_with\_hash\_bucket}
-\begin{python}
+\begin{lstlisting}[language=Python]
 categorical_column_with_hash_bucket(
     key,
     hash_bucket_size,
     dtype=tf.string
 )
-\end{python}
+\end{lstlisting}
 当你的稀疏特征是字符串或者整数格式的时候你想布置你的输入进入一个有限的散列的bucket，output\_id=Hash(input\_feature\_string)\%bucket\_size输入不字典features,features[key]可以是Tensor或者SparseTensor。如果是Tensor整数缺少值用-1表示，字符串用''表示。注意这些值独立于参数default\_value参数.
-\begin{python}
+\begin{lstlisting}[language=Python]
 keywords = categorical_column_with_hash_bucket("keywords", 10K)
 columns = [keywords, ...]
 features = tf.parse_example(..., features=make_parse_example_spec(columns))
@@ -75,7 +75,7 @@ keywords_embedded = embedding_column(keywords, 16)
 columns = [keywords_embedded, ...]
 features = tf.parse_example(..., features=make_parse_example_spec(columns))
 dense_tensor = input_layer(features, columns)
-\end{python}
+\end{lstlisting}
 参数:
 \begin{itemize}
 	\item key:一个用来识别输入的独一无二的字符串。它用做列的名字和特征的key。
@@ -89,29 +89,29 @@ dense_tensor = input_layer(features, columns)
 	\end{itemize}
 \end{itemize}
 \subsection{categorical\_column\_with\_identity}
-\begin{python}
+\begin{lstlisting}[language=Python]
 categorical_column_with_identity(
     key,
     num_buckets,
     default_value=None
 )
-\end{python}
+\end{lstlisting}
 一个返回identity值的\_categoricalColumn，当你的输入是[0,num\_buckets)之间的整数，你想用哪个输入作为分类的ID，值在范围外的为默认值是指定，否则将不能指定。通常被用于整数索引的连续范围，但是它不是必须的如归哦一些ID没有使用这就会很低效考虑使用categorical\_column\_with\_hash\_bucket,对于输入字典features,features[key]可以是Tensor或者SparseTensor,如果是Tensor，用-1表示整数类型的缺失，''表示字符串类型的缺失，注意值独立于default\_value参数，下面的例子中每个输入在[0,100000)中每指定相同的值，另一个输入赋值default\_value 0。
 
 线性模型:
-\begin{python}
+\begin{lstlisting}[language=Python]
 video_id = categorical_column_with_identity(
     key='video_id', num_buckets=1000000, default_value=0)
 columns = [video_id, ...]
 features = tf.parse_example(..., features=make_parse_example_spec(columns))
 linear_prediction, _, _ = linear_model(features, columns)
-\end{python}
+\end{lstlisting}
 迁入DNN模型:
-\begin{python}
+\begin{lstlisting}[language=Python]
 columns = [embedding_column(video_id, 9),...]
 features = tf.parse_example(..., features=make_parse_example_spec(columns))
 dense_tensor = input_layer(features, columns)
-\end{python}
+\end{lstlisting}
 参数:
 \begin{itemize}
 	\item 一个独一无二的字符串识别输入特征。被用作特征解析配置列表名字和字典的键，特征对象和特征列。
@@ -125,7 +125,7 @@ dense_tensor = input_layer(features, columns)
 	\end{itemize}
 \end{itemize}
 \subsection{categorical\_column\_with\_vocabulary\_file}
-\begin{python}
+\begin{lstlisting}[language=Python]
 categorical_column_with_vocabulary_file(
     key,
     vocabulary_file,
@@ -134,32 +134,32 @@ categorical_column_with_vocabulary_file(
     default_value=None,
     dtype=tf.string
 )
-\end{python}
+\end{lstlisting}
 一个包含吃会文件的\_CategoricalColumn，当你的输入是字符串或者整数格式时使用，你有一个词汇文件映射每个值到一个整数ID，模型，草果范围的值被忽略，num\_oov\_buckets和default\_value指定如何包含超出词汇表范围的值，对于输入字典features,features[key]可以是Tensor或者SparseTensor，如果是Tensor，整数型缺少值-1表示，字符串缺少值用''表示，注意这些值是独立于参数default\_value参数，样本num\_oov\_buckets:文件'/us/states.txt'包含50行每行美国州的所写的两个字符，所有文件中的输入值被负值为ID0-49，对应的行数，所有其他得知被打散赋值ID 50-54。
-\begin{python}
+\begin{lstlisting}[language=Python]
 states = categorical_column_with_vocabulary_file(
     key='states', vocabulary_file='/us/states.txt', vocabulary_size=50,
     num_oov_buckets=5)
 columns = [states, ...]
 features = tf.parse_example(..., features=make_parse_example_spec(columns))
 linear_prediction = linear_model(features, columns)
-\end{python}
+\end{lstlisting}
 例如default\_value:文件'us/state.txt'包含51行，第一行是'XX',其它的50行有
 两个美国州的缩写，'XX'和其他文件中缺失的值被赋值为ID0,所有其它值在1-50。
-\begin{python}
+\begin{lstlisting}[language=Python]
 states = categorical_column_with_vocabulary_file(
     key='states', vocabulary_file='/us/states.txt', vocabulary_size=51,
     default_value=0)
 columns = [states, ...]
 features = tf.parse_example(..., features=make_parse_example_spec(columns))
 linear_prediction, _, _ = linear_model(features, columns)
-\end{python}
+\end{lstlisting}
 增加一个embedding:
-\begin{python}
+\begin{lstlisting}[language=Python]
 columns = [embedding_column(states, 3),...]
 features = tf.parse_example(..., features=make_parse_example_spec(columns))
 dense_tensor = input_layer(features, columns)
-\end{python}
+\end{lstlisting}
 参数:
 \begin{itemize}
 	\item key:一个独一无二的识别输入特征的字符串，他被用作列的名字。字典的用于特征解析配置，特征Tensor对象和其它列的键。
@@ -172,7 +172,7 @@ dense_tensor = input_layer(features, columns)
 	\item[Raise]:ValueError：Vacabulary\_file文件缺失，vocabulary\_size缺失或者小于1，num\_oov\_buckets是一个负整数，num\_oov\_buckets和default\_value被同时指定，dtype不是整数或者字符串。
 \end{itemize}
 \subsection{categorical\_column\_with\_vocabulary\_list}
-\begin{python}
+\begin{lstlisting}[language=Python]
 categorical_column_with_vocabulary_list(
     key,
     vocabulary_list,
@@ -180,30 +180,30 @@ categorical_column_with_vocabulary_list(
     default_value=-1,
     num_oov_buckets=0
 )
-\end{python}
+\end{lstlisting}
 一个存储词汇表\_CategoricalColumn,当你的输入是一个字符串或者整数格式时使用，你有一个存储字徽标映射，每个值到一个整数ID、，默认超过词汇表范围的值被忽略，用num\_oov\_buckets和default\_value指定如何包含操作词汇表的值，对于字典features,features[key]既可以是Tensor也可以是SparseTensor，如果是Tensor，整数型缺失值用-1表示，字符串缺失值用''表示注意这些值独立于default\_value参数,num\_oov\_buckets样本:在下面的例子中，每个vocabulary\_list中的输入被赋值ID0-3对应他的索引，所有的其他输入被打散赋值为4-5.
-\begin{python}
+\begin{lstlisting}[language=Python]
 colors = categorical_column_with_vocabulary_list(
     key='colors', vocabulary_list=('R', 'G', 'B', 'Y'),
     num_oov_buckets=2)
 columns = [colors, ...]
 features = tf.parse_example(..., features=make_parse_example_spec(columns))
 linear_prediction, _, _ = linear_model(features, columns)
-\end{python}
+\end{lstlisting}
 样本default\_value:下面的例子每个vocabulary\_list的输入被赋值一个ID0-4对应他的索引，所有其它的输入被复制defaulr\_vale 0.
-\begin{python}
+\begin{lstlisting}[language=Python]
 colors = categorical_column_with_vocabulary_list(
     key='colors', vocabulary_list=('X', 'R', 'G', 'B', 'Y'), default_value=0)
 columns = [colors, ...]
 features = tf.parse_example(..., features=make_parse_example_spec(columns))
 linear_prediction, _, _ = linear_model(features, columns)
-\end{python}
+\end{lstlisting}
 做一个embedding:
-\begin{python}
+\begin{lstlisting}[language=Python]
 columns = [embedding_column(colors, 3),...]
 features = tf.parse_example(..., features=make_parse_example_spec(columns))
 dense_tensor = input_layer(features, columns)
-\end{python}
+\end{lstlisting}
 参数:
 \begin{itemize}
 	\item key:一个独一无二的字符串识别输入特征。它被用作列的名字和特征解析配置的字典的key，特征Tensor对象和特征列。
@@ -215,17 +215,17 @@ dense_tensor = input_layer(features, columns)
 	\item[Raise]:ValueError:如果vocabulary\_list,num\_oov\_buckets是负整数，num\_oov\_buckets和default\_value同时被指定，dtype不是整数或者字符串。
 \end{itemize}
 \subsection{cross\_column}
-\begin{python}
+\begin{lstlisting}[language=Python]
 crossed_column(
     keys,
     hash_bucket_size,
     hash_key=None
 )
-\end{python}
+\end{lstlisting}
 返回执行交叉分类特征的一列，交叉特征被hash\_bucket\_size打散，变换可能被Hash\%hash\_bucket\_size打散，例如输入特征是:
 \begin{itemize}
 	\item 第一个键值访问的SparseTensor。
-	\begin{python}
+	\begin{lstlisting}[language=Python]
 	shape = [2, 2]
 {
     [0, 0]: "a"
@@ -240,28 +240,28 @@ crossed_column(
     [0, 0]: "d"
     [1, 0]: "e"
 }
-	\end{python}
+	\end{lstlisting}
 \end{itemize}
 交叉特征:
-\begin{python}
+\begin{lstlisting}[language=Python]
  shape = [2, 2]
 {
     [0, 0]: Hash64("d", Hash64("a")) % hash_bucket_size
     [1, 0]: Hash64("e", Hash64("b")) % hash_bucket_size
     [1, 1]: Hash64("e", Hash64("c")) % hash_bucket_size
 }
-\end{python}
+\end{lstlisting}
 通过交叉字符串特征创建一个线性模型:
-\begin{python}
+\begin{lstlisting}[language=Python]
 keywords = categorical_column_with_vocabulary_file(
     'keywords', '/path/to/vocabulary/file', vocabulary_size=1K)
 keywords_x_doc_terms = crossed_column([keywords, 'doc_terms'], 50K)
 columns = [keywords_x_doc_terms, ...]
 features = tf.parse_example(..., features=make_parse_example_spec(columns))
 linear_prediction = linear_model(features, columns)
-\end{python}
+\end{lstlisting}
 如果输入特征是数值类型，你可以用categoriacal\_column\_with\_identity或者bucketized\_column:
-\begin{python}
+\begin{lstlisting}[language=Python]
 # vertical_id is an integer categorical feature.
 vertical_id = categorical_column_with_identity('vertical_id', 10K)
 price = numeric_column('price')
@@ -271,13 +271,13 @@ vertical_id_x_price = crossed_column([vertical_id, bucketized_price], 50K)
 columns = [vertical_id_x_price, ...]
 features = tf.parse_example(..., features=make_parse_example_spec(columns))
 linear_prediction = linear_model(features, columns)
-\end{python}
+\end{lstlisting}
 为了在DNN模型中使用交叉列，你需要增加它到一个嵌入列:
-\begin{python}
+\begin{lstlisting}[language=Python]
 vertical_id_x_price = crossed_column([vertical_id, bucketized_price], 50K)
 vertical_id_x_price_embedded = embedding_column(vertical_id_x_price, 10)
 dense_tensor = input_layer(features, [vertical_id_x_price_embedded, ...])
-\end{python}
+\end{lstlisting}
 参数:
 \begin{itemize}
 	\item keys:一个可以迭代的识别被交叉的特征，每个元素可以是字符串(用相关的特征必须是字符串类型)，\_CategoricalColumn:将用变形的列通过tensor生成，不支持散列的绝对的列。
@@ -287,7 +287,7 @@ dense_tensor = input_layer(features, [vertical_id_x_price_embedded, ...])
 	\item[Raises]:ValueError：如果len(keys)<2,如果任何keys既不是字符串也不是\_CategoricalColumn,如果任何keys是\_ashedCategoricalColumn,如果hash\_buckets\_size<1
 \end{itemize}
 \subsection{embedding\_column}
-\begin{python}
+\begin{lstlisting}[language=Python]
 embedding_column(
     categorical_column,
     dimension,
@@ -298,17 +298,17 @@ embedding_column(
     max_norm=None,
     trainable=True
 )
-\end{python}
+\end{lstlisting}
 从稀疏绝对输转换\_CategoricalColumn,当你的输入稀疏但是你想转换他们为一个稠密的表达时使用，输入必须被任何 categorical\_column\_*函数创建的一个\_CategoricalColumn,下面的雷子是一个识别DNN模型列的例子:
-\begin{python}
+\begin{lstlisting}[language=Python]
 video_id = categorical_column_with_identity(
     key='video_id', num_buckets=1000000, default_value=0)
 columns = [embedding_column(video_id, 9),...]
 features = tf.parse_example(..., features=make_parse_example_spec(columns))
 dense_tensor = input_layer(features, columns)
-\end{python}
+\end{lstlisting}
 参数:
-\begin{python}
+\begin{lstlisting}[language=Python]
 \item categorical\_column:一个categorical\_column\_with\_*函数创建的\_CategoricalColumn,这个列生成代表嵌入的查找的稀疏ID。
 \item dimension:一个整数指定嵌入的维度，必须大于0.
 \item combiner:一个字符串指定如果有多个输入在一行时如何减少，当前的'mean','sqrtn'和'sum'被支持，'mean'默认，'sqrtn'经常得到好的精度，特别是词袋模型，每一个可以被认为每列作为样本级别的正规化。对于更多信息，查看tf.embedding\_lookup\_sparse.
@@ -318,10 +318,10 @@ dense_tensor = input_layer(features, columns)
 \iten trainable:驶入嵌入能被训练，默认为true
 \item[Returns]:从稀疏输入转化的\_DenseColumn
 \item [Raises]:ValueError,如果dimension不大于0，如果一个chpt\_to\_load\_from和tensor\_name\_in\_ckpt被指定，如果initializer被指定不被调用。
-\end{python}
+\end{lstlisting}
 \subsection{indicator\_column}
 代表给定绝对的mult-hot，用于打包任何categorical\_column\_* 用embedding\_column如果输入是稀疏的:
-\begin{python}
+\begin{lstlisting}[language=Python]
 name = indicator_column(categorical_column_with_vocabulary_list(
     'name', ['bob', 'george', 'wanda'])
 columns = [name, ...]
@@ -331,21 +331,21 @@ dense_tensor = input_layer(features, columns)
 dense_tensor == [[1, 0, 0]]  # If "name" bytes_list is ["bob"]
 dense_tensor == [[1, 0, 1]]  # If "name" bytes_list is ["bob", "wanda"]
 dense_tensor == [[2, 0, 0]]  # If "name" bytes_list is ["bob", "bob"]
-\end{python}
+\end{lstlisting}
 参数:
 categorical\_column:一个由categorical\_column\_with*或者crossed\_column创建的\_CategoricalColumn，返回一个\_IndicatorColumn。
 \subsection{input\_layer}
-\begin{python}
+\begin{lstlisting}[language=Python]
 input_layer(
     features,
     feature_columns,
     weight_collections=None,
     trainable=True
 )
-\end{python}
+\end{lstlisting}
 基于给定的feature\_column返回一个出米的Tensor作为输入层,通常在训练数据上被FeatureColumns描述的见得样本，在模型的第一层列的方向数据应该被转化为一个Tensor。
 例如:
-\begin{python}
+\begin{lstlisting}[language=Python]
 price = numeric_column('price')
 keywords_embedded = embedding_column(
     categorical_column_with_hash_bucket("keywords", 10K), dimensions=16)
@@ -355,7 +355,7 @@ dense_tensor = input_layer(features, columns)
 for units in [128, 64, 32]:
   dense_tensor = tf.layers.dense(dense_tensor, units, tf.nn.relu)
 prediction = tf.layers.dense(dense_tensor, 1)
-\end{python}
+\end{lstlisting}
 参数:
 \begin{itemize}
 	\item features:一个从key映射到tensor。\_FeatureColumn通过通过这些key查找，例如numeric\_column('price')将查看字典中的'price',值可以是SparseTensor护着Tensor取决于\_FeatureColumn。
@@ -366,7 +366,7 @@ prediction = tf.layers.dense(dense_tensor, 1)
 	\item[Raises]:如果一个item在feature\_columns不是一个\_DenseColumn。
 \end{itemize}
 \subsection{linear\_model}
-\begin{python}
+\begin{lstlisting}[language=Python]
 linear_model(
     features,
     feature_columns,
@@ -375,10 +375,10 @@ linear_model(
     weight_collections=None,
     trainable=True
 )
-\end{python}
+\end{lstlisting}
 返回一个基于feature\_columns给定的线性预测Tensor，返回一个基于给定feature\_column线性预测,这个函数生成基于输出维度单位的权重和，权重和在分类问题上涉及分类问题。它涉及线性回归模型问题的预测，注意不支持列：linear\_model对待绝对列作为indicator\_column当input\_layer明确要求用一个embedding\_column或者indicator\-column打包他们。
 例如:
-\begin{python}
+\begin{lstlisting}[language=Python]
 price = numeric_column('price')
 price_buckets = bucketized_column(price, boundaries=[0., 10., 100., 1000.])
 keywords = categorical_column_with_hash_bucket("keywords", 10K)
@@ -386,7 +386,7 @@ keywords_price = crossed_column('keywords', price_buckets, ...)
 columns = [price_buckets, keywords, keywords_price ...]
 features = tf.parse_example(..., features=make_parse_example_spec(columns))
 prediction = linear_model(features, columns)
-\end{python}
+\end{lstlisting}
 参数:
 \begin{itemize}
 	\item features:一个从key到tensor的映射，\_FeatureColumn查找这些键，例如numeric\_column('price')将查找字典中的'price'，Value是Tensor或者SparseTensor取决于\_FeatureColumn.
@@ -405,7 +405,7 @@ prediction = linear_model(features, columns)
 \end{itemize}
 \subsection{make\_sparse\_example\_spec}
 从输入特征列创建稀疏空间字典，返回字典可以被用作tf.parse\_example的features参数。
-\begin{python}
+\begin{lstlisting}[language=Python]
 # Define features and transformations
 feature_b = numeric_column(...)
 feature_c_bucketized = bucketized_column(numeric_column("feature_c"), ...)
@@ -417,18 +417,18 @@ feature_columns = set(
 features = tf.parse_example(
     serialized=serialized_examples,
     features=make_parse_example_spec(feature_columns))
-\end{python}
+\end{lstlisting}
 下面的例子，make\_sparse\_example\_spec将返回字典:
-\begin{python}
+\begin{lstlisting}[language=Python]
 {
     "feature_a": parsing_ops.VarLenFeature(tf.string),
     "feature_b": parsing_ops.FixedLenFeature([1], dtype=tf.float32),
     "feature_c": parsing_ops.FixedLenFeature([1], dtype=tf.float32)
 }
-\end{python}
+\end{lstlisting}
 参数:feature\_columns:一个包含所有特征列的迭代器，所有的项目应该是继承自\_FeatureColumn的实体。返回一个映射每个特征键到FixedlenFeature或者VarLenFeature值，异常ValueError:如果任何给定的feature\_columns不包含一个\_FeatureColumn实体。
 \subsection{numeric\_column}
-\begin{python}
+\begin{lstlisting}[language=Python]
 numeric_column(
     key,
     shape=(1,),
@@ -436,9 +436,9 @@ numeric_column(
     dtype=tf.float32,
     normalizer_fn=None
 )
-\end{python}
+\end{lstlisting}
 表示真实值或者数值特征，例如:
-\begin{python}
+\begin{lstlisting}[language=Python]
 price = numeric_column('price')
 columns = [price, ...]
 features = tf.parse_example(..., features=make_parse_example_spec(columns))
@@ -449,7 +449,7 @@ bucketized_price = bucketized_column(price, boundaries=[...])
 columns = [bucketized_price, ...]
 features = tf.parse_example(..., features=make_parse_example_spec(columns))
 linear_prediction = linear_model(features, columns)
-\end{python}
+\end{lstlisting}
 参数:
 \begin{itemize}
 	\item key：一个独一无二的字符串识别输入特征，它被用作特征解析配置，特征Tensor对象和特征列的名字
@@ -460,15 +460,15 @@ linear_prediction = linear_model(features, columns)
 	\item[Raise]:如果任何维度不是证书有，default\_value是一个迭代不但是形状不匹配，default\_value不兼容的数据类型报TypeError，如果任何维度不是整数或者不能转化为tf.float32的dtype将报ValueError。
 \end{itemize}
 \subsection{weighted\_catrgorical\_column}
-\begin{python}
+\begin{lstlisting}[language=Python]
 weighted_categorical_column(
     categorical_column,
     weight_feature_key,
     dtype=tf.float32
 )
-\end{python}
+\end{lstlisting}
 应用权重到\_CategoricalColumn,让输入是一维有值时使用，例如如果你表示文本文件作为一个子频率的集合，你可以提供两个平行的稀疏输入特征，输入tf.Example对象:
-\begin{python}
+\begin{lstlisting}[language=Python]
 [
   features {
     feature {
@@ -491,8 +491,8 @@ weighted_categorical_column(
     }
   }
 ]
-\end{python}
-\begin{python}
+\end{lstlisting}
+\begin{lstlisting}[language=Python]
 categorical_column = categorical_column_with_hash_bucket(
     column_name='terms', hash_bucket_size=1000)
 weighted_column = weighted_categorical_column(
@@ -500,7 +500,7 @@ weighted_column = weighted_categorical_column(
 columns = [weighted_column, ...]
 features = tf.parse_example(..., features=make_parse_example_spec(columns))
 linear_prediction, _, _ = linear_model(features, columns)
-\end{python}
+\end{lstlisting}
 假设输入字典包含一个key‘terms’的SparseTensor，SparseTensor键'frequencies',两个Tensor必须有相同的索引和dense形状。
 
 参数：
