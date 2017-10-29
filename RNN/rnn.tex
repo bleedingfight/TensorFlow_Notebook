@@ -3,8 +3,221 @@
 \usepackage{graphicx}
 \usepackage{float}
 \usepackage{hyperref}
-\graphicspath{{../article_pic/}}
+\usepackage{amsmath}
+\usepackage{listings}
+\graphicspath{{figure/}{../article_pic/}}
 \begin{document}
+\subsection{Vanilla Recurrent Neural Network}
+Vanilla 计算单元
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=0.5]{vanilla_unit.png}
+	\caption{Vanilla Unit}
+	\label{fig:1}
+\end{figure}
+计算方式:
+
+\begin{align}
+&h_t = f_W(h_{t-1},x_t)\label{eq:1}\\
+&h_t = tanh(W_{hh}h_{t-1}+W_{xh}x_t)\label{eq:2}\\
+&y_t=W_{hy}h_t\label{eq:3}
+\end{align}
+\begin{itemize}
+\item 公式\ref{eq:1}表示RNN在t时刻的隐藏状态向量$h_t$不仅和前一时刻状态$h_{t-1}$有关，而且还和t时刻输入$x_t$有关。
+\item 公式\ref{eq:2}是RNN隐藏状态的计算方式。
+\item 公式\ref{eq:3}是RNN单元的输出计算方式。
+\end{itemize}
+RNN的计算图如下:
+\begin{figure}[H]
+\centering
+\includegraphics[scale=0.5]{figure/RNN_CG.PNG}
+\caption{循环神经网络的计算图}
+\label{fig:2}
+\end{figure}
+在每个时间步用相同的权重:
+\begin{figure}[H]
+\centering
+\includegraphics[scale=0.5]{figure/RNN_SW.PNG}
+\caption{循环神经网络的计算图（共享权重）}
+\label{fig:3}
+\end{figure}
+多对多的RNN
+\begin{figure}[H]
+\centering
+\includegraphics[scale=0.4]{figure/RNN_M2M.PNG}
+\caption{多对多RNN}
+\label{fig:4}
+\end{figure}
+多对一的计算图:
+\begin{figure}[H]
+\centering
+\includegraphics[scale=0.4]{figure/RNN_M2O.PNG}
+\caption{多对一计算图}
+\label{fig:5}
+\end{figure}
+一对多的计算图:
+\begin{figure}[H]
+\centering
+\includegraphics[scale=0.4]{figure/RNN_O2M.PNG}
+\caption{一对多计算图}
+\label{fig:6}
+\end{figure}
+序列到序列（多对一到一对多）
+\begin{figure}[H]
+\centering
+\includegraphics[scale=0.4]{figure/RNN_S2S.PNG}
+\caption{序列到序列}
+\label{fig:7}
+\end{figure}
+反向传播过程:
+\begin{figure}[H]
+\centering
+\includegraphics[scale=0.4]{figure/RNN_BP.PNG}
+\caption{RNN反向传递}
+\label{fig:8}
+\end{figure}
+截断的反向传播
+\begin{figure}[H]
+\centering
+\includegraphics[scale=0.4]{figure/RNN_TRU1.PNG}
+\caption{截断的RNN反向传递1}
+\label{fig:9}
+\end{figure}
+仅仅传播切断的序列而不是整个完整的序列。
+\begin{figure}[H]
+\centering
+\includegraphics[scale=0.4]{figure/RNN_TRU2.PNG}
+\caption{截断的RNN反向传递2}
+\label{fig:10}
+\end{figure}
+永远在时间步上更新隐藏状态，但是仅仅在一些小的时间步上反向传播。
+
+应用:
+\begin{figure}[H]
+\centering
+\includegraphics[scale=0.4]{figure/Image_Cap.PNG}
+\caption{图像的标注}
+\label{fig:11}
+\end{figure}
+\begin{figure}[H]
+\centering
+\includegraphics[scale=0.4]{figure/Image_Cap_Pro.PNG}
+\caption{图像的标注的处理}
+\label{fig:12}
+\end{figure}
+将CNN的FC层去掉，用CNN抽取的特征直接输入RNN，RNN的隐藏层的更新方式将发生变化,
+之前的$h=\tanh(W_{xh}\cdot x+W_{hh}\cdot h)$变为现在的$h = \tanh(W_{xh}\cdot+W_{hh}\cdot h +W{ih}\cdot v)$
+\begin{figure}[H]
+\centering
+\includegraphics[scale=0.4]{figure/Image_Cap_ProPre.PNG}
+\caption{图像的标注的处理}
+\label{fig:13}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\includegraphics[scale=0.4]{figure/Image_Cap_Attention.PNG}
+\caption{图像的焦点标注的处理}
+\label{fig:14}
+\end{figure}
+
+vanilla rnn的计算过程
+\begin{figure}[H]
+\centering
+\includegraphics[scale=0.4]{figure/vanilla_rnn_bp.PNG}
+\caption{vanilla反向传播}
+\label{fig:15}
+\end{figure}
+\begin{equation}\label{eq:4}
+\begin{split}
+h_t&=\tanh(W_{hh}h_{t-1}+W_{xh}x_t)\\
+&=\tanh\left(\begin{bmatrix}W_{hh}&W_{hx}\end{bmatrix}\cdot\begin{bmatrix}h_{t-1}\\x_t\end{bmatrix}\right)\\
+&=\tanh\left(\mathbf{W}\cdot\begin{bmatrix}h_{t-1}\\x_t\end{bmatrix}\right)\\
+\end{split}
+\end{equation}
+\begin{figure}[H]
+\centering
+\includegraphics[scale=0.4]{figure/vanilla_grad.PNG}
+\caption{vanilla梯度流}
+\label{fig:16}
+\end{figure}
+$\mathbf{W}$的最大奇异值>1:梯度爆炸$\rightarrow$正规化
+\begin{lstlisting}[language=Python]
+grad_norm = np.sum(grad*grad)
+if grad_norm>threshold:
+    grad *=(threshold/grad_norm)
+\end{lstlisting}
+
+
+$\mathbf{W}$的最大奇异值<1:梯度消失,改变RNN结构。
+\subsection{LSTM}
+\begin{equation*}
+\begin{split}
+&\begin{bmatrix}i\\f\\o\\g\end{bmatrix}=\begin{bmatrix}\sigma\\\sigma\\\sigma\\\tanh\end{bmatrix}\mathbf{W}\begin{bmatrix}h_{t-1}\\x_t\end{bmatrix}\\
+&c_t = f\odot c_{t-1}+i\odot g\\
+&h_t = o\odot\tanh(c_t)
+\end{split}
+\end{equation*}
+\begin{itemize}
+	\item f:忘记门，是否删除cell
+	\item i:输入门，是否写入cell
+	\item g:Gate门，如何写入cell
+	\item o:输出门，如何反映cell
+\end{itemize}
+
+$RNN\rightarrow LSTM$
+\begin{figure}[H]
+\centering
+\includegraphics[scale=0.4]{figure/RNN2LSTM.PNG}
+\caption{RNN到LSTM}
+\label{fig:17}
+\end{figure}
+LSTM结构
+\begin{figure}[H]
+\centering
+\includegraphics[scale=0.5]{figure/LSTM.PNG}
+\caption{LSTM结构}
+\label{fig:18}
+\end{figure}
+\begin{equation}\label{eq:5}
+\begin{split}
+&\begin{bmatrix}i\\f\\o\\g\end{bmatrix}=\begin{bmatrix}\sigma\\\sigma\\\sigma\\\tanh\end{bmatrix}\mathbf{W}\begin{bmatrix}h_{t-1}\\x_t\end{bmatrix}\\
+&c_t = f\odot c_{t-1}+i\odot g\\
+&h_t = o\odot\tanh(c_t)
+\end{split}
+\end{equation}
+LSTM GRU
+\begin{equation}
+\begin{split}
+r_t &= \sigma(W_{xr}x_t+W_{hr}h_{t-1}+b_r)\\
+z_t &= \sigma(W_{xz}+W_{hz}h_{t-1}+b_z)\\
+\hat{h}_t &= \tanh(W_{xz}x_t+W_{hh}(r_\odot h_{t-1})+b_h)\\
+h_t &= z_t\odot h_{t-1}+(1-z_t)\odot\hat{h}_t
+\end{split}
+\end{equation}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 循环神经网络按时间轴展开的时候，如下图所示：
 \begin{figure}[H]
 \includegraphics[scale=0.5]{rnn_unroll.png}
