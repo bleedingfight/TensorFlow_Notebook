@@ -5,7 +5,33 @@
 \usepackage{hyperref}
 \usepackage{amsmath}
 \usepackage{listings}
+\usepackage{color}
 \graphicspath{{figure/}{../article_pic/}}
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+ 
+\lstdefinestyle{mystyle}{
+    backgroundcolor=\color{backcolour},   
+    commentstyle=\color{codegreen},
+    keywordstyle=\color{magenta},
+    numberstyle=\tiny\color{codegray},
+    stringstyle=\color{codepurple},
+    basicstyle=\footnotesize,
+    breakatwhitespace=false,         
+    breaklines=true,                 
+    captionpos=b,                    
+    keepspaces=true,                 
+    numbers=left,                    
+    numbersep=5pt,                  
+    showspaces=false,                
+    showstringspaces=false,
+    showtabs=false,                  
+    tabsize=2
+}
+ 
+\lstset{style=mystyle}
 \begin{document}
 \subsection{Vanilla Recurrent Neural Network}
 Vanilla 计算单元
@@ -270,4 +296,6 @@ inputs 引数接受形态为 [batch\_size,input\_size] 的张量列表。列表�
 	\includegraphics[scale=0.5]{tf_rnn.png}
 \end{figure}
 由 static\_rnn 生成的输出是一个形态为 [batch\_size,n\_hidden] 的张量列表。列表的长度为将网络展开后的时间步数，即每一个时间步输出一个张量。在这个实现中我们只需关心最后一个时间步的输出，因为一张图像的所有行都输入到 RNN，预测即将在最后一个时间步生成。
+\subsection{LSTM MNIST}
+\lstinputlisting[language=Python]{mnist_rnn.py}
 \end{document}
