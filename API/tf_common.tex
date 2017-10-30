@@ -8,7 +8,7 @@ check\_numbercs(tensor,message,none):检查一个tensor是NaN或者Inf值。运�
 	\item[Return]:返回一个和tensor同样类型的Tensor
 \end{itemize}
 \section{tf.clip\_by\_value}
-clip\_by\_value(t,clip\_value\_min,clip\_value\_max,name=None):剪切值为最大值和最小值，给定一个tensor t，操作返回一个和t同样类型，同样大小的值到clip\_value\_min,和clip\_value\_max.任何值小鱼clip\_value\_min被设置为clip\_value\_min，任何大于clip\_value\_max的值被设置为clip\_value\_max。
+clip\_by\_value(t,clip\_value\_min,clip\_value\_max,name=None):剪切值为最大值和最小值，给定一个tensor t，操作返回一个和t同样类型，同样大小的值到clip\_value\_min,和clip\_value\_max.任何值小于clip\_value\_min被设置为clip\_value\_min，任何大于clip\_value\_max的值被设置为clip\_value\_max。
 参数:
 \begin{itemize}
 	\item t:一个tensor
@@ -51,7 +51,7 @@ DEFINE\_boolean(flag\_name,default\_value,docstring):定义一个'boolean'类型
 \item docstring:用flag的一个有用的帮助信息。
 \end{itemize}
 \subsection{tf.gather}
-\begin{python}
+\begin{lstlisting}[language=Python]
 gather(
     params,
     indices,
@@ -59,10 +59,10 @@ gather(
     name=None,
     axis=0
 	)
-\end{python}
+\end{lstlisting}
 根据indices从params和axis轴获取slices。
 indices必须是任何维度(通常是0维或者一维)的一个整数tensor生成输出tensor的形状params.shape[:axis]+indices.shape+params.shape[axis+1:],这里
-\begin{python}
+\begin{lstlisting}[language=Python]
 # Scalar indices (output is rank(params) - 1).
 output[a_0, ..., a_n, b_0, ..., b_n] =
 params[a_0, ..., a_n, indices, b_0, ..., b_n]
@@ -72,7 +72,7 @@ params[a_0, ..., a_n, indices[i], b_0, ..., b_n]
 # Higher rank indices (output is rank(params) + rank(indices) - 1).
 output[a_0, ..., a_n, i, ..., j, b_0, ... b_n] =
 params[a_0, ..., a_n, indices[i, ..., j], b_0, ..., b_n]
-\end{python}
+\end{lstlisting}
 \begin{figure}[H]
 	\includegraphics[scale=0.5]{Gather.png}
 \end{figure}
@@ -85,38 +85,38 @@ params[a_0, ..., a_n, indices[i, ..., j], b_0, ..., b_n]
 	\item{返回}:一个tensor，和params有相同的数据类型，通过给定indeces从params收集，形状为[params.shape[:axis]+indices.shape+params.shape[axis+1:]
 \end{itemize}
 例子:
-\begin{python}
+\begin{lstlisting}[language=Python]
 import tensorflow as tf
 a = tf.constant([[1,2,3,4],[5,6,7,8],[9,10,11,12],[13,14,15,16]])
 b = tf.constant([1,0,2])
 g = tf.gather(a,b)
 with tf.Session() as sess:
     print(sess.run(g))#获取第一轴[1,0,2]行的数据
-\end{python}
+\end{lstlisting}
 输出:
-\begin{python}
+\begin{lstlisting}[language=Python]
 [[ 5  6  7  8]
  [ 1  2  3  4]
  [ 9 10 11 12]]
-\end{python}
+\end{lstlisting}
 \subsection{tf.placeholder}
-\begin{python}
+\begin{lstlisting}[language=Python]
 placeholder(
     dtype,
     shape=None,
     name=None
 )
-\end{python}
+\end{lstlisting}
 为placeholder输入需要被插入的tensor。
 如果这个tensor被计算将产生错误。它的值必须通过feed\_dict选项在Session.run(),Tensor.eval()或者是Operation.eval()输入。
-\begin{python}
+\begin{lstlisting}[language=Python]
 x = tf.placeholder(tf.float32, shape=(1024, 1024))
 y = tf.matmul(x, x)
 with tf.Session() as sess:
     print(sess.run(y))  # ERROR: will fail because x was not fed.
     rand_array = np.random.rand(1024, 1024)
     print(sess.run(y, feed_dict={x: rand_array}))  # Will succeed.
-\end{python}
+\end{lstlisting}
 参数:
 \begin{itemize}
 \item dtype:被输入的tensor元素的数据类型。
@@ -226,7 +226,7 @@ tf.stack([x,y,z]) = np.asarray([x,y,z])\newline
 	\item[\S] ValueError:如果axis超过[-(R+1),R+1)
 \end{itemize}
 \textsl{Example}
-\begin{python}
+\begin{lstlisting}[language=Python]
 import tensorflow as tf
 x = tf.constant([1,4])
 y = tf.constant([2,5])
@@ -236,7 +236,7 @@ r2 = tf.stack([x,y,z],axis=1)
 with tf.Session() as sess:
     print(sess.run(r1).shape)
     print(sess.run(r2).shape)
-\end{python}
+\end{lstlisting}
 \subsection{tf.reshape}
 tf.reshape(tensor,shape,name=None)
 \begin{itemize}
@@ -245,7 +245,7 @@ tf.reshape(tensor,shape,name=None)
 	\item name:操作的名字。
 	\item[S] 指定形状的Tensor。
 \end{itemize}
-\begin{python}
+\begin{lstlisting}[language=Python]
 import tensorflow as tf
 a = tf.linspace(0.,9.,10)
 b = tf.reshape(a,[2,5])
@@ -254,16 +254,16 @@ with tf.Session() as sess:
     b = sess.run(b)
 print(a.shape)
 print(b.shape)
-\end{python}
+\end{lstlisting}
 \subsection{tf.random\_crop}
-\begin{python}
+\begin{lstlisting}[language=Python]
 random_crop(
     value,
     size,
     seed=None,
     name=None
 )
-\end{python}
+\end{lstlisting}
 从value tensor随机剪裁一块指定size的tensor，要求value。shape大于参数size的值。如果一维不剪切需要传递完整的size，例如RGB图像可以用size = [crop\_height,crop\_width,3]剪切。
 
 输入参数:
@@ -275,7 +275,7 @@ random_crop(
 \item[Retuen] 一个剪切的和value有相同的rank，形状为size的tensor。
 \end{itemize}
 \subsection{tf.random\_gamma}
-\begin{python}
+\begin{lstlisting}[language=Python]
 random_gamma(
     shape,
     alpha,
@@ -284,7 +284,7 @@ random_gamma(
     seed=None,
     name=None
 )
-\end{python}
+\end{lstlisting}
 从指定\href{https://zh.wikipedia.org/wiki/伽玛分布}{Gamma分布}中获得shape样本，alpha是形状参数，beta是反向放大参数。
 
 输入参数:
@@ -299,13 +299,13 @@ random_gamma(
 samples:数据类型为dtype的一个形状为tf.concat(shape,tf.shape(alpha+beta))的tensor。
 \end{itemize}
 例子:
-\begin{python}
+\begin{lstlisting}[language=Python]
 samples = tf.random_gamma([10],[0.5,1.5])#形状为10,alpha为0.5，1.5,采样输出形状为[10,2]
 samples = tf.random_gamma([7, 5], [0.5, 1.5]) # 采样输出形状为[7, 5, 2], where each slice [:, :, 0] and [:, :, 1] # 代表从两个分布采样的$7\items5$。
 samples = tf.random_gamma([30], [[1.],[3.],[5.]], beta=[[3., 4.]]) #采样输出形状[30, 3, 2], 每$2\times2$（广播运算）30个采样点
-\end{python}
+\end{lstlisting}
 \subsection{tf.random\_normal}
-\begin{python}
+\begin{lstlisting}[language=Python]
 random_normal(
     shape,
     mean=0.0,
@@ -314,7 +314,7 @@ random_normal(
     seed=None,
     name=None
 )
-\end{python}
+\end{lstlisting}
 输出正态分布随机值。
 
 输入参数:
@@ -344,39 +344,39 @@ random_normal(
 方法:
 \begin{itemize}
 \item \_\_init\_\_
-\begin{python}
+\begin{lstlisting}[language=Python]
 __init__(
     mean=0.0,
     stddev=1.0,
     seed=None,
     dtype=tf.float32
 )
-\end{python}
+\end{lstlisting}
 \item \_\_call\_\_
-\begin{python}
+\begin{lstlisting}[language=Python]
 __call__(
     shape,
     dtype=None,
     partition_info=None
 )
-\end{python}
+\end{lstlisting}
 \item from\_config:从配置字典实例化initilizer。
-\begin{python}
+\begin{lstlisting}[language=Python]
 from_config(
     cls,
     config
 )
-\end{python}
+\end{lstlisting}
 例如:
-\begin{python}
+\begin{lstlisting}[language=Python]
 initializer = RandomUniform(-1, 1)
 config = initializer.get_config()
 initializer = RandomUniform.from_config(config)
-\end{python}
+\end{lstlisting}
 \item get\_config()
 \end{itemize}
 \subsection{tf.random\_possion}
-\begin{python}
+\begin{lstlisting}[language=Python]
 random_poisson(
     lam,
     shape,
@@ -384,7 +384,7 @@ random_poisson(
     seed=None,
     name=None
 )
-\end{python}
+\end{lstlisting}
 从Poisson分布中获取制定形状的样本，lam是描述分布的参数。
 
 输入参数:
@@ -397,25 +397,25 @@ random_poisson(
 \item[Returns]:形状为tf.concat(shape,tf,shape(lam))的tensor（值的数据类型如dtype指定）。
 \end{itemize}
 例子:
-\begin{python}
+\begin{lstlisting}[language=Python]
 samples = tf.random_poisson([0.5, 1.5], [10]) # 采样输出形状为[10, 2],切片输出 [:, 0] and [:, 1] 代表不同分布的数据
 
 samples = tf.random_poisson([12.2, 3.3], [7, 5]) # 采样输出形状[7, 5, 2], chide切片[:, :, 0]和[:, :, 1]代表 $7\times5$从两个分布的采样输出。
-\end{python}
+\end{lstlisting}
 \subsection{random\_shuffle}
-\begin{python}
+\begin{lstlisting}[language=Python]
 random_shuffle(
     value,
     seed=None,
     name=None
 )
-\end{python}
+\end{lstlisting}
 沿着tensor的一维随机打乱数据。像value[j]映射一个tensor到一个数出output[i]。例如
-\begin{python}
+\begin{lstlisting}[language=Python]
 [[1, 2],       [[5, 6],
  [3, 4],  ==>   [1, 2],
  [5, 6]]        [3, 4]]
-\end{python}
+\end{lstlisting}
 输入参数:
 \begin{itemize}
 \item value:一个应该被打乱的值。
@@ -424,7 +424,7 @@ random_shuffle(
 \item[Returns] 一个指定类型的值和形状，沿着某一维读被打乱的tensor。
 \end{itemize}
 \subsection{tf.random\_uniform}
-\begin{python}
+\begin{lstlisting}[language=Python]
 random_uniform(
     shape,
     minval=0,
@@ -433,7 +433,7 @@ random_uniform(
     seed=None,
     name=None
 )
-\end{python}
+\end{lstlisting}
 输出均匀分布的随机值，生成的值的范围在[minival,maxval),下界minval包含在范围内，上界不再。对于浮点数默认范围是[0,1)。至少maxval必须被明确指定。在整数情况下，会有一些轻微的偏移，除非maxval-minval是2的次幂。偏移是maxval-minval
 比较小的值相对于输出范围(2**32,2**64)很小。
 
@@ -467,29 +467,29 @@ random_uniform(
 \end{itemize}
 方法:
 \begin{itemize}
-\item \begin{python}__init__(
+\item \begin{lstlisting}[language=Python]__init__(
     minval=0,
     maxval=None,
     seed=None,
     dtype=tf.float32
-)\end{python}
+)\end{lstlisting}
 \item \_\_call\_\_
-\begin{python}
+\begin{lstlisting}[language=Python]
 __call__(
     shape,
     dtype=None,
     partition_info=None
 )
-\end{python}
+\end{lstlisting}
 \item from\_config
-\begin{python}
+\begin{lstlisting}[language=Python]
 from_config
 
 from_config(
     cls,
     config
 )
-\end{python}
+\end{lstlisting}
 \item get\_config
 \end{itemize}
 \subsection{tf.transpose}
@@ -524,7 +524,7 @@ tf.transpose(x,perm=[0,2,1])==>[[[1 4]
 	\item[Return] 一个转置后的Tensor
 \end{itemize}
 \subsection{tf.one\_hot}
-\begin{python}
+\begin{lstlisting}[language=Python]
 ne_hot(
     indices,
     depth,
@@ -534,52 +534,52 @@ ne_hot(
     dtype=None,
     name=None
 )
-\end{python}
+\end{lstlisting}
 返回一个One-hot tensor。
 indices表示的下表的值为on\_value,所有其它值为off\_value。
 
 如果on\_value不提供，默认为dtype下的1。off\_value不提供，默认值为0,如果输入Incices rank是N，输出rank将是N+1。新的axis将在axis创建。，如果indices是一个标量，输出形状将是一个depth长度的向量，如果indices是亿个长度为features向量输出形状将为:
-\begin{python}
+\begin{lstlisting}[language=Python]
 feature x depth ifn axis == -1
 depth x features if axis == 0
-\end{python}
+\end{lstlisting}
 如果indices是一个矩阵，形状为[batch,features],输出形状将为:
-\begin{python}
+\begin{lstlisting}[language=Python]
  batch x features x depth if axis == -1
   batch x depth x features if axis == 1
   depth x batch x features if axis == 0
-\end{python}
+\end{lstlisting}
 如果dtype没有被提供，它将假设on\_value或off\_value的数据类型，如果一个或者更多的值被传递，，如果没有on\_value,off\_value,或者dtype被提供，dtype将默认tf.float32。
 例子:
 
 假设：
-\begin{python}
+\begin{lstlisting}[language=Python]
 indices = [0, 2, -1, 1]
   depth = 3
   on_value = 5.0
   off_value = 0.0
   axis = -1
-\end{python}
+\end{lstlisting}
 输出形状为[$4\times3$]
 输出:
-\begin{python}
+\begin{lstlisting}[language=Python]
 output =
   [5.0 0.0 0.0]  // one_hot(0)
   [0.0 0.0 5.0]  // one_hot(2)
   [0.0 0.0 0.0]  // one_hot(-1)
   [0.0 5.0 0.0]  // one_hot(1)
-\end{python}
+\end{lstlisting}
 假设:
-\begin{python}
+\begin{lstlisting}[language=Python]
  indices = [[0, 2], [1, -1]]
   depth = 3
   on_value = 1.0
   off_value = 0.0
   axis = -1
 
-\end{python}
+\end{lstlisting}
 输出
-\begin{python}
+\begin{lstlisting}[language=Python]
 output =
   [
     [1.0, 0.0, 0.0]  // one_hot(0)
@@ -588,19 +588,19 @@ output =
     [0.0, 1.0, 0.0]  // one_hot(1)
     [0.0, 0.0, 0.0]  // one_hot(-1)
   ]
-\end{python}
+\end{lstlisting}
 用默认on\_value和off\_value:
-\begin{python}
+\begin{lstlisting}[language=Python]
 indices = [0, 1, 2]
   depth = 3
-\end{python}
+\end{lstlisting}
 输出
-\begin{python}
+\begin{lstlisting}[language=Python]
   output =
   [[1., 0., 0.],
    [0., 1., 0.],
    [0., 0., 1.]]
-\end{python}
+\end{lstlisting}
 参数:
 \begin{itemize}
 \item indices:一个索引的Tensor。
@@ -617,18 +617,20 @@ indices = [0, 1, 2]
 \end{itemize}
 \end{itemize}
 \subsection{tf.unstack}
-\begin{python}
+\begin{lstlisting}[language=Python]
 unstack(
     value,
     num=None,
     axis=0,
     name='unstack'
 )
-\end{python}
-unstack rank-R为rank-(R-1)的tensor。通过chipping沿着axis从value unstack num tensor。如果num不被指定(默认)它从value的形状推算。如果value.shape[axis]不知道，ValueError异常。
+\end{lstlisting}
+unstack rank-R为rank-(R-1)的tensor。
+
+通过沿着axis维度从value剪切num个tensor。如果num不被指定(默认)它从value的形状推算。如果value.shape[axis]不知道，ValueError异常。
 例如一个tensor的形状为(A,B<C<D);
-如果 axis ==0输出第i维的切片value[i,:,:,:]，output的输出每个tensor形状为(B,C,D).（注意沿着维度unstack）
-如果axis == 1然后输出第i个tensor在切片的值[:,i,:,:]和每个output的每个输出将有形状(A,C,D)。
+如果 axis == 0输出第i个tensor是切片value[i,:,:,:]，output的每个tensor形状为(B,C,D).（注意沿着维度unstack）
+如果axis == 1输出的第i个tensor是切片的值[:,i,:,:]和每个output的每个输出将有形状(A,C,D)。
 tf.ustack(x,n)=list(x)
 
 参数:
