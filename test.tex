@@ -1,228 +1,363 @@
 \documentclass{book}
 \usepackage[space]{ctex}
-\usepackage{amssymb} 
+\usepackage{listings}
 \begin{document}
-当 L 和 r 是关于 $\omega$ 的任意凸函数时，可以运用在本节中讨论的方法来解决问题：
-\begin{equation}\label{eq:optimizer1}
-	\min_{\omega\in\mathbb{R}^d},where F(\omega)=\frac{1}{n}=\frac{1}{n}\sum_{i=1}^n l(p(\omega,x_i),y_i)+\lambda r(\omega)
-\end{equation}
-这一类中包含很多机器学习模型，包括支持向量机、Lasso（Least Absolute Shrinkage and Selection Operator）、稀疏逆协方差选择等。为了每一步都能具体（展现出来），此处我们指定以二分类的正则化logistic回归为例（进行讲解）。为了简化例子中的符号，我们作不失一般性的假设，令。（此处省去了偏置项$b_0$），这一省略操作可以通过在输入向量上增加一维恒为 1 的特征值来弥补）。当 $\omega$ 和 x 都是 d 维时就可以令其为特定的凸优化问题。
-\begin{equation}\label{eq:optimizer2}
-	\min_{\omega\in\mathbb{R}^d}F(\omega),where\quad F(\omega)=\frac{1}{N}\sum_{i=1}^n\log(1+e^{-y_i(x^Tx_i)})+\lambda r(\omega)
-\end{equation}
-值得一提的是，对于此类问题，正则化项必不可少。想一想为什么说它必不可少，假设对于所有的 $i\in{1,\ldots,n}$，有参数向量 $\omega$，满足 $y_i(\omega^Tx_i) > 0 $以及（存在）无界射线 {$\theta \omega:\theta > 0$}。那问题就很明朗了，在这个例子中，当$\theta\rightarrow \infty$时，
-\begin{equation}\label{eq:optimizer3}
-	\frac{1}{n}\sum_{i=1}^n\log(1+e^{-y_i(\theta\omega^Tx_i)}\rightarrow 0
-\end{equation}
+\section{正则表达式介绍}
+常用的正则表达式
+\begin{itemize}
+\item ``${}^\wedge$\$`:表示空白行
+\item `ooo*`:至少两个o。
+\item `g.*g`:g$ldots$g。
+\end{itemize}
+\begin{center}
+% \begin{tabular}{|p{3cm}|p{10cm}|p{4cm}|}
+% \hline
+% 操作符 & 说明 & 实例\\
+% \hline
+% [] &字符集合，对单个字符给出取值范围  & [abc]表示a,b,c,[a-z]表示a到z的单个字符\\
+% \hline
+% .& 任何单个字符 &\\
+% \hline
+% [\^ ]&非字符集，对单个字符给出排除范围&[\^{} abc]表示非a或者b或者c的单个字符\\
+% \hline
+% *&前一个字符0次或者无限次扩展&abc*表示ab,abc,abcc等\\
+% \hline
+% +&前一个字符1次或无限次扩展&abc+表示abc,abcc,abccc等\\
+% \hline
+% ?&前一个字符0次或者一次扩展&abc?表示ac,abc\\
+% \hline
+% |&左右表达式任一个&abc|def表示abc或者def\\
+% \hline
+% $\left\{m\right\}$&扩展前一个字符m次&$ab\left\{2\right\}c$表示abc,abbc\\
+% \hline
+% $\left\{m,n\right\}$&扩展前一个字符m到n次，包含n&$ab\left\{1,2\right\}c$表示abc,abbc\\
+% \hline
+% \^ &匹配字符串开头&\^$\left\{\right\}$abc表示abc且在一个字符串开头\\
+% \hline
+% \$&匹配字符串结尾&abc\$表示abc且在一个字符串的结尾\\
+% \hline
+% ()&分组标记，内部只能使用|操作符&(abc)表示abc，(abc|def)表示abc或者def\\
+% \hline
+% (?...)&这是一个扩展的符号,第一个字符在'?'后面决定了深层的语法。扩展通常没有创建一个新的group,(?P<name>...时该规则惟一的特例)&\\
+% \hline
+% (?aiLmsux)&来自集合'a','i','L','m','s','u','x'的一个或者多个字母，group匹配空字符串字符给整个正则表达式设置相关的flags：re.A,re.I,re.L,re.M,re.S,re.X。如果你洗完桑包含flags作为正则表达式的一部分而不是传递一个flag参数到re.compile()函数这就是很有用的，Flasg应该首先用在表达式字符串。&\\
+% \hline
+% \end{tabular}
+% \end{center}
 
-
-也就是说函数（\ref{eq:optimizer1}）无法取最小值。另一方面，通过增加（强制）正则化函数 r，可以保证问题(\ref{eq:optimizer2})将具有最优解。
-
-对于正则化函数 r，我们将会参考常用选择$r(\omega) = \|\omega\|_2^2$和$r(\omega)=\|\omega\|_1$。不过为了简单起见，我们通常会选择前者，因为它使得(\ref{eq:optimizer2}) 对于每一个因子是连续可微的。相反，$r(\omega) = \|\omega\|_1$ 会导致非平滑问题，为此，（实现）函数最小化就需要更复杂的算法。
-
-\subsection{一阶方法}
-我们首先讨论用一阶方法求解问题（\ref{eq:optimizer2}），这里的一阶仅仅指对函数 F 中的参数进行一阶偏导的数学技巧。
-
-\subsubsection{梯度下降法}
-
-从概念上讲，最小化光滑凸目标的最简单的方法是梯度下降法。在这种方法中，从初始化估计值 $\omega_0$开始，通过下述公式迭代地更新权重估计值。
-\begin{equation}\label{eq:optimizer4}
-	\omega_{k+1}\leftarrow \omega_k - \alpha_k\Delta F(\omega_k)
-\end{equation}
-其中 $\alpha_k > 0$ 是一个步长参数。步长序列 {$\alpha_k$} 的选择直接决定此算法的性能。在优化研究领域，人们普遍认为，在每次迭代中采用线性搜索来确定 {$\alpha_k$ }，可以为解决各种类型的问题找到一个性能优越的算法。然而，对于机器学习应用程序来说，这种运算成本高昂，因为每次函数 F 的计算都需要传递整个数据集，如果 n 过大，很可能带来高昂的（训练）成本。
-
-好在当每个$\alpha_k$ 都设置为一个正的常数α且它是一个足够小的固定值时，从理论上分析，该算法的收敛性仍可以得到保证。（固定的步长常数在机器学习领域叫做学习率。但即使不是常数，也有人把$\alpha_k$ 或整个序列 {$\alpha_k$ } 叫做学习率）。该算法的收敛速度取决于函数 f 是强凸函数还是弱凸函数。
-
-用于解决 L1 范数正则化的logistic回归问题的梯度下降和加速梯度下降拓展算法分别被称作 ISTA 和 FISTA。我们观察到，在这种情况下，即使$\lambda> 0$，目标函数也不会是强凸函数。只有目标函数为凸时，ISTA 和 FISTA 具有与其对应的平滑函数相同的次线性收敛速度。
-
-梯度下降在 ML 训练过程中的一个重要特性就是计算出每次迭代中求解函数 F 的梯度的运算成本。在 ML 的训练过程中，单个梯度计算的成本通常是 O（ND），这个确实可以看到，例如，在正则化项为的情况中，函数 F 关于每一个特定的 $\omega$ 的梯度是
-\begin{equation}\label{eq:optimizer3}
-	\Delta F(\omega) = -\frac{1}{n}\sum_{i=1}^n(\frac{1}{1+e^{y_i(\omega^Tx_i)}})y_i x_i+2\lambda\omega 
-\end{equation}
-
-\subsubsection{随机梯度法}
-
-随机梯度法由于其用于最小化随机目标函数而在运筹学领域广为人知，同时也是 ML 社区中的一种特征优化算法。该算法最初由 Robbins 和 Monro [ 67 ] 在解决随机方程组问题时提出，值得注意的是，它可以用于最小化具有良好收敛性的随机目标，而且每次迭代的计算复杂度仅为 $O(d)$而不是$ O(nd)$（梯度下降中的计算复杂度）。
-
-在每一次迭代中，随机梯度法都会计算梯度$ Fw_kk）$的无偏估计 $GK$。该估计可以以及低的代价计算得到；例如，对于公式(\ref{eq:optimizer2})，某次迭代的随机梯度可被求解为
-\begin{equation}\label{eq:optimizer6}
-	\Delta_{S_k}F(\omega)=-\frac{1}{|S_k|}\sum_{i\in S_k}\frac{1}{1+e^{y_i(\omega^Tx_i)}}y_ix_i+2\lambda\omega
-\end{equation}
-
-
-其中 $S_k$ 被称作小批量，它的所有元素都是从总数据集 {$1,\ldots.,n$} 中按均匀分布选出来的。接下来的运算类似于梯度下降：
-\begin{equation}\label{eq:optimizer7}
-	\omega_{k+1}\rightarrow \omega_k-\alpha_k\Delta_{S_k}F(\omega_k)
-\end{equation}
-
-
-
-毫无疑问，该算法的关键在于选择步长序列 {$\alpha_k$}。不同于梯度下降，固定的步长（即学习率）不能保证算法会收敛到强凸函数 F 的最小值，而只保证收敛到最小值的邻域。
-
-SGD 的收敛速度比梯度下降慢。尤其当函数 F 是强凸函数时，该算法只保证当 $k\geq O(1/gc)$ 时可以得到预期精度的解（即满足 $E[F(\omega_k)]-F(\omega) ≤ \epsilon$的解），而当函数 F 仅仅是凸函数时，只有在 $k \geq O(1/\epsilon^2)$ \ref{eq:optimizer1}时才能保证得出上述解。
-
-另一方面，正如前文提及的，如果 $S_k$ 的大小由一个常数限定（独立于 n 或 k 的常数），那么 SGD 的每次的迭代成本都比梯度下降法小$O(n)$倍。
-
-然而，在实际运用中，标准的 SGD 并不一定是解决机器学习中优化问题的最有效方法。事实上，机器学习和优化算法领域在开发改进或替代 SGD 方面进行了大量的积极研究。在随后的两部分中，我们将讨论两类方法：方差缩减法和二阶方法。但是在这两类方法以外，还有多种方法。例如，加有动量的 SGD 就是一个实践中被发现的性能好于好于标准 SGD 的拓展版 SGD。见下图算法 1
-
-\begin{tabular}{l}
-	\hline
-	Algorithm 1 SGD with Momentum\\
-	\hline
-	参数:学习率$\alpha>0$,动量权重$\eta\in(0,1)$,mini-batch size $s\in\mathbb{N}$\\
-	初始化:$\omega_0\in\mathbb{R}^n;v_0=0\in\mathbb{R}^n$\\
-	迭代:\\
-	for k=1,2,$\ldots$,do\\
-	  生成 $S_k$,$|S_k|=s$服从于{1,$\ldots$,n}的均匀分布\\
-	  计算$\Delta_{s_k}F(\omega_k)$\\
-	  设置$v_k\leftarrow \eta v_{k-1}+(1-\eta)\Delta_{s_k}F(\omega_k)$\\
-	  设置$W_{k+1}\leftarrow-\alpha v_k$\\
-	结束循换\\
-	\hline
+% \begin{center}
+\begin{tabular}{|p{2.5cm}|p{8cm}|p{4cm}|}
+操作符 & 说明 & 实例\\
+(?:...)&非捕获版本的正则括号，匹配括号中无论什么正则表达式，但是在执行一个匹配或者查询之后group中子字符串匹配不能被获得&\\
+\hline
+\textbackslash d&数字等价与[0-9]&\\
+\hline
+\textbackslash D&非数字等价与[\^0-9]&\\
+\hline
+\textbackslash number &匹配相同number的组。组以1开始，例如(.+) \textbackslash1匹配'the the'or'55 55',但是'thethe'(中间需要有空格)，这种特殊的序列仅仅被用来匹配1到99组。如果第一个数字为0或者是3为八进制的，他将被解释为一个group match，在字符类'[' and ']'中，所有的数被当作字符。&\\
+\hline
+\\A 匹配&匹配字符串的开始\\
+\hline
+\textbackslash b& 匹配空字符串，但是仅仅是单词前面或者后面的空字符串，单词被定义为一个unicode字母数字序列或下划线特征，因此单词为被空格或者为字母数字预示，非强跳得字符串，注意，\textbackslash b被定义为a\textbackslash w和a\textbackslash W之间，或者在\textbackslash w和单词开始之间，这意味着r'\textbackslash bfoo\textbackslash b'匹配'foo','foo.','(foo)','bar foo baz'而不是'foobar'或者'foo3'&\\
+\hline
+\textbackslash B &匹配空字符串，但是仅仅当它不在单词的开头或者结尾时，这意味着r'py\textbackslash B'匹配'python','py3','py2',而不是'py','py.'或者是'py!'.\textbackslash B和\textbackslash b相反，因此单词时unicode字母数字或者下划线，尽管这能被ASCII flag改变&\\
+\hline
+%\textbackslash s&对于Unicode字符串类型：匹配Unicode空格字符串(包括\left[\textbackslash t\textbackslash n\textbackslash r\textbackslash f\textbackslash v\right],因此一些其它字符，例如不间断的空格),如果ASCII flag被用，仅仅\left[\textbackslash t\textbackslash n\textbackslash r\textbackslash f\textbackslash v\right]被匹配(但是flag影响整个正则表达我时)，因此在这样的情况下用\left[\textbackslash t\textbackslash n\textbackslash r\textbackslash f\textbackslash v\right]也许是更好的选择。&&\\
+\hline
+\textbackslash S&匹配不是任何不是空格的unicode字符，和\textbackslash s相反，如果ASCII flag被用这因为等于[\^{} \textbackslash t\textbackslash n\textbackslash r\textbackslash f\textbackslash v](但是flag影响整个正则表达式，因此在这种情况下[\^{} \textbackslash t\textbackslash n\textbackslash r\textbackslash f\textbackslash v])&\\
+\hline
+\\z&匹配字符串的尾部&\\
+\hline
+(?imsx-imsx:...)&在字符字母集合'i','m','s','x'中，'-'跟着的来自同样字母集合的一个或者更多字母),对于部分表达式字母集合或者移去相关的flags:re.I,re.M,re.S,re.X。\\
+\hline
+<?P=name>&:对于group的一个反向引用，它匹配之前name命名的group无论什么文本。\\
+\hline
 \end{tabular}
-
-
-\subsection{ 方差缩减法（Variance reducing method）}
-
-考虑到问题（11），人们发现通过利用目标 F 的结构作为 n 个函数的有限和再加上简单的凸函数项，可以改善 SGD 方法。目前已经研究出几种方法，如 SAG，SAGA，SDCA 和 SVRG 。
-
-为了方便引用，我们把 SVRG 叫做算法 2。该算法在每个外部迭代中执行一次完整的梯度计算，然后沿着随机方向再迭代 L 步，这是整个梯度的随机修正过程。内环步长 L（inner loop size）必须满足一定的条件以保证收敛。
-
-\begin{tabular}{l}
-	\hline
-	Algorithm 2 SVRG\\
-	\hline
-	参数:学习率$\alpha>0$,mini\_bathch代销$s\in\mathbb{N}$,内部循换大小$l\in\mathbb{N}$\\
-	初始化:$\omega_0\in\mathbb{R}^n$\\
-	迭代:\\
-	for k=1,2,$\ldots$,do\\
-	    设置$\omega_0\leftarrow\bar{\omega_{k-1}}$\\
-	    设置$v_0\leftarrow\Delta F(\omega_0)$\\
-	    设置$\omega_1\leftarrow\omega_0-\alpha v_0$
-	    迭代:\\
-	    for $t=1,\ldots,l-1$ do\\
-	   	 从${1,\ldots,n}$中均存产生$S_t,|S_t|=s$
-	        计算$\Delta_{s_i}F(\omega_t),\Delta_{s_t}F(\omega)$\\
-	        设置$v_t\leftarrow \Delta_{s_t}F(\omega_0)+v_o$\\
-  	        设置$\omega_{t+1}\leftarrow\omega_t-\alpha v_t$\\
-            结束for循换\\
-	设置$\bar{\omega_k}=\omega_t$,t服从于{$0,1,\ldots,l$}的均匀分布\\
-	结束for循换\\
-	\hline
+\end{center}
+\begin{center}
+\begin{tabular}{|p{3cm}|p{10cm}|p{4cm}|}
+\hline
+(?+...)&一个注释，括号里面的内容被简单的忽视&\\
+\hline
+(?=...)&如果...匹配下一步，不小号任何字符串。例如Isaac (?=Asimov) 将匹配'Isacc'如果它被'Asimov'跟着的话。&\\
+\hline
+(?!...)&如果...不匹配下一个，例如Isaac (?!Asimov)将匹配'Isaac',仅仅是它没有'Asimov'跟着。&\\
+\hline
+\textbackslash w&单词字符，等价与[A-Za-z0-9\_]&\\
+\hline
 \end{tabular}
-
-
-SVRG，全称为随机方差减小梯度，其名称源自于该算法可以被视为 SGD 的方差减小变体（尤其是有限和最小化/finite-sum minimization）。
-
-研究员通过结合 SVRG 和 SAGA 的一些思想，提出一个新的方法，叫做 SARAH。仅是内层迭代步长不同于 SVRG，SARAH 的公式如下
-\begin{equation}\label{eq:optimizer8}
-	v_t\leftarrow\Delta_{s_t}F(\omega_t)-\Delta_{S_t}F(\omega_{t-1})+v_{t-1}
-\end{equation}
-
-
-该变化导致$\mathbb[v_t]\neq\Delta F(\omega_{t-1})$ ，
-使得 SARAH 中的步长不基于无偏梯度估计。不过，相对于 SVRG，它获得了改进的收敛特性。
-
-\begin{tabular}{ll}\label{最小强化凸函数一阶方法计算复杂度}
-	方法&复杂度\\
-	\hline
-	GD&$O(nk\log(1/\epsilon))$\\
-	SGD&$O(1/\epsilon)$\\
-	SVRG&$O((n+k))\log(1/\epsilon)$\\
-	SAG/SAGA&$O((n+k))\log(1/\epsilon)$\\
-	SARAH&$O((n+k)\log(1/\epsilon))$
+\end{center}
+正则表达式的语法实例
+\begin{center}
+\begin{tabular}{|p{6cm}|p{8cm}|}
+\hline
+P(Y|YT|YTH|YTHO)?N&'PN','PYN','PYTN','PYTHN','PYTHON'\\
+\hline
+PYTHON+&'PYTHON','PYTHONN','PYTHONNN',\ldots\\
+\hline
+PY[TH]ON&'PYTON','PYHON'\\
+\hline
+PY[\^TH]?ON&'PYON','PYaON','PYbON','PYcON',\ldots\\
+\hline
+PY\{:3\}N&'PN','PYN','PYYN','PYYYN',\ldots\\
+\hline
 \end{tabular}
-
-\begin{tabular}{ll}\label{最小化一般凸函数的一阶方法计算复杂度}
-	方法&复杂度\\
-	\hline
-	GD&$O(nk\log(n/\epsilon))$\\
-	SGD&$O(1/\epsilon^2)$\\
-	SVRG&$O(n+(\sqrt{n}/epsilon))$\\
-	SAGA&$O((n+(n/\epsilon)))$\\
-	SARAH&$O((n+(1/\epsilon))\log(1/\epsilon))$
-\end{tabular}
-
-\section{二阶方法和拟牛顿法}
-
-受确定性优化研究领域几十年研究成果的激励，ML 优化中最活跃的研究领域之一就是关于如何使用二阶导数（即曲率）信息来加速训练。
-
-不幸的是，当 n 或 d 很大时，在机器学习应用程序中，海塞矩阵（Hessian matrix）的计算和存储变得非常昂贵。
-
-另一类基于形如（21）模型的算法是拟牛顿方法：
-\begin{equation}\label{eq:optimizer9}
-	m_k(s)=F(\omega_k)+\Delta F(\omega_k)^Ts+\frac{1}{2}s^TB_ks
-\end{equation}
-
-有趣的是，这些方法没有计算出显式二阶导数，而是通过在每次迭代中应用低秩更新构造完全由一阶导数的海塞近似矩阵。例如，让我们简要介绍最流行的拟牛顿算法，全称为 Broyden-Fletcher-Goldfarb-Shanno（BFGS）方法。在这种方法中，我们首先可以看到（21）的最小值为$-B_k^{-1}\Delta F(\omega_k)$进一步发现它实际上可以方便地计算出逆 Hessian 近似。由于随着步长 $s_k = \omega_k+1 − \omega_k$ 和位移$y_k=\Delta F(w_k+1)-\Delta F(w_k)$ 的移动，有人选择$B_k^{-1}$ 以最小化以满足割线方程$ s_k = (B^{-1})y_k$。使用精心挑选的规范表达，这个问题的解析式可以显示的写成
-\begin{equation}\label{eq:optimizer10}
-	B_{k+1}^{-1}=(I-\frac{s_ky_k^T}{s_k^Ty_k})B_k^{-1}(I-\frac{y_ks_k^T}{y^Ts_k})+\frac{s_ks_k^T}{y_k^Ts_k}
-\end{equation}
-
-其中之间$B_k^{-1}$和$B_{k+1}^{-1}$的差异可以仅表示为二阶矩阵。
-
-为方便引用，完整的经典 BFGS 算法被称为算法 3。
-
-\begin{tabular}{l}
-	\hline
-	Algorithm 3 BFGS方法\\
-	初始化:$\omega_0\in\mathbb{R}^n,B_o^{-1}\in\mathbb{R}^{n\times n}$和$b_0^{-1}>0$\\
-	迭代:
-	for $k=0,1,\ldots,$ do\\
-	    设置$\hat{s_k}\leftarrow B_k^{-1}\Delta F(\omega_k)$\\
-  	    计算$\alpha_k$对于$\omega_k$言责$\hat{s_k}$满足线性搜索条件\\
-	    设置$s_k\leftarrow\alpha_k\hat{s}_k$\\
-	    设置$y_k\leftarrow\Delta F(\omega_k+s_k)-\Delta F(\omega_k)$\\
-	    设置$B_{k+1}^{-1}$\\
-	    设置$\omega_{k+1}\leftarrow \omega_k+s_k$
-	结束for循换
+\end{center}
+常用的正则表达式:
+\begin{center}
+\begin{tabular}{||l|l||}
+\hline
+\^[A-Za-Z]+\$ &26个字母组成的字符串\\
+\hline
+\^[A-Za-z0-9]+\$&由26个字母和数字组成的字符串\\
+\hline
+\^\quad-?\textbackslash d+\$&整数形式的字符串\\
+\hline
+\^[0-9]*[1-9][0-9]* \$&正整数形式的字符串\\
+\hline
+[1-9]\textbackslash d{5}&中国境内邮政编码，6位\\
+\hline
+[\textbackslash u4e00-\textbackslash u9fa5]&匹配中文字符\\
+\hline
+\textbackslash d\{3\}-\textbackslash d\{8\}|\textbackslash d\{4\}-\textbackslash d\{7\}&国内电话号码，010-68913536\\
+\hline
 
 \end{tabular}
+\end{center}
+匹配IP地址的正则表达式：
+\textbackslash d+.\textbackslash d+.\textbackslash d+或者\textbackslash\{1,3\}.
+精确写法:\newline
+0-99:[1-9]?\textbackslash d\newline
+100-199:1\textbackslash d\{2\}\newline
+200-249:2[0-4]?\textbackslash d\newline
+250-255:25[0-5]\newline
+IP地址的正则表达式:(([1-9]?\textbackslash d|1\textbackslash d\{2\}|2[0-4]\textbackslash d|25[0-5]).)\{3\}([1-9]?\textbackslash d|1\textbackslash d\{2\}|2[0-4]\textbackslash d|25[0-5]
+\section{RE库的主要功能函数}
+\begin{center}
+\begin{tabular}{|p{3cm}|p{12cm}|}
+\hline
+re.search()&在一个字符串搜索匹配正则表达式的第一个位置。\\
+\hline
+re.match()&从一个字符的开始为值起匹配正则表达式，返回match对象。\\
+\hline
+re.fullmatch()&如果整个字符串匹配正则表达式然会相应的match对象，不匹配返回None，注意这不同于0长度匹配\\
+\hline
+re.findall()&搜索字符串，以列表类型返回全部匹配的字串\\
+\hline
+re.split()&将一个字符串按照正则表达式匹配结果进行分割，返回列表类型\\
+\hline
+re.finditer()&搜索字符串，返回一个匹配结果的迭代类型，每个迭代元素时match对象\\
+\hline
+re.sub()&在字符串中替换所有匹配正则表达式的子串，返回替换后的字符串。\\
+\hline
+re.subn()&执行替换操作凡是返回一个(new\_string,number\_of\_subs\_made)元组\\
+\hline
+re.escape(pattern)&转义素有的字符除了ASCII字母，数字和下划线，如果你想匹配一个也许有正则表达式在里面的任一字符串这是很有用的。\\
+\hline
+re.purge()&清除正则表达式缓存\\
+\hline
+\end{tabular}
+\end{center}
+re.search(pattern,string,flags=0):在一个字符串中搜索匹配正则表达式的第一个位置返回match对象。\newline
+\begin{itemize}
+\item pattern:正则表达式的字符串或原声字符串表示。
+\item string:待匹配字符串。
+\item flags:正则表达式使用时的控制标记。\newline
+\begin{tabular}{|p{4cm}|p{10cm}|}
+\hline
+\subsection{re表达式中的flags}
+re.A&使\textbackslash w \textbackslash W\textbackslash b\textbackslash B\textbackslash d\textbackslash D
+\textbackslash s\textbackslash S值执行ASCII匹配而不是Unicode匹配，仅仅对于Unicode样式有意义对Byte样式忽略。\\
+\hline
+re.DEBUG&显示编译表达式的调试信息\\
+\hline
+re.I &忽略正则表达式的大小写，[A-Z]能够匹配小写。\\
+\hline
+re.L &使得\textbackslash w \textbackslash W\textbackslash b\textbackslash B\textbackslash d\textbackslash D
+\textbackslash s\textbackslash S依赖于当前现场，当现场机制不可信时不鼓励使用，在不管什么时候它处理一个cultrue，你应该用Unicode匹配，这个flag仅仅可以被用在bytes样式中。\\
+\hline
+re.M &正则表达式中的\^操作能够将给定字符串的每一行当作匹配开始\\
+\hline
+re.S &正则表达式中的.操作能够匹配所有的字符，默认匹配除换行外的所有字符\\
+re.VERBOSE(re.X)&这个flag通过允许你分割逻辑部分和增加注释允许你写的正则表达式更好，空pattern中的空格被忽略特别是当一个字符类或者当有为转义的反斜线时，当一行包含不饿时字符类得\#和非转义斜线时，所有的左边以\#开头的字符将被忽略\\
+\hline
+%\begin{lstlisting}[language=Python]
+%a = re.compile(r"""\d +  # the integral part
+%                   \.    # the decimal point
+%                   \d *  # some fractional digits""", re.X)
+%b = re.compile(r"\d+\.\d*")
+%\end{lstlisting}
+\hline
+re,error(msg,pattern=None,pos=None)\newline
+\begin{itemize}
+\item msg:非正式格式的错误消息
+\item pattern:正则表达式
+\item pos:在pattern编译失败的索引(也许是None)
+\item lineno:对应位置的行(也许是None)
+\item colno:对应位置的列(也许是None)
+\end{itemize}
+\end{tabular}
+\end{itemize}
+\begin{lstlisting}[language=Python]
+import re
+match = re.match(r'1\d{5}','BIT 100081')
+if match:
+    match.group(0)
+\end{lstlisting}
+re.match(pattern,string,flags=0):从一个字符串的开始位置起匹配正则表达式，返回match对象。
+\begin{lstlisting}[language=Python]
+import re
+match = re.match(r'1\d{5}','100081 BIT')
+if match:
+    print(match.group(0))
+\end{lstlisting}
+re.findall(pattern,string,flags=0):搜索字符串，以列表类型返回能匹配的子串。
+\begin{lstlisting}[language=Python]
+import re
+ls = re.findall(r'1\d{5}','BIT 100081 TSU100084')
+\end{lstlisting}
+re.split(pattern,string,maxsplit = 0,flags=0):将字符串按照正则表达式匹配结果进行分割，
+返回列表类型。\newline
+maxsplit:最大分割数，剩余部分作为最后一个元素输出。\newline
+\begin{lstlisting}[language=Python]
+import re
+re.split(r'1\d{5}','BIT100081 TSU100084')
+re.split(r'1\d{5}','BIT100081 TSU100084',maxsplit=1)
+\end{lstlisting}
+re.finditer(pattern,string,flags=0):搜索字符串，返回一个匹配结果的迭代类型，每个迭代元素时matchdurian。
+\begin{lstlisting}[language=Python]
+import re
+for m in re.finditer(r'1\d{5}','BIT100081 TSU100084'):
+    if m:
+        print(m.group(0))
+\end{lstlisting}
+re.sub(pattern,repl,string,count=0,flags=0)
+在一个字符串中替换所有匹配正则表达式的子串返回替代厚的字符串。
+\begin{itemize}
+\item repl:替换匹配字符串的字符串
+\item string:待匹配字符串
+\item count:匹配的最大替换次数
+\end{itemize}
+\begin{lstlisting}[language=Python]
+import re
+re.sub(r'1\d{5}','110','BIT100081 TSU100084')
+\end{lstlisting}
+Re库的另一种等价用法:
+\begin{lstlisting}[language=Python]
+rst = re.search(r'1\d{5}','BIT 100081')
+\end{lstlisting}
+等价于
+\begin{lstlisting}[language=Python]
+pat = re.compile(r'1\d{5}')
+pat.search('BIT 100081')
+\end{lstlisting}
+\begin{center}
+\begin{tabular}{|l|l|}
+\hline
+regex.search&在字符串中搜索匹配正则表达式的第一个位置，返回match对象\\
+\hline
+regex.match()&在字符串的开始为值起配置正则表达式，返回match对象\\
+\hline
+regex.findall()&所有字符串，以列表类型返回全部能匹配的子串\\
+\hline
+regex.split()&将字符串按照正则表达式匹配结果进行分割，返回列表类型。\\
+\hline
+regex.finditer()&搜索字符串，返回一个匹配结果的迭代类型，每个迭代元素是match对象\\
+\hline
+reg.sub()&在一个字符串中替换所有匹配正则表达式的子串，返回替换手的字符串\\
+\hline
+\end{tabular}
+\end{center}
+Match对象：一次匹配的结果，包含匹配的很多信息。
+\begin{lstlisting}[language=Python]
+match = re.search(r'1'\d{5},'BIT 100081')
+if match:
+    print(match.group(0))
+type(match)
+\end{lstlisting}
+match对象的属性和方法
+\begin{center}
+\begin{tabular}{|p{4.2cm}|p{10cm}|}
+\hline
+.string&待匹配的文本\\
+\hline
+.re&匹配时使用的patter对象(正则表达式)\\
+\hline
+.pos&正则表达式搜索文本的开始位置\\
+\hline
+.endpos&正则表达式搜索文本的结束位置\\
+\hline
+.group(0)&获得匹配后的字符串\\
+\hline
+.start()&匹配字符串在原始字符串的开始位置\\
+\hline
+.end()&匹配字符串的结尾位置\\
+\hline
+.span()&返回(.start(),.end())\\
+\hline
+.expand()&用sub()方法返回一个通过在temple字符串替代\textbackslash 的像\textbackslash n被转换成合适的字符串，数值反向索引(\textbackslash 1,\textbackslash 2)和(\textbackslash g<1>,\textbackslash g<name>)被相应组里面的内容取代\textbackslash 字符串\\
+\hline
+.\_\_getitem\_\_(g)&允许你轻松的访问一个match组\\
+\hline
+.groupdict(default=None)&返回一个包含所有子组的匹配对象，key是子组的名字，被用在groups的默认参数
+默认参数不参加匹配，默认值时None。\\
+\hline
+.lastindex&最新匹配的组的整数索引，或者如果没有组被匹配就为None。例如表达式(a)b,((a)(b))
+和((ab))将有lastindex == 1如果应用的字符串'ab',然而表达式(a)(b)将有lastindex == 2,如果与应用在同一个字符串。\\
+\hline
+.lastgroup&最新匹配名字，如果group没有一个名字或者没有group就匹配为None。\\
+\hline
+.re&正则表达式的match()或者search()方法生成的match实例\\
+\hline
+\end{tabular}
+\end{center}
 
-
-
-即使采用二阶信息，随机优化方法（无差异减少）也无法达到比次线性更快的收敛速度。不过，使用二阶信息是一个不错的想法，因为如果海塞近似矩阵收敛于海塞矩阵的真实解，则可以减少收敛速度中的常数，同时还可以减少病态（ill-conditioning）的影响。
-
-不幸的是，尽管已经观察到了实际的效率提升，但在理论上还没有一个真正的二阶方法，可以实现这样的提升。到目前为止，只要海塞（近似）矩阵保持良好特性，大多数实际的方法只能保证实现 SGD 的收敛（速率）特性。例如，如果序列 {$B_k$}（不一定由 BFGS 更新生成）对所有 k 满足：
-\[
-	\Delta F(\omega_k)^T\mathbb{E}[B_k^{-1}\Delta_{S_k}F(\omega_k)]\geq\|\Delta F(\omega_k)\|^2\quad \mu_1\in(0,\infty),\|\mathbb{E}[B^{-1}_k\Delta_{S_k}F(\Omega_k)]\|^2\leq\mu_2\|\Delta F(\omega_k)\| for \mu_2\in[\mu_1,\infty)
-\]
-
-此时$\omega_{k+1}\leftarrow \omega_k-\alpha_kB_k^{-1}\Delta_{s_k}F(\omega_k)$具有与 SGD 相同的收敛速度属性。我们就 可以合理地假设这些限定适用于上述讨论的方法，这些假设有适当的保障。然而，在拟牛顿方法的背景下应该小心，其中随机梯度估计可能与海塞近似相关。
-
-\section{深度学习}
-
-沿着这些方向进行的主要进展包括深层神经网络（DNN）的运用。机器学习的一个相应的分支称为深度学习（或分层学习），它代表了一类试图通过使用包含连续线性和非线性变换的多层次深层图来构造数据中高层次抽象的算法 [6, 51, 73, 37, 38, 23]。近年来科学家们已经研究了各种神经网络类型，包括全连接神经网络（FNN）[84,28]，卷积神经网络（CNN）[50] 和循环神经网络（RNN）[41,57,52]。对于我们来说，将主要关注前两类神经网络，同时留意其它网络。
-
-\section{问题公式化}
-
-\subsection{随机梯度下降法}
-
-我们引用以下内容来强调将优化算法应用于训练 DNN 的令人困惑的反应。首先，例如在 [11] 中，有一个结论表明，通过应用 SGD 来最小化非凸目标函数（一直从输入×输出空间绘制），可以保证预期梯度风险将消失，至少在一个子序列上是这样，即：$\lim inf_{k\rightarrow\infty}\mathbb{E}[\|\Delta f(x_k)\|_2=0]$。这一结论令人欣慰，这表明 SGD 可以实现与其他最先进的基于梯度的优化算法类似的收敛保证。然而，尽管文献中的种种保证是有局限性的; 毕竟，尽管许多基于梯度的优化算法确保目标函数单调减少，但 SG 并不以这种方式计算。因此，如果一个子序列收敛到一个固定点，那么我们怎么能确定该点不是鞍点，或者是有误差局部最小值，亦或是一些目标值比初始点差的最大值？事实上，我们并不能肯定。也就是说，SGD 方法通常擅长找到局部极小值，而不是全局最小值。另一方面，SGD 往往会在固定值附近减缓收敛速度，这可能会阻碍它在深度神经网络中发展。
-
-一般来说，对于非凸问题，SGD 的收敛速度记录在 [29,30]，但是它们非常有限，特别是它们不适用于§1.3 中的讨论。因此，我们不能以同样的方式争论 SGD 是机器学习中非凸优化问题的最佳方法。此外，下式
-
-\begin{equation}\label{eq:optimizer11}
-	\|\hat{f}(\omega)-f(\omega)\|\leq O(\sqrt{\frac{C+\log(\frac{1}{\sigma})}{n}}) for \omega\in W
-\end{equation}
-
-中的学习界限是没有用的，因为对于许多 DNN 和 CNN，由神经网络产生的分类的复杂度 C 比训练样本数 n 大得多。事实上，在 [90] 中，经验表明，只有这些集合中的数据随机扰动，神经网络才能轻易地超过典型的数据集类型。
-
-\subsection{海塞-自由优化方法（Hessian-free method）}
-
-有研究者发现我们可以修改 DNN 的反向传播算法来计算这样的海塞-矢量乘积，因为它们可以被看作是方向导数 [65]。计算这种乘积的复杂度只是比计算梯度多一个常数因子。所得到的类的方法通常被称为海塞-自由优化方法，因为当访问和使用 Hessian 信息时，没有显式地存储 Hessian 矩阵。
-
-由于目标函数的非凸性，在 DNN 的情况中出现了其它的问题，真正的海塞矩阵可能不是正定矩阵。一般来说，在确定性优化中，处理这个问题的两种可能的方法是修改海森矩阵和运用置信域（trust region）方法。这两种方法都在训练 DNN 的情况中探讨过，例如，在 [54,55] 中，提出了一种高斯牛顿法，其在（11）中函数 F 的 Hessian 的公式中的第一项近似于 Hessian 矩阵（省略了正则化项）
-\begin{equation}\label{eq:optimizer12}
-	\Delta^2F(\omega)=\frac{1}{n}\sum_{i=1}^n[\Delta p(\omega,x_i)^T\Delta^2l(p(\omega,x_i),y_i)\Delta p_j(\omega,x_i)+\sum_{j=1}^{d_y}[l(p_j(\omega,x_i),y_i)\Delta^2p_j(\omega,x_i)]]
-\end{equation}
-
-
-其中$\Delta l(p(\omega,x_i),y_i)$是关于第一个参数的损失函数 $l(·, ·)$ 的海塞矩阵，$\Delta p(\omega,x_i)$是 $d_y$-维函数 $p(\omega, x)$ 对于权重 $\omega$ 的雅可比式,$\Delta^2[p_j(w,x_i) for all i\in{1,\ldots,d_y}]$ 是关于 $\omega$ 的按元素运算的海塞矩阵。
-
-\subsection{子采样海森方法（Subsampled Hessian method）}
-
-最近，在一系列论文（3, 15, 34）中，研究员们利用一个很一般的随机模型框架，对凸区域和非凸情形下的置信域、线搜索和自适应三次正则化方法进行了分析。在这项工作中，它表明，只要梯度和 Hessian 估计是足够准确的一些正概率，使用随机不精确梯度和 Hessian 信息的标准优化方法就可以保留其收敛速度。
-
-在机器学习和采样 Hessian 和梯度的情况下，结果只要求| SK |必须选择足够大的相对于该算法采取的步骤的长度。例如，在 [ 3, 34 ]，| SK |大小与置信域半径的关系。需要注意的是，对于采样的海塞矩阵，其对样本集的大小要求比采样的梯度要高得多，因此支持使用精确梯度的海塞估计的思想催生了强大的算法，它拥有强大理论支撑和良好的实践高效性。
+Re库默认采用贪婪匹配，即输出匹配最长的字子串
+\begin{lstlisting}[language=Python]
+match = re.search(r'PY.*N','PYANBNCNDN')
+match.group(0)
+\end{lstlisting}
+通常搜索的时候PYAN就能匹配出结果但是根据贪婪匹配，匹配待匹配字符串中最长的字符串。
+输出最短子串PYAN。
+\begin{lstlisting}[language=Python]
+match = re.search(r'PY.*?N','PYANBNCNDN')
+\end{lstlisting}
+最小匹配操作符\newline
+\begin{tabular}{|l|l|}
+\hline
+操作符&说明\\
+\hline
+*?&前一个字符0次或者无限次扩展，最小匹配\\
+\hline
++?&前一个字符1次或者浮现次扩展，最小匹配\\
+\hline
+??&前一个字符0次或者1次扩展，最小匹配\\
+\hline
+\{m,n\}?&扩展前一个字符串m到n次(含n)，最小匹配\\
+\hline
+\end{tabular}
+\begin{lstlisting}[language=Python]
+import re
+m = re.match(r'(\w+ \w+)','Isaac Newton,physicist')
+m.group(0)
+m.group(1)
+m.group(2)
+m.group(1,2)
+\end{lstlisting}
+输出：\newline
+'Isaac Newton'\newline
+'Isaac' \newline
+'Newton'\newline
+('Isaac','Newton')\newline
+\begin{lstlisting}[language=Python]
+m =re.match(r'(\d+).(\d+)','3.1415')
+m.groups()
+\end{lstlisting}
+输出:\newline
+('3','1415')\newline
+\begin{lstlisting}[language=Python]
+m = re.match(r'(?P<first_name>\w+) (?P<last_name>\w+)','Malcolm Reynolds')
+m.groupdict()
+\end{lstlisting}
+输出:{'first\_name':'Malcolm','last\_name':'Reynolds'}\newline
 \end{document}
