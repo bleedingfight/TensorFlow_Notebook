@@ -1,9 +1,9 @@
 \chapter{Tensorflow进阶}
 \section{模型存储和加载}
 \begin{itemize}
-\item 生成checkpoint文件，扩展名一般为.ckpt,通过在tf.train.Saver对象上调用Saver.saver()生成。它包含权重和其他程序中定义的变量，不包含
+\item 生成checkpoint文件，扩展名一般为.ckpt,通过在tf.train.Saver对象上调用Saver.saver()生成。它包含权重和其它程序中定义的变量，不包含
 图的结构。如果需要在另一个程序中使用，需要重建图形结构，并告诉Tensorflow如何处理这些权重。
-\item 生成(graph proto file)，这是一个二进制文件，扩展名一般是.pb,用tf.train.write\_graph()保存每，只包含图形结构，不包含权重，然后使用tf.import\_graph\_def()加载
+\item 生成(graph proto file)，这是一个二进制文件，扩展名一般是.pb,用tf.train.write\_graph()保存，只包含图形结构，不包含权重，然后使用tf.import\_graph\_def()加载
 图形。
 \end{itemize}
 \section{tf.estimator快速导航}
@@ -46,7 +46,7 @@ IRIS_TRAINING_URL = "http://download.tensorflow.org/data/iris_training.csv"
 IRIS_TEST = "iris_test.csv"
 IRIS_TEST_URL = "http://download.tensorflow.org/data/iris_test.csv"
 \end{lstlisting}
-如果训练集和测试集没有被存储在本地，下载他们:
+如果训练集和测试集没有被存储在本地，下载它们:
 \begin{lstlisting}[language=Python]
 if not os.path.exists(IRIS_TRAINING):
     raw = urllib.request.urlopen(IRIS_TRAINING_URL).read().decode('utf-8')
@@ -237,7 +237,7 @@ my_input_fn = tf.estimator.inputs.pandas_input_fn(
     \item indices:在你的包含有非零值的tensor的元素的索引。接受列表，列表中的每个元素是包含非0元素的索引。（例如[0,0]代表两维Tensor的第0行第0列。indices=[[1,3],[2,4]]指定索引为[1,3],[2,4]的元素有非零值。）
     \item values:一维值得tensor，values中的i对应indices中的i和它指定的值。例如给定值indices=[[1,3],[2,4]],参数values=[18,3.6],指定元素索引[1,3]的位置为18,[2,4]的值为3.6。
 \end{itemize}
-下面的代码顶一个一个两维$3\times5$的SparseTensor，索引为[0,1]的位置的值为6，[2,4]位置的值为0.5，其他值为0。
+下面的代码顶一个一个两维$3\times5$的SparseTensor，索引为[0,1]的位置的值为6，[2,4]位置的值为0.5，其它值为0。
 \begin{lstlisting}[language=Python]
 sparse_tensor = tf.SparseTensor(indices=[[0,1], [2,4]],
                                 values=[6, 0.5],
@@ -362,7 +362,7 @@ prediction_set = pd.read_csv("boston_predict.csv", skipinitialspace=True,
                              skiprows=1, names=COLUMNS)
 \end{lstlisting}
 \subsection{定义特征列创建回归器}
-下一步是为输入数据创建FeatureColumn，数据的格式指定用于训练的特征集，因为所有在房价数据集中的的特征包含连续的值，你可以用tf.contrib.layers.real\_valued\_column()创建他们的FeatureColumn：
+下一步是为输入数据创建FeatureColumn，数据的格式指定用于训练的特征集，因为所有在房价数据集中的的特征包含连续的值，你可以用tf.contrib.layers.real\_valued\_column()创建它们的FeatureColumn：
 \begin{lstlisting}[language=Python]
 feature_cols = [tf.feature_column.numeric_column(k) for k in FEATURES]
 \end{lstlisting}
@@ -507,7 +507,7 @@ Predictions: [1 2]
 \end{lstlisting}
 没有任何采集模型就像一个黑盒子，你不能看到TensorFlow随着梯度下降发生了什么，模型是否收敛或者是审查决定是否应该\href{https://en.wikipedia.org/wiki/Early_stopping}{提前停止},处理这个问题的一个方法是分隔模型为多个fit调用在更小的时间步获得更精确的评估，燃石日常使用不推荐因为它会极大地降低模型的训练。幸运的是tf.contrib.learn提供了另一个解:一个\href{https://www.tensorflow.org/api_docs/python/tf/contrib/learn/monitors}{Monitor API}设计用来帮助你在训练中采集度量和评估你的模型，下面的章节你讲学习如何在TensorFlow中采集，建立ValidationMonitor做streaming评估，用TensorBoard可视化你的度量。
 \subsection{让你的TensorFlow能采集}
-TensorFlow有5个不同的等级采集消息。为了急剧的提高他们是DEBUG，INFO，WARN，ERROR和FATAL，当你配置好级别后TensorFlow将输出所有和你级别和更改级别的相关消息。例如你设置级别为DEBUG你讲从上面五个级别得到采集信息。默认，TensorFlow被被配置的采集级别为WARN,但是当跟踪模型训练时，你将想要调整级别为INFO，将提供额外的反馈作为fit操作，增加下面行到你的代码:
+TensorFlow有5个不同的等级采集消息。为了急剧的提高它们是DEBUG，INFO，WARN，ERROR和FATAL，当你配置好级别后TensorFlow将输出所有和你级别和更改级别的相关消息。例如你设置级别为DEBUG你讲从上面五个级别得到采集信息。默认，TensorFlow被被配置的采集级别为WARN,但是当跟踪模型训练时，你将想要调整级别为INFO，将提供额外的反馈作为fit操作，增加下面行到你的代码:
 \begin{lstlisting}[language=Python]
 tf.logging.set_verbosity(tf.logging.INFO)
 \end{lstlisting}
@@ -865,7 +865,7 @@ tf.nn.sparse\_softmax\_cross\_entropy\_with\_logic(logits,labels,name=None)
 	\item tf.train.RMSPropOptimizer
 \end{itemize}
 \subsection{BGD}
-BGD(batch gradient descent)批量梯度下降。这种方法是利用现有的参数对训练集中的每一个输入生成一个估计输出$y_i$,然后跟实际的输出$y_i$比较，统计所有的误差，求平均后的到平均误差作为更新参数的依据。啊他的迭代过程是:
+BGD(batch gradient descent)批量梯度下降。这种方法是利用现有的参数对训练集中的每一个输入生成一个估计输出$y_i$,然后跟实际的输出$y_i$比较，统计所有的误差，求平均后的到平均误差作为更新参数的依据。啊它的迭代过程是:
 \begin{enumerate}
 	\item 提取训练集集中所有内容$\{x_1,\ldots,x_n\}$,以及相关的输出$y_i$;
 	\item 计算梯度和误差并更新参数。
@@ -1060,9 +1060,9 @@ tensorboard --logdir=./histogram_example
 \includegraphics[scale=0.5]{tb_hist1.png}
 \end{figure}
 \end{center}
-tf.summary.histogram接受任一尺寸和大小的Tensor，压缩他们进入直方数据结构组成一些小的数据宽度和数量组层的bin将诶够，例如我们像组成数[0.5,1.1,1.3,2.2,2.9,2.99]成3个bin，我们可以创建三个bin：一个包含0到1之间的一切(0.5)，一个包含1-2(1.1,1.3)之间，一个包含2-3(2.2,2.9,2.99)
+tf.summary.histogram接受任一尺寸和大小的Tensor，压缩它们进入直方数据结构组成一些小的数据宽度和数量组层的bin将诶够，例如我们像组成数[0.5,1.1,1.3,2.2,2.9,2.99]成3个bin，我们可以创建三个bin：一个包含0到1之间的一切(0.5)，一个包含1-2(1.1,1.3)之间，一个包含2-3(2.2,2.9,2.99)
 
-  TensorFlow用类是的方法创建bins，但是不想我们上面的例子，它不创建整数读额bins，瑞与大型数据，稀疏数据，这样的也许导致上千个bin，bins时指数分布时，一些bins相比于一些非常大数的bin接近于0。然而，可视化指数分布bin时一个技巧，如果高被编码为数量，bin宽度更大的空间，甚至他们有相同的元素，相比较之下统计数量使得豪赌比较变得可能，直方图采集数据仅均匀的bins，这可能导致不幸的人工操作。
+  TensorFlow用类是的方法创建bins，但是不想我们上面的例子，它不创建整数读额bins，瑞与大型数据，稀疏数据，这样的也许导致上千个bin，bins时指数分布时，一些bins相比于一些非常大数的bin接近于0。然而，可视化指数分布bin时一个技巧，如果高被编码为数量，bin宽度更大的空间，甚至它们有相同的元素，相比较之下统计数量使得豪赌比较变得可能，直方图采集数据仅均匀的bins，这可能导致不幸的人工操作。
 
 在直方图可视化器的每一个切片显示为一个单个的直方图。切片安装步数组织。例老的切片(e.g. step 0)比较靠后变为更深，然而新的slices接近于前景色，颜色更轻，右边的y轴显示了步数。
 
@@ -1122,7 +1122,7 @@ for step in range(N):
 \end{figure}
 \end{center}
 \subsection{更多分布}
-生成可视化更多分布，结合他们到表中:
+生成可视化更多分布，结合它们到表中:
 \begin{lstlisting}[language=Python]
 import tensorflow as tf
 k = tf.placeholder(tf.float32)
@@ -1254,7 +1254,7 @@ RNN通过循环处理这个问题，允许信息保留。\par
 \end{figure}
 理论上RNN有能力处理“long-term dependencies”，人能小心的挑选参数解决这个烦人的问题，然而不幸的是RNN似乎不能做到，原因由\href{http://www-dsi.ing.unifi.it/~paolo/ps/tnn-94-gradient.pdf}{Hochreiter (1991) [German] and Bengio, et al. (1994)}提出.
 \subsection{LSTM网络}
-Long Short Term Memory networks通常简称为LSTMs是一个特殊的RNN，能学习learning long-term dependencies，他被\href{http://deeplearning.cs.cmu.edu/pdfs/Hochreiter97_lstm.pdf}{Hochreiter  Schmidhuber (1997)}引入，然后被提炼，在大型文体处理上效果很好因而被广泛的使用。\par
+Long Short Term Memory networks通常简称为LSTMs是一个特殊的RNN，能学习learning long-term dependencies，它被\href{http://deeplearning.cs.cmu.edu/pdfs/Hochreiter97_lstm.pdf}{Hochreiter  Schmidhuber (1997)}引入，然后被提炼，在大型文体处理上效果很好因而被广泛的使用。\par
 LSTMs明确的设计去解决 long-term dependency problem。\par
 所有的循环神经网络都有重复的链式形式。在标准的RNNs，重复的模块有一个非常简单的结构，像tanh Layer。
 \begin{figure}
@@ -1272,7 +1272,7 @@ LSTMs也有这样类似的结构，但是congruent模块有点不同，有一个
 \centering
 \includegraphics[scale=0.3]{LSTM2-notation.png}
 \end{figure}
-在上面的图上，每一根线上携带的都是一个向量，从一个输出节点到其他输入，粉色圆圈代表按点操作，黄色盒子是学习好的神经网络层，线融合表示串联，copy表示将一条线复制一份。
+在上面的图上，每一根线上携带的都是一个向量，从一个输出节点到其它输入，粉色圆圈代表按点操作，黄色盒子是学习好的神经网络层，线融合表示串联，copy表示将一条线复制一份。
 \subsection{LSTMs想法的核心}
 LSTMs的核心是图像顶部的水平流过的cell state，cell state像一个传送带，它笔直的沿着整条链跑，和一些次要的线性交互，很容易实现信息不改变的流动。
 \begin{figure}
@@ -1330,7 +1330,7 @@ sigmod Layer输出0到1之间的数，描述多少组件应该被通过，0表�
 \includegraphics[scale=0.5]{LSTM3-var-GRU.png}
 \end{figure}
 这些仅仅是非常流行的LSTM变体，有一些其它的像\href{http://arxiv.org/pdf/1508.03790v2.pdf}{Yao, et al. (2015)}的Depth Gated RNNs，用完全不同的方法处理long-term dependencies，像\href{http://arxiv.org/pdf/1402.3511v1.pdf}{Koutnik, et al. (2014)}的Clockwork RNNs。\par
-那个算法是最好的？他们的差别大吗？\href{http://arxiv.org/pdf/1503.04069.pdf}{Greff, et al. (2015) }做了一些比较了一些流行的变体，发现他们基本相同。
+那个算法是最好的？它们的差别大吗？\href{http://arxiv.org/pdf/1503.04069.pdf}{Greff, et al. (2015) }做了一些比较了一些流行的变体，发现它们基本相同。
 \href{http://jmlr.org/proceedings/papers/v37/jozefowicz15.pdf}{Jozefowicz, et al. (2015)}比较了超过1万中架构，找到了一些在确定问题上比LSTMs好的架构。
 \subsection{向量字表示}
 \subsubsection{Vector Representation of Words}
@@ -1459,11 +1459,11 @@ To see how we do this evaluation如何执行这样的评估，可以看build\_ev
 
 语言模型是很多有趣难题的关键所在，比如语音识别，机器翻译，图像字幕等。它很有意思--可以参看 here。
 
-本教程的目的是重现 \href{http://arxiv.org/abs/1409.2329}{Zaremba et al., 2014} 的成果，他们在 PTB 数据集上得到了很棒的结果。
+本教程的目的是重现 \href{http://arxiv.org/abs/1409.2329}{Zaremba et al., 2014} 的成果，它们在 PTB 数据集上得到了很棒的结果。
 \subsubsection{下载及准备数据}
 本教程需要的数据在 data/ 路径下，来源于 Tomas Mikolov 网站上的\href{http://www.fit.vutbr.cz/~imikolov/rnnlm/simple-examples.tg}{PTB 数据集}
 
-该数据集已经预先处理过并且包含了全部的 10000 个不同的词语，其中包括语句结束标记符，以及标记稀有词语的特殊符号 (<unk>) 。我们在 reader.py 中转换所有的词语，让他们各自有唯一的整型标识符，便于神经网络处理。
+该数据集已经预先处理过并且包含了全部的 10000 个不同的词语，其中包括语句结束标记符，以及标记稀有词语的特殊符号 (<unk>) 。我们在 reader.py 中转换所有的词语，让它们各自有唯一的整型标识符，便于神经网络处理。
 \subsubsection{LSTM}
 模型的核心由一个 LSTM 单元组成，其可以在某时刻处理一个词语，以及计算语句可能的延续性的概率。网络的存储状态由一个零矢量初始化并在读取每一个词语后更新。而且，由于计算上的原因，我们将以 batch\_size 为最小批量来处理数据。
 
