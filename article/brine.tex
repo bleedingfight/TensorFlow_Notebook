@@ -1,0 +1,104 @@
+\documentclass{article}
+\usepackage[space]{ctex}
+\usepackage{listings}
+\usepackage{hyperref}
+\usepackage{color}
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+ 
+\lstdefinestyle{mystyle}{
+    backgroundcolor=\color{backcolour},   
+    commentstyle=\color{codegreen},
+    keywordstyle=\color{magenta},
+    numberstyle=\tiny\color{codegray},
+    stringstyle=\color{codepurple},
+    basicstyle=\footnotesize,
+    breakatwhitespace=false,         
+    breaklines=true,                 
+    captionpos=b,                    
+    keepspaces=true,                 
+    numbers=left,                    
+    numbersep=5pt,                  
+    showspaces=false,                
+    showstringspaces=false,
+    showtabs=false,                  
+    tabsize=2
+}
+ 
+\lstset{style=mystyle}
+ 
+\begin{document}
+\section{安装}
+brine是一个pip包，因此我们可以用下面的命令安装
+
+\lstinline[language=Bash]{pip install brine-io}
+\section{下载数据集}
+在你的项目坐在目录运行brine命令行下载CIFAR10数据集。
+
+\lstinline[language=Bash]{brine install cifar10/train}
+\section{载入数据集}
+用load\_dataset()函数载入数据集
+\begin{lstlisting}[language=Python]
+import brine
+cifar_train = brine.load_dataset('cifar10/train')
+\end{lstlisting}
+用数据集的columns属性我们可以查看数据集的结构
+\begin{lstlisting}
+cifar_train.columns
+Column(image=Column(name=image, type=Image), label=Column(name=label, type=Category, categories=['dog', 'horse', 'frog', 'airplane', 'cat', 'ship', ...]))
+\end{lstlisting}
+返回一个通过列的名字索引的元祖的Column，因此label是一个类别列，我们可以查看列包含的分类，下面我们将分类保存在本地变量中
+\begin{lstlisting}[language=Python]
+categories = cifar_train.columns.label.categories
+categories
+['dog', 'horse', 'frog', 'airplane', 'cat', 'ship', 'deer', 'bird', 'truck', 'automobile']
+\end{lstlisting}
+通过len检查数据集的长度
+\begin{lstlisting}[language=Python]
+>> len(cifar_train)
+50000
+\end{lstlisting}
+从任何行访问数据集，我们简单的传递索引进去。它返回一个命名的元祖，我们可以访问单个的元素
+\begin{lstlisting}[language=Python]
+>> cifar_train[20]
+Row(image='46405_bird.png', label='bird')
+>> cifar_train[20].image
+'46405_bird.png'
+>> cifar_trian[20].label
+'bird'
+\end{lstlisting}
+image返回一个图像路径。用数据集的load\_image()方法载入图片
+\begin{lstlisting}[language=Python]
+>> cifar_train.load_image(cifar_train[20].image)
+<PIL.PngImagePlugin.PngImageFile image mode=RGB size=32x32 at 0x7F9BA7860D68>
+\end{lstlisting}
+我们可以用create\_folds()分割我们的数据集为多个文件夹。这用于创建train/validation分割。
+brine数据集中的每个文件夹（不占据额外的磁盘空间）因此你可以在原始数据集的文件夹伤执行相同的行为
+，下面分割2000个向本用于我们的验证文件夹，剩下的样本将进入训练文件夹
+\begin{lstlisting}[language=Python]
+>> validation_fold, training_fold = cifar_train.create_folds([2000],
+shuffle=True)
+>> len(validation_fold)
+2000
+>> len(training_fold)
+48000
+\end{lstlisting}
+\section{PyTorch接口}
+Brine提供方法转换你的Brine数据集问流行的机器学习兼容数据，像PyTorch和keras
+这里是用PyTorch的例子
+\begin{lstlisting}[language=Python]
+from torchvision import transforms
+transform = transforms.Compose(
+    [transforms.ToTensor(),
+    transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))])
+
+train_fold_pytorch = training_fold.to_pytorch(transform=transform, transform_columns='images')
+validation_fold_pytorch = validation_fold.to_pytorch(transform=transform, transform_columns='images')
+\end{lstlisting}
+to\_pytorch()方法返回一个PyTorch数据集。转化调用用在数据集的每一行，因此我们指定transform\_columns='images',转化将被用于图像列（这里是image），图像列被传递前将被转化为PIL图像，你可以用这个PyTorch数据集正如我们用其它的PyTorch数据集一样，例如你可以用它创建一个DataLoader。
+\lstinline[language=Python]{trainloader = torch.utils.data.DataLoader(train_fold_pytorch, batch_size=4, shuffle=True, num_workers=2)}
+\section{结论}
+可以用相同的方法应用通过Brine应用到任何数据集，包括分割，分类，多类分类和对象检测，用Keras结合Brine分割图像的例子查看\href{https://medium.com/@hanrelan/a-non-experts-guide-to-image-segmentation-using-deep-neural-nets-dda5022f6282}{这篇博客}
+\end{document}
