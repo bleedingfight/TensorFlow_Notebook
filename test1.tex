@@ -2,7 +2,9 @@
 \usepackage[space]{ctex}
 \usepackage{float}
 \usepackage{hyperref}
+\usepackage{listings}%设置C风格代码格式
 \graphicspath{{./pic/chapter1/}{./pic/chapter2/}{./pic/chapter3/}{./pic/example/}}
+
 \begin{document}
 \chapter{扩展}
 这个章节解释开发者如何增加功能到TensorFlow。
@@ -133,6 +135,116 @@ TensorFlow运行环境是一个跨平台的库，下图画出了常用的架构�
 		\item 在C++实现操作。操作的实现成为内核，它是第一步祖册的具体实现。可以有多个核用于不同的输入输出类型或者架构(例如CPUs，GPUs)
 		\item 创建一个Python包装(可选)，这个包装器是公共的API用于创建Python操作。一个默认的包装器从操作注册中生成，可以直接使用或者添加。
 		\item 写一个函数计算操作的梯度(可选)
-		\item 测试操作。我们通常为了方便在Python中做这个操作，但是你可以特使C++操作。如果你定义梯度，你可以用Python \href{https://www.tensorflow.org/api_docs/python/tf/test/compute_gradient_error}{gradient checker}验证他们.查看\href{https://www.github.com/tensorflow/tensorflow/blob/r1.4/tensorflow/python/kernel_tests/relu_op_test.py}{relu_op_test.py}作为一个例子测试relu类似操作的前馈函数和他们的梯度。
+		\item 测试操作。
 \end{enumerate}
+我们通常为了方便在Python中做这个操作，但是你可以特使C++操作。如果你定义梯度，你可以用Python \href{https://www.tensorflow.org/api_docs/python/tf/test/compute_gradient_error}{gradient checker}验证他们.查看\href{https://www.github.com/tensorflow/tensorflow/blob/r1.4/tensorflow/python/kernel_tests/relu_op_test.py}{relu\_op\_test.py}作为一个例子测试relu类似操作的前馈函数和他们的梯度。
+\subsection{要求}:
+\begin{itemize}
+		\item 熟悉C++
+		\item 必须安装了\href{https://www.tensorflow.org/install/index}{TensorFlow二进制文件}，必须下载\href{https://www.tensorflow.org/install/install_sources}{TensorFlow源代码}能够构建它。
+\end{itemize}
+\subsection{定义你自己的操作接口}
+你通过结合TensorFlow系统注册操作的接口，在注册的时候，指定你的操作的名字，他的输入(类型和名字)和输出（类型和名字），操作文档和属性都要求。查看它如何工作，假设你想创建操作接受int32 tensor输出tensor的拷贝，但是所有的第一个元素设置为0.首先创建一个文件zero\_out.cc。然后添加一个调用到REGISTER\_OP宏定义你的操作的接口:
+\begin{lstlisting}[language=[GNU]C++]
+include "tensorflow/core/framework/op.h"
+#include "tensorflow/core/framework/shape_inference.h"
+
+using namespace tensorflow;
+
+REGISTER_OP("ZeroOut")
+    .Input("to_zero: int32")
+    .Output("zeroed: int32")
+    .SetShapeFn([](::tensorflow::shape_inference::InferenceContext* c) {
+      c->set_output(0, c->input(0));
+      return Status::OK();
+    });
+\end{lstlisting}
+如果你想测试是否一些函数的返回的Status对象是错误的，如果你反悔它，用OP\_REQUIRES\_OK.这些宏都来自函数错误时的返回
+\subsection{Op注册}
+\subsubsection{Attrs}
+Ops可能有一些属性，当操作被添加到图上它的值将被设置。这些属性经常被用于配置操作，在内核实现和在操作注册中一些类型的输入和输出
+他们的值被获取。可能的时候用一个输入代替属性，因此输入更灵活，这是因为属性是常数并且必须在图中定义构造时间。相比之下输入是一个Tensor他的值可以使动态的，输入可能用feed在被一步改变。属性被用于一些不能被输入处理的事；任何配置印象签名（输入输出的类型或者数值）或者不能一步步改变值的情况。你定义一个属性然后通过用Attr指定他的名字和类型，如下是类型
+\lstinline[language=C++{<name>: <attr-type-expr}
+name以字母开头可以由字母下划线组成，<attr-type-expr>是下面表述的表达式类型。
+例如，如果你想ZeroOut操作保留一个用户指定的索引而不仅仅是0th元素，你可以像下面注册操作:
+\begin{lstlisting}[language=C++]
+REGISTER_OP("ZeroOut")
+    .Attr("preserve_index: int")
+    .Input("to_zero: int32")
+    .Output("zeroed: int32");
+\end{lstlisting}
+(注意attribute types和用于输入和输出的tensor Types不同)，你的内核可以通过contex参数访问构造体中的属性
+\begin{lstlisting}[language=Python]
+class ZeroOutOp : public OpKernel {
+ public:
+  explicit ZeroOutOp(OpKernelConstruction* context) : OpKernel(context) {
+    // Get the index of the value to preserve
+    OP_REQUIRES_OK(context,
+                   context->GetAttr("preserve_index", &preserve_index_));
+    // Check that preserve_index is positive
+    OP_REQUIRES(context, preserve_index_ >= 0,
+                errors::InvalidArgument("Need preserve_index >= 0, got ",
+                                        preserve_index_));
+  }
+  void Compute(OpKernelContext* context) override {
+    // ...
+  }
+ private:
+  int preserve_index_;
+};
+\end{lstlisting}
+那个之后可以用于Compute方法:
+\begin{lstlisting}[language=Python]
+void Compute(OpKernelContext* context) override {
+    // ...
+
+
+    // We're using saved attr to validate potentially dynamic input
+    // So we check that preserve_index is in range
+    OP_REQUIRES(context, preserve_index_ < input.dimension(0),
+                errors::InvalidArgument("preserve_index out of range"));
+
+    // Set all the elements of the output tensor to 0
+    const int N = input.size();
+    for (int i = 0; i < N; i++) {
+      output_flat(i) = 0;
+    }
+
+    // Preserve the requested input value
+    output_flat(preserve_index_) = input(preserve_index_);
+  }
+\end{lstlisting}
+\subsection{Attr types}
+下面是支持的属性:
+\begin{itemize}
+\item string:任何字节的序列（不要求是UTF-8）
+\item int:一个有符号的整数
+\item float：一个浮点数
+\item bool：True或False 
+\item 一个\href{https://www.github.com/tensorflow/tensorflow/blob/r1.4/tensorflow/core/framework/types.cc}{DataType}的（non-ref）值
+\item shape:一个\href{https://www.github.com/tensorflow/tensorflow/blob/r1.4/tensorflow/core/framework/tensor_shape.proto}{TensorShapeProto}
+\item tensor：一个\href{https://www.github.com/tensorflow/tensorflow/blob/r1.4/tensorflow/core/framework/tensor.proto}{TensorProto}
+\item list(<type>):一个<type>列表，这里<type>是上面的类型之一，注意list(list(<type>))是不可用的
+\item
+\end{itemize}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 \end{document}

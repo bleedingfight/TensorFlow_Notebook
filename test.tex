@@ -1,92 +1,184 @@
 \documentclass{book}
 \usepackage[space]{ctex}
 \usepackage{listings}
+\usepackage[table]{xcolor}
+\usepackage{float}
+
+\setlength{\arrayrulewidth}{1mm}
+\setlength{\tabcolsep}{18pt}
+\renewcommand{\arraystretch}{2.5}
+\arrayrulecolor[HTML]{8470FF}
 \begin{document}
 \section{正则表达式介绍}
 常用的正则表达式
 \begin{itemize}
-\item ``${}^\wedge$\$`:表示空白行
+\item `${}^\wedge$\$`:表示空白行
 \item `ooo*`:至少两个o。
-\item `g.*g`:g$ldots$g。
+\item `g.*g`:表示g$\ldots$g。
+\item 't[ae]st':搜索tast或者test
+\item `$[{}^\wedge g]oo$`:表示oo但是oo的前面不能为g
+\item `[a-zA-Z0-9]`:表示a到z，A-Z,0-9之间的字符
+\item `${}^\wedge[a-z]$`:小写字母开头
+\item `${}^{\wedge}{}[{}^\wedge{}a-zA-Z]$`:表示首字符不是英文字符
+\item `$\textbackslash.$\$`:表示小数.结尾
+\item `\textit{g..d}`:表示gd之间有两个字符
+\item `[0-9][0-9]*`:查找任意数字
+\item `$o$\textbackslash\{2\textbackslash\}`:表示查找o两次
+\item `$go$\textbackslash\{n,m\textbackslash\}$g$`:表示查找goog或者gooog
+\item `$g[abc]g$`:表示查找gag，gbg或者gcg
 \end{itemize}
-\begin{center}
-% \begin{tabular}{|p{3cm}|p{10cm}|p{4cm}|}
-% \hline
-% 操作符 & 说明 & 实例\\
-% \hline
-% [] &字符集合，对单个字符给出取值范围  & [abc]表示a,b,c,[a-z]表示a到z的单个字符\\
-% \hline
-% .& 任何单个字符 &\\
-% \hline
-% [\^ ]&非字符集，对单个字符给出排除范围&[\^{} abc]表示非a或者b或者c的单个字符\\
-% \hline
-% *&前一个字符0次或者无限次扩展&abc*表示ab,abc,abcc等\\
-% \hline
-% +&前一个字符1次或无限次扩展&abc+表示abc,abcc,abccc等\\
-% \hline
-% ?&前一个字符0次或者一次扩展&abc?表示ac,abc\\
-% \hline
-% |&左右表达式任一个&abc|def表示abc或者def\\
-% \hline
-% $\left\{m\right\}$&扩展前一个字符m次&$ab\left\{2\right\}c$表示abc,abbc\\
-% \hline
-% $\left\{m,n\right\}$&扩展前一个字符m到n次，包含n&$ab\left\{1,2\right\}c$表示abc,abbc\\
-% \hline
-% \^ &匹配字符串开头&\^$\left\{\right\}$abc表示abc且在一个字符串开头\\
-% \hline
-% \$&匹配字符串结尾&abc\$表示abc且在一个字符串的结尾\\
-% \hline
-% ()&分组标记，内部只能使用|操作符&(abc)表示abc，(abc|def)表示abc或者def\\
-% \hline
-% (?...)&这是一个扩展的符号,第一个字符在'?'后面决定了深层的语法。扩展通常没有创建一个新的group,(?P<name>...时该规则惟一的特例)&\\
-% \hline
-% (?aiLmsux)&来自集合'a','i','L','m','s','u','x'的一个或者多个字母，group匹配空字符串字符给整个正则表达式设置相关的flags：re.A,re.I,re.L,re.M,re.S,re.X。如果你洗完桑包含flags作为正则表达式的一部分而不是传递一个flag参数到re.compile()函数这就是很有用的，Flasg应该首先用在表达式字符串。&\\
-% \hline
-% \end{tabular}
-% \end{center}
+扩展正则表达式
+\begin{itemize}
+\item `$go+d$`:+表示前面的o出现了一次以及以上
+\item `go?d`:？表示前面的o出现一次或者零次，gd或者god
+\item `gd|good`:表示gd或者good
+\item `g(la|oo)d`:表示glad或者good
+\end{itemize}
+\textit{sed [-nefr] [动作]}:
 
-% \begin{center}
-\begin{tabular}{|p{2.5cm}|p{8cm}|p{4cm}|}
-操作符 & 说明 & 实例\\
-(?:...)&非捕获版本的正则括号，匹配括号中无论什么正则表达式，但是在执行一个匹配或者查询之后group中子字符串匹配不能被获得&\\
+参数:
+\begin{itemize}
+	\item[-n]:使用silent模式。在一般的sed用法中，所有来自STDIN的数据一般都会被输出到屏幕上。但是如果加上-n参数后，则只有警告sed处理的行（或者动作）才会被列出来
+	\item[-e]:直接在指令列模式下进行sed的动作编辑
+	\item[-f]:直接将sed动作写入一个文件内，-f filename则可以执行filename内的sed动作
+	\item[-r]:sed的动作支持的是扩展型正则表达式语法而不是预设的基本正规表达是语法
+	\item[动作]：[n1[,n2]]function,n1,n2不一定存在，一般表达选择进行动作的行数。
+	\item[function]
+		\begin{itemize}
+			\item[a]:新增，a的后面可以接字符串，二这些字符串会在新的一行出现（目前行的下一行）
+			\item[c]:取代，c后面可以接字符串，这些字符串可以取代n1,n2之间的行
+			\item[d]:删除，因为是删除，所以d后面没有任何东西
+			\item[i]:插入，i后面接字符串，而这些字符串在新的行出现(当前行的上一行)
+			\item[p]:打印，将摸个选择的数据输出。通常p会和参数sed -n一起
+			\item[s]:取代，可以直接进行取代的工作，通常这个s可以搭配正则表达式。例如1,2s/old/new/g
+		\end{itemize}
+\end{itemize}
+\textbf{例子}
+\begin{itemize}
+\item cat -n test.tex|sed '1,2d':将test.tex文件的第一行和第二行删除，并不改变test.tex文件的内容
+
+\item cat -n test.tex|sed '1a end{figure}':在第一行后（占据第二行）添加end{figure}
+\item cat -n test.tex|sed '1a begin{figure}$\textbackslash$
+	>end{figure}'：在第一行末尾输入$\textbackslash$回车然后输入第二行内容
+\item cat -n test.tex|sed '1,3c documentclass':将1,3行内容替换为doucumentclass
+\item cat -n test.tex|sed -n ‘1,3p’:将test.tex文件的1-3行打印出来,加上n参数为了显示最后输出，而不是打印一行输出一下。
+\end{itemize}
+\textit{awk工具}
+awk '条件类型1{动作1} 条件类型2{动作2}'filename:awk乐意处理后续的档案，也可以读取来自前个制定的标准输出。但是wak主要处理每一行的字段的内容而预设的字段分隔符为空格键或者tab键。
+
+\textit{例子}
+\begin{itemize}
+	\item  last|awk '{print \$1 "\textbackslash t" \$3}' :查看当前登录用户,每一行都有变量名称，\$1表示第一列,\$0代表全部
+	
+\end{itemize}
+\begin{table}[h!]
+\centering
+{\rowcolors{2}{green!80!yellow!50}{green!70!yellow!40}
+\begin{tabular}{ |p{3cm}|p{3cm}|  }
+	\hline 
+	变量名称 & 代表含义 \\
+	\hline
+	NF & 每行拥有的字段总数 \\
+	NR    &目前awk所处理的是第几行的数据\\
+	FS & 目前的分割字符，预设是空格键 \\
+	\hline
+\end{tabular}}
+	\caption{awk参数}
+\end{table}
+示例:
+\begin{itemize}
+		\item last |awk '{print \$1 "\textbackslash t lines:" \$NR "\textbackslash t columns:" \$NF}':处理第一行，将一行的第一列取出打印然后输出制表符分割加上自己需要加上的打印信息lines:,输出变量行数，然后输出制表符输出列数
+\end{itemize}
+awk的逻辑运算字。
+\begin{table}[h]
+\centering
+{\rowcolors{2}{blue!80!yellow!50}{green!70!yellow!40}
+	\begin{tabular}{|c|c|}
+		\hline
+		运算单元&代表含义\\
+		<&小于\\
+		>=&大于等于\\
+		<=&小于等于\\
+		==&等于\\
+		!=&不等于\\
+		\hline
+	\end{tabular}}
+\end{table}
+
+\textit{例子}
+\begin{center}
+	\begin{itemize}
+		\item	
+		\begin{lstlisting}[language=Bash]
+cat /etc/passwd |\
+> awk '{FS=":"} $3<10 {print $1 "\t" $3}'
+		\end{lstlisting}:passwd中的内容是用:分隔的，此条命令查看第三列小于10的数据，并且；列出第三列(第一行没有正确显示，这是因为我们读入第一行的时候，把鞋变量\$1,\$2,$\ldots$预设还是以空格为分割的，所以虽然定义了FS=":",但却仅仅只能在第二行后开始生效)
+		\item \begin{lstlisting}[language=Bash]
+cat /etc/passwd|\
+> awk 'BEGIN {FS=":"} $3<10 {print $1 "\t "$3}'
+		\end{lstlisting}
+	\end{itemize}
+\end{center}
+\newpage
+\begin{table}[h]
+{\rowcolors{3}{blue!70!yellow!30}{blue!70!yellow!10}
+\centering
+\begin{tabular}{ |p{1cm}|p{3cm}|p{6cm}|  }
+   \hline
+   操作符&说明 &例子 \\
+   \hline
+	$\cdot$& \textit{任何单个字符} &\\
+	$[{}^\wedge]$&\textit{非字符集字符，对单个字符给出排除范围}&$[{}^\wedge abc]$\textit{表示非a或者b或者c的单个字符}\\
+	${}^*$&\textit{前一个字符0次或者无限次扩展}&\textit{abc*表示ab,abc,abcc等}\\
+	+&\textit{前一个字符1次或无限次扩展}&\textit{abc+表示abc,abcc,abccc等}\\
+ ?&前一个字符0次或者一次扩展&abc?表示ac,abc\\
+ |&左右表达式任一个&abc|def表示abc或者def\\
+	$\left\{m\right\}$&\textit{扩展前一个字符m次}&$ab\left\{2\right\}c$\textit{表示abc,abbc}\\
+	$\left\{m,n\right\}$&\textit{扩展前一个字符m到n次，包含n}&$ab\left\{1,2\right\}c$\textit{表示abc,abbc}\\
+	${}^\wedge$ &\textit{匹配字符串开头}&\^$\left\{{}^\wedge abc\right\}$\textit{表示abc且在一个字符串开头}\\
+	\$&\textit{匹配字符串结尾}&\textit{abc\$表示abc且在一个字符串的结尾}\\
+	()&\textit{分组标记，内部只能使用|操作符}&\textit{(abc)表示abc，(abc|def)表示abc或者def}\\
+	\hline
+\end{tabular}}
+\caption{常用参数}
+\end{table}
+\begin{itemize}
+\item ?\ldots 这是一个扩展的符号,第一个字符在'?'后面决定了深层的语法。扩展通常没有创建一个新的group,(?P<name>$\ldots$时该规则惟一的特例)
+\item (?aiLmsux)来自集合'a','i','L','m','s','u','x'的一个或者多个字母，group匹配空字符串字符给整个正则表达式设置相关的flags：re.A,re.I,re.L,re.M,re.S,re.X。如果你洗完桑包含flags作为正则表达式的一部分而不是传递一个flag参数到re.compile()函数这就是很有用的，Flasg应该首先用在表达式字符串。
+\item [ ]字符集合，对单个字符给出取值范围,[abc]表示a,b,c,[a-z]表示a到z的单个字符
+\item [(?:...)] 非捕获版本的正则括号，匹配括号中无论什么正则表达式，但是在执行一个匹配或者查询之后group中子字符串匹配不能被获得
+\item[\textbackslash d] 数字等价与[0-9]
+ \item[\textbackslash D] 非数字等价与[\^0-9]
+ \item[\textbackslash number] 匹配相同number的组。组以1开始，例如(.+) \textbackslash1匹配'the the'or'55 55',但是'thethe'(中间需要有空格)，这种特殊的序列仅仅被用来匹配1到99组。如果第一个数字为0或者是3为八进制的，他将被解释为一个group match，在字符类'[' and ']'中，所有的数被当作字符。
+ \item[A] 匹配字符串的开始
+ \item[\textbackslash b] 匹配空字符串，但是仅仅是单词前面或者后面的空字符串，单词被定义为一个unicode字母数字序列或下划线特征，因此单词为被空格或者为字母数字预示，非强跳得字符串，注意，\textbackslash b被定义为a\textbackslash w和a\textbackslash W之间，或者在\textbackslash w和单词开始之间，这意味着r'\textbackslash bfoo\textbackslash b'匹配'foo','foo.','(foo)','bar foo baz'而不是'foobar'或者'foo3'
+ \item[\textbackslash B]匹配空字符串，但是仅仅当它不在单词的开头或者结尾时，这意味着r'py\textbackslash B'匹配'python','py3','py2',而不是'py','py.'或者是'py!'.\textbackslash B和\textbackslash b相反，因此单词时unicode字母数字或者下划线，尽管这能被ASCII flag改变
+ \item \textbackslash s对于unicode字符串类型:匹配unicode空格字符串(包括[\textbackslash t\textbackslash n\textbackslash r\textbackslash f\textbackslash v],因此一些其它字符，例如不间断的空格),如果ascii flag被用，仅仅[\textbackslash t\textbackslash n\textbackslash r\textbackslash f\textbackslash v]被匹配(但是flag影响整个正则表达我时)，因此在这样的情况下用[\textbackslash t\textbackslash n\textbackslash r\textbackslash f\textbackslash v]也许是更好的选择。
+ \item[\textbackslash s] 匹配不是任何不是空格的unicode字符，和\textbackslash s相反，如果ascii flag被用这因为等于[\^{} \textbackslash t\textbackslash n\textbackslash r\textbackslash f\textbackslash v](但是flag影响整个正则表达式，因此在这种情况下[\^{} \textbackslash t\textbackslash n\textbackslash r\textbackslash f\textbackslash v])
+\item [\textbackslash z]匹配字符串的尾部
+\end{itemize}
+\newpage
+
+\begin{table}
+\begin{tabular}{|p{2cm}|p{8cm}|}
 \hline
-\textbackslash d&数字等价与[0-9]&\\
+(?imsx-imsx:...)&在字符字母集合'i','m','s','x'中，'-'跟着的来自同样字母集合的一个或者更多字母),对于部分表达式字母集合或者移去相关的flags:re.i,re.m,re.s,re.x。\\
 \hline
-\textbackslash D&非数字等价与[\^0-9]&\\
-\hline
-\textbackslash number &匹配相同number的组。组以1开始，例如(.+) \textbackslash1匹配'the the'or'55 55',但是'thethe'(中间需要有空格)，这种特殊的序列仅仅被用来匹配1到99组。如果第一个数字为0或者是3为八进制的，他将被解释为一个group match，在字符类'[' and ']'中，所有的数被当作字符。&\\
-\hline
-\\A 匹配&匹配字符串的开始\\
-\hline
-\textbackslash b& 匹配空字符串，但是仅仅是单词前面或者后面的空字符串，单词被定义为一个unicode字母数字序列或下划线特征，因此单词为被空格或者为字母数字预示，非强跳得字符串，注意，\textbackslash b被定义为a\textbackslash w和a\textbackslash W之间，或者在\textbackslash w和单词开始之间，这意味着r'\textbackslash bfoo\textbackslash b'匹配'foo','foo.','(foo)','bar foo baz'而不是'foobar'或者'foo3'&\\
-\hline
-\textbackslash B &匹配空字符串，但是仅仅当它不在单词的开头或者结尾时，这意味着r'py\textbackslash B'匹配'python','py3','py2',而不是'py','py.'或者是'py!'.\textbackslash B和\textbackslash b相反，因此单词时unicode字母数字或者下划线，尽管这能被ASCII flag改变&\\
-\hline
-%\textbackslash s&对于Unicode字符串类型：匹配Unicode空格字符串(包括\left[\textbackslash t\textbackslash n\textbackslash r\textbackslash f\textbackslash v\right],因此一些其它字符，例如不间断的空格),如果ASCII flag被用，仅仅\left[\textbackslash t\textbackslash n\textbackslash r\textbackslash f\textbackslash v\right]被匹配(但是flag影响整个正则表达我时)，因此在这样的情况下用\left[\textbackslash t\textbackslash n\textbackslash r\textbackslash f\textbackslash v\right]也许是更好的选择。&&\\
-\hline
-\textbackslash S&匹配不是任何不是空格的unicode字符，和\textbackslash s相反，如果ASCII flag被用这因为等于[\^{} \textbackslash t\textbackslash n\textbackslash r\textbackslash f\textbackslash v](但是flag影响整个正则表达式，因此在这种情况下[\^{} \textbackslash t\textbackslash n\textbackslash r\textbackslash f\textbackslash v])&\\
-\hline
-\\z&匹配字符串的尾部&\\
-\hline
-(?imsx-imsx:...)&在字符字母集合'i','m','s','x'中，'-'跟着的来自同样字母集合的一个或者更多字母),对于部分表达式字母集合或者移去相关的flags:re.I,re.M,re.S,re.X。\\
-\hline
-<?P=name>&:对于group的一个反向引用，它匹配之前name命名的group无论什么文本。\\
+<?p=name>&:对于group的一个反向引用，它匹配之前name命名的group无论什么文本。\\
 \hline
 \end{tabular}
-\end{center}
-\begin{center}
-\begin{tabular}{|p{3cm}|p{10cm}|p{4cm}|}
+\end{table}
+\begin{tabular}{|p{2cm}|p{4cm}|p{4cm}|}
 \hline
 (?+...)&一个注释，括号里面的内容被简单的忽视&\\
 \hline
-(?=...)&如果...匹配下一步，不小号任何字符串。例如Isaac (?=Asimov) 将匹配'Isacc'如果它被'Asimov'跟着的话。&\\
+(?=...)&如果...匹配下一步，不小号任何字符串。例如isaac (?=asimov) 将匹配'isacc'如果它被'asimov'跟着的话。&\\
 \hline
-(?!...)&如果...不匹配下一个，例如Isaac (?!Asimov)将匹配'Isaac',仅仅是它没有'Asimov'跟着。&\\
+(?!...)&如果...不匹配下一个，例如isaac (?!asimov)将匹配'isaac',仅仅是它没有'asimov'跟着。&\\
 \hline
 \textbackslash w&单词字符，等价与[A-Za-z0-9\_]&\\
 \hline
 \end{tabular}
-\end{center}
 正则表达式的语法实例
 \begin{center}
 \begin{tabular}{|p{6cm}|p{8cm}|}
@@ -105,7 +197,7 @@ PY\{:3\}N&'PN','PYN','PYYN','PYYYN',\ldots\\
 \end{center}
 常用的正则表达式:
 \begin{center}
-\begin{tabular}{||l|l||}
+\begin{tabular}{|l|l|}
 \hline
 \^[A-Za-Z]+\$ &26个字母组成的字符串\\
 \hline
@@ -134,7 +226,7 @@ PY\{:3\}N&'PN','PYN','PYYN','PYYYN',\ldots\\
 IP地址的正则表达式:(([1-9]?\textbackslash d|1\textbackslash d\{2\}|2[0-4]\textbackslash d|25[0-5]).)\{3\}([1-9]?\textbackslash d|1\textbackslash d\{2\}|2[0-4]\textbackslash d|25[0-5]
 \section{RE库的主要功能函数}
 \begin{center}
-\begin{tabular}{|p{3cm}|p{12cm}|}
+\begin{tabular}{|p{2cm}|p{8cm}|}
 \hline
 re.search()&在一个字符串搜索匹配正则表达式的第一个位置。\\
 \hline
@@ -158,14 +250,16 @@ re.purge()&清除正则表达式缓存\\
 \hline
 \end{tabular}
 \end{center}
+\newpage
 re.search(pattern,string,flags=0):在一个字符串中搜索匹配正则表达式的第一个位置返回match对象。\newline
 \begin{itemize}
 \item pattern:正则表达式的字符串或原声字符串表示。
 \item string:待匹配字符串。
 \item flags:正则表达式使用时的控制标记。\newline
-\begin{tabular}{|p{4cm}|p{10cm}|}
-\hline
+\end{itemize}
 \subsection{re表达式中的flags}
+\begin{tabular}{|p{2cm}|p{8cm}|}
+\hline
 re.A&使\textbackslash w \textbackslash W\textbackslash b\textbackslash B\textbackslash d\textbackslash D
 \textbackslash s\textbackslash S值执行ASCII匹配而不是Unicode匹配，仅仅对于Unicode样式有意义对Byte样式忽略。\\
 \hline
@@ -178,26 +272,23 @@ re.L &使得\textbackslash w \textbackslash W\textbackslash b\textbackslash B\te
 \hline
 re.M &正则表达式中的\^操作能够将给定字符串的每一行当作匹配开始\\
 \hline
-re.S &正则表达式中的.操作能够匹配所有的字符，默认匹配除换行外的所有字符\\
-re.VERBOSE(re.X)&这个flag通过允许你分割逻辑部分和增加注释允许你写的正则表达式更好，空pattern中的空格被忽略特别是当一个字符类或者当有为转义的反斜线时，当一行包含不饿时字符类得\#和非转义斜线时，所有的左边以\#开头的字符将被忽略\\
-\hline
-%\begin{lstlisting}[language=Python]
-%a = re.compile(r"""\d +  # the integral part
-%                   \.    # the decimal point
-%                   \d *  # some fractional digits""", re.X)
-%b = re.compile(r"\d+\.\d*")
-%\end{lstlisting}
-\hline
-re,error(msg,pattern=None,pos=None)\newline
-\begin{itemize}
-\item msg:非正式格式的错误消息
-\item pattern:正则表达式
-\item pos:在pattern编译失败的索引(也许是None)
-\item lineno:对应位置的行(也许是None)
-\item colno:对应位置的列(也许是None)
-\end{itemize}
 \end{tabular}
-\end{itemize}
+re.S 正则表达式中的.操作能够匹配所有的字符，默认匹配除换行外的所有字符
+re.VERBOSE(re.X)这个flag通过允许你分割逻辑部分和增加注释允许你写的正则表达式更好，空pattern中的空格被忽略特别是当一个字符类或者当有为转义的反斜线时，当一行包含不饿时字符类得\#和非转义斜线时，所有的左边以\#开头的字符将被忽略
+\begin{lstlisting}[language=Python]
+a = re.compile(r"""\d +  # the integral part
+                   \.    # the decimal point
+                   \d *  # some fractional digits""", re.X)
+b = re.compile(r"\d+\.\d*")
+\end{lstlisting}
+re.error(msg,pattern=None,pos=None)
+\begin{itemize}
+        \item msg:非正式格式的错误消息
+	\item pattern:正则表达式
+	\item pos:在pattern编译失败的索引(也许是None)
+	\item lineno:对应位置的行(也许是None)
+	\item colno:对应位置的列(也许是None)
+    \end{itemize}
 \begin{lstlisting}[language=Python]
 import re
 match = re.match(r'1\d{5}','BIT 100081')
@@ -252,7 +343,7 @@ pat = re.compile(r'1\d{5}')
 pat.search('BIT 100081')
 \end{lstlisting}
 \begin{center}
-\begin{tabular}{|l|l|}
+	\begin{tabular}{|p{2cm}|p{8cm}|}
 \hline
 regex.search&在字符串中搜索匹配正则表达式的第一个位置，返回match对象\\
 \hline
@@ -276,8 +367,9 @@ if match:
 type(match)
 \end{lstlisting}
 match对象的属性和方法
+
 \begin{center}
-\begin{tabular}{|p{4.2cm}|p{10cm}|}
+\begin{tabular}{|p{3cm}|p{8cm}|}
 \hline
 .string&待匹配的文本\\
 \hline
@@ -299,7 +391,13 @@ match对象的属性和方法
 \hline
 .\_\_getitem\_\_(g)&允许你轻松的访问一个match组\\
 \hline
-.groupdict(default=None)&返回一个包含所有子组的匹配对象，key是子组的名字，被用在groups的默认参数
+\end{tabular}
+\end{center}
+
+\begin{center}
+\begin{tabular}{|p{2cm}|p{8cm}|}
+\hline
+.groupdict(\\default=None)&返回一个包含所有子组的匹配对象，key是子组的名字，被用在groups的默认参数
 默认参数不参加匹配，默认值时None。\\
 \hline
 .lastindex&最新匹配的组的整数索引，或者如果没有组被匹配就为None。例如表达式(a)b,((a)(b))
