@@ -1,0 +1,102 @@
+\subsection{移动平均(moving average)}
+通常如果得到的数据噪声比较大，需要对这样的数据进行处理，一个一个常用的方法是移动平均。
+公式如下:
+\begin{equation}\label{ma:1}
+  V_{t} = \beta V_{t-1}  +(1-\beta)\theta_t
+\end{equation}
+假设有一个100天某一地区的温度数据，$\theta_t$表示第t天的温度，对这样的数据进行滑动平均后的结果为$v_{t}$。令$\beta=0.9$
+\begin{align*}
+  V_{100} = 0.9V_{99}+0.1\theta_{100}\\
+  V_99 = 0.9V_{98}+0.1\theta_{99}\\
+  \hdots\\
+  V_1 = 0.9V_0+0.1\theta_{1}
+\end{align*}
+根据上面的公式带入:
+\begin{multline*}
+  V_{100}=0.9V_{99}+0.1\theta_{100}=0.1\theta_{100}+0.1\cdot0.9\theta_{99}+0.9^2\theta_{98}=\\0.1\theta_{100}+0.1\cdot0.9\theta_{99}+0.1\cdot0.9^2\theta_{98}+0.9^3V_{97}=\cdots
+\end{multline*}
+新的数据可以看做原来的数据$\theta_{100},\theta_{99},\cdots,\theta_{1}$分别和对应系数相$(0.1,0.1\cdot0.9,0.1\cdot0.9^2,\cdots)$上各个数据的加权和。
+而且系数和约等于1。
+\begin{equation}
+  \lim_{n\rightarrow\infty}\sum_{n=0}^\infty aq^n=\frac{a}{1-q}
+\end{equation}
+如果这里的$a+1=1$则上面的系数和接近于1。
+如果上面的$\beta=0.9$,根据极限公式$\lim_{x\rightarrow\infty}(1+\frac{1}{x})^{x}=e$得出
+$(1-\frac{1}{x})^x=\frac{1}{2}\approx0.3$,$\beta=0.9$的时候$0.9^{10}=(1-\frac{1}{10})^{10}\approx\frac{1}{3}$，如果$\beta=0.98$降到原来幅度的$\frac{1}{3}$需要50天的数据。
+如果上面的$\beta=0.98$在最初的计算中因为$V_0=0,V_1=0.98*V_0+0.02*\theta_1$这样$V_1$的值将会变得很小。
+这体现在数据开始部分都很小，为了改变这种情况引入了修正偏差。
+$\frac{V_t}{1-\beta^t}$
+
+当$t=2,1-\beta^2=0.0396$,$\frac{V_2}{0.0396}=0.0196\theta_1+0.02\theta_2$,当t很大时，$\beta^t\approx0,1-\beta^t\approx1$,这样修正项对后期数据影响很小对初始数据影响较大。
+
+\subsection{动量梯度下降}
+通常mini batch gradient descent的做法是计算
+$\frac{\partial loss}{\partial w},\frac{\partial loss}{\partial d}$
+然后通过梯度下降公式更新$w = w-\alpha\frac{\partial loss}{\partial w},d = d-\alpha\frac{\partial loss}{\partial d}$，现在多了一层处理，用$V_{\partial w}=\beta V_{\partial w}+(1-\beta)\frac{\partial loss}{\partial w},V_{\partial b}=\beta V_{\partial b}+(1-\beta)\frac{\partial loss}{\partial b}$然后更新的时候用新的更新公式$w = w-\alpha V_{\partial w},b=b-\alpha V_{\partial b}$常见的选择是$\beta=0.9$
+\subsection{RMSprop}
+和动量梯度下降不同之处在于
+$S_{\partial w} = \beta S_{\partial w}+(1-\beta)\frac{\partial loss}{\partial w^2},S_{\partial b} = \beta S_{\partial b}+(1-\beta)\frac{\partial loss}{\partial b^2}$
+更新的方式:
+
+
+\begin{align} 
+w:=w-\alpha\frac{\partial w}{\sqrt{S_{\partial w}}}\\
+b:=b-\alpha\frac{\partial b}{\sqrt{S_{\partial b}}}
+\end{align}
+实际使用中为了防止除零错误，会给$S_{\partial w},S_{\partial w}$加上一个很小的数$eps$,通常$eps=10^{-8}$。
+\subsection{Adam算法}
+$V_{\partial w}=0,S_{\partial w}=0,V_{\partial b}=0,S_{\partial b}=0$
+\begin{enumerate}
+\item 通过mini-batch计算$\partial w,\partial b$
+\item 通过动量梯度下降计算$V_{\partial w}=\beta_1V_{\partial w}+(1-\beta_1)\partial w$和$V_{\partial b}=\beta_1V_{\partial b}+(1-\beta_1)\partial b$
+\item 用RMSprop计算$S_{\partial w}=\beta_2S_{\partial w}+(1-\beta_2)\partial w^2,S_{\partial b}=\beta_2S_{\partial b}+(1-\beta_2)\partial b^2$
+\item 修正$V_{\partial w}^{corr}=\frac{V_{\partial w}}{1-\beta_1^t}$,$V_{\partial d}^{corr}=\frac{V_{\partial w}}{1-\beta_1^t}$。修正$S_{\partial w}^{corr}=\frac{S_{\partial w}}{1-\beta_2^t}$,$S_{\partial d}^{corr}=\frac{S_{\partial d}}{1-\beta_2^t}$
+\item $w:=w-\alpha\frac{V_{\partial w}^{corr}}{\sqrt{S_{\partial w}^{corrd}+eps}},b:=b-\alpha\frac{V_{\partial b}^{corr}}{\sqrt{S_{\partial b}^{corrd}+eps}}$
+\end{enumerate}
+上面的参数通常需要调整，通常来说$\beta_1=0.9,\beta_2=0.999,eps=10^{-8}$,最常调整的是$\alpha$
+\subsection{学习率的衰减}
+可以使用如下方程让学习率慢慢衰减
+\[\alpha = \frac{1}{1+decay\cdot epoch_{num}}\cdot \alpha_0\]
+训练的时候讲数据分为$epoch_1,epoch_2,\cdots,epoch_n$
+假设$\alpha_0=0.2,decay=1$下面你可以得到:
+\begin{table*}
+\centering
+\begin{tabular}{|c|c|}
+\hline
+Epoch&$\alpha$\\
+\hline
+1&0.1\\
+\hline
+2&0.0.0666\\
+\hline
+\vdots&\vdots\\
+\hline
+9&0.02\\
+\hline
+\end{tabular}
+\end{table*}
+另一种学习率变化是按照指数变化的$\alpha=0.95^{epoch_{num}}\alpha_0$或者是$\alpha=\frac{k}{\sqrt{epoch_{num}}}\alpha_0$或者$\frac{k}{\sqrt{t}}\alpha_0$
+\subsection{如何选择参数}
+在深度学习中超参数的数量可能很多，这时候调整参数就是一个很重要的任务。在机器学习时代数据量比较小的时候我们可以使用指定的参数计算获取最小的结果，比如在学习率$\alpha$
+和动量参数$\beta_1$,我们可以选择5组值，分别计算结果，找到最优的参数组合。但是在深度学习中，参数很多，这样的方法旺旺不适用。常用的方法是随机给定参数的的值。然后在随机给的参数区域中找到相对较优的参数组合，然后在方法这些区域，继续更精细的寻找，知道找到最优结果。
+
+假设你要选择的隐藏层的单元数在50-100之间，神经网络的层数2-4，这时候你可以随机的选择中间的某一个数字，这个随机选择通常不是均匀随机选择，因为如果我们希望搜索的$\alpha$范围在0.001-1。这样我们按照0.0001,0.0002,……,1搜索将会在0.1-1之间搜索的时候耗费掉90\%的资源。这时候使用对数坐标就比较合理。这时候的搜索就变成了在0.0001，0.001,0.01,0.1,1之间搜索。另一个比较麻烦的问题是设置$\beta$，假设你的$\beta$范围在0.9，……，0.999之间。当$\beta=0.9$时意味着将在10个值中求加权平均，0.999意味着将在1000个值中求平均。这个时候搜索值得时候考虑搜索$1-\beta$,即$0.1-0.001$之间。这时候就能按照之前的对数坐标进行搜索了。应为$1-\beta$在接近1的时候结果敏感。当$\beta=0.9000\rightarrow 0.9005$时，这时候对10个值进行处理。但是当$\beta:0.999\rightarrow 0.9995$时对1000个值经行处理这时候值的变化将会很敏感。
+\subsection{norm batch}
+在洛基回归中常常用归一化预先处理数据，使得数据具有0均值，方差为原来数据的统计方差。在深度神经网络中，是否需要对每一层(如第i层的输出$a^{[i]}$)的输入进行归一化一更快的收敛。实际上归一化的是每一层的输出$z^{[i]}$。假设nn隐藏层l的输入为$z^{(1)},z^{(2)},\ldots,z^{(m)}$,即$z^{[l](1)},\ldots,z^{[l](m)}$
+\begin{equation}
+\begin{split}
+\mu=\frac{1}{m}\sum_{i=1}^mz^{(i)}\\
+\sigma^2=\frac{1}{m}\sum_{i=1}^m(z_i-\mu)^2\\
+z^{(i)}_{norm}=\frac{z^{(i)}-\mu}{\sqrt{\sigma^2+eps}}\\
+\hat{z}^{(i)}=\gamma z_{norm}^{(i)}+\beta\\
+if\\
+\gamma=\sqrt{\sigma^2+eps}\\
+\beta=\mu\\
+\hat{z}^{(i)}=z^{(i)}
+\end{split}
+\end{equation}
+$\gamma,\beta$的存在是为了有是有你并不想你的数据在0均值附近波动，这时候你可以调整$\gamma,\beta$的值让他们满足你的要求。
+BN的处理过程如下:
+\[x\underrightarrow{w^{[1]}mb^{[1]}}\quad z^{[1]}\underrightarrow{\beta^{[1]},\gamma^{[1]}}\quad\hat{z}^{[1]}\rightarrow a^{[i]}=g^{[i]}(\hat{z}^{[i]})\quad \underrightarrow{w^{[2]},b^{[2]}}z^{[2]}\rightarrow\]
+在实际训练的时候参数变味了$w^{[l]},b^{[l]},\beta^{[l]},\gamma^{[l]},z^{[l]}=w^{[l]}a^{[l-1]}+b^{[l]}$
+
