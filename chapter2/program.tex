@@ -378,14 +378,14 @@ TensorFlow利用数据流图计算有如下好处:
 \begin{itemize}
 \item 调用tf.constant(42.0)创建一个tf.Operation生成值42.0,添加值到默认的图上，返回一个代表这个常量值的tf.Tensor。
 \item 调用tf.matmul(x,y)创建一个tf.Tensor对象x,y用tf.Operation相乘，增加它到默认的图上，返回一个代表相乘结果的tf.Tensor。
-\item 执行 v=tf.Variable(0)给图添加一个tf.Operation到图上，操作将存储可以写的Tensor值在tf.Session.run调用前。tf.Variable对象包装这个操作，然后它能被像tensor一样使用，Tensor将读取当前存储的值。tf.Variable对象有assign和assign\_add之类的方法，当方法被执行的时候，更新存储的值。
+\item 执行 v=tf.Variable(0)给图添加一个tf.Operation到图上，操作将在tf.Session.run调用前存储可以写的Tensor值。tf.Variable对象包装这个操作，然后它能被像tensor一样使用，Tensor将读取当前存储的值。tf.Variable对象有assign和assign\_add之类的方法，当方法被执行的时候，更新存储的值。
 \item 调用tf.train.Optimizer.minimize将操作和tensor添加到默认的图上计算梯度，返回一个tf.Operation,当运行的时候，用图读设置变量。
 \end{itemize}
-多数程序依赖于默认的图，在TensorFlow API调用大多数程序仅仅添加操作和tensor到默认的图上，并不执行实际的计算。当你通过这些tf.Tensor和tf.Operation代表你的函数传递给tf.Session进行计算。
+多数程序依赖于默认的图，在TensorFlow API调用大多数程序仅仅添加操作和tensor到默认的图上，并不执行实际的计算。当你通过这些tf.Tensor和tf.Operation表示你的函数,传递给tf.Session进行计算。
 \subsection{命名你的操作}
-tf.Graph对象给它包含的包含tf.Operation对象定义了一个namespace。TensorFlow自动为你图上的操作选择一个独一无二的名字，而且给操作名字使程序易读和方便调试。TensorFlow API提供了两个操作来覆盖操作的名字:
+tf.Graph对象给它包含的tf.Operation对象定义了一个namespace。TensorFlow自动为你图上的操作选择一个独一无二的名字，而且指定操作名字使程序易读和方便调试。TensorFlow API提供了两个操作来覆盖操作的名字:
 \begin{itemize}
-\item 每个API函数创建一个新的tf.Operation或者返回一个新的tf.Tensor时接受一个name选项。例如tf.constant(42.0,name="answer")创建一个新的操作名字叫answer，返回一个名字为”answer:0“的tf.Tensor。如果默认图已经包含了名字为"answer"的操作，TensorFlow将添加"-1","-2"等等，例如:
+\item 每个API函数在创建一个新的tf.Operation或者返回一个新的tf.Tensor时接收一个name选项。例如tf.constant(42.0,name="answer")创建一个新的操作名字叫answer，返回一个名字为”answer:0“的tf.Tensor。如果默认图已经包含了名字为"answer"的操作，TensorFlow将添加"-1","-2"等等，例如:
 \begin{lstlisting}[language=Python]
 c_0 = tf.constant(0,name="c")#操作的名字为"c"
 c_1 = tf.constant(2,name="c")#操作的名字为"c_1"
@@ -404,7 +404,7 @@ tf.Tensor对象隐藏为tf.Operation名字，之后tf.Operation将产生tensor�
 \item "<i>"是一个整数操作输出的tensor的索引。
 \end{itemize}
 \subsection{放置操作在不同的设备上}
-如果你想TensorFlow用多个不同的设备，tf.device函数提供了方便的方法请求所有的操作在一个特别的上下文被放置现在相同的设备上。
+如果你想TensorFlow用多个不同的设备，tf.device函数提供了方便的方法来在一个特别的上下文中请求所有的操作放置在相同的设备上。
 指定格式如下:
 \begin{lstlisting}[language=Python]
 /job:<JOB_NAME>/task:<TASK_INDEX>/device:<DEVICE_TYPE>:<DEVICE_INDEX>
@@ -425,7 +425,7 @@ with tf.device("/device:CPU:0")
 with tf.device("/device:GPU:0"):
     result = tf.matmul(weights,img)
 \end{lstlisting}
-如果你用典型的分布式配置部署TensorFlow，你也许指定job的名字和task ID放置变量在参数服务器job("/job:ps"),其它的操作在worker job("/job:worker")
+如果你用典型的分布式配置部署TensorFlow，你也许指定job的名字和task ID放置变量到参数服务器job("/job:ps"),其它的操作到worker job("/job:worker")
 \begin{lstlisting}[language=Python]
 with tf.device("/job:ps/task:0"):
     weight_1 = tf.Variable(tf.truncated_normal([784,100]))
@@ -437,7 +437,7 @@ with tf.device("/job:worker"):
     layer_1 = tf.matmul(train_batch,weight_1)+biases_1
     layer_2 = tf.matmul(train_batch,weight_2)+biases_2
 \end{lstlisting}
-tf.device给你很高的灵活度度选择放置单个操作或者更广范围的TensorFlow图。在一些情况下，有简单的算法。例如tf.train.replica\_device\_setter API可以用tf.device防止操作data-parallel distributed training.例如下面的代码段显示tf.train.replica\_device\_setter应用不同的放置策略到tf.Vriable对象和其它操作:
+tf.device给你很高的灵活度度来选择放置单个操作或者更大范围的TensorFlow图。在一些情况下，有简单的算法。例如tf.train.replica\_device\_setter API可以用tf.device防止操作data-parallel distributed training.例如下面的代码段显示tf.train.replica\_device\_setter应用不同的放置策略到tf.Virable对象和其它操作:
 \begin{lstlisting}[language=Python]
 with tf.device(tf.train.replica_device_setter(ps_tasks=3)):
 # tf.Variable objects are, by default, placed on tasks in "/job:ps" in a
@@ -451,7 +451,7 @@ with tf.device(tf.train.replica_device_setter(ps_tasks=3)):
     layer_1 = tf.matmul(input_data, w_1) + b_1  # placed on "/job:worker"
 \end{lstlisting}
 \subsection{Tensor-like对象}
-一些TensorFlow操作接受一个或者更多的tf.Tensor对象作为参数。例如，tf.matmul得到tf.Tensor对象，tf.add\_n得到一个tf.Tensor列表对象。为了方便使用这些函数在tf.Tensor中接受一个tensor-like对象,用tf.convert\_to\_tensor方法转换它为tf.Tensor，Tensor-like包含下面的元素类型:
+一些TensorFlow操作接收一个或者更多的tf.Tensor对象作为参数。例如，tf.matmul得到tf.Tensor对象，tf.add\_n得到一个tf.Tensor列表对象。为了方便使用这些函数在tf.Tensor中接收一个tensor-like对象,用tf.convert\_to\_tensor方法转换它为tf.Tensor，Tensor-like包含下面的元素类型:
 \begin{itemize}
 \item tf.Tensor
 \item tf.Variable
@@ -463,7 +463,7 @@ with tf.device(tf.train.replica_device_setter(ps_tasks=3)):
 
 默认，每次你的相同的tensor-like对象TensorFlow将创建一个新的tf.Tensor。如果tensor-like对象很大(numpy.ndarray包含一些训练样本),当你多次使用你也许会超出内存。为了避免这样，手动调用tf.convert\_to\_tensor在tensor-like对象，用tf.Tensor返回。
 \subsection{在tf.Session执行图}
-TensorFlow用tf.session类代表客户程序（通常是Python程序），通过一个类似的接口在(C++也可用),一个tf.Session对象提供访问在本地机器上的设备，远程设备用分布式的TensorFlow域。它也缓存一些关于你的tf.Graph的信息以至于你能高校的运行相同的计算多次。
+TensorFlow用tf.session类代表客户程序（通常是Python程序），通过一个类似的接口在(C++也可用),一个tf.Session对象提供访问在本地机器上的设备，远程设备用分布式的TensorFlow域。它也缓存一些关于你的tf.Graph的信息以至于你能高效的运行相同的计算多次。
 \subsection{创建tf.Session}
 如果你用低层的TensorFlow API，你可以为当前图创建一个tf.Session
 \begin{lstlisting}[language=Python]
@@ -472,21 +472,21 @@ with tf.Session() as sess:
 #创建一个远程会话
 with tf.Session("grpc://example.org:2222"):
 \end{lstlisting}
-因为一个tf.Session拥有自己的物理资源(像GPU和网络连接)，它是典型用作上下文管理(with)自动关闭会话。但是你应该确定调用tf.Session.close当你完成后你必须释放资源。
+因为一个tf.Session拥有自己的物理资源(像GPU和网络连接)，它是通常用作上下文管理(with)，自动关闭会话。但是你应该确定调用tf.Session.close在程序结束后释放资源。
 
-高级API像tf.train.MonitoredTrainingSession或者tf.estimator.Estimator将创建和管理一个tf.Session给你。APIs接受target和config参数(或者作为tf.estimator.RunConfig的一部分)，含义如下:
-tf.Session.\_\_init\_\_接受三个参数:
+高级API像tf.train.MonitoredTrainingSession或者tf.estimator.Estimator将为你创建和管理一个tf.Session。APIs接收target和config参数(或者作为tf.estimator.RunConfig的一部分)，含义如下:
+tf.Session.\_\_init\_\_接收三个参数:
 \begin{itemize}
-	\item target 如果这个参数为空，会话仅仅用在本地机器上。然而，你也许指定grpc:// URL指定TensorFlow Server地址让会话访问server上的所有设备。查看tf.train.Server查看TensorFlow创建server的详细信息。例如通常between-graph replication配置，tf.Session在同一进程中作为客户连接tf.train.Server。
+	\item target 如果这个参数为空，会话仅仅用在本地机器上。然而，你也许指定grpc:// URL指定TensorFlow Server地址,让会话访问server上的所有设备。查看tf.train.Server查看TensorFlow创建server的详细信息。例如通常between-graph replication配置，tf.Session在同一进程中作为客户连接tf.train.Server。
 	\item graph 默认情况下新的tf.Session将被限制到仅能在当前的图上运行操作。如果你在你的程序中用多个图，你可以在创建会话的时候指定tf.Graph。
 	\item config 这个参数允许你指定tf.Configproto控制session的行为。例如包含一些配置选项。
-	\item allow\_soft\_placement 设置设个参数为True使用soft 设备放置算法，该算法忽略tf.device注释尝试放置CPU-only操作在GPU设备。
+	\item allow\_soft\_placement 设置设个参数为True使用soft 设备放置算法，该算法忽略tf.device注释,尝试放置CPU-only操作在GPU设备上。
 	\item cluster\_def:当用分布式的TensorFlow，这个选项允许你指定用于计算的机器，提供不同job名字的映射任务索引和网络地址。
 	\item graph\_option.optimizer\_options:在执行前提供控制优化TensorFlow的执行。
 	\item gpu\_options.allow\_grouth:设置为True改变GPU内存分配因至于它的随着内存分配渐渐增长，而不是启动的时候分配尽量多的内存。
 \end{itemize}
 \subsection{用tf.Session.run执行操作}
-tf.Session.run是运行tf.Operation和评估tf.Tensor的主要操作，一可以传递一个或者更多的tf.Operation和tf.Tensor或者tensor-like 类型的对象，像tf.Variable。这些fetch决定了tf.Graph的使用于计算fetch的所有子图操作的输出。例如下面的代码片段显示了不同的参数能操作不同的子图执行:
+tf.Session.run是运行tf.Operation和评估tf.Tensor的主要操作，可以传递一个或者更多的tf.Operation和tf.Tensor或者tensor-like 类型的对象，像tf.Variable。这些fetch决定了tf.Graph的使用与计算fetch的所有子图操作的输出。例如下面的代码片段显示了不同的参数能操作不同的子图执行:
 \begin{lstlisting}[language=Python]
 x = tf.constant([[37.0,-23.0],[1.0,4.0]])
 w = tf.Variable(tf.random_uniform([2,2]))
@@ -499,7 +499,7 @@ with tf.Session() as sess:
     print(sess.run(output))
     y_val,output_val = sess.run([y,output])
 \end{lstlisting}
-tf.Session.run也可以用feeds字典，字典映射tf.Tenor(典型的tf.placeholder())对象为合适执行的值(典型的Python标量，列表，Numpy数组)。
+tf.Session.run也可以用feeds字典，字典映射tf.Tenor(常见的tf.placeholder())对象为合适执行的值(典型的Python标量，列表，Numpy数组)。
 \begin{lstlisting}[language=Python]
 x = tf.placeholder(tf.float32,shape=[3])
 y = tf.square(x)
@@ -510,7 +510,7 @@ with tf.Session() as sess:
     #因为当你计算一个tensor的时候它以来的值应该给定。
     #sess.run(y,{x:37.0})Raises `ValueError`,因为37.0的形状不匹配
 \end{lstlisting}
-tf.Session.run也接受一个选项options参数使你指定调用的选项，run\_metadata参数使你收集关于执行的metadata。例如你可以用下面的选项处理执行信息:
+tf.Session.run也接收一个选项options参数使你指定调用的选项，run\_metadata参数使你收集关于执行的metadata。例如你可以用下面的选项处理执行信息:
 \begin{lstlisting}[language=Python]
 y = tf.matmul([[37.0,-23.0],[1.0,4.0]],tf.random_uniform([2,2]))
 with tf.Session() as sess:
@@ -528,11 +528,11 @@ print(metadata.partition_graphs)
 TensorFlow用数据流图作为程序的表示，一个tf.Graph包含两个相关的信息:
 \begin{itemize}
 \item 图的结构(Graph structure):节点和边指示了操作如何被组合在一起。但是没有描述它们如何被使用，图的结构像集合代码,查看它们可能传达一些有用的信息，但是它不包含源代码传送的所有信息。
-\item 图集合(Graph collections)TensorFlow提供了一个通常的机制从tf.Graph的恢复metadata集合。tf.add\_to\_collection函数使得你能用key（tf.GraphKeys定义的一些标准的key）结合列表对象看，tf.get\_colletion使得你能结合key查看所有的对象,一些TensorFlow库用如下机制:当你创建一个tf.variable,它被增加到代表全局变量和和训练的变量集合中，之后你创建一个tf.train.Saver或者tf.train.Optimizer,集合中的变量被用作默认参数。
+\item 图集合(Graph collections)TensorFlow提供了一个通常的机制从tf.Graph的恢复metadata集合。tf.add\_to\_collection函数使得你能用key（tf.GraphKeys定义的一些标准的key）结合列表对象，tf.get\_colletion使得你能结合key查看所有的对象,一些TensorFlow库用如下机制:当你创建一个tf.variable,它被增加到代表全局变量和训练的变量集合中，之后你创建一个tf.train.Saver或者tf.train.Optimizer,集合中的变量被用作默认参数。
 \end{itemize}
 一个图可以用两种形式表示:
 \begin{itemize}
-	\item tf.GraphDef:合适图结构的低级表示，包含所有操作的描述和它们之间的边。tf。GraphDef代表使用的低级APIs，像tensorflow:session C++ APIs 通常它要求额外的上下文环境（如典型的操作的名字）来充分使用它。tf.Graph.as\_graph\_def方法转换一个tf.Graph为tf.GraphDef。
+	\item tf.GraphDef:合适图结构的低级表示，包含所有操作的描述和它们之间的边。tf.GraphDef代表使用的低级APIs，像tensorflow:session C++ APIs 通常它要求额外的上下文环境（如典型的操作的名字）来充分使用它。tf.Graph.as\_graph\_def方法转换一个tf.Graph为tf.GraphDef。
 	\item tf.train.MetaGraphDef:这是数据流图的高级表示它包含一个tf.GraphDef,和一些帮助我们理解图的信息(像图集合的上下文信息)。tf.train.export\_meta\_graph函数转化一个tf.Graph为tf.trainMetaGraphDef。tf.train.Saver.save方法也写一个\newline tf.train.MetaGraphDef,它可能被用在结合保存的checkpoint文件去恢复训练保存点的状态。
 \end{itemize}
 通常情况下我们鼓励你用tf.train.MetaGraphDef而不是tf.GraphDef。在一些情况下tf.GraphDef是很有用的，例如当用下tf.import\_graph\_def或者Graph Transform这样的低级函数修改图，但是tf.train.MetaGraphDef建议用于高级应用。例如用tf.train.MetaGraphDef SavedModel library包装tf.Graph和一系列训练模型参数以至于它们能被后续服务使用。
@@ -541,7 +541,7 @@ TensorFlow用数据流图作为程序的表示，一个tf.Graph包含两个相�
 \begin{itemize}
 	\item 它将从原始的图集合中恢复图的内容。像tf.global\_variable和默认的参数像 \newline tf.train.latest\_checkpoint 函数可能被用于从类似的checkpoint目录寻找最新的checkpoint
 \end{itemize}
-如果你有一个tf.GraphDef,tf.import\_graph\_def函数使得你能载入图进一个已经存在的pythont f.Graph对象。为了利用导入的图,你必须知道在tf.GraphDef中操作或者Tensor的名字。tf,import\_graph\_def函数有两个主要的特性帮你用导入的图:
+如果你有一个tf.GraphDef,tf.import\_graph\_def函数使得你能载入图进一个已经存在的python tf.Graph对象。为了利用导入的图,你必须知道在tf.GraphDef中操作或者Tensor的名字。tf.import\_graph\_def函数有两个主要的特性帮你导入的图:
 \begin{itemize}
 	\item 你可以通过传递选项input\_map参数重新绑定导入图的tensor对象到默认的图。例如，input\_map使你获取定义在tf.GraphDef导入图的片段,连接图中的tensor和你在代码段中创建的tf.placeholder。
 	\item 你可以传递它们的名字到return\_elements列表从导入的图中返回tf.Tensor或者tf.Operation对象
@@ -814,7 +814,7 @@ sess.run(iterator.initializer, feed_dict={features_placeholder: features,
 \end{lstlisting}
 \subsection{消耗TFRecord数据}
 一些数据集有一个或者多个文件。tf.contrib.data.TextLineDataset提供了一个简单的方法从一个或者更多text文件提取
-行给定一个或者更多的文件名TextLineDataset将产生一个或者更多的字符串值元素。像TFRecordDataset，TextLineDataset接受filenames作为一个tf.Tensor,因此你可以通过tf.placeholder参数化它
+行给定一个或者更多的文件名TextLineDataset将产生一个或者更多的字符串值元素。像TFRecordDataset，TextLineDataset接收filenames作为一个tf.Tensor,因此你可以通过tf.placeholder参数化它
 \begin{lstlisting}[language=Python]
 filenames = ["/var/data/file1.txt", "/var/data/file2.txt"]
 dataset = tf.contrib.data.TextLineDataset(filenames)
@@ -822,7 +822,7 @@ dataset = tf.contrib.data.TextLineDataset(filenames)
 默认情况下一个TextLineDataset产生文件的每一行，这也许并不是你想要的，例如一个文件的开头行有一些注释。这些行可以用Dataset.skip()移除和Dataset.filter()转换。为了在分割的文件应用这些转换，我们用Dataset.flat\_map()为每个文件创建一个迭代的Dataset
 \lstinputlisting[language=Python]{./code/read_data.py}
 \subsection{用Dataset.map()处理数据}
-Dataset.map(f)通过使用函数f作用于输入数据集的每个元素生成一个新的数据集。它通过函数编程语言用map函数应用到列表。这个函数f接受tf.tensor对象代表一个单个的输入元素，返回一个代表一个数据集中单个元素tf.Tensor对象。它通过标准的TensorFlow操作转化一个元素为另一个。
+Dataset.map(f)通过使用函数f作用于输入数据集的每个元素生成一个新的数据集。它通过函数编程语言用map函数应用到列表。这个函数f接收tf.tensor对象代表一个单个的输入元素，返回一个代表一个数据集中单个元素tf.Tensor对象。它通过标准的TensorFlow操作转化一个元素为另一个。
 \subsection{解析tf.Example protocal buffer消息}
 一些输入的pipeline从TFRecord格式的文件提取tf.train.Example protocal buffer消息，用tf.python\_io.TFRecordWriter。每个tf.train.Example记录包含一个或者多个特征，输入pipline通常转换这些特征为tensor。
 \begin{lstlisting}[language=Python]

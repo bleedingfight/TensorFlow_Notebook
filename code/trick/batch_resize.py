@@ -1,3 +1,5 @@
+# TensorFlow1.3 GPU ubuntu14.0.4 64bit
+# 文件和处理的图像放在一个目录
 import tensorflow as tf
 import cv2
 from os import listdir
@@ -12,7 +14,7 @@ def filter_file(filepath,ext='png'):
     fileall = listdir(filepath)
     filted_list = []
     for i in fileall:
-        if (i.split('.')==2)|(i.split('.')[-1]=='png'):
+        if (len(i.split('.'))==2) and (i.split('.')[-1]=='png'):
             filted_list.append(i)
     return filted_list
 # 压缩保存

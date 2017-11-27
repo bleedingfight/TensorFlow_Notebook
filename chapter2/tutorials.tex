@@ -1,3 +1,4 @@
+\chapter{使用向导}
 \section{用GPU}
 在Tensorflow中CPU,GPU用字符串表示
 \begin{itemize}
@@ -191,6 +192,7 @@ python tensorflow/examples/image_retraining/retrain.py \
 \end{lstlisting}
 这将在/temp/创建一个941KB模型文件output\_graphi.pb.Mobilenet的25\%的参数，占据$128\times128$大小的输入图像，权重在磁盘中量化为8位，你可以选择'1.0','0.75','0.50','0.25'控制权重参数的数量，因此文件尺寸(和一些扩展速度),'224','192','160'或者'128'对于输入图像的尺寸，更小的尺寸更快的速度，选项'\_quantized'预示着是否文件应该包含8位或者32位浮点权重。速度和大小好处带来的是精确度的损失，但是对于一些用途来说是不重要的，它可以通过训练数据提高、例如用扭曲在花数据集允许你得到得到80\%的精度，甚至0.25/128、quantized图。
 如果你在你的程序或者label\_image中用Mobilenet模型，你讲需要一个输入一个指定大小的图像转换一个浮点让位到'input' tensor，典型的24位乳香范围[0,255]你必须用(image-128.)/128转化它到[-1,1]范围。
+
 \section{TF layer向导：建立一个卷积神经网络}
 TensorFlow\href{https://www.tensorflow.org/api_docs/python/tf/layers}{layers module}是一个用于轻松建立神经网络的高级API，它提供了一个方法促进创建dense(全连接)层和卷积层，增加激活函数，应用dropout规则。在这个导航中，你讲学习如何用layers建立一个卷积神经网络模型识别手写体数据集。
 \textbf{手写体数据集包含0-9，60000个训练样本10000个测试样本，图像格式为}$28\times28$
@@ -264,8 +266,8 @@ conv1 = tf.layers.conv2d(
 inputs参数指定我们的输入tensor(形状为[batch\_size,image\_width,image\_height,channels]),这里，我们链接我们的第一个吉安基层到输入层，形状为[batch\_size,28,28,1]
 注意:如果传递参数data\_format=channels\_first,conv2d()接受[channels,batch\_size,image\_width,image\_height]形状的数据。
 \end{displayquote}
-filter参数制定卷积核的个数，这里卷积核为32个。kenel\_size制定卷积核的维度为[width,height]（这里[5,5]）
-padding参数制定两个值:valid(默认)，和same。制定输出tensor应该有和输入特纳是哦然相同的形状，我们设置padding=same,说明TensorFlow增加0值到输出tensor的边缘波啊池宽度和高度为28(没有padding$5\times5$卷积$28\times28$将生成$24\times24tensor$,在$28\times28$用$5\times5$提取出$24\times24$个位置)。
+filter参数指定卷积核的个数，这里卷积核为32个。kenel\_size指定卷积核的维度为[width,height]（这里[5,5]）
+padding参数指定两个值:valid(默认)，和same。指定输出tensor应该有和输入特纳是哦然相同的形状，我们设置padding=same,说明TensorFlow增加0值到输出tensor的边缘,宽度和高度为28(没有padding$5\times5$卷积$28\times28$将生成$24\times2$的4维tensor,在$28\times28$用$5\times5$提取出$24\times24$个位置)。
 activation参数指定应用到输出的激活函数，这里我们只顶tf.nn.relu。
 conv2d()的输出形状为[batch\_size,28,28,32]:和输入有相同的宽度和高度，但是有32个通道保持每个卷积核的输出。
 \subsection{池化层1}
@@ -273,10 +275,10 @@ conv2d()的输出形状为[batch\_size,28,28,32]:和输入有相同的宽度和�
 \begin{lstlisting}[language=Python]
 pool1 = tf.layers.max_pooling2d(inputs=conv1, pool_size=[2, 2], strides=2)
 \end{lstlisting}
-再次，inputs制定输入tensor，形状为[batch\_size,image\_width,image\_height,channels],这里我们的输入tensor是第一层卷积层的输出conv1,形状为[batch\_size,28,28,32]
+再次，inputs指定输入tensor，形状为[batch\_size,image\_width,image\_height,channels],这里我们的输入tensor是第一层卷积层的输出conv1,形状为[batch\_size,28,28,32]
 
 pool\_size指定最大池化filter的大小作为[width,height]（这里是[2,2]）如果两个维度相等你可以指定pool\_siz=2。
-strides参数制定stride的大小，这里我们设置strdes为2，表示通过filter提取子区域的时候宽度和高度都是2像素。如果你想设置不同的width和height，你可以制定一个元祖或者列表。
+strides参数指定stride的大小，这里我们设置strdes为2，表示通过filter提取子区域的时候宽度和高度都是2像素。如果你想设置不同的width和height，你可以指定一个元祖或者列表。
 
 我们的输出特纳是哦然和max\_pooling2d(pool1，形状为[batch\_size,14,14,32])相乘:$2\times2$减少宽度和高度到50\%。
 \subsection{二层卷积和池化}
@@ -303,13 +305,13 @@ pool2_flat = tf.reshape(pool2, [-1, 7 * 7 * 64])
 \begin{lstlisting}[language=Python]
 dense = tf.layers.dense(inputs=pool2_flat, units=1024, activation=tf.nn.relu)
 \end{lstlisting}
-inputs参数制定输入tensor:我们的flattened的feature map pool2\_flat。units参数指定dense层的神经元的数量。activation参数获取激活函数，这里我们依然是用tf.nn.relu。
+inputs参数指定输入tensor:我们的flattened的feature map pool2\_flat。units参数指定dense层的神经元的数量。activation参数获取激活函数，这里我们依然是用tf.nn.relu。
 为了改进我们的模型，我们也应用dropout方法正则化dense层。
 \begin{lstlisting}[language=Python]
 dropout = tf.layers.dropout(
     inputs=dense, rate=0.4, training=mode == tf.estimator.ModeKeys.TRAIN)
 \end{lstlisting}
-inputs参数和上面一样，rate参数制定dropout比率，这里用0.4表示40\%的元素将在训练中被随机丢弃。training参数得到一个bool行值制定是否模型在训练模式下运行，dropout仅仅在training为True时执行。这里我们检查是否mode传递给我们cnn\_model\_fn的模型函数是TRAIN模式。输出形状为[batch\_size,1024]
+inputs参数和上面一样，rate参数指定dropout比率，这里用0.4表示40\%的元素将在训练中被随机丢弃。training参数得到一个bool行值指定是否模型在训练模式下运行，dropout仅仅在training为True时执行。这里我们检查是否mode传递给我们cnn\_model\_fn的模型函数是TRAIN模式。输出形状为[batch\_size,1024]
 \subsection{Logits Layers}
 在我们神经网络的最后一层是logits层，然会预测的原始值。我们用10个神经元创建一个dense layers，激活函数哦认为线性激活函数。
 \begin{lstlisting}[language=Python]
@@ -326,7 +328,7 @@ logits层返回我们预测的原始值(形状[batch\_size,10])。让我们转�
 \begin{lstlisting}[language=Python]
 tf.argmax(input=logits, axis=1)
 \end{lstlisting}
-input参数制定需要提取最大值的tensor，axis参数制定输入tensor沿着哪个轴寻找最大值。这里我们写着1轴寻找最大值。
+input参数指定需要提取最大值的tensor，axis参数指定输入tensor沿着哪个轴寻找最大值。这里我们写着1轴寻找最大值。
 我们可以用softmax生成概率。
 \begin{lstlisting}[language=Python]
 tf.nn.softmax(logits, name="softmax_tensor")
@@ -408,7 +410,7 @@ def main(unused_argv):
 mnist_classifier = tf.estimator.Estimator(
     model_fn=cnn_model_fn, model_dir="/tmp/mnist_convnet_model")
 \end{lstlisting}
-model\_fn参数指定用于训练，评估，预测的模型函数，我们传递cnn\_model\_fn,models\_dir参数制定模型素据的保存目录为/tmp/mnist\_convnet\_model。
+model\_fn参数指定用于训练，评估，预测的模型函数，我们传递cnn\_model\_fn,models\_dir参数指定模型素据的保存目录为/tmp/mnist\_convnet\_model。
 \subsection{建立Logging Hook}
 因为CNN可能花一会训练，让我们设置一些采集以至于我们在训练时能跟踪进层。我们用TensorFlow的tf.train.SessionRunHook创建一个tf.train.LogginTensorHook采集从softmax层来的概率值，增加下面代码到main()：
 \begin{lstlisting}[language=Python]
@@ -419,7 +421,7 @@ model\_fn参数指定用于训练，评估，预测的模型函数，我们传�
 \end{lstlisting}
 我们存储一个我们想要采集进tensors\_to\_log的tensor词典。每个key是我们选择的label，将在采集输出被打印，相关的label是TensorFlow图的Tensor的名字，这里我们的概率可以在softmax\_tensor中找到，我们给我们softmax操作的名字在cnn\_model\_fn生成概率。
 
-下一步我们创建LogginfTensorHook，传递tensor\_to\_log到tensors参数，我们设置every\_n\_iter=50,制定训练的时候每50步采集概率。
+下一步我们创建LogginfTensorHook，传递tensor\_to\_log到tensors参数，我们设置every\_n\_iter=50,指定训练的时候每50步采集概率。
 \subsection{选练模型}
 现在我们准备好训练我们的模型，我们通过创建train\_input\_fn和在mnist\_classifier调用train(),增加下面到main()
 \begin{lstlisting}[language=Python]
@@ -467,6 +469,592 @@ INFO:tensorflow:Saving evaluation summary for step 20000: accuracy = 0.9733, los
 {'loss': 0.090227105, 'global_step': 20000, 'accuracy': 0.97329998}
 \end{lstlisting}
 我们在测试集上获得了97.3\%的精确度。
+\section{卷积神经网络}
+\subsection{概览}
+CIFAR-10分类是一个机器学习常见的测试标准。即分类$32\times32$的RGB图像为10类:
+airplane, automobile, bird, cat, deer, dog, frog, horse, ship, and truck。更多细节查看
+\href{https://www.cs.toronto.edu/~kriz/cifar.html}{CIFAR-10 Page}和\href{https://www.cs.toronto.edu/~kriz/learning-features-2009-TR.pdf}{Tech Report}。
+\subsection{目标}
+这个导航的目标是构建一个相当小的
+\href{https://en.wikipedia.org/wiki/Convolutional_neural_network}{CNN}识别图像。在这个导航中:
+\begin{enumerate}
+\item 着重于建立一个规范的网络组织结构，训练并进行评估
+\item 为建立更大规模更加复杂的模型提供一个范例
+\end{enumerate}
+
+选择CIFAR-10是因为它的复杂程度足以用来检验TensorFlow中的大部分功能，并可将其扩展为更大的模型。与此同时由于模型较小所以训练速度很快，比较适合用来测试新的想法，检验新的技术
+\subsection{本教程重点}
+CIFAR-10 教程演示了在TensorFlow上构建更大更复杂模型的几个种重要内容：
+\begin{itemize}
+\item 相关核心数学对象，如\href{https://www.tensorflow.org/api_docs/python/tf/nn/conv2d}{卷积}、\href{https://www.tensorflow.org/api_docs/python/tf/nn/relu}{修正线性激活}、\href{https://www.tensorflow.org/api_docs/python/tf/nn/max_pool}{最大池化}以及\href{https://www.tensorflow.org/api_docs/python/tf/nn/local_response_normalization}{局部响应归一化}；
+\item 训练过程中一些网络行为的\href{https://www.tensorflow.org/get_started/summaries_and_tensorboard}{可视化}，这些行为包括输入图像、损失情况、网络行为的分布情况以及梯度；
+\item 算法学习参数的\href{https://www.tensorflow.org/api_docs/python/tf/train/ExponentialMovingAverage}{移动平均值}的计算函数，以及在评估阶段使用这些平均值提高预测性能；
+\item 实现了一种\href{https://www.tensorflow.org/api_docs/python/tf/train/exponential_decay}{机制}，使得学习率随着时间的推移而递减；
+\item 为输入数据设计预存取\href{https://www.tensorflow.org/api_docs/python/tf/train/shuffle_batch}{队列}，将磁盘延迟和高开销的图像预处理操作与模型分离开来处理；
+\end{itemize}
+
+我们也提供了模型的\href{https://www.tensorflow.org/tutorials/deep_cnn#training_a_model_using_multiple_gpu_cards}{多GUP版本}，用以表明：
+\begin{itemize}
+\item 可以配置模型后使其在多个GPU上并行的训练
+\item 可以在多个GPU之间共享和更新变量值
+\end{itemize}
+
+我们希望本教程给大家开了个头，使得在Tensorflow上可以为视觉相关工作建立更大型的Cnns模型
+\subsection{模型架构}
+本教程中的模型是一个多层架构，由卷积层和非线性层(nonlinearities)交替多次排列后构成。这些层最终通过全连通层对接到softmax分类器上。这一模型除了最顶部的几层外，基本跟Alex Krizhevsky提出的模型一致。
+在一个GPU上经过几个小时的训练后，该模型达到了最高86\%的精度。细节请查看下面的描述以及代码。模型中包含了1,068,298个学习参数，分类一副图像需要大概19.5M个乘加操作。
+
+\subsection{代码组织}
+本教程的代码位于\href{https://www.tensorflow.org/code/tensorflow_models/tutorials/image/cifar10/}{tensorflow/models/image/cifar10/}
+\begin{table*}
+\begin{tabular}{|p{6cm}|p{8cm}|}
+	\hline
+	文件&作用\\
+	\hline
+	\href{https://www.tensorflow.org/code/tensorflow_models/tutorials/image/cifar10/cifar10_input.py}{cifar10\_input.py}&读取本地CIFAR-10的二进制文件格式的内容。\\
+	\hline
+	\href{https://www.tensorflow.org/code/tensorflow_models/tutorials/image/cifar10/cifar10.py}{cifar10.py}&建立CIFAR-10的模型。\\
+	\hline
+	\href{https://www.tensorflow.org/code/tensorflow_models/tutorials/image/cifar10/cifar10_train.py}{cifar10\_train.py}&在CPU或GPU上训练CIFAR-10的模型。\\
+	\hline
+	\href{https://www.tensorflow.org/code/tensorflow_models/tutorials/image/cifar10/cifar10_multi_gpu_train.py}{cifar10\_multi\_gpu\_train.py}&在多GPU上训练CIFAR-10的模型。\\
+	\hline
+	\href{https://www.tensorflow.org/code/tensorflow_models/tutorials/image/cifar10/cifar10_eval.py}{cifar10\_eval.py}&评估CIFAR-10模型的预测性能。\\
+	\hline
+\end{tabular}
+\end{table*}
+	
+\subsection{CIFAR-10模型}
+CIFAR-10 网络模型部分的代码位于\href{https://www.tensorflow.org/code/tensorflow_models/tutorials/image/cifar10/cifar10.py}{cifar10.py}, 完整的训练图中包含约765个操作。但是我们发现通过下面的模块来构造训练图可以最大限度的提高代码复用率:
+\begin{enumerate}
+	\item 模型输入: 包括inputs() 、 distorted\_inputs()等一些操作，分别用于读取CIFAR的图像并进行预处理，做为后续评估和训练的输入；
+	\item 模型预测: 包括inference()等一些操作，用于进行统计计算，比如在提供的图像进行分类； adds operations that perform inference, i.e. classification, on supplied images.
+	\item 模型训练: 包括loss() and train()等一些操作，用于计算损失、计算梯度、进行变量更新以及呈现最终结果。
+\end{enumerate}
+\subsection{模型输入}
+输入模型是通过 inputs() 和distorted\_inputs()函数建立起来的，这2个函数会从CIFAR-10二进制文件中读取图片文件，由于每个图片的存储字节数是固定的，因此可以使用
+\href{https://www.tensorflow.org/api_docs/python/tf/FixedLengthRecordReader}{tf.FixedLengthRecordReader}函数。更多的关于Reader类的功能可以查看\href{https://www.tensorflow.org/api_guides/python/reading_data#reading_from_files}{Reading Data}。
+图片文件的处理流程如下：
+\begin{itemize}
+	\item 图片会被统一裁剪到24x24像素大小，裁剪中央区域用于评估或\href{https://www.tensorflow.org/api_docs/python/tf/random_crop}{随机}裁剪用于训练；
+	\item 图片会进行\href{https://www.tensorflow.org/api_docs/python/tf/image/per_image_standardization}{近似的白化}处理，使得模型对图片的动态范围变化不敏感。
+\end{itemize}
+对于训练，我们另外采取了一系列随机变换的方法来人为的增加数据集的大小：
+\begin{itemize}
+	\item 对图像进行\href{https://www.tensorflow.org/api_docs/python/tf/image/random_flip_left_right}{随机的左右翻转}；
+	\item 随机变换\href{https://www.tensorflow.org/api_docs/python/tf/image/random_brightness}{图像的亮度}；
+	\item 随机变换\href{https://www.tensorflow.org/api_docs/python/tf/image/random_contrast}{图像的对比度}；
+\end{itemize}
+可以在\href{https://www.tensorflow.org/api_guides/python/image}{Images}页的列表中查看所有可用的变换，对于每个原始图我们还附带了一个image\_summary，以便于在TensorBoard中查看。这对于检查输入图像是否正确十分有用。
+
+\begin{figure}[H]
+	\centering
+	\includegraphics{cifar_image_summary.png}
+\end{figure}
+从磁盘上加载图像并进行变换需要花费不少的处理时间。为了避免这些操作减慢训练过程，我们在16个独立的线程中并行进行这些操作，这16个线程被连续的安排在一个TensorFlow\href{https://www.tensorflow.org/api_docs/python/tf/train/shuffle_batch}{队列}中。
+\subsection{模型预测}
+模型的预测流程由inference()构造，该函数会添加必要的操作步骤用于计算预测值的 logits，其对应的模型组织方式如下所示：
+
+\begin{table}[!h]
+	\centering
+	\begin{tabular}{|p{2cm}|p{8cm}|}
+	\hline
+	Layer 名称&描述\\
+	\hline
+	conv1&实现卷积 以及 rectified linear activation\\
+	\hline
+	pool1&max pooling\\
+	\hline
+	norm1&局部响应归一化\\
+	\hline
+	conv2&卷积 and rectified linear activation\\
+	\hline
+	norm2&局部响应归一化\\
+	\hline
+	pool2&max pooling\\
+	\hline
+	local3&基于修正线性激活的全连接层\\
+	\hline
+	local4&基于修正线性激活的全连接层\\
+	\hline
+	softmax\_linear&进行线性变换以输出 logits.\\
+	\hline
+	\end{tabular}
+\end{table}
+这里有一个由TensorBoard绘制的图形，用于描述模型建立过程中经过的步骤：
+
+\begin{figure}[H]
+\centering
+\includegraphics[scale=0.6]{cifar_graph.png}
+\end{figure}
+
+练习: inference的输出是未归一化的logits，尝试使用tf.softmax()修改网络架构后返回归一化的预测值。
+inputs() 和 inference() 函数提供了评估模型时所需的所有构件，现在我们把讲解的重点从构建一个模型转向训练一个模型。
+
+\begin{quote}
+练习: inference() 中的模型跟\href{https://code.google.com/p/cuda-convnet/}{cuda-convnet}中描述的CIFAR-10模型有些许不同，其差异主要在于其顶层不是全连接层而是局部连接层，可以尝试修改网络架构来准确的复制全连接模型。
+\end{quote}
+
+模型训练
+训练一个可进行N维分类的网络的常用方法是使用多项式逻辑回归,又被叫做softmax 回归。Softmax 回归在网络的输出层上附加了一个softmax nonlinearity，并且计算归一化的预测值和label的1-hot encoding的交叉熵。在正则化过程中，我们会对所有学习变量应用权重衰减损失。模型的目标函数是求交叉熵损失和所有权重衰减项的和，loss()函数的返回值就是这个值。
+在TensorBoard中使用scalar\_summary来查看该值的变化情况：
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=0.5]{cifar_loss.png}
+\end{figure}
+我们使用标准的梯度下降算法来训练模型（也可以在Training中看看其他方法），其学习率随时间以指数形式衰减。
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=0.5]{cifar_lr_decay.png}
+\end{figure}
+\subsection{开始执行并训练模型}
+我们已经把模型建立好了，现在通过执行脚本cifar10\_train.py来启动训练过程。
+\lstinline[language=Bash]{python cifar10_train.py}
+注意: 当第一次在CIFAR-10教程上启动任何任务时，会自动下载CIFAR-10数据集，该数据集大约有160M大小，因此第一次运行时泡杯咖啡小栖一会吧。
+你应该可以看到如下类似的输出:
+\begin{lstlisting}[language=Python]
+Filling queue with 20000 CIFAR images before starting to train. This will take a few minutes.
+2015-11-04 11:45:45.927302: step 0, loss = 4.68 (2.0 examples/sec; 64.221 sec/batch)
+2015-11-04 11:45:49.133065: step 10, loss = 4.66 (533.8 examples/sec; 0.240 sec/batch)
+2015-11-04 11:45:51.397710: step 20, loss = 4.64 (597.4 examples/sec; 0.214 sec/batch)
+2015-11-04 11:45:54.446850: step 30, loss = 4.62 (391.0 examples/sec; 0.327 sec/batch)
+2015-11-04 11:45:57.152676: step 40, loss = 4.61 (430.2 examples/sec; 0.298 sec/batch)
+2015-11-04 11:46:00.437717: step 50, loss = 4.59 (406.4 examples/sec; 0.315 sec/batch)
+\end{lstlisting}
+
+脚本会在每10步训练过程后打印出总损失值，以及最后一批数据的处理速度。下面是几点注释：
+\begin{itemize}
+	\item 第一批数据会非常的慢（大概要几分钟时间），因为预处理线程要把20,000个待处理的CIFAR图像填充到重排队列中；
+	\item 打印出来的损失值是最近一批数据的损失值的均值。请记住损失值是交叉熵和权重衰减项的和；
+	\item 上面打印结果中关于一批数据的处理速度是在Tesla K40C上统计出来的，如果你运行在CPU上，性能会比此要低；
+\end{itemize}
+
+\begin{quote}
+练习: 当实验时，第一阶段的训练时间有时会非常的长，长到足以让人生厌。可以尝试减少初始化时初始填充到队列中图片数量来改变这种情况。在cifar10.py中搜索NUM\_EXAMPLES\_PER\_EPOCH\_FOR\_TRAIN并修改之。
+\end{quote}
+
+cifar10\_train.py 会周期性的在检查点文件中保存模型中的所有参数，但是不会对模型进行评估。cifar10\_eval.py会使用该检查点文件来测试预测性能（详见下面的描述：评估模型）。
+如果按照上面的步骤做下来，你应该已经开始训练一个CIFAR-10模型了。恭喜你!
+cifar10\_train.py输出的终端信息中提供了关于模型如何训练的一些信息，但是我们可能希望了解更多关于模型训练时的信息，比如：
+\begin{itemize}
+	\item 损失是真的在减小还是看到的只是噪声数据？
+	\item 为模型提供的图片是否合适？
+	\item 梯度、激活、权重的值是否合理？
+	\item 当前的学习率是多少？
+\end{itemize}
+
+TensorBoard提供了该功能，可以通过cifar10\_train.py中的SummaryWriter周期性的获取并显示这些数据。
+比如我们可以在训练过程中查看local3的激活情况，以及其特征维度的稀疏情况：
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=0.5]{cifar_activations.png}
+	\includegraphics[scale=0.5]{cifar_sparsity.png}
+\end{figure}
+
+\subsection{评估模型}
+现在可以在另一部分数据集上来评估训练模型的性能。脚本文件cifar10\_eval.py对模型进行了评估，利用 inference()函数重构模型，并使用了在评估数据集所有10,000张CIFAR-10图片进行测试。最终计算出的精度为1:N，N=预测值中置信度最高的一项与图片真实label匹配的频次。(It calculates the precision at 1: how often the top prediction matches the true label of the image)。
+为了监控模型在训练过程中的改进情况，评估用的脚本文件会周期性的在最新的检查点文件上运行，这些检查点文件是由cifar10\_train.py产生。
+\lstinline[language=Bash]{python cifar10_eval.py}
+
+\begin{quote}
+注意：不要在同一块GPU上同时运行训练程序和评估程序，因为可能会导致内存耗尽。尽可能的在其它单独的GPU上运行评估程序，或者在同一块GPU上运行评估程序时先挂起训练程序。
+\end{quote}
+你可能会看到如下输出
+
+\begin{lstlisting}[language=Bash]
+2015-11-06 08:30:44.391206: precision @ 1 = 0.860
+...
+\end{lstlisting}
+
+评估脚本只是周期性的返回precision@1 (The script merely returns the precision @ 1 periodically)--在该例中返回的准确率是86\%。cifar10\_eval.py 同时也返回其它一些可以在TensorBoard中进行可视化的简要信息。可以通过这些简要信息在评估过程中进一步的了解模型。
+训练脚本会为所有学习变量计算其移动均值,评估脚本则直接将所有学习到的模型参数替换成对应的移动均值。这一替代方式可以在评估过程中提升模型的性能。
+
+\begin{quote}
+练习: 通过precision @ 1测试发现，使用均值参数可以将预测性能提高约3\%，在cifar10\_eval.py中尝试修改为不采用均值参数的方式，并确认由此带来的预测性能下降。
+\end{quote}
+\subsection{在多个GPU办卡上训练模型}
+现代的工作站可能包含多个GPU进行科学计算。TensorFlow可以利用这一环境在多个GPU卡上运行训练程序。
+在并行、分布式的环境中进行训练，需要对训练程序进行协调。对于接下来的描述，术语模型拷贝（model replica）特指在一个数据子集中训练出来的模型的一份拷贝。
+如果天真的对模型参数的采用异步方式更新将会导致次优的训练性能，这是因为我们可能会基于一个旧的模型参数的拷贝去训练一个模型。但与此相反采用完全同步更新的方式，其速度将会变得和最慢的模型一样慢(Conversely, employing fully synchronous updates will be as slow as the slowest model replica.)。
+在具有多个GPU的工作站中，每个GPU的速度基本接近，并且都含有足够的内存来运行整个CIFAR-10模型。因此我们选择以下方式来设计我们的训练系统：
+
+\begin{itemize}
+	\item 在每个GPU上放置单独的模型副本；
+	\item 等所有GPU处理完一批数据后再同步更新模型的参数；
+\end{itemize}
+下图示意了该模型的结构：
+
+\begin{figure}[H]
+\centering
+\includegraphics[scale=0.3]{Parallelism.png}
+\end{figure}
+可以看到，每一个GPU会用一批独立的数据计算梯度和估计值。这种设置可以非常有效的将一大批数据分割到各个GPU上。
+这一机制要求所有GPU能够共享模型参数。但是众所周知在GPU之间传输数据非常的慢，因此我们决定在CPU上存储和更新所有模型的参数(对应图中绿色矩形的位置)。这样一来，GPU在处理一批新的数据之前会更新一遍的参数。
+图中所有的GPU是同步运行的。所有GPU中的梯度会累积并求平均值(绿色方框部分)。模型参数会利用所有模型副本梯度的均值来更新。
+\subsection{在多设备中设置变量和操作}
+在多个设备中设置变量和操作时需要做一些特殊的抽象。
+我们首先需要把在单个模型拷贝中计算估计值和梯度的行为抽象到一个函数中。在代码中，我们称这个抽象对象为“tower”。对于每一个“tower”我们都需要设置它的两个属性：
+在一个tower中为所有操作设定一个唯一的名称。tf.name\_scope()通过添加一个范围前缀来提供该唯一名称。比如，第一个tower中的所有操作都会附带一个前缀tower\_0，示例：tower\_0/conv1/Conv2D；
+在一个tower中运行操作的优先硬件设备。 tf.device() 提供该信息。比如，在第一个tower中的所有操作都位于 device('/gpu:0')范围中，暗含的意思是这些操作应该运行在第一块GPU上；
+为了在多个GPU上共享变量，所有的变量都绑定在CPU上，并通过tf.get\_variable()访问。可以查看Sharing Variables以了解如何共享变量。
+
+\subsection{启动并在多个GPU上训练模型}
+如果你的机器上安装有多块GPU，你可以通过使用cifar10\_multi\_gpu\_train.py脚本来加速模型训练。该脚本是训练脚本的一个变种，使用多个GPU实现模型并行训练。
+\lstinline[language=Bash]{python cifar10_multi_gpu_train.py --num_gpus=2}
+训练脚本的输出如下所示：
+
+\begin{lstlisting}[language=Bash]
+Filling queue with 20000 CIFAR images before starting to train. This will take a few minutes.
+2015-11-04 11:45:45.927302: step 0, loss = 4.68 (2.0 examples/sec; 64.221 sec/batch)
+2015-11-04 11:45:49.133065: step 10, loss = 4.66 (533.8 examples/sec; 0.240 sec/batch)
+2015-11-04 11:45:51.397710: step 20, loss = 4.64 (597.4 examples/sec; 0.214 sec/batch)
+2015-11-04 11:45:54.446850: step 30, loss = 4.62 (391.0 examples/sec; 0.327 sec/batch)
+2015-11-04 11:45:57.152676: step 40, loss = 4.61 (430.2 examples/sec; 0.298 sec/batch)
+2015-11-04 11:46:00.437717: step 50, loss = 4.59 (406.4 examples/sec; 0.315 sec/batch)
+...
+\end{lstlisting}
+
+需要注意的是默认的GPU使用数是1，此外，如果你的机器上只有一个GPU，那么所有的计算都只会在一个GPU上运行，即便你可能设置的是N个。
+
+\begin{quote}
+练习: cifar10\_train.py中的批处理大小默认配置是128。尝试在2个GPU上运行cifar10\_multi\_gpu\_train.py脚本，并且设定批处理大小为64，然后比较2种方式的训练速度
+\end{quote}
+
+\subsection{下一步}
+恭喜你! 你已经完成了CIFAR-10教程。 如果你对开发和训练自己的图像分类系统感兴趣，我们推荐你新建一个基于该教程的分支，并修改其中的内容以建立解决您问题的图像分类系统。
+\begin{quote}
+\emph{练习: 下载Street View House Numbers (SVHN) 数据集。新建一个CIFAR-10教程的分支，并将输入数据替换成SVHN。尝试改变网络结构以提高预测性能。}
+\end{quote}
+
+\section{RNN}
+人不能抓住每一秒的思考，当你读这篇文章的时候，你能基于你之前的对单词的理解明白文章的每一个单词的意思，你思考的时候不需要丢掉所有的东西，你的思想有持续性。\par
+传统的神经网络很难做到这点，这也是传统神经网络的主要缺点。例如你想分类电影中的不同时间点的事件，传统神经网络用不清楚如何用之前的事件了解新的事件。\par
+RNN通过循环处理这个问题，允许信息保留。\par
+\begin{figure}[!ht]
+\centering
+\includegraphics[scale=0.5]{RNN-rolled.png}
+\end{figure}
+上面的图表示一个RNN单元，A得到输入$x_t$和输出$h_t$，A允许信息被循环从一步到下一步，一个循环神经网络可以看成是多个相同单元的复制。铺开RNN可以得到
+\begin{figure}[!ht]
+\centering
+\includegraphics[scale=0.3]{RNN-unrolled.png}
+\caption{unrolled RNN}
+\end{figure}
+这个链式结构揭示了循环神经网络和序列或者列表密切相关，它适用于这种数据。
+\subsection{The Problem Long-Term Dependencies}
+语言模型中常用先前的一个词预测下一个词，如果我们尝试预测"the clouds are in the {\color{red}{sky}}"我们不需要很多上下文信息RNN通过之前的信息就能学到。但是我们尝试预测这样一个句子"I grew up in France... I speak fluent {\color{red}{France}}"，之前的信息暗示下一个单词可能是语言的名字，如果我们想去缩小语言的范围，我们需要上下文{\color{red}{France}}，可相关信息和这个需要点的间隔很大。
+\begin{figure}[!ht]
+\centering
+\includegraphics[scale=0.3]{RNN-longtermdependencies.png}
+\end{figure}
+理论上RNN有能力处理“long-term dependencies”，人能小心的挑选参数解决这个烦人的问题，然而不幸的是RNN似乎不能做到，原因由\href{http://www-dsi.ing.unifi.it/~paolo/ps/tnn-94-gradient.pdf}{Hochreiter (1991) [German] and Bengio, et al. (1994)}提出.
+\subsection{LSTM网络}
+Long Short Term Memory networks通常简称为LSTMs是一个特殊的RNN，能学习learning long-term dependencies，它被\href{http://deeplearning.cs.cmu.edu/pdfs/Hochreiter97_lstm.pdf}{Hochreiter  Schmidhuber (1997)}引入，然后被提炼，在大型文体处理上效果很好因而被广泛的使用。\par
+LSTMs明确的设计去解决 long-term dependency problem。\par
+所有的循环神经网络都有重复的链式形式。在标准的RNNs，重复的模块有一个非常简单的结构，像tanh Layer。
+\begin{figure}
+\centering
+\includegraphics[scale=0.3]{LSTM3-SimpleRNN.png}
+\caption{The repeating module in a standard RNN contains a single layer}
+\end{figure}
+LSTMs也有这样类似的结构，但是congruent模块有点不同，有一个神经网络层有四个相互作用部分，
+\begin{figure}
+\centering
+\includegraphics[scale=0.3]{LSTM3-chain.png}
+\caption{The repeating module in an LSTM contains four interacting layers}
+\end{figure}
+\begin{figure}
+\centering
+\includegraphics[scale=0.3]{LSTM2-notation.png}
+\end{figure}
+在上面的图上，每一根线上携带的都是一个向量，从一个输出节点到其它输入，粉色圆圈代表按点操作，黄色盒子是学习好的神经网络层，线融合表示串联，copy表示将一条线复制一份。
+\subsection{LSTMs想法的核心}
+LSTMs的核心是图像顶部的水平流过的cell state，cell state像一个传送带，它笔直的沿着整条链跑，和一些次要的线性交互，很容易实现信息不改变的流动。
+\begin{figure}
+\centering
+\includegraphics[scale=0.3]{LSTM3-C-line.png}
+\end{figure}
+LSTM能删除或者增加信息到cell state，被控制的结构称为门。门是一种让信息通过的手段，由一个sigmoid神经网络层和pointwise惩罚操作组成。
+\begin{figure}
+\centering
+\includegraphics[scale=0.5]{LSTM3-gate.png}
+\end{figure}
+sigmod Layer输出0到1之间的数，描述多少组件应该被通过，0表示不允许通过1表示让一切通过，LSTMs有三个门，保护和控制cell state。
+\subsection{一步步的设置}
+第一步是LSTMs决定什么信息应该被传送，这个决定每一个称为忘记门的sigmoid layer组成，通过$h_{t-1}$和$x_t$输出0到1之间的数给当前的$C_{t-1}$,1表示完全保持，0表示丢弃。\par
+对于上面的语言模型，cell state也许包含the gender of the present subjects,以至于正确的带名字能被使用，当我们看一个新的subject，我们想图忘记the gender of the old subject。
+\begin{figure}
+\centering
+\includegraphics[scale=0.5]{LSTM3-focus-f.png}
+\end{figure}
+下一步是决定什么新的信息将被存储在cell state中，这分为两部分
+\begin{enumerate}
+	\item Sigmod layer调用 input gate layer决定更新哪个值。
+	\item tanh layer创建一个可能被添加到state新的候选向量。$\widetilde{C_t}$
+\end{enumerate}
+下一步我们结合两个不走创建一个更新状态。，在我们的语言模型例子中，我们想要增加gender of the new subject到cell state取代我们将要忘记的数据
+\begin{figure}
+\centering
+\includegraphics[scale=0.5]{LSTM3-focus-i.png}
+\end{figure}
+现在更新老的cell state$C_{t-1}$到新的cell state$C_t$,我们用老的$c_{t-1}$乘上$f_t$忘记我们之前决定忘记的事，然后我们增加$i_t*\widetilde{C_t}$.这是新的候选值，表示我们更新每个状态值的规模。在例子中的语言模型，我们删掉了一个老的subject's gender增加新的信息。
+\begin{figure}
+\centering
+\includegraphics[scale=0.5]{LSTM3-focus-i.png}
+\end{figure}
+最后我们需要决定我们输出什么，输出取决于我们的cell state，但是将被过滤，所限我们运行sigmoid layer决定我们将输出那一部分。然后我们放通过tanh将cell state映射到-1,1,然后乘上sigmoid门的输出，以至于我们仅仅输出我们决定输出的部分。\par
+对于语言模型的例子，因为它仅仅看subject，它也许想输出关于动词的信息，例子中的下一个，例如，它也许输出是否subject是单数或者复数，以至于从一个动词应该能知道接下来应该是动词的什么形式。
+\begin{figure}
+\centering
+\includegraphics[scale=0.5]{LSTM3-focus-o.png}
+\end{figure}
+\subsection{LSTM的多种变体}
+\href{ftp://ftp.idsia.ch/pub/juergen/TimeCount-IJCNN2000.pdf}{Gers  Schmidhuber (2000)},它增加了peephole connections，这一位置我们让gate layer通过cell state
+\begin{figure}
+\centering
+\includegraphics[scale=0.5]{LSTM3-var-peepholes.png}
+\end{figure}
+上面的图增加了peepholes到所有的门，但是一些论文给出一些peepholes和not others。另一个变体用两个forget 和输入门。而不是分别决定忘记或者添加信息，我们一起决定，我们需要输入一些值是忘记，我们仅仅忘记老的值输入新值到state
+\begin{figure}
+\centering
+\includegraphics[scale=0.5]{LSTM3-var-tied.png}
+\end{figure}
+一个更引人注目的变体是Gate Recurrent Unit或者称为(GRU),由\href{http://arxiv.org/pdf/1406.1078v3.pdf}{Cho, et al. (2014)}引入，它结合忘记和输入门为一个单独的更新们，它也融合cell state和hidden state做了些改变，这结果模型比标准的LSTM模型简单，现在也越来越流行。
+\begin{figure}
+\centering
+\includegraphics[scale=0.5]{LSTM3-var-GRU.png}
+\end{figure}
+这些仅仅是非常流行的LSTM变体，有一些其它的像\href{http://arxiv.org/pdf/1508.03790v2.pdf}{Yao, et al. (2015)}的Depth Gated RNNs，用完全不同的方法处理long-term dependencies，像\href{http://arxiv.org/pdf/1402.3511v1.pdf}{Koutnik, et al. (2014)}的Clockwork RNNs。\par
+那个算法是最好的？它们的差别大吗？\href{http://arxiv.org/pdf/1503.04069.pdf}{Greff, et al. (2015) }做了一些比较了一些流行的变体，发现它们基本相同。
+\href{http://jmlr.org/proceedings/papers/v37/jozefowicz15.pdf}{Jozefowicz, et al. (2015)}比较了超过1万中架构，找到了一些在确定问题上比LSTMs好的架构。
+\section{向量字表示}
+\subsection{Vector Representation of Words}
+通常图像或音频系统处理的是由图片中所有单个原始像素点强度值或者音频中功率谱密度的强度值，把它们编码成丰富、高维度的向量数据集。对于物体或语音识别这一类的任务，我们所需的全部信息已经都存储在原始数据中（显然人类本身就是依赖原始数据进行日常的物体或语音识别的）。然后，自然语言处理系统通常将词汇作为离散的单一符号，例如 "cat" 一词或可表示为 Id537 ，而 "dog" 一词或可表示为 Id143。这些符号编码毫无规律，无法提供不同词汇之间可能存在的关联信息。换句话说，在处理关于 "dogs" 一词的信息时，模型将无法利用已知的关于 "cats" 的信息（例如，它们都是动物，有四条腿，可作为宠物等等）。可见，将词汇表达为上述的独立离散符号将进一步导致数据稀疏，使我们在训练统计模型时不得不寻求更多的数据。而词汇的向量表示将克服上述的难题。向量空间模型 (VSMs)将词汇表达（嵌套）于一个连续的向量空间中，语义近似的词汇被映射为相邻的数据点。向量空间模型在自然语言处理领域中有着漫长且丰富的历史，不过几乎所有利用这一模型的方法都依赖于 分布式假设，其核心思想为出现于上下文情景中的词汇都有相类似的语义。采用这一假设的研究方法大致分为以下两类：基于计数的方法 (e.g. 潜在语义分析)， 和 预测方法 (e.g. 神经概率化语言模型).
+
+其中它们的区别在如下论文中又详细阐述 \href{http://clic.cimec.unitn.it/marco/publications/acl2014/baroni-etal-countpredict-acl2014.pdf}{Baroni :et al}，不过简而言之：基于计数的方法计算某词汇与其邻近词汇在一个大型语料库中共同出现的频率及其它统计量，然后将这些统计量映射到一个小型且稠密的向量中。预测方法则试图直接从某词汇的邻近词汇对其进行预测，在此过程中利用已经学习到的小型且稠密的嵌套向量。
+
+Word2vec是一种可以进行高效率词嵌套学习的预测模型。其两种变体分别为：连续词袋模型（CBOW）及Skip-Gram模型。从算法角度看，这两种方法非常相似，其区别为CBOW根据源词上下文词汇（'the cat sits on the'）来预测目标词汇（例如，‘mat’），而Skip-Gram模型做法相反，它通过目标词汇来预测源词汇。Skip-Gram模型采取CBOW的逆过程的动机在于：CBOW算法对于很多分布式信息进行了平滑处理（例如将一整段上下文信息视为一个单一观察量）。很多情况下，对于小型的数据集，这一处理是有帮助的。相形之下，Skip-Gram模型将每个“上下文-目标词汇”的组合视为一个新观察量，这种做法在大型数据集中会更为有效。本教程余下部分将着重讲解Skip-Gram模型。
+\subsection{处理噪声的对比训练}
+神经概率化语言模型通常使用极大似然法 (ML) 进行训练，其中通过 softmax function 来最大化当提供前一个单词 h (代表 "history")，后一个单词的概率$w_t$(目标词概率)
+\begin{equation*}
+P(w_t|h)=softmax(score(w_t,h))=\frac{exp\left\{score(w_t,h)\right\}}{\Sigma_{Word w' in Vocab}exp\left\{score(w',h)\right\}}
+\end{equation*}
+当 $score(w_t,h)$ 计算了文字 $w_t$ 和 上下文 h 的相容性（通常使用向量积）。我们使用对数似然函数来训练训练集的最大值，比如通过：
+\begin{equation*}
+J_{ML} = logP(w_t|h)=score(w_t,h)-log(\Sigma_{Word w' in Vocab}exp\left\{score(w',h)\right\})
+\end{equation*}
+这里提出了一个解决语言概率模型的合适的通用方法。然而这个方法实际执行起来开销非常大，因为我们需要去计算并正则化当前上下文环境 h 中所有其它 V 单词 w' 的概率得分，在每一步训练迭代中。
+\begin{figure}[H]
+\includegraphics[scale=0.5]{softmax-nplm.png}
+\caption{CBOW方法}
+\end{figure}
+从另一个角度来说，当使用word2vec模型时，我们并不需要对概率模型中的所有特征进行学习。而CBOW模型和Skip-Gram模型为了避免这种情况发生，使用一个二分类器（逻辑回归）在同一个上下文环境里从 k 虚构的 (噪声) 单词$\hat{w}$区分真正的目标单词$w_t$,下面详细参数CBOW模型，对于Skip-Gram模型只要简单的反向操作即可。
+\begin{center}
+\begin{figure}[H]
+\includegraphics[scale=0.5]{nce-nplm.png}
+\caption{Skip-Gram}
+\end{figure}
+\end{center}
+从数学的角度来说，我们的目标是对每个样本最大化:
+\begin{equation*}
+J_{NEG}=logQ_{\theta}(D=1|w_t,h)+k\underset{\hat{w}\sim P_{noise}}{E}[logQ_{\theta}(D=0|\hat{\omega},h)]
+\end{equation*}
+其中$Q_{\theta}(D=1|w,h)$代表的是当前上下文h，根据所学得嵌套向量$\theta$目标单词 w 使用二分类逻辑回归计算得出的概率。在实践中，我们通过在噪声分布中绘制比对文字来获得近似的期望值（通过计算\href{https://en.wikipedia.org/wiki/Monte_Carlo_integration}{蒙特卡洛平均值}）。
+
+当真实地目标单词被分配到较高的概率，同时噪声单词的概率很低时，目标函数也就达到最大值了。从技术层面来说，这种方法叫做\href{http://papers.nips.cc/paper/5021-distributed-representations-of-words-and-phrases-and-their-compositionality.pdf}{负抽样}，而且使用这个损失函数在数学层面上也有很好的解释：这个更新过程也近似于softmax函数的更新。这在计算上将会有很大的优势，因为当计算这个损失函数时，只是有我们挑选出来的 k 个 噪声单词，而没有使用整个语料库 V。这使得训练变得非常快。我们实际上使用了与\href{http://papers.nips.cc/paper/5165-learning-word-embeddings-efficiently-with-noise-contrastive-estimation.pdf}{noise-contrastive estimation (NCE)}介绍的非常相似的方法，这在TensorFlow中已经封装了一个很便捷的函数tf.nn.nce\_loss()。
+
+\subsection{Skip-gram模型}
+下面来看一下这个数据集
+
+the quick brown fox jumped over the lazy dog
+
+我们首先对一些单词以及它们的上下文环境建立一个数据集。我们可以以任何合理的方式定义‘上下文’，而通常上这个方式是根据文字的句法语境的（使用语法原理的方式处理当前目标单词可以看一下这篇文献 \href{https://levyomer.files.wordpress.com/2014/04/dependency-based-word-embeddings-acl-2014.pdf}{Levy et al.}，比如说把目标单词左边的内容当做一个‘上下文’，或者以目标单词右边的内容，等等。现在我们把目标单词的左右单词视作一个上下文， 使用大小为1的窗口，这样就得到这样一个由(上下文, 目标单词) 组成的数据集：
+
+([the, brown], quick), ([quick, fox], brown), ([brown, jumped], fox), ...
+
+前文提到Skip-Gram模型是把目标单词和上下文颠倒过来，所以在这个问题中，举个例子，就是用'quick'来预测 'the' 和 'brown' ，用 'brown' 预测 'quick' 和 'fox' 。因此这个数据集就变成由(输入, 输出)组成的：
+
+(quick, the), (quick, brown), (brown, quick), (brown, fox), ...
+
+目标函数通常是对整个数据集建立的，但是本问题中要对每一个样本（或者是一个batch\_size 很小的样本集，通常设置为16 <= batch\_size <= 512）在同一时间执行特别的操作，称之为\href{https://en.wikipedia.org/wiki/Stochastic_gradient_descent}{随机梯度下降 (SGD)}。我们来看一下训练过程中每一步的执行。
+
+假设用 t 表示上面这个例子中quick 来预测 the 的训练的单个循环。用 num\_noise 定义从噪声分布中挑选出来的噪声（相反的）单词的个数，通常使用一元分布，P(w)。为了简单起见，我们就定num\_noise=1，用 sheep 选作噪声词。接下来就可以计算每一对观察值和噪声值的损失函数了，每一个执行步骤就可表示为：
+\begin{equation*}
+J_{NEG}^{(t)}=logQ_{\theta}(D=1|the,quick)+log(Q_{\theta}(D=0|sleep,quick))
+\end{equation*}
+整个计算过程的目标是通过更新嵌套参数$\theta$来逼近目标函数(这个例子中就是使目标函数最大化)。为此我们要计算损失函数中嵌套参数$\theta$的梯度，比如\[\frac{\partial}{\partial}J_{NEG}\]
+(幸好TensorFlow封装了工具函数可以简单调用!)。对于整个数据集，当梯度下降的过程中不断地更新参数，对应产生的效果就是不断地移动每个单词的嵌套向量，直到可以把真实单词和噪声单词很好得区分开。
+
+我们可以把学习向量映射到2维中以便我们观察，其中用到的技术可以参考 \href{http://lvdmaaten.github.io/tsne/}{t-SNE 降维技术}。当我们用可视化的方式来观察这些向量，就可以很明显的获取单词之间语义信息的关系，这实际上是非常有用的。当我们第一次发现这样的诱导向量空间中，展示了一些特定的语义关系，这是非常有趣的，比如文字中 male-female，gender 甚至还有 country-capital 的关系, 如下方的图所示 (也可以参考 \href{http://www.aclweb.org/anthology/N13-1090}{Mikolov et al.}, 2013论文中的例子)。
+\begin{center}
+\begin{figure}[H]
+\includegraphics[scale=0.5]{linear-relationships.png}
+\end{figure}
+\end{center}
+这也解释了为什么这些向量在传统的NLP问题中可作为特性使用，比如用在对一个演讲章节打个标签，或者对一个专有名词的识别 (看看如下这个例子 \href{https://arxiv.org/pdf/1103.0398v1.pdf}{Collobert et al.}或者 \href{http://www.aclweb.org/anthology/P10-1040}{Turian et al.})。
+
+不过现在让我们用它们来画漂亮的图表吧！
+
+这里谈得都是嵌套，那么先来定义一个嵌套参数矩阵。我们用唯一的随机值来初始化这个大矩阵。
+\begin{lstlisting}[language=Python]
+embeddings = tf.Variable(
+    tf.random_uniform([vocabulary_size, embedding_size], -1.0, 1.0))
+\end{lstlisting}
+对噪声-比对的损失计算就使用一个逻辑回归模型。对此，我们需要对语料库中的每个单词定义一个权重值和偏差值。(也可称之为输出权重 与之对应的 输入嵌套值)。定义如下:
+\begin{lstlisting}[language=Python]
+nce_weights = tf.Variable(
+  tf.truncated_normal([vocabulary_size, embedding_size],
+                      stddev=1.0 / math.sqrt(embedding_size)))
+nce_biases = tf.Variable(tf.zeros([vocabulary_size]))
+\end{lstlisting}我们有了这些参数之后，就可以定义Skip-Gram模型了。简单起见，假设我们已经把语料库中的文字整型化了，这样每个整型代表一个单词(细节请查看\_basic.py)。Skip-Gram模型有两个输入。一个是一组用整型表示的上下文单词，另一个是目标单词。给这些输入建立占位符节点，之后就可以填入数据了。
+\begin{lstlisting}[language=Python]
+train_inputs = tf.placeholder(tf.int32, shape=[batch_size])
+train_labels = tf.placeholder(tf.int32, shape=[batch_size, 1])
+\end{lstlisting}
+然后我们需要对批数据中的单词建立嵌套向量，TensorFlow提供了方便的工具函数。
+\begin{lstlisting}[language=Python]
+embed = tf.nn.embedding_lookup(embeddings, train_inputs)
+\end{lstlisting}
+好了，现在我们有了每个单词的嵌套向量，接下来就是使用噪声-比对的训练方式来预测目标单词。
+\begin{lstlisting}[language=Python]
+loss = tf.reduce_mean(
+  tf.nn.nce_loss(nce_weights, nce_biases, embed, train_labels,
+                 num_sampled, vocabulary_size))
+\end{lstlisting}
+我们对损失函数建立了图形节点，然后我们需要计算相应梯度和更新参数的节点，比如说在这里我们会使用随机梯度下降法，TensorFlow也已经封装好了该过程。
+\begin{lstlisting}[language=Python]
+optimizer = tf.train.GradientDescentOptimizer(learning_rate=1.0).minimize(loss)
+\end{lstlisting}
+\subsection{训练过程}
+训练的过程很简单，只要在循环中使用feed\_dict不断给占位符填充数据，同时调用 session.run即可。
+\begin{lstlisting}[language=Python]
+for inputs, labels in generate_batch(...):
+  feed_dict = {training_inputs: inputs, training_labels: labels}
+  _, cur_loss = session.run([optimizer, loss], feed_dict=feed_dict)
+\end{lstlisting}
+\subsection{嵌套学习结果可视化}
+\begin{center}
+\begin{figure}[H]
+\includegraphics[scale=0.5]{tsne.png}
+\end{figure}
+\end{center}
+Et voila! 与预期的一样，相似的单词被聚类在一起。对word2vec模型更复杂的实现需要用到TensorFlow一些更高级的特性，具体是实现可以参考\href{https://github.com/bleedingfight/models/tree/master/tutorials/embedding}{word2vec.py}
+\subsection{嵌套学习的评估:类比推理}
+词嵌套在NLP的预测问题中是非常有用且使用广泛地。如果要检测一个模型是否是可以成熟地区分词性或者区分专有名词的模型，最简单的办法就是直接检验它的预测词性、语义关系的能力，比如让它解决形如king is to queen as father is to ?这样的问题。这种方法叫做类比推理 ，可参考Mikolov and colleagues，数据集下载地址为:\href{https://word2vec.googlecode.com/svn/trunk/questions-words.txt}{questions-words.txt} 。
+To see how we do this evaluation如何执行这样的评估，可以看build\_eval\_graph()和 eval()这两个函数在下面源码中的使用 \href{https://github.com/bleedingfight/models/tree/master/tutorials/embedding}{word2vec.py}
+
+超参数的选择对该问题解决的准确性有巨大的影响。想要模型具有很好的表现，需要有一个巨大的训练数据集，同时仔细调整参数的选择并且使用例如二次抽样的一些技巧。不过这些问题已经超出了本教程的范围。
+\subsection{优化实现}
+以上简单的例子展示了TensorFlow的灵活性。比如说，我们可以很轻松得用现成的tf.nn.sampled\_softmax\_loss()来代替tf.nn.nce\_loss()构成目标函数。如果你对损失函数想做新的尝试，你可以用TensorFlow手动编写新的目标函数的表达式，然后用控制器执行计算。这种灵活性的价值体现在，当我们探索一个机器学习模型时，我们可以很快地遍历这些尝试，从中选出最优。
+
+一旦你有了一个满意的模型结构，或许它就可以使实现运行地更高效（在短时间内覆盖更多的数据）。比如说，在本教程中使用的简单代码，实际运行速度都不错，因为我们使用Python来读取和填装数据，而这些在TensorFlow后台只需执行非常少的工作。如果你发现你的模型在输入数据时存在严重的瓶颈，你可以根据自己的实际问题自行实现一个数据阅读器，参考 新的数据格式。对于Skip-Gram 模型，我们已经完成了如下这个例子 \href{https://github.com/bleedingfight/models/tree/master/tutorials/embedding}{word2vec.py}。
+
+如果I/O问题对你的模型已经不再是个问题，并且想进一步地优化性能，或许你可以自行编写TensorFlow操作单元，详见 添加一个新的操作。相应的，我们也提供了Skip-Gram模型的例子 \href{https://github.com/bleedingfight/models/tree/master/tutorials/embedding}{optimized.py}。请自行调节以上几个过程的标准，使模型在每个运行阶段有更好地性能。
+\subsection{RNN}
+此教程将展示如何在高难度的语言模型中训练循环神经网络。该问题的目标是获得一个能确定语句概率的概率模型。为了做到这一点，通过之前已经给出的词语来预测后面的词语。我们将使用 PTB(Penn Tree Bank) 数据集，这是一种常用来衡量模型的基准，同时它比较小而且训练起来相对快速。
+
+语言模型是很多有趣难题的关键所在，比如语音识别，机器翻译，图像字幕等。它很有意思--可以参看 here。
+
+本教程的目的是重现 \href{http://arxiv.org/abs/1409.2329}{Zaremba et al., 2014} 的成果，它们在 PTB 数据集上得到了很棒的结果。
+\subsection{下载及准备数据}
+本教程需要的数据在 data/ 路径下，来源于 Tomas Mikolov 网站上的\href{http://www.fit.vutbr.cz/~imikolov/rnnlm/simple-examples.tg}{PTB 数据集}
+
+该数据集已经预先处理过并且包含了全部的 10000 个不同的词语，其中包括语句结束标记符，以及标记稀有词语的特殊符号 (<unk>) 。我们在 reader.py 中转换所有的词语，让它们各自有唯一的整型标识符，便于神经网络处理。
+\subsection{LSTM}
+模型的核心由一个 LSTM 单元组成，其可以在某时刻处理一个词语，以及计算语句可能的延续性的概率。网络的存储状态由一个零矢量初始化并在读取每一个词语后更新。而且，由于计算上的原因，我们将以 batch\_size 为最小批量来处理数据。
+
+基础的伪代码就像下面这样：
+\begin{lstlisting}[language=Python]
+lstm = rnn_cell.BasicLSTMCell(lstm_size)
+state = tf.zeros([batch_size, lstm.state_size])
+
+loss = 0.0
+for current_batch_of_words in words_in_dataset:
+    output, state = lstm(current_batch_of_words, state)
+
+    logits = tf.matmul(output, softmax_w) + softmax_b
+    probabilities = tf.nn.softmax(logits)
+    loss += loss_function(probabilities, target_words)
+\end{lstlisting}
+\subsection{截断反向传播}
+为使学习过程易于处理，通常的做法是将反向传播的梯度在（按时间）展开的步骤上照一个固定长度(num\_steps)截断。 通过在一次迭代中的每个时刻上提供长度为 num\_steps 的输入和每次迭代完成之后反向传导，这会很容易实现。
+
+一个简化版的用于计算图创建的截断反向传播代码：
+\begin{lstlisting}[language=Python]
+words = tf.placeholder(tf.int32, [batch_size, num_steps])
+
+lstm = rnn_cell.BasicLSTMCell(lstm_size)
+initial_state = state = tf.zeros([batch_size, lstm.state_size])
+
+for i in range(len(num_steps)):
+    output, state = lstm(words[:, i], state)
+
+    # ...
+
+final_state = state
+\end{lstlisting}
+下面展现如何实现迭代整个数据集：
+\begin{lstlisting}[language=Python]
+numpy_state = initial_state.eval()
+total_loss = 0.0
+for current_batch_of_words in words_in_dataset:
+    numpy_state, current_loss = session.run([final_state, loss],
+        feed_dict={initial_state: numpy_state, words: current_batch_of_words})
+    total_loss += current_loss
+\end{lstlisting}
+\subsection{输入}
+在输入 LSTM 前，词语 ID 被嵌入到了一个密集的表示中(查看 矢量表示教程)。这种方式允许模型高效地表示词语，也便于写代码：
+\begin{lstlisting}[language=Python]
+# embedding_matrix 张量的形状是： [vocabulary_size, embedding_size]
+word_embeddings = tf.nn.embedding_lookup(embedding_matrix, word_ids)
+\end{lstlisting}
+嵌入的矩阵会被随机地初始化，模型会学会通过数据分辨不同词语的意思。
+\subsection{损失函数}
+我们想使目标词语的平均负对数概率最小$loss = -\frac{1}{N}\Sigma_{i=1}^NlnP_{target_i}$
+实现起来并非很难，而且函数 sequence\_loss\_by\_example 已经有了，可以直接使用。
+
+论文中的典型衡量标准是每个词语的平均困惑度（perplexity），计算式为
+$$e^{-\frac{1}{N}\Sigma_{i=1}^N}lnp_{target_i}=e^{loss}$$
+同时我们会观察训练过程中的困惑度值（perplexity)
+\subsection{多个LSTM层堆叠}
+要想给模型更强的表达能力，可以添加多层 LSTM 来处理数据。第一层的输出作为第二层的输入，以此类推。
+
+类 MultiRNNCell 可以无缝的将其实现：
+\begin{lstlisting}[language=Python]
+lstm = rnn_cell.BasicLSTMCell(lstm_size)
+stacked_lstm = rnn_cell.MultiRNNCell([lstm] * number_of_layers)
+
+initial_state = state = stacked_lstm.zero_state(batch_size, tf.float32)
+for i in range(len(num_steps)):
+    # 每次处理一批词语后更新状态值.
+    output, state = stacked_lstm(words[:, i], state)
+
+    # 其余的代码.
+    # ...
+
+final_state = state
+\end{lstlisting}
+\subsection{编译并运行代码}
+首先需要构建库，在CPU上编译:
+\begin{lstlisting}[language=Python]
+bazel build -c opt tensorflow/models/rnn/ptb:ptb_word_lm
+\end{lstlisting}
+如果你有一个强大的 GPU，可以运行
+\begin{lstlisting}[language=Python]
+bazel build -c opt --config=cuda tensorflow/models/rnn/ptb:ptb_word_lm
+\end{lstlisting}
+运行模型:
+\begin{lstlisting}[language=Python]
+bazel-bin/tensorflow/models/rnn/ptb/ptb_word_lm \
+  --data_path=/tmp/simple-examples/data/ --alsologtostderr --model small
+\end{lstlisting}
+教程代码中有 3 个支持的模型配置参数："small"， "medium" 和 "large"。它们指的是 LSTM 的大小，以及用于训练的超参数集。
+
+模型越大，得到的结果应该更好。在测试集中 small 模型应该可以达到低于 120 的困惑度（perplexity），large 模型则是低于 80，但它可能花费数小时来训练。
+
 \section{图像识别}
 我们的大脑看东西很简单，它不需要得到任何人的告诉就能分别狮子，鲸钱包，读一个符号或者识别人脸，
 但是计算机解决这个问题却很难。最近几年机器学习已经在这个问题上取得了很大的进步，事实上我们已经发现了一个称谓CNN的模型可以在很难的视觉认知邻域上获得匹敌甚至超过人类的性能。研究人员在ImageNet上展示它们的计算机视觉的成果，模型性能持续提升从\href{http://static.googleusercontent.com/media/research.google.com/en//archive/unsupervised_icml2012.pdf}{QuocNet},\href{http://www.cs.toronto.edu/~fritz/absps/imagenet.pdf}{AlexNet},\href{http://arxiv.org/abs/1409.4842}{Inception(GoogleNet)},\href{http://arxiv.org/abs/1502.03167}{BN-inception-v2}，Google累不和外部的研究人员都已经出版了一些论文描述这些模型，但是结果任然河南再次提升，我们用下面的代码实现我们最新的模型\href{http://arxiv.org/abs/1512.00567}{Inception-v3},Inception-v3 2012年在Imagenet的LVRC上训练，这对计算机来说是一个基本的任务，这里模型尝试着分类整个图形为1000中分类像"斑马","大麦町犬","洗碗机"，下面是AlexNet分类的一些图像:
@@ -798,7 +1386,7 @@ bucket掉入那个区域变成这个值的绝对标签。
 
 \subsubsection{输入函数}
 FeatureColumn为你的模型提供了一个指定的输入数据。标志着着如何代表和转化数据。但是它们本身不提供数据，你通过输入函数提供数据，输入函数必须返回一个tensor字典，每个键是FeatureColumn的名字。每个键的值是一个对于所有数据实例是包含特征值的tensor。查看\href{https://www.tensorflow.org/get_started/input_fn}{ Building Input Functions with tf.estimator}获取更多的关于输入函数的见解，在\href{https://www.github.com/tensorflow/tensorflow/blob/r1.3/tensorflow/examples/learn/wide_n_deep_tutorial.py}{ linear models tutorial code}中的input\_fn是实现输入函数的一个例子。在输入函数被传递给train()和evaluate()调用初始训练和测试正如下一章描述的。
-\subsubsection{线性estimator}
+\subsection{线性estimator}
 TensorFlow的estimator给训练和分类模型提供了一个独一无二的训练评估工具。它们考虑详细的训练和评估训练允许用户集中注意力在模型输入和架构上。
 
 为了建立一个线性estimator，你可以用tf.estimator.LinearClassfier estimator或者tf.estimator.LinearRegressor estimator分别建立分类和回归模型。

@@ -7,7 +7,7 @@
 图形。
 \end{itemize}
 \section{tf.estimator快速导航}
-TensorFlow的高级机器学习API(tf.estimator)使得配置，训练评价多种机器学习模型变得很简单，在这个导航中，你讲用tf.estimator构造一个神经网络分类器在\href{https://en.wikipedia.org/wiki/Iris_flower_data_set}{iris data}基于花萼和花瓣的几何特性训练预测花的种类，你的代码按照如下5步执行:
+TensorFlow的高级机器学习API(tf.estimator)使得配置，训练评价多种机器学习模型变得很简单，在这个导航中，你将用tf.estimator构造一个神经网络分类器在\href{https://en.wikipedia.org/wiki/Iris_flower_data_set}{iris data}基于花萼和花瓣的几何特性训练预测花的种类，你的代码按照如下5步执行:
 \begin{enumerate}
     \item 载入CSV文件的训练测试数据到TensorFlowDataset
     \item 构造\href{https://www.tensorflow.org/api_docs/python/tf/estimator/DNNClassifier}{神经网络分类器}
@@ -144,7 +144,8 @@ Test Accuracy: 0.966667
 你的精度结果可能有点不同但是应该大于90\%。
 \subsection{分类新的样本}
 用estimator的predict()方法分类新的样本，例如你有两个新的花的样本:\par
-
+\begin{table}
+\centering
 \begin{tabular}{|c|c|c|c|}
 \hline
 花萼长度&花萼宽度&花瓣长度&花瓣宽度\\
@@ -154,6 +155,7 @@ Test Accuracy: 0.966667
 5.8&3.1&5.0&1.7\\
 \hline
 \end{tabular}
+\end{table}
 \par
 你可以用predict(方法预测结果，predict返回一个词典生成器，生成器可以容易的被转化成列表，下面的代码访问和打印预测的分类:
 \begin{lstlisting}[language=Python]
@@ -237,7 +239,7 @@ my_input_fn = tf.estimator.inputs.pandas_input_fn(
     \item indices:在你的包含有非零值的tensor的元素的索引。接受列表，列表中的每个元素是包含非0元素的索引。（例如[0,0]代表两维Tensor的第0行第0列。indices=[[1,3],[2,4]]指定索引为[1,3],[2,4]的元素有非零值。）
     \item values:一维值得tensor，values中的i对应indices中的i和它指定的值。例如给定值indices=[[1,3],[2,4]],参数values=[18,3.6],指定元素索引[1,3]的位置为18,[2,4]的值为3.6。
 \end{itemize}
-下面的代码顶一个一个两维$3\times5$的SparseTensor，索引为[0,1]的位置的值为6，[2,4]位置的值为0.5，其它值为0。
+下面的代码定义一个二维$3\times5$的SparseTensor，索引为[0,1]的位置的值为6，[2,4]位置的值为0.5，其它值为0。
 \begin{lstlisting}[language=Python]
 sparse_tensor = tf.SparseTensor(indices=[[0,1], [2,4]],
                                 values=[6, 0.5],
@@ -306,7 +308,7 @@ def get_input_fn_from_numpy(data_set, num_epochs=None, shuffle=True):
 \end{lstlisting}
 \subsection{波士顿房价的神经网络模型}
 接下来的导航，你将写输入函数处理从\href{https://archive.ics.uci.edu/ml/datasets/Housing}{UCI Gousing Data Set}获取的数据集的子集，传递数据给神经网络回归器预测房价
-你讲用于训练的神经网络包含下面的子集\href{https://www.tensorflow.org/get_started/input_fn#setup}{Boston CSV data sets}包含下面\href{https://archive.ics.uci.edu/ml/machine-learning-databases/housing/housing.names}{特征数据}\par
+你将用于训练的神经网络包含下面的子集Boston CSV data sets包含下面\href{https://archive.ics.uci.edu/ml/machine-learning-databases/housing/housing.names}{特征数据}\par
 
 \begin{tabular}{|c|c|}
 \hline
@@ -332,7 +334,7 @@ PTRATIO&学生老师的比率\\
 \hline
 \end{tabular}
 \subsection{建立}
-下载数据集\href{http://download.tensorflow.org/data/boston_train.csv}{boston\_train.csv},\href{http://download.tensorflow.org/data/boston_test.csv}{boston\_test.csv}和\href{http://download.tensorflow.org/data/boston_predict.csv}{boston\_predict.csv}
+下载数据集\href{https://github.com/bleedingfight/TF_Code/blob/master/boston_price/boston_train.csv}{boston\_train.csv},\href{https://github.com/bleedingfight/TF_Code/blob/master/boston_price/boston_test.csv}{boston\_test.csv}和\href{https://github.com/bleedingfight/TF_Code/blob/master/boston_price/boston_predict.csv}{boston\_predict.csv}
 \subsection{导入的房子数据}
 \begin{lstlisting}[language=Python]
 from __future__ import absolute_import
@@ -370,7 +372,7 @@ feature_cols = [tf.feature_column.numeric_column(k) for k in FEATURES]
 \begin{lstlisting}[language=Python]
 regressor = tf.estimator.DNNRegressor(feature_columns=feature_cols,
                                       hidden_units=[10, 10],
-                                      model_dir="/tmp/boston_model")
+                                      model_dir="/boston_model")
 \end{lstlisting}
 \subsection{构建input\_fn}
 传递输入数据给regressor,写一个factory方法接受pandas DataFrame返回一个input\_fn:
@@ -390,17 +392,26 @@ regressor.train(input_fn=get_input_fn(training_set), steps=5000)
 \end{lstlisting}
 你应该能看到类似的输出，每100步报告训练的损失:
 \begin{lstlisting}[language=Python]
-INFO:tensorflow:Step 1: loss = 483.179
-INFO:tensorflow:Step 101: loss = 81.2072
-INFO:tensorflow:Step 201: loss = 72.4354
+INFO:tensorflow:Create CheckpointSaverHook.
+INFO:tensorflow:Saving checkpoints for 1 into ./boston_model_demo/model.ckpt.
+INFO:tensorflow:loss = 58842.2, step = 1
+INFO:tensorflow:global_step/sec: 379.343
+INFO:tensorflow:loss = 10089.6, step = 101 (0.264 sec)
+INFO:tensorflow:global_step/sec: 414.38
+INFO:tensorflow:loss = 12056.9, step = 201 (0.241 sec)
+INFO:tensorflow:global_step/sec: 417.317
 ...
-INFO:tensorflow:Step 1801: loss = 33.4454
-INFO:tensorflow:Step 1901: loss = 32.3397
-INFO:tensorflow:Step 2001: loss = 32.0053
-INFO:tensorflow:Step 4801: loss = 27.2791
-INFO:tensorflow:Step 4901: loss = 27.2251
-INFO:tensorflow:Saving checkpoints for 5000 into /tmp/boston_model/model.ckpt.
-INFO:tensorflow:Loss for final step: 27.1674.
+INFO:tensorflow:loss = 2884.69, step = 4801 (0.271 sec)
+INFO:tensorflow:global_step/sec: 388.267
+INFO:tensorflow:loss = 5111.75, step = 4901 (0.257 sec)
+INFO:tensorflow:Saving checkpoints for 5000 into ./boston_model_demo/model.ckpt.
+INFO:tensorflow:Loss for final step: 4082.04.
+INFO:tensorflow:Starting evaluation at 2017-11-21-05:42:23
+INFO:tensorflow:Restoring parameters from ./boston_model_demo/model.ckpt-5000
+INFO:tensorflow:Finished evaluation at 2017-11-21-05:42:23
+INFO:tensorflow:Saving dict for global step 5000: average_loss = 13.7577, global_step = 5000, loss = 1375.77
+Loss: 1375.769165
+INFO:tensorflow:Restoring parameters from ./boston_model_demo/model.ckpt-5000
 \end{lstlisting}
 \subsection{评估模型}
 下一步看看模型在测试数据及上的性能，运行evaluate,传递test\_set到input\_fn：
@@ -415,9 +426,7 @@ print("Loss: {0:f}".format(loss_score))
 \end{lstlisting}
 你应该能看到下面的结果:
 \begin{lstlisting}[language=Python]
-INFO:tensorflow:Eval steps [0,1) for training step 5000.
-INFO:tensorflow:Saving evaluation summary for 5000 step: loss = 11.9221
-Loss: 11.92209
+Loss: 1375.769165
 \end{lstlisting}
 \subsection{做出预测}
 最后你可以用模型在给定的预测包含特征数据没有标签的数据集上预测房价
@@ -431,23 +440,10 @@ print("Predictions: {}".format(str(predictions))
 \end{lstlisting}
 你应该得到包含6个房价值(单位是千美元)
 \begin{lstlisting}[language=Python]
-Predictions: [ 33.30348587  17.04452896  22.56370163  34.74345398  14.55953979
-  19.58005714]
-\end{lstlisting}
-\begin{lstlisting}[language=Python]
-#tensorflow 1.2.1
-import tensorflow as tf
-var = tf.Variable(0)
-add_operation = tf.add(var,1)
-update_operation = tf.assign(var,add_operation)
-with tf.Session() as sess:
-    sess.run(tf.global_variables_initializer())
-    for _ in range(3):
-        sess.run(update_operation)
-        print(sess.run(var))
+Predictions: [array([ 34.70497513], dtype=float32), array([ 17.63309288], dtype=float32), array([ 23.71421814], dtype=float32), array([ 35.60274506], dtype=float32), array([ 15.12172413], dtype=float32), array([ 19.79147911], dtype=float32)]
 \end{lstlisting}
 \section{tf.contrib.learn采集和监控基础}
-当我们训练模型的时候实时跟踪评估是有价值的，在这个导航中，你讲学习如何用TensorFlow的采集能力和Monitor API在分类iris花的过程中省查程序。这个导航的代码基于上一上。
+当我们训练模型的时候实时跟踪评估是有价值的，在这个导航中，你将学习如何用TensorFlow的采集能力和Monitor API在分类iris花的过程中省查程序。这个导航的代码基于上一上。
 \subsection{建立}
 \begin{lstlisting}[language=Python]
 from __future__ import absolute_import
@@ -505,9 +501,9 @@ if __name__ == "__main__":
 Accuracy: 0.933333
 Predictions: [1 2]
 \end{lstlisting}
-没有任何采集模型就像一个黑盒子，你不能看到TensorFlow随着梯度下降发生了什么，模型是否收敛或者是审查决定是否应该\href{https://en.wikipedia.org/wiki/Early_stopping}{提前停止},处理这个问题的一个方法是分隔模型为多个fit调用在更小的时间步获得更精确的评估，燃石日常使用不推荐因为它会极大地降低模型的训练。幸运的是tf.contrib.learn提供了另一个解:一个\href{https://www.tensorflow.org/api_docs/python/tf/contrib/learn/monitors}{Monitor API}设计用来帮助你在训练中采集度量和评估你的模型，下面的章节你讲学习如何在TensorFlow中采集，建立ValidationMonitor做streaming评估，用TensorBoard可视化你的度量。
+没有任何采集,模型就像一个黑盒子，你不能看到TensorFlow随着梯度下降发生了什么，模型是否收敛或者是否审查决定是否应该\href{https://en.wikipedia.org/wiki/Early_stopping}{提前停止},处理这个问题的一个方法是分隔模型为多个fit调用在更小的时间步获得更精确的评估，然而日常使用不推荐因为它会极大地降低模型的训练。幸运的是tf.contrib.learn提供了另一个解:一个\href{https://www.tensorflow.org/api_docs/python/tf/contrib/learn/monitors}{Monitor API}设计用来帮助你在训练中采集度量和评估你的模型，下面的章节你将学习如何在TensorFlow中采集，建立ValidationMonitor做streaming评估，用TensorBoard可视化你的衡量标准。
 \subsection{让你的TensorFlow能采集}
-TensorFlow有5个不同的等级采集消息。为了急剧的提高它们是DEBUG，INFO，WARN，ERROR和FATAL，当你配置好级别后TensorFlow将输出所有和你级别和更改级别的相关消息。例如你设置级别为DEBUG你讲从上面五个级别得到采集信息。默认，TensorFlow被被配置的采集级别为WARN,但是当跟踪模型训练时，你将想要调整级别为INFO，将提供额外的反馈作为fit操作，增加下面行到你的代码:
+TensorFlow有5个不同的等级采集消息。分别是DEBUG，INFO，WARN，ERROR和FATAL，当你配置好级别后TensorFlow将输出所有和你级别和更高级别的相关消息。例如你设置级别为DEBUG你将从上面五个级别得到采集信息。默认，TensorFlow被被配置的采集级别为WARN,但是当跟踪模型训练时，你将想要调整级别为INFO，将提供额外的反馈作为fit操作，增加下面行到你的代码:
 \begin{lstlisting}[language=Python]
 tf.logging.set_verbosity(tf.logging.INFO)
 \end{lstlisting}
@@ -519,14 +515,20 @@ INFO:tensorflow:loss = 0.109025, step = 201
 \end{lstlisting}
 在INFO级别采集tf.contrib.learn自动每100步输出\href{}{train-loss metric}到标准输出。
 \subsection{配置Streaming评估的ValidationMonitor}
-采集训练的损失对于帮你理解你的模型是否收敛是很有用的，但是如果你想了解训练过程发生了什么?tf.contrib.learn提供几个更高级别的Monitor，你可以添加到你的fit操作进一步在模型训练中记录度量或者调试低级TensorFlow操作。包括:
-\begin{tabular}{|c|c|}
+采集训练的损失对于帮你理解你的模型是否收敛是很有用的，但是如果你想了解训练过程发生了什么?tf.contrib.learn提供几个更高级别的Monitor，你可以添加到你的fit操作以进一步在模型训练中记录度量或者调试低级TensorFlow操作。包括:
+
+\begin{table}[h!]
+\centering
+	\begin{tabular}{|p{3cm}|p{7cm}|}
+\hline 
 Monitor&描述\\
 CaptureVariable&每n步保存一个指定变量的值到集合\\
 PrintTensor&在每个训练步采集指定tensor的值。\\
 SummarySave&用tf.summary.FileWriter在训练中每n步为一个指定的\href{https://www.tensorflow.org/api_docs/python/tf/Summary}{tf.Summary protocal buffer}\\
 ValidationMonitor&在训练中每n步采集一个指定的评估方案，如果想要，在确定条件下实现early stopping。\\
+\hline
 \end{tabular}
+\end{table}
 \subsection{每N步评估}
 对于神经网络分类器你也许想采集训练损失同时像评估测试数据,看看模型的泛化能力。你可以你结合配置一个ValidationMonitor和测试数据(test\_set.data,test\_set.target)，用every\_n\_steps设置评估的频率。every\_n\_steps默认值为100，这里设置every\_n\_step为50每50步评估模型训练。
 \begin{lstlisting}[language=Python]
@@ -544,7 +546,7 @@ classifier = tf.contrib.learn.DNNClassifier(
     model_dir="/tmp/iris_model",
     config=tf.contrib.learn.RunConfig(save_checkpoints_secs=1))
 \end{lstlisting}
-注意model\_dir制定了一个可用的陌路(.tmp/iris\_model)存储模型数据，这个路径相比自动生成的之后将会很容易被访问，每次你运行代码的时候任何/tmp/iris\_model中的数据将被载入模型将继续从上次停止的地方运行，为了重新训练模型在运行代码前先删掉/trm/iris\_model,最后添加你的validation\_monitor,更新包含monitor参数的fit调用
+注意model\_dir指定了一个可用的目录(/tmp/iris\_model)存储模型数据，这个路径相比自动生成的路径在之后将会很容易被访问，每次你运行代码的时候任何/tmp/iris\_model中的数据将被载入，模型将继续从上次停止的地方运行，为了重新训练模型在运行代码前先删掉/tmp/iris\_model,最后添加你的validation\_monitor,更新包含monitor参数的fit调用
 \begin{lstlisting}[language=Python]
 classifier.fit(x=training_set.data,
                y=training_set.target,
@@ -610,12 +612,21 @@ INFO:tensorflow:Validation (step 1500): recall = 1.0, loss = 0.0617403, global_s
 \end{lstlisting}
 \subsection{用ValidationMonitor提前终止}
 注意上面的输出每600步模型已经得到precision和recall 1.0。抛出问题说明模型是否可以从early stopping中获得好处、另外采集运算的度量,当指定条件满足时ValidationMonitor容易通过下面的参数实现early stopping。
-\begin{tabular}{|c|c|}
+
+\begin{table}[h!]
+\centering
+\begin{tabular}{|p{6cm}|p{8cm}|}
+		\hline
 参数&描述\\
+\hline
 early\_stopping\_metrics&度量在给定的条件early\_stopping\_rounds和early\_stopping\_metric\_metric\_minimize下出发early stopping,默认是"loss"\\
+\hline
 early\_stopping\_metric\_minimize&如果想要模型行为最小化early\_stopping\_metric为True，如果想最大化它的值为False，默认为True\\
+\hline
 early\_stopping\_rounds&如果early\_stopping\_metric不见效或者增加，训练将被停止，默认为None表示永不提前停止\\
+\hline
 \end{tabular}
+\end{table}
 按照下面修改ValidationMonitor构造体，指定是否损失200步(early\_stopping\_rounds=200)没有减少,模型训练在到达这个点将立即终止，并不完成fit中指定的2000步。
 \begin{lstlisting}[language=Python]
 validation_monitor = tf.contrib.learn.monitors.ValidationMonitor(
@@ -633,406 +644,14 @@ validation_monitor = tf.contrib.learn.monitors.ValidationMonitor(
 INFO:tensorflow:Validation (step 1150): recall = 1.0, loss = 0.056436, global_step = 1119, precision = 1.0, accuracy = 0.966667
 INFO:tensorflow:Stopping. Best step: 800 with loss = 0.048313818872.
 \end{lstlisting}
-特别是这里的训练步数为1150，对于之前200步，损失不在减少，总体800残生最小的损失之对应测试数据集。这意味着额外的超参数标准被减少也许进一步提法哦模型。
+特别是这里的训练步数为1150，对于之前200步，损失不在减少，总体800产生最小的损失与之对应测试数据集。这意味着额外的超参数标准被减少也许将进一步提升模型。
 \subsection{用TensorBoard可视化采集数据}
-读ValidationMonitor生成的日志提供了丰富的训练过程中的原始数据，可视化这些数据有助于得到更深的见解。例如精确度如何随着步数改变。你可以用TensorBoard设置，命令行参数logdir画图，运行下面的命令行tensorboard --logdir=/tmp/iris\_model/浏览器中导航到http://0.0.0.0:<6006>，如果你点击精确度范围，你讲看到一个像下面的图，绘制精度和步数。
+读ValidationMonitor生成的日志提供了丰富的训练过程中的原始数据，可视化这些数据有助于得到更深的见解。例如精确度如何随着步数改变。你可以用TensorBoard设置，命令行参数logdir画图，运行下面的命令行tensorboard --logdir=/tmp/iris\_model/浏览器中导航到http://0.0.0.0:<6006>，如果你点击精确度范围，你将看到一个像下面的图，绘制精度和步数。
 \begin{figure}[H]
-\includegraphics[scale=0.5]{validation_monitor_tensorboard_accuracy.png}
+\includegraphics[scale=0.1]{validation_monitor_tensorboard_accuracy.png}
 \end{figure}
 
-\subsection{batch normalization}
-\begin{itemize}
-	\item[\S] 数据x为Tensor。
-\item mean:为x的均值，也是一个Tensor。
-\item var:为x的方差，也为一个Tensor。
-\item offset:一个偏移，也是一个Tensor。
-\item scale:缩放倍数，也是一个Tensor。
-\item variable\_epsilon,一个不为0的浮点数。
-\item name:操作的名字，可选。
-\end{itemize}
-batch normalization计算方式是:
-\begin{gather}
-x = (x-\bar{x})/\sqrt{Var(x)+variable_{epsilon}}\\
-x = x\times scale+offset\\
-\end{gather}
-\begin{gather}
-\text{均值}:\bar{x} = \frac{1}{m}\Sigma_{i=1}^{m}x_i\\
-\text{方差}:\sigma^2 = \frac{1}{m}\Sigma_{i=1}^m(x_i-\bar{x})
-\end{gather}
-\section{常见的激活函数}
-\subsection{relu}
-relu函数在自变量x小于0时值全为0,在x大于0时，值和自变量相等。
-\begin{lstlisting}[language=Python]
-import tensorflow as tf 
-import matplotlib.pyplot as plt 
-x = tf.linspace(-10.,10.,100)
-y = tf.nn.relu(x)
-with tf.Session() as sess:
-	[x,y] = sess.run([x,y])
-plt.plot(x,y,'r',6,6,'bo')
-plt.title('relu')
-ax = plt.gca()
-ax.annotate("",
-            xy=(6, 6), xycoords='data',
-            xytext=(6, 4.5), textcoords='data',
-            arrowprops=dict(arrowstyle="->",
-                            connectionstyle="arc3"),
-            )
-ax.annotate("",xy=(6,6),xycoords='data',
-            xytext=(10, 6), textcoords='data',
-            arrowprops=dict(arrowstyle="->",
-                            connectionstyle="arc3"),
-	  	   
-)
-ax.grid(True)
-plt.xlabel('x')
-plt.ylabel('relu(x)')
-plt.savefig('relu.png',dpi = 600)
-\end{lstlisting}
-\subsection{relu6}
-relu6函数和relu不同之处在于在x大于等于6的部分值保持为6。
-\begin{lstlisting}[language=Python]
-import tensorflow as tf 
-import matplotlib.pyplot as plt 
-x = tf.linspace(-10.,10.,100)
-y = tf.nn.relu6(x)
-with tf.Session() as sess:
-	[x,y] = sess.run([x,y])
-plt.plot(x,y,'r',6,6,'bo')
-plt.title('relu6')
-ax = plt.gca()
-ax.annotate("",
-            xy=(6, 6), xycoords='data',
-            xytext=(6, 4.5), textcoords='data',
-            arrowprops=dict(arrowstyle="->",
-                            connectionstyle="arc3"),
-            )
-ax.grid(True)
-plt.xlabel('x')
-plt.ylabel('relu6(x)')
-plt.savefig('relu6.png',dpi = 600)
-\end{lstlisting}
-\begin{figure}[H]
-\centering
-\includegraphics[scale=0.8]{./pic/chapter1/relu.png}
-\caption{relu}
-\end{figure}
-\begin{figure}[H]
-\centering
-\includegraphics[scale=0.8]{./pic/chapter1/relu6.png}
-\caption{relu6}
-\end{figure}
-
-\subsection{sigmoid}
-\begin{lstlisting}[language=Python]
-import tensorflow as tf 
-import matplotlib.pyplot as plt 
-import matplotlib.patches as mpatches
-x = tf.linspace(-10.,10.,100)
-y1 = tf.nn.sigmoid(x)
-y2 = tf.nn.tanh(x)
-red_patch = mpatches.Patch(color = 'red',label = 'sigmoid')
-blue_patch = mpatches.Patch(color = 'blue',label = 'tanh')
-with tf.Session() as sess:
-	[x,y1,y2] = sess.run([x,y1,y2])
-plt.plot(x,y1,'r',x,y2,'b')
-ax = plt.gca()
-ax.annotate(r"$tanh(x) = \frac{1-^{-2x}}{1+e^{-x}}$",
-	   xy=(0,0),xycoords="data",
-	   xytext=(1,0),textcoords="data",
-	   arrowprops=dict(arrowstyle="->",
-	   connectionstyle="arc3"),
-)
-ax.annotate(r"$sigmoid(x) = \frac{1}{1+e^{-x}}$",
-	   xy=(0,0.5),xycoords="data",
-	   xytext=(1,0.5),textcoords="data",
-	   arrowprops=dict(arrowstyle="->",
-	   connectionstyle="arc3"),
-)
-plt.xlabel('x')
-plt.grid(True)
-plt.legend(handles = [red\_patch,blue\_patch])
-plt.savefig('activate.png',dpi=600)
-\end{lstlisting}
-\begin{figure}[H]
-\centering
-\includegraphics[scale=0.8]{./pic/chapter1/activate_fun.png}
-\caption{activate\_fun}
-\end{figure}
-\subsection{relu和softplus}
-\begin{lstlisting}[language=Python]
-import tensorflow as tf 
-import matplotlib.pyplot as plt 
-import matplotlib.patches as mpatches
-x = tf.linspace(-10.,10.,100)
-y2 = tf.nn.softplus(x)
-y3 = tf.nn.relu(x)
-blue_patch = mpatches.Patch(color = 'blue',label = 'softplus')
-yellow_patch = mpatches.Patch(color = 'yellow',label = 'relu')
-with tf.Session() as sess:
-	[x,y2,y3] = sess.run([x,y2,y3])
-plt.plot(x,y2,'b',x,y3,'y')
-ax = plt.gca()
-plt.xlabel('x')
-ax.annotate(r"$softplus(x)=log(1+e^x)$",
-	   xy=(0,0),xycoords="data",
-	   xytext=(1,0),textcoords="data",
-	   arrowprops=dict(arrowstyle="->",
-	   connectionstyle="arc3"),
-)
-ax.annotate(r"$relu(x)=max(x,0)$",
-	   xy=(0,0.5),xycoords="data",
-	   xytext=(1,0.5),textcoords="data",
-	   arrowprops=dict(arrowstyle="->",
-	   connectionstyle="arc3"),
-)
-
-plt.grid(True)
-plt.legend(handles = [blue_patch,yellow_patch])
-plt.savefig('relu_softplus.png',dpi=600)
-\end{lstlisting}
-\begin{figure}[H]
-\centering
-\includegraphics[scale=0.8]{./pic/chapter1/relu_softplus.png}
-\end{figure}
-\subsection{dropout}
-将神经元以概率keep\_prob绝对是否被抑制。如果被抑制该神经元的输出为0如果不被抑制，该神经元的输出将被放大到原来的1/keep\_prop。
-默认情况下，每个神经元是否被抑制是相互独立的。但是是否被抑制也可以通过noise\_shape来调节。当noise\_shape[i]=shape(x)[i]时,x中的元素相互独立。如果shape(x)=[k,1,1,n],那么每个批通道都是相互独立的，但是每行每列的数据都是关联的，也就是说要么都为0,要么还是原来的值。
-\begin{lstlisting}[language=Python]
-import tensorflow as tf
-a = tf.constant([[-1.,2.,3.,4.]])
-with tf.Session() as sess:
-    b = tf.nn.dropout(a,0.5,noise_shape=[1,4])
-    print(sess.run(b))
-    c = tf.nn.dropout(a,0.5,noise_shape=[1,1])
-    print(sess.run(c))
-\end{lstlisting}
-[[-2.  0.  0.  8.]]\newline
-[[-0.  0.  0.  0.]]\newline
-当输入数据特征相差明显时，用tanh效果会很好，但在循环过程中会不断扩大特征效果并显示出来。当特征相差不明显时，sigmoid效果比较好。同时，用sigmoid和tanh作为激活函数时，需要对输入进行规范化，否则激活厚的值全部进入平坦区，隐藏层的输出会趋同，丧失原来的特征表达，而relu会好很多，优势可以不需要输入规范化来避免上述情况。因此，现在大部分卷积神经网络都采用relu作为激活函数。
-\section{CNN常用函数}
-\subsection{卷积函数}
-tf.nn.conv2d(input,filter,padding,stride=None,diation\_rate=Nonei每name = None,data\_format=None)\newline
-\begin{itemize}
-\item input:一个tensor，数据类型必须是float32,或者是float64
-\item filter:一个tensor,数据类型必须和input相同。
-\item strides:一个长度为4的一组证书类型数组，每一维对应input中每一维对应移动的步数，strides[1]对应input[1]移动的步数。
-\item padding:有两个可选参数'VALID'（输入数据维度和输出数据维度不同）和'SAME'（输入数据维度和输出数据维度相同）
-\item use\_cudnn\_on\_gpu:一个可选的布尔值，默认情况下时True。
-\item name:可选，操作的一个名字。
-\end{itemize}
-\begin{lstlisting}[language=Python]
-import tensorflow as tf
-input_data = tf.Variable(tf.random_normal(shape = [10,9,9,3],mean=0,stddev=1),dtype = tf.float32)
-kernel = tf.Variable(tf.random_normal(shape = [2,2,3,2],mean = 0,stddev=1,dtype=tf.float32))
-
-y = tf.nn.conv2d(input_data,kernel,strides=[1,1,1,1],padding='SAME')
-init = tf.global_variables_initializer()
-with tf.Session() as sess:
-    sess.run(init)
-    print(sess.run(y).shape)
-\end{lstlisting}
-输出形状为[10,9,9,2]。
-\subsection{常见的分类函数}
-tf.nn.sigmoid\_cross\_entropy\_with\_logits(logits,targets,name=None)
-\begin{itemize}
-	\item logits:[batch\_size,num\_classes]
-	\item targets:[batch\_size,size]
-	\item 输出：loss[batch\_size,num\_classes]
-\end{itemize}
-最后已成不需要进行sigmoid操作。\par
-tf.nn.softmax(logits,dim=-1,name=None):计算Softmax
-\[softmax = \frac{x^{logits}}{reduce\_sum(e^{logits},dim)}\]
-tf.nn.log\_softmax(logits,dim=-1,name = None)计算log softmax
-\[logsoftmax = logits-log(reduce\_softmax(exp(logits),dim))\]
-tf.nn.softmax\_cross\_entropy\_with\_logits(\_setinel=None,labels=None,logits=None,dim=-1,name=None)
-输出loss:[batch\_size]保存的时batch中每个样本的交叉熵。
-tf.nn.sparse\_softmax\_cross\_entropy\_with\_logic(logits,labels,name=None)
-\begin{itemize}
-	\item logits:神经网络最后一层的结果。
-	\item 输入logits:[batch\_size,num\_classes],labels:[batch\_size],必须在[0,num\_classes]
-	\item loss[batch],保存的是batch每个样本的交叉熵。
-\end{itemize}
-\section{优化方法}
-\begin{itemize}
-	\item tf.train.GradientDescentOptimizer
-	\item tf.train.AdadeltaOptimizer
-	\item tf.train.AdagradDAOptimizer
-	\item tf.train.AdagradOptimizer
-	\item tf.train.MomentumOptimizer
-	\item tf.train.AdamOptimizer
-	\item tf.train.FtrlOptimizer
-	\item tf.train.RMSPropOptimizer
-\end{itemize}
-\subsection{BGD}
-BGD(batch gradient descent)批量梯度下降。这种方法是利用现有的参数对训练集中的每一个输入生成一个估计输出$y_i$,然后跟实际的输出$y_i$比较，统计所有的误差，求平均后的到平均误差作为更新参数的依据。啊它的迭代过程是:
-\begin{enumerate}
-	\item 提取训练集集中所有内容$\{x_1,\ldots,x_n\}$,以及相关的输出$y_i$;
-	\item 计算梯度和误差并更新参数。
-\end{enumerate}
-这种方法的优点是：使用所有数据计算，都保证收敛，并且不需要减少学习率。缺点是每一步需要使用所有的训练数据，随着训练的进行，速度会变慢。那么如果将训练数据拆分成一个个batch,每次抽取一个batch数据更新参数，是不是能加速训练？这就是SGD。
-\subsection{SGD}
-SGD(stochastic gradient descent):随机梯度下降。这种方法的主要思想是将数据集拆分成一个个的batch，随机抽取一个batch计算并更新参数，所以也称为MBGD(minibatch gradient descent)\
-SGD在每次迭代计算mini-batch的梯度，然后对参数进行更新。和BGD相比，SGD在训练数据集很大时也能以较快的速度收敛，但是它有两个缺点：
-\begin{enumerate}
-\item 需要手动调整学习率，此外选择合适的学习率比较困难。尤其在训练时，我们常常想对常出现的特征更快速的更新，对不常出现的特征更新速度慢些，而SGD更新参数时对所有参数采用一样的学习率，因此无法满足要求。
-\item SGD:容易收敛到局部最优。
-\end{enumerate}
-\subsection{momentum}
-Momentum是模拟物理学中的动量概念，更新时在一定程度上保留之前的更新方向，利用当前批次再次微调本次更新参数，因此引入了一个新的变量v，作为前几次梯度的累加。因此，momentum能够更新学习率，在下降初期，前后梯度方向一致时能加速学习：在下降的中后期，在局部最小值附近来回振荡，能够抑制振荡加快收敛。
-\subsection{Nesterov Momentum}
-标准的Monentum法首先计算一个梯度，然后在加速更新梯度的方向进行一个大的跳跃Nesterov首先在原来加速的梯度方向进行一个大的跳跃，然后在改为值设置计算梯度值，然后用这个梯度值修正最终的更新方向。
-\subsection{Adagrad}
-Adagrade能够自适应的为各个参数分配不同的学习率，能够控制每个维度的梯度方向，这种方法的优点是能实现学习率的自动更改，如果本次更新时梯度大，学习率就衰减得快，如果这次更新时梯度小，学习率衰减得就慢些。
-\subsection{RMSprop}
-和Momentum类似，通过引入衰减系数使得每个回合都衰减一定比例。在实践中，对循环神经网络效果很好。
-\subsection{Adam}
-名称来自自适应矩阵(adaptive moment estimation).Adam根据损失函数针对每个参数的一阶矩，二阶矩估计动态调整每个参数的学习率。
-\begin{lstlisting}[language=Python]
-import numpy as np
-import tensorflow as tf
-import matplotlib.pyplot as plt
-tf.set_random_seed(0)
-np.random.seed(0)
-LR = 0.01
-BATCH_SIZE = 32
-x = np.linspace(-1,1,100).reshape(-1,1)
-noise = np.random.normal(0,0.1,size=x.shape)
-y = np.power(x,2)+noise
-class Net:
-    def __init__(self,opt,**kwargs):
-        self.x = tf.placeholder(tf.float32,[None,1])
-        self.y = tf.placeholder(tf.float32,[None,1])
-        l = tf.layers.dense(self.x,20,tf.nn.relu)
-        out = tf.layers.dense(l,1)
-        self.loss = tf.losses.mean_squared_error(self.y,out)
-        self.train = opt(LR,**kwargs).minimize(self.loss)
-net_SGD = Net(tf.train.GradientDescentOptimizer)
-net_momentum = Net(tf.train.MomentumOptimizer,momentum=0.9)
-net_RMSprop = Net(tf.train.RMSPropOptimizer)
-net_Adam = Net(tf.train.AdamOptimizer)
-nets = [net_SGD,net_momentum,net_RMSprop,net_Adam]
-sess = tf.Session()
-sess.run(tf.global_variables_initializer())
-losses_his = [[],[],[]]
-for step in range(300):
-    index = np.random.randint(0,x.shape[0],BATCH_SIZE)
-    b_x = x[index]
-    b_y = y[index]
-    for net,l_his in zip(nets,losses_his):
-        _,l = sess.run([net.train,net.loss],{net.x:b_x,net.y:b_y})
-        l_his.append(l)
-labels = ['SGD','Momentum','RMSprop','Adam']
-for i,l_his in enumerate(losses_his):
-    plt.plot(l_his,label=labels[i])
-plt.legend(loc='best')
-plt.xlabel('Step')
-plt.ylabel('Loss')
-plt.ylim(0,0.2)
-plt.savefig('Opt.png',dpi=600)
-\end{lstlisting}
-\begin{figure}[H]
-	\centering
-	\includegraphics[scale=0.4]{./pic/chapter1/Opt.png}
-\end{figure}
-\subsection{构造简单的神经网络拟合数据}
-原始数据为$y=x^2$的基础上添加随机噪声。原始数据的散点图如下
-\begin{center}
-\begin{figure}[H]
-\includegraphics[scale=0.6]{./pic/chapter1/origin.png}
-\end{figure}
-\end{center}
-\begin{lstlisting}[language=Python]
-#tensorflow 1.2.1
-import tensorflow as tf
-import matplotlib.pyplot as plt
-import numpy as np
-tf.set_random_seed(0)
-np.random.seed(0)
-#生成数据
-step = 100
-x = np.linspace(-1,1,step).reshape(-1,1)
-noise = np.random.normal(0,0.1,size=x.shape)
-y = np.power(x,2)+noise
-
-tf_x = tf.placeholder(tf.float32,x.shape)
-tf_y = tf.placeholder(tf.float32,x.shape)
-l1 =  tf.layers.dense(tf_x,10,tf.nn.relu)
-output = tf.layers.dense(l1,1)
-
-loss = tf.losses.mean_squared_error(tf_y,output)
-optimizer = tf.train.GradientDescentOptimizer(learning_rate=0.5)
-train_op = optimizer.minimize(loss)
-
-sess = tf.Session()
-sess.run(tf.global_variables_initializer())
-plt.ion()
-for step in range(100):
-    _,l,pred = sess.run([train_op,loss,output],{tf_x:x,tf_y:y})
-    if step%5==0:
-        plt.cla()
-        plt.scatter(x,y)
-        plt.title(r'$y=x^2+noise$')
-        plt.plot(x,pred,'r-',lw=2)
-        plt.text(0,0.8,'Loss=%.4f'%l,fontdict={'size':10,'color':'blue'})
-        plt.xlabel("x")
-        plt.ylabel(r"$y=x^2$")
-        plt.pause(0.1)
-plt.ioff()
-plt.show()
-\end{lstlisting}
-最终拟合数据:
-\begin{figure}[H]
-\includegraphics[scale=0.4]{./pic/chapter1/final.png}
-\end{figure}
-\section{TensorBoard}
-\begin{lstlisting}[language=Python]
-import tensorflow as tf
-import matplotlib.pyplot as plt
-
-tf.set_random_seed(1)
-x0 = tf.random_normal((100,2),2,2,tf.float32,0)
-y0 = tf.zeros(100)
-x1 = tf.random_normal((100,2),-2,2,tf.float32,0)
-y1 = tf.ones(100)
-x = tf.reshape(tf.stack((x0,x1),axis=1),(200,2))
-y = tf.reshape(tf.stack((y0,y1),axis=1),(200,1))
-with tf.Session() as sess:
-    x = sess.run(x)
-    y = sess.run(y)
-
-tf_x = tf.placeholder(tf.float32, x.shape)     # input x
-tf_y = tf.placeholder(tf.int32, y.shape)     # input y
-
-# neural network layers
-l1 = tf.layers.dense(tf_x, 10, tf.nn.relu)          # hidden layer
-output = tf.layers.dense(l1, 2)                     # output layer
-
-loss = tf.losses.sparse_softmax_cross_entropy(labels=tf_y, logits=output)           # compute cost
-accuracy = tf.metrics.accuracy(          # return (acc, update_op), and create 2 local variables
-            labels=tf.squeeze(tf_y), predictions=tf.argmax(output, axis=1),)[1]
-optimizer = tf.train.GradientDescentOptimizer(learning_rate=0.05)
-train_op = optimizer.minimize(loss)
-
-sess = tf.Session()                                                                 # control training and others
-init_op = tf.group(tf.global_variables_initializer(), tf.local_variables_initializer())
-sess.run(init_op)     # initialize var in graph
-
-plt.ion()   # something about plotting
-for step in range(100):
-    _, acc, pred = sess.run([train_op, accuracy, output], {tf_x: x, tf_y: y})
-    if step % 2 == 0:
-        plt.cla()
-        plt.scatter(x[:, 0], x[:, 1], c=pred.argmax(1), s=100, lw=0, cmap='RdYlGn')
-        plt.text(1.5, -4, 'Accuracy=%.2f' % acc, fontdict={'size': 20, 'color': 'red'})
-        plt.pause(0.1)
-plt.ioff()
-plt.show()
-\end{lstlisting}
-\begin{figure}[H]
-	\includegraphics[scale=0.4]{./pic/chapter1/tenbor1.png}
-\end{figure}
-\subsection{TensorBoard Histogram Dashboard}
+\section{TensorBoard Histogram Dashboard}
 TensorBoard Histogram Dashboard 显示TensorFlow图中的Tensor如何随着时间变化。
 \subsection{一个简单的例子}
 正态分布变量，均值随着和时间移动。TensorFlow有一个操作tf.random\_normal可以完美的达到这个目的。正如通常情况下TensorBoard，我们将用summary op融合数据据。
@@ -1231,328 +850,4 @@ save()
 tf.reset_default_graph()
 reload()
 \end{lstlisting}
-\section{RNN}
-人不能抓住每一秒的思考，当你读这篇文章的时候，你能基于你之前的对单词的理解明白文章的每一个单词的意思，你思考的时候不需要丢掉所有的东西，你的思想有持续性。\par
-传统的神经网络很难做到这点，这也是传统神经网络的主要缺点。例如你想分类电影中的不同时间点的事件，传统神经网络用不清楚如何用之前的事件了解新的事件。\par
-RNN通过循环处理这个问题，允许信息保留。\par
-\begin{figure}[!ht]
-\centering
-\includegraphics[scale=0.5]{RNN-rolled.png}
-\end{figure}
-上面的图表示一个RNN单元，A得到输入$x_t$和输出$h_t$，A允许信息被循环从一步到下一步，一个循环神经网络可以看成是多个相同单元的复制。铺开RNN可以得到
-\begin{figure}[!ht]
-\centering
-\includegraphics[scale=0.3]{RNN-unrolled.png}
-\caption{unrolled RNN}
-\end{figure}
-这个链式结构揭示了循环神经网络和序列或者列表密切相关，它适用于这种数据。
-\subsection{The Problem Long-Term Dependencies}
-语言模型中常用先前的一个词预测下一个词，如果我们尝试预测"the clouds are in the {\color{red}{sky}}"我们不需要很多上下文信息RNN通过之前的信息就能学到。但是我们尝试预测这样一个句子"I grew up in France... I speak fluent {\color{red}{France}}"，之前的信息暗示下一个单词可能是语言的名字，如果我们想去缩小语言的范围，我们需要上下文{\color{red}{France}}，可相关信息和这个需要点的间隔很大。
-\begin{figure}[!ht]
-\centering
-\includegraphics[scale=0.3]{RNN-longtermdependencies.png}
-\end{figure}
-理论上RNN有能力处理“long-term dependencies”，人能小心的挑选参数解决这个烦人的问题，然而不幸的是RNN似乎不能做到，原因由\href{http://www-dsi.ing.unifi.it/~paolo/ps/tnn-94-gradient.pdf}{Hochreiter (1991) [German] and Bengio, et al. (1994)}提出.
-\subsection{LSTM网络}
-Long Short Term Memory networks通常简称为LSTMs是一个特殊的RNN，能学习learning long-term dependencies，它被\href{http://deeplearning.cs.cmu.edu/pdfs/Hochreiter97_lstm.pdf}{Hochreiter  Schmidhuber (1997)}引入，然后被提炼，在大型文体处理上效果很好因而被广泛的使用。\par
-LSTMs明确的设计去解决 long-term dependency problem。\par
-所有的循环神经网络都有重复的链式形式。在标准的RNNs，重复的模块有一个非常简单的结构，像tanh Layer。
-\begin{figure}
-\centering
-\includegraphics[scale=0.3]{LSTM3-SimpleRNN.png}
-\caption{The repeating module in a standard RNN contains a single layer}
-\end{figure}
-LSTMs也有这样类似的结构，但是congruent模块有点不同，有一个神经网络层有四个相互作用部分，
-\begin{figure}
-\centering
-\includegraphics[scale=0.3]{LSTM3-chain.png}
-\caption{The repeating module in an LSTM contains four interacting layers}
-\end{figure}
-\begin{figure}
-\centering
-\includegraphics[scale=0.3]{LSTM2-notation.png}
-\end{figure}
-在上面的图上，每一根线上携带的都是一个向量，从一个输出节点到其它输入，粉色圆圈代表按点操作，黄色盒子是学习好的神经网络层，线融合表示串联，copy表示将一条线复制一份。
-\subsection{LSTMs想法的核心}
-LSTMs的核心是图像顶部的水平流过的cell state，cell state像一个传送带，它笔直的沿着整条链跑，和一些次要的线性交互，很容易实现信息不改变的流动。
-\begin{figure}
-\centering
-\includegraphics[scale=0.3]{LSTM3-C-line.png}
-\end{figure}
-LSTM能删除或者增加信息到cell state，被控制的结构称为门。门是一种让信息通过的手段，由一个sigmoid神经网络层和pointwise惩罚操作组成。
-\begin{figure}
-\centering
-\includegraphics[scale=0.5]{LSTM3-gate.png}
-\end{figure}
-sigmod Layer输出0到1之间的数，描述多少组件应该被通过，0表示不允许通过1表示让一切通过，LSTMs有三个门，保护和控制cell state。
-\subsection{一步步的设置}
-第一步是LSTMs决定什么信息应该被传送，这个决定每一个称为忘记门的sigmoid layer组成，通过$h_{t-1}$和$x_t$输出0到1之间的数给当前的$C_{t-1}$,1表示完全保持，0表示丢弃。\par
-对于上面的语言模型，cell state也许包含the gender of the present subjects,以至于正确的带名字能被使用，当我们看一个新的subject，我们想图忘记the gender of the old subject。
-\begin{figure}
-\centering
-\includegraphics[scale=0.5]{LSTM3-focus-f.png}
-\end{figure}
-下一步是决定什么新的信息将被存储在cell state中，这分为两部分
-\begin{enumerate}
-	\item Sigmod layer调用 input gate layer决定更新哪个值。
-	\item tanh layer创建一个可能被添加到state新的候选向量。$\widetilde{C_t}$
-\end{enumerate}
-下一步我们结合两个不走创建一个更新状态。，在我们的语言模型例子中，我们想要增加gender of the new subject到cell state取代我们将要忘记的数据
-\begin{figure}
-\centering
-\includegraphics[scale=0.5]{LSTM3-focus-i.png}
-\end{figure}
-现在更新老的cell state$C_{t-1}$到新的cell state$C_t$,我们用老的$c_{t-1}$乘上$f_t$忘记我们之前决定忘记的事，然后我们增加$i_t*\widetilde{C_t}$.这是新的候选值，表示我们更新每个状态值的规模。在例子中的语言模型，我们删掉了一个老的subject's gender增加新的信息。
-\begin{figure}
-\centering
-\includegraphics[scale=0.5]{LSTM3-focus-i.png}
-\end{figure}
-最后我们需要决定我们输出什么，输出取决于我们的cell state，但是将被过滤，所限我们运行sigmoid layer决定我们将输出那一部分。然后我们放通过tanh将cell state映射到-1,1,然后乘上sigmoid门的输出，以至于我们仅仅输出我们决定输出的部分。\par
-对于语言模型的例子，因为它仅仅看subject，它也许想输出关于动词的信息，例子中的下一个，例如，它也许输出是否subject是单数或者复数，以至于从一个动词应该能知道接下来应该是动词的什么形式。
-\begin{figure}
-\centering
-\includegraphics[scale=0.5]{LSTM3-focus-o.png}
-\end{figure}
-\subsection{LSTM的多种变体}
-\href{ftp://ftp.idsia.ch/pub/juergen/TimeCount-IJCNN2000.pdf}{Gers  Schmidhuber (2000)},它增加了peephole connections，这一位置我们让gate layer通过cell state
-\begin{figure}
-\centering
-\includegraphics[scale=0.5]{LSTM3-var-peepholes.png}
-\end{figure}
-上面的图增加了peepholes到所有的门，但是一些论文给出一些peepholes和not others。另一个变体用两个forget 和输入门。而不是分别决定忘记或者添加信息，我们一起决定，我们需要输入一些值是忘记，我们仅仅忘记老的值输入新值到state
-\begin{figure}
-\centering
-\includegraphics[scale=0.5]{LSTM3-var-tied.png}
-\end{figure}
-一个更引人注目的变体是Gate Recurrent Unit或者称为(GRU),由\href{http://arxiv.org/pdf/1406.1078v3.pdf}{Cho, et al. (2014)}引入，它结合忘记和输入门为一个单独的更新们，它也融合cell state和hidden state做了些改变，这结果模型比标准的LSTM模型简单，现在也越来越流行。
-\begin{figure}
-\centering
-\includegraphics[scale=0.5]{LSTM3-var-GRU.png}
-\end{figure}
-这些仅仅是非常流行的LSTM变体，有一些其它的像\href{http://arxiv.org/pdf/1508.03790v2.pdf}{Yao, et al. (2015)}的Depth Gated RNNs，用完全不同的方法处理long-term dependencies，像\href{http://arxiv.org/pdf/1402.3511v1.pdf}{Koutnik, et al. (2014)}的Clockwork RNNs。\par
-那个算法是最好的？它们的差别大吗？\href{http://arxiv.org/pdf/1503.04069.pdf}{Greff, et al. (2015) }做了一些比较了一些流行的变体，发现它们基本相同。
-\href{http://jmlr.org/proceedings/papers/v37/jozefowicz15.pdf}{Jozefowicz, et al. (2015)}比较了超过1万中架构，找到了一些在确定问题上比LSTMs好的架构。
-\subsection{向量字表示}
-\subsubsection{Vector Representation of Words}
-通常图像或音频系统处理的是由图片中所有单个原始像素点强度值或者音频中功率谱密度的强度值，把它们编码成丰富、高维度的向量数据集。对于物体或语音识别这一类的任务，我们所需的全部信息已经都存储在原始数据中（显然人类本身就是依赖原始数据进行日常的物体或语音识别的）。然后，自然语言处理系统通常将词汇作为离散的单一符号，例如 "cat" 一词或可表示为 Id537 ，而 "dog" 一词或可表示为 Id143。这些符号编码毫无规律，无法提供不同词汇之间可能存在的关联信息。换句话说，在处理关于 "dogs" 一词的信息时，模型将无法利用已知的关于 "cats" 的信息（例如，它们都是动物，有四条腿，可作为宠物等等）。可见，将词汇表达为上述的独立离散符号将进一步导致数据稀疏，使我们在训练统计模型时不得不寻求更多的数据。而词汇的向量表示将克服上述的难题。向量空间模型 (VSMs)将词汇表达（嵌套）于一个连续的向量空间中，语义近似的词汇被映射为相邻的数据点。向量空间模型在自然语言处理领域中有着漫长且丰富的历史，不过几乎所有利用这一模型的方法都依赖于 分布式假设，其核心思想为出现于上下文情景中的词汇都有相类似的语义。采用这一假设的研究方法大致分为以下两类：基于计数的方法 (e.g. 潜在语义分析)， 和 预测方法 (e.g. 神经概率化语言模型).
-
-其中它们的区别在如下论文中又详细阐述 \href{http://clic.cimec.unitn.it/marco/publications/acl2014/baroni-etal-countpredict-acl2014.pdf}{Baroni :et al}，不过简而言之：基于计数的方法计算某词汇与其邻近词汇在一个大型语料库中共同出现的频率及其它统计量，然后将这些统计量映射到一个小型且稠密的向量中。预测方法则试图直接从某词汇的邻近词汇对其进行预测，在此过程中利用已经学习到的小型且稠密的嵌套向量。
-
-Word2vec是一种可以进行高效率词嵌套学习的预测模型。其两种变体分别为：连续词袋模型（CBOW）及Skip-Gram模型。从算法角度看，这两种方法非常相似，其区别为CBOW根据源词上下文词汇（'the cat sits on the'）来预测目标词汇（例如，‘mat’），而Skip-Gram模型做法相反，它通过目标词汇来预测源词汇。Skip-Gram模型采取CBOW的逆过程的动机在于：CBOW算法对于很多分布式信息进行了平滑处理（例如将一整段上下文信息视为一个单一观察量）。很多情况下，对于小型的数据集，这一处理是有帮助的。相形之下，Skip-Gram模型将每个“上下文-目标词汇”的组合视为一个新观察量，这种做法在大型数据集中会更为有效。本教程余下部分将着重讲解Skip-Gram模型。
-\subsubsection{处理噪声的对比训练}
-神经概率化语言模型通常使用极大似然法 (ML) 进行训练，其中通过 softmax function 来最大化当提供前一个单词 h (代表 "history")，后一个单词的概率$w_t$(目标词概率)
-\begin{equation*}
-P(w_t|h)=softmax(score(w_t,h))=\frac{exp\left\{score(w_t,h)\right\}}{\Sigma_{Word w' in Vocab}exp\left\{score(w',h)\right\}}
-\end{equation*}
-当 $score(w_t,h)$ 计算了文字 $w_t$ 和 上下文 h 的相容性（通常使用向量积）。我们使用对数似然函数来训练训练集的最大值，比如通过：
-\begin{equation*}
-J_{ML} = logP(w_t|h)=score(w_t,h)-log(\Sigma_{Word w' in Vocab}exp\left\{score(w',h)\right\})
-\end{equation*}
-这里提出了一个解决语言概率模型的合适的通用方法。然而这个方法实际执行起来开销非常大，因为我们需要去计算并正则化当前上下文环境 h 中所有其它 V 单词 w' 的概率得分，在每一步训练迭代中。
-\begin{figure}[H]
-\includegraphics[scale=0.5]{softmax-nplm.png}
-\caption{CBOW方法}
-\end{figure}
-从另一个角度来说，当使用word2vec模型时，我们并不需要对概率模型中的所有特征进行学习。而CBOW模型和Skip-Gram模型为了避免这种情况发生，使用一个二分类器（逻辑回归）在同一个上下文环境里从 k 虚构的 (噪声) 单词$\hat{w}$区分真正的目标单词$w_t$,下面详细参数CBOW模型，对于Skip-Gram模型只要简单的反向操作即可。
-\begin{center}
-\begin{figure}[H]
-\includegraphics[scale=0.5]{nce-nplm.png}
-\caption{Skip-Gram}
-\end{figure}
-\end{center}
-从数学的角度来说，我们的目标是对每个样本最大化:
-\begin{equation*}
-J_{NEG}=logQ_{\theta}(D=1|w_t,h)+k\underset{\hat{w}\sim P_{noise}}{E}[logQ_{\theta}(D=0|\hat{\omega},h)]
-\end{equation*}
-其中$Q_{\theta}(D=1|w,h)$代表的是当前上下文h，根据所学得嵌套向量$\theta$目标单词 w 使用二分类逻辑回归计算得出的概率。在实践中，我们通过在噪声分布中绘制比对文字来获得近似的期望值（通过计算\href{https://en.wikipedia.org/wiki/Monte_Carlo_integration}{蒙特卡洛平均值}）。
-
-当真实地目标单词被分配到较高的概率，同时噪声单词的概率很低时，目标函数也就达到最大值了。从技术层面来说，这种方法叫做\href{http://papers.nips.cc/paper/5021-distributed-representations-of-words-and-phrases-and-their-compositionality.pdf}{负抽样}，而且使用这个损失函数在数学层面上也有很好的解释：这个更新过程也近似于softmax函数的更新。这在计算上将会有很大的优势，因为当计算这个损失函数时，只是有我们挑选出来的 k 个 噪声单词，而没有使用整个语料库 V。这使得训练变得非常快。我们实际上使用了与\href{http://papers.nips.cc/paper/5165-learning-word-embeddings-efficiently-with-noise-contrastive-estimation.pdf}{noise-contrastive estimation (NCE)}介绍的非常相似的方法，这在TensorFlow中已经封装了一个很便捷的函数tf.nn.nce\_loss()。
-
-\subsubsection{Skip-gram模型}
-下面来看一下这个数据集
-
-the quick brown fox jumped over the lazy dog
-
-我们首先对一些单词以及它们的上下文环境建立一个数据集。我们可以以任何合理的方式定义‘上下文’，而通常上这个方式是根据文字的句法语境的（使用语法原理的方式处理当前目标单词可以看一下这篇文献 \href{https://levyomer.files.wordpress.com/2014/04/dependency-based-word-embeddings-acl-2014.pdf}{Levy et al.}，比如说把目标单词左边的内容当做一个‘上下文’，或者以目标单词右边的内容，等等。现在我们把目标单词的左右单词视作一个上下文， 使用大小为1的窗口，这样就得到这样一个由(上下文, 目标单词) 组成的数据集：
-
-([the, brown], quick), ([quick, fox], brown), ([brown, jumped], fox), ...
-
-前文提到Skip-Gram模型是把目标单词和上下文颠倒过来，所以在这个问题中，举个例子，就是用'quick'来预测 'the' 和 'brown' ，用 'brown' 预测 'quick' 和 'fox' 。因此这个数据集就变成由(输入, 输出)组成的：
-
-(quick, the), (quick, brown), (brown, quick), (brown, fox), ...
-
-目标函数通常是对整个数据集建立的，但是本问题中要对每一个样本（或者是一个batch\_size 很小的样本集，通常设置为16 <= batch\_size <= 512）在同一时间执行特别的操作，称之为\href{https://en.wikipedia.org/wiki/Stochastic_gradient_descent}{随机梯度下降 (SGD)}。我们来看一下训练过程中每一步的执行。
-
-假设用 t 表示上面这个例子中quick 来预测 the 的训练的单个循环。用 num\_noise 定义从噪声分布中挑选出来的噪声（相反的）单词的个数，通常使用一元分布，P(w)。为了简单起见，我们就定num\_noise=1，用 sheep 选作噪声词。接下来就可以计算每一对观察值和噪声值的损失函数了，每一个执行步骤就可表示为：
-\begin{equation*}
-J_{NEG}^{(t)}=logQ_{\theta}(D=1|the,quick)+log(Q_{\theta}(D=0|sleep,quick))
-\end{equation*}
-整个计算过程的目标是通过更新嵌套参数$\theta$来逼近目标函数(这个例子中就是使目标函数最大化)。为此我们要计算损失函数中嵌套参数$\theta$的梯度，比如\[\frac{\partial}{\partial}J_{NEG}\]
-(幸好TensorFlow封装了工具函数可以简单调用!)。对于整个数据集，当梯度下降的过程中不断地更新参数，对应产生的效果就是不断地移动每个单词的嵌套向量，直到可以把真实单词和噪声单词很好得区分开。
-
-我们可以把学习向量映射到2维中以便我们观察，其中用到的技术可以参考 \href{http://lvdmaaten.github.io/tsne/}{t-SNE 降维技术}。当我们用可视化的方式来观察这些向量，就可以很明显的获取单词之间语义信息的关系，这实际上是非常有用的。当我们第一次发现这样的诱导向量空间中，展示了一些特定的语义关系，这是非常有趣的，比如文字中 male-female，gender 甚至还有 country-capital 的关系, 如下方的图所示 (也可以参考 \href{http://www.aclweb.org/anthology/N13-1090}{Mikolov et al.}, 2013论文中的例子)。
-\begin{center}
-\begin{figure}[H]
-\includegraphics[scale=0.5]{linear-relationships.png}
-\end{figure}
-\end{center}
-这也解释了为什么这些向量在传统的NLP问题中可作为特性使用，比如用在对一个演讲章节打个标签，或者对一个专有名词的识别 (看看如下这个例子 \href{https://arxiv.org/pdf/1103.0398v1.pdf}{Collobert et al.}或者 \href{http://www.aclweb.org/anthology/P10-1040}{Turian et al.})。
-
-不过现在让我们用它们来画漂亮的图表吧！
-
-这里谈得都是嵌套，那么先来定义一个嵌套参数矩阵。我们用唯一的随机值来初始化这个大矩阵。
-\begin{lstlisting}[language=Python]
-embeddings = tf.Variable(
-    tf.random_uniform([vocabulary_size, embedding_size], -1.0, 1.0))
-\end{lstlisting}
-对噪声-比对的损失计算就使用一个逻辑回归模型。对此，我们需要对语料库中的每个单词定义一个权重值和偏差值。(也可称之为输出权重 与之对应的 输入嵌套值)。定义如下:
-\begin{lstlisting}[language=Python]
-nce_weights = tf.Variable(
-  tf.truncated_normal([vocabulary_size, embedding_size],
-                      stddev=1.0 / math.sqrt(embedding_size)))
-nce_biases = tf.Variable(tf.zeros([vocabulary_size]))
-\end{lstlisting}我们有了这些参数之后，就可以定义Skip-Gram模型了。简单起见，假设我们已经把语料库中的文字整型化了，这样每个整型代表一个单词(细节请查看\_basic.py)。Skip-Gram模型有两个输入。一个是一组用整型表示的上下文单词，另一个是目标单词。给这些输入建立占位符节点，之后就可以填入数据了。
-\begin{lstlisting}[language=Python]
-train_inputs = tf.placeholder(tf.int32, shape=[batch_size])
-train_labels = tf.placeholder(tf.int32, shape=[batch_size, 1])
-\end{lstlisting}
-然后我们需要对批数据中的单词建立嵌套向量，TensorFlow提供了方便的工具函数。
-\begin{lstlisting}[language=Python]
-embed = tf.nn.embedding_lookup(embeddings, train_inputs)
-\end{lstlisting}
-好了，现在我们有了每个单词的嵌套向量，接下来就是使用噪声-比对的训练方式来预测目标单词。
-\begin{lstlisting}[language=Python]
-loss = tf.reduce_mean(
-  tf.nn.nce_loss(nce_weights, nce_biases, embed, train_labels,
-                 num_sampled, vocabulary_size))
-\end{lstlisting}
-我们对损失函数建立了图形节点，然后我们需要计算相应梯度和更新参数的节点，比如说在这里我们会使用随机梯度下降法，TensorFlow也已经封装好了该过程。
-\begin{lstlisting}[language=Python]
-optimizer = tf.train.GradientDescentOptimizer(learning_rate=1.0).minimize(loss)
-\end{lstlisting}
-\subsubsection{训练过程}
-训练的过程很简单，只要在循环中使用feed\_dict不断给占位符填充数据，同时调用 session.run即可。
-\begin{lstlisting}[language=Python]
-for inputs, labels in generate_batch(...):
-  feed_dict = {training_inputs: inputs, training_labels: labels}
-  _, cur_loss = session.run([optimizer, loss], feed_dict=feed_dict)
-\end{lstlisting}
-\subsubsection{嵌套学习结果可视化}
-\begin{center}
-\begin{figure}[H]
-\includegraphics[scale=0.5]{tsne.png}
-\end{figure}
-\end{center}
-Et voila! 与预期的一样，相似的单词被聚类在一起。对word2vec模型更复杂的实现需要用到TensorFlow一些更高级的特性，具体是实现可以参考\href{https://github.com/bleedingfight/models/tree/master/tutorials/embedding}{word2vec.py}\subsubsection{嵌套学习的评估:类比推理}
-词嵌套在NLP的预测问题中是非常有用且使用广泛地。如果要检测一个模型是否是可以成熟地区分词性或者区分专有名词的模型，最简单的办法就是直接检验它的预测词性、语义关系的能力，比如让它解决形如king is to queen as father is to ?这样的问题。这种方法叫做类比推理 ，可参考Mikolov and colleagues，数据集下载地址为:\href{https://word2vec.googlecode.com/svn/trunk/questions-words.txt}{questions-words.txt} 。
-To see how we do this evaluation如何执行这样的评估，可以看build\_eval\_graph()和 eval()这两个函数在下面源码中的使用 \href{https://github.com/bleedingfight/models/tree/master/tutorials/embedding}{word2vec.py}
-
-超参数的选择对该问题解决的准确性有巨大的影响。想要模型具有很好的表现，需要有一个巨大的训练数据集，同时仔细调整参数的选择并且使用例如二次抽样的一些技巧。不过这些问题已经超出了本教程的范围。
-\subsubsection{优化实现}
-以上简单的例子展示了TensorFlow的灵活性。比如说，我们可以很轻松得用现成的tf.nn.sampled\_softmax\_loss()来代替tf.nn.nce\_loss()构成目标函数。如果你对损失函数想做新的尝试，你可以用TensorFlow手动编写新的目标函数的表达式，然后用控制器执行计算。这种灵活性的价值体现在，当我们探索一个机器学习模型时，我们可以很快地遍历这些尝试，从中选出最优。
-
-一旦你有了一个满意的模型结构，或许它就可以使实现运行地更高效（在短时间内覆盖更多的数据）。比如说，在本教程中使用的简单代码，实际运行速度都不错，因为我们使用Python来读取和填装数据，而这些在TensorFlow后台只需执行非常少的工作。如果你发现你的模型在输入数据时存在严重的瓶颈，你可以根据自己的实际问题自行实现一个数据阅读器，参考 新的数据格式。对于Skip-Gram 模型，我们已经完成了如下这个例子 \href{https://github.com/bleedingfight/models/tree/master/tutorials/embedding}{word2vec.py}。
-
-如果I/O问题对你的模型已经不再是个问题，并且想进一步地优化性能，或许你可以自行编写TensorFlow操作单元，详见 添加一个新的操作。相应的，我们也提供了Skip-Gram模型的例子 \href{https://github.com/bleedingfight/models/tree/master/tutorials/embedding}{optimized.py}。请自行调节以上几个过程的标准，使模型在每个运行阶段有更好地性能。
-\subsection{RNN}
-此教程将展示如何在高难度的语言模型中训练循环神经网络。该问题的目标是获得一个能确定语句概率的概率模型。为了做到这一点，通过之前已经给出的词语来预测后面的词语。我们将使用 PTB(Penn Tree Bank) 数据集，这是一种常用来衡量模型的基准，同时它比较小而且训练起来相对快速。
-
-语言模型是很多有趣难题的关键所在，比如语音识别，机器翻译，图像字幕等。它很有意思--可以参看 here。
-
-本教程的目的是重现 \href{http://arxiv.org/abs/1409.2329}{Zaremba et al., 2014} 的成果，它们在 PTB 数据集上得到了很棒的结果。
-\subsubsection{下载及准备数据}
-本教程需要的数据在 data/ 路径下，来源于 Tomas Mikolov 网站上的\href{http://www.fit.vutbr.cz/~imikolov/rnnlm/simple-examples.tg}{PTB 数据集}
-
-该数据集已经预先处理过并且包含了全部的 10000 个不同的词语，其中包括语句结束标记符，以及标记稀有词语的特殊符号 (<unk>) 。我们在 reader.py 中转换所有的词语，让它们各自有唯一的整型标识符，便于神经网络处理。
-\subsubsection{LSTM}
-模型的核心由一个 LSTM 单元组成，其可以在某时刻处理一个词语，以及计算语句可能的延续性的概率。网络的存储状态由一个零矢量初始化并在读取每一个词语后更新。而且，由于计算上的原因，我们将以 batch\_size 为最小批量来处理数据。
-
-基础的伪代码就像下面这样：
-\begin{lstlisting}[language=Python]
-lstm = rnn_cell.BasicLSTMCell(lstm_size)
-state = tf.zeros([batch_size, lstm.state_size])
-
-loss = 0.0
-for current_batch_of_words in words_in_dataset:
-    output, state = lstm(current_batch_of_words, state)
-
-    logits = tf.matmul(output, softmax_w) + softmax_b
-    probabilities = tf.nn.softmax(logits)
-    loss += loss_function(probabilities, target_words)
-\end{lstlisting}
-\subsubsection{截断反向传播}
-为使学习过程易于处理，通常的做法是将反向传播的梯度在（按时间）展开的步骤上照一个固定长度(num\_steps)截断。 通过在一次迭代中的每个时刻上提供长度为 num\_steps 的输入和每次迭代完成之后反向传导，这会很容易实现。
-
-一个简化版的用于计算图创建的截断反向传播代码：
-\begin{lstlisting}[language=Python]
-words = tf.placeholder(tf.int32, [batch_size, num_steps])
-
-lstm = rnn_cell.BasicLSTMCell(lstm_size)
-initial_state = state = tf.zeros([batch_size, lstm.state_size])
-
-for i in range(len(num_steps)):
-    output, state = lstm(words[:, i], state)
-
-    # ...
-
-final_state = state
-\end{lstlisting}
-下面展现如何实现迭代整个数据集：
-\begin{lstlisting}[language=Python]
-numpy_state = initial_state.eval()
-total_loss = 0.0
-for current_batch_of_words in words_in_dataset:
-    numpy_state, current_loss = session.run([final_state, loss],
-        feed_dict={initial_state: numpy_state, words: current_batch_of_words})
-    total_loss += current_loss
-\end{lstlisting}
-\subsubsection{输入}
-在输入 LSTM 前，词语 ID 被嵌入到了一个密集的表示中(查看 矢量表示教程)。这种方式允许模型高效地表示词语，也便于写代码：
-\begin{lstlisting}[language=Python]
-# embedding_matrix 张量的形状是： [vocabulary_size, embedding_size]
-word_embeddings = tf.nn.embedding_lookup(embedding_matrix, word_ids)
-\end{lstlisting}
-嵌入的矩阵会被随机地初始化，模型会学会通过数据分辨不同词语的意思。
-\subsubsection{损失函数}
-我们想使目标词语的平均负对数概率最小$loss = -\frac{1}{N}\Sigma_{i=1}^NlnP_{target_i}$
-实现起来并非很难，而且函数 sequence\_loss\_by\_example 已经有了，可以直接使用。
-
-论文中的典型衡量标准是每个词语的平均困惑度（perplexity），计算式为
-$$e^{-\frac{1}{N}\Sigma_{i=1}^N}lnp_{target_i}=e^{loss}$$
-同时我们会观察训练过程中的困惑度值（perplexity)
-\subsubsection{多个LSTM层堆叠}
-要想给模型更强的表达能力，可以添加多层 LSTM 来处理数据。第一层的输出作为第二层的输入，以此类推。
-
-类 MultiRNNCell 可以无缝的将其实现：
-\begin{lstlisting}[language=Python]
-lstm = rnn_cell.BasicLSTMCell(lstm_size)
-stacked_lstm = rnn_cell.MultiRNNCell([lstm] * number_of_layers)
-
-initial_state = state = stacked_lstm.zero_state(batch_size, tf.float32)
-for i in range(len(num_steps)):
-    # 每次处理一批词语后更新状态值.
-    output, state = stacked_lstm(words[:, i], state)
-
-    # 其余的代码.
-    # ...
-
-final_state = state
-\end{lstlisting}
-\subsubsection{编译并运行代码}
-首先需要构建库，在CPU上编译:
-\begin{lstlisting}[language=Python]
-bazel build -c opt tensorflow/models/rnn/ptb:ptb_word_lm
-\end{lstlisting}
-如果你有一个强大的 GPU，可以运行
-\begin{lstlisting}[language=Python]
-bazel build -c opt --config=cuda tensorflow/models/rnn/ptb:ptb_word_lm
-\end{lstlisting}
-运行模型:
-\begin{lstlisting}[language=Python]
-bazel-bin/tensorflow/models/rnn/ptb/ptb_word_lm \
-  --data_path=/tmp/simple-examples/data/ --alsologtostderr --model small
-\end{lstlisting}
-教程代码中有 3 个支持的模型配置参数："small"， "medium" 和 "large"。它们指的是 LSTM 的大小，以及用于训练的超参数集。
-
-模型越大，得到的结果应该更好。在测试集中 small 模型应该可以达到低于 120 的困惑度（perplexity），large 模型则是低于 80，但它可能花费数小时来训练。
 
