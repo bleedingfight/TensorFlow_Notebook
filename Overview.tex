@@ -1,0 +1,14 @@
+\section{移动平台}
+TensorFlow对于移动平台被设计为一个好的深度学习解决方案。
+当前我们已经有两个解决方案用于部署机器学习应用到移动设备和嵌入式设备:\href{https://www.tensorflow.org/mobile/mobile_intro?hl=zh-cn}{TensorFlow for Mobile}和\href{https://www.tensorflow.org/mobile/tflite/index?hl=zh-cn}{TensorFlow Lite}。
+\subsection{TensorFlow LiteVS TensorFlow Mobile}
+下面是两者的一些不同之处:
+\begin{itemize}
+\item TensorFlow Lite是TensorFlow Mobile的一个进化版本。在多属性框虾，用TensorFlow Lite开发的app二进制文件更小，依赖更小，性能更强。
+\item TensorFlow Lite是在开发者预览中，因此不是所有情况都能覆盖。我们希望你用TensorFlow Mobile覆盖产品。
+\item TensorFlow Lite仅仅支持有限的操作，因此不是所有的模型都能在上面运行的很好。TensorFlow Mobile对函数有一个更完整的支持。
+\end{itemize}
+TensorFlow Lite为移动平台提供了更好的性能和更小的文件尺寸如果在它们的平台上一些硬件加速功能加速功能可以使用的话。另外，它有更少的依赖以至于它可能被构建运行在更简单的，资源首先得设备上。TensorFlow Lite可允许通过\href{https://developer.android.com/ndk/guides/neuralnetworks/index.html?hl=zh-cn}{Neural Networks API}加速。
+
+TensorFlow Lite当前已经覆盖了有限的一些操作。尽管默认TensorFlow Mobile支持仅仅支持有限的操作，原则上如果你用TensorFlow的任意操作，它能被自定义构建kernel。这样用不支持TensorFlow Lite的情况将继续支持TensorFlow Mobile。正如TensorFlow Lite设计的，它将添加额外的操作，将被很容易决定。
+
