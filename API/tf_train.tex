@@ -107,3 +107,86 @@ compute_gradients(
 	\item grad\_loss:一个保持住loss梯度的Tensor。
 	\item[S] 返回(gradient,variable)对，变量总是被呈现但是梯度可能是None。
 \end{itemize}
+\subsection{tf.train.slice\_input\_producer}
+\begin{lstlisting}[language=Python]
+slice_input_producer(
+    tensor_list,
+    num_epochs=None,
+    shuffle=True,
+    seed=None,
+    capacity=32,
+    shared_name=None,
+    name=None
+)
+\end{lstlisting}
+生成一个在tensor\_list的Tensor切片。用队列实现，一个QueueRunner被添加到当前的Graph‘s的QUEUE\_RUNNER集合。
+参数:
+\begin{itemize}
+\item tensor\_list:一个Tensor对象的列表，每个tensor\_list中的Tensor在第一个维度上必须有相同的大小。
+\item num\_epochs:一个整数(可选)如果指定，slice\_input\_producer每num\_epochs产生一个切片，直到出现OutOfRange错误。如果不指定，slice\_input\_producer可以无限次数的循环切片
+\item shuffle:Boolean。如果为true，整数在每个epoch被随机打乱
+\item seed:一个整数(可选)，如果shuffle == True用一个种子
+\item Capacity:一个整数，设置队列的容量
+\item shared\_name:(可选),如果设置，队列将被在多个会话中通过名字共享
+\item name:可选，操作的名字
+\item[Returns]:一个tensor列表，元素是tensor\_list中的元素。如果在tensor\_list中的tensor形状为[N,a,b,...,z]，对应的输出维度的形状为[a,b,...,z]
+\item[ValueError]:如果slice\_input\_producer从tensor\_list什么都没有产生
+\end{itemize}
+\subsection{tf.train.shuffle\_batch}
+\begin{lstlisting}[language=Python]
+shuffle_batch(
+    tensors,
+    batch_size,
+    capacity,
+    min_after_dequeue,
+    num_threads=1,
+    seed=None,
+    enqueue_many=False,
+    shapes=None,
+    allow_smaller_final_batch=False,
+    shared_name=None,
+    name=None
+)
+\end{lstlisting}
+通过随机大暖tensor创建batches。这个函数添加如下到Graph:
+\begin{itemize}
+\item 从tensors出兑打乱队列
+\item dequeue\_many从queue创建batches
+\item 从tensor出队一个QueueRunner到QUEUE\_RUNNER集合
+\end{itemize}
+如果enqueue\_many是False，tensors假设代表一个单个样本。一个输入tensor形状[x,y,z]将成为[batch\_size,x,y,z]的输出
+
+如果enqueue\_manny是True，tensors假设表示一批样本，这里的第一位是样本的索引。tensors的所有成员应该在第一维度上有相同的代销。如果输入tensor有形状[*,x,y,z],输出将有形状[batch\_size,x,y,z]
+
+capacity:参数控制允许队列有多长
+返回操作是一个出队操作，如果输入队列耗尽将抛出tf.errors.OutOfRangeError。如果这操作被田东另一个输入队列，他的队列将捕获异常，然而，如果这个操作被用在你的主线程中你将响应，自己捕获。
+
+例如:
+\begin{lstlisting}[language=Python]
+# Creates batches of 32 images and 32 labels.
+image_batch, label_batch = tf.train.shuffle_batch(
+      [single_image, single_label],
+      batch_size=32,
+      num_threads=4,
+      capacity=50000,
+      min_after_dequeue=10000)
+\end{lstlisting}
+你必须确保(1)shapes参数被传递，(2)所有在tensors的tensor必须有完整定义的形状。ValueError将在两者之中有一个不满足时出现。
+如果allow\_maller\_final\_batch是True,没有足够的元素填充进batch时一个比batch\_size小的值被返回，否则未处理的元素江北丢弃/另外，所有输出tensor的静态shape，正如通过shae参数访问将有一个值为None的Dimension，依赖于fixed\_batch\_size的操作将失败。
+
+参数:
+\begin{lstlisting}[language=Python]
+\item tensors:一个入队的列表或者字典
+\item batch\_size:一个从queue获取的批大小
+\item capacity:一个整数，队列的最大元素
+\item min\_after\_dequeue:出队后在队列中最数目，用于确保一个混合元素的等级
+\item num\_threads:一个些线程确保入伏你tensor\_list
+\item seed:一个在queue中的随机种子
+\item enqueue\_many:是否在tensor\_list中的每个tensor数一个样本
+\item shape:(可选)每个样本的形状。默认从tensor\_list推断
+\item allow\_smaller\_final\_batch:(可选)Boolean，如果为True，如果队列中没有足够的元素允许最后的batch变小
+\item shared\_name:(可选)如果设置，队列将在给定名字下在多个会话上共享。
+\item name:（可选）操作的名字
+\item[Returns]:一个tensors类型的列表或tensors字典
+\item[Raises]:ValueError:如果shape没有指定，而且不能通过tensors的元素推断
+\end{lstlisting}
