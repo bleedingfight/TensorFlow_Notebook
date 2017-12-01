@@ -1,0 +1,362 @@
+\section{t-SNE算法}
+T 分布随机近邻嵌入（T-Distribution Stochastic Neighbour Embedding）是一种用于降维的机器学习方法，它能帮我们识别相关联的模式。t-SNE 主要的优势就是保持局部结构的能力。这意味着高维数据空间中距离相近的点投影到低维中仍然相近。t-SNE 同样能生成漂亮的可视化。
+
+当构建一个预测模型时，第一步一般都需要理解数据。虽然搜索原始数据并计算一些基本的统计学数字特征有助于理解它，但没有什么是可以和图表可视化展示更为直观的。然而将高维数据拟合到一张简单的图表（降维）通常是非常困难的，这就正是 t-SNE 发挥作用的地方。
+
+在本文中，我们将探讨 t-SNE 的原理，以及 t-SNE 将如何有助于我们可视化数据。
+\subsection{t-SNE 算法概念}
+这篇文章主要是介绍如何使用 t-SNE 进行可视化。虽然我们可以跳过这一章节而生成出漂亮的可视化，但我们还是需要讨论 t-SNE 算法的基本原理。
+
+t-SNE 算法对每个数据点近邻的分布进行建模，其中近邻是指相互靠近数据点的集合。在原始高维空间中，我们将高维空间建模为高斯分布，而在二维输出空间中，我们可以将其建模为 t 分布。该过程的目标是找到将高维空间映射到二维空间的变换，并且最小化所有点在这两个分布之间的差距。与高斯分布相比 t 分布有较长的尾部，这有助于数据点在二维空间中更均匀地分布。
+
+控制拟合的主要参数为困惑度（Perplexity）。困惑度大致等价于在匹配每个点的原始和拟合分布时考虑的最近邻数，较低的困惑度意味着我们在匹配原分布并拟合每一个数据点到目标分布时只考虑最近的几个最近邻，而较高的困惑度意味着拥有较大的「全局观」。
+
+因为分布是基于距离的，所以所有的数据必须是数值型。我们应该将类别变量通过二值编码或相似的方法转化为数值型变量，并且归一化数据也是十分有效，因为归一化数据后就不会出现变量的取值范围相差过大。
+\subsection{T 分布随机近邻嵌入算法（t-SNE）}
+Jake Hoare 的博客并没有详细解释 t-SNE 的具体原理和推导过程，因此下面我们将基于 Geoffrey Hinton 在 2008 年提出的论文和 liam schoneveld 的推导与实现详细介绍 t-SNE 算法。如果读者对这一章节不感兴趣，也可以直接阅读下一章节 Jake Hoare 在实践中使用 t-SNE 进行数据可视化。
+liam schoneveld\href{https://nlml.github.io/in-raw-numpy/in-raw-numpy-t-sne/}{推导实现}
+论文地址：\href{http://www.jmlr.org/papers/volume9/vandermaaten08a/vandermaaten08a.pdf}{t-SNE}
+
+因为 t-SNE 是基于随机近邻嵌入而实现的，所以首先我们需要理解随机近邻嵌入算法。
+\subsection{随机临近嵌入SNE}
+假设我们有数据集 X，它共有 N 个数据点。每一个数据点 $x_i$ 的维度为 D，我们希望降低为 d 维。在一般用于可视化的条件下，d 的取值为 2，即在平面上表示出所有数据。
+
+SNE 通过将数据点间的欧几里德距离转化为条件概率而表征相似性（下文用 $p_{j|i}$ 表示）：
+\begin{equation}\label{eq:sne1}
+	p_{j|i}=\frac{exp(-\|x_i-x_j\|^2/{2\sigma_i^2})}{\sum_{k\neq i}exp(-\|x_i-x_k\|^2/{2\sigma_i^2})}
+\end{equation}
+如果以数据点在 $x_{i}$ 为中心的高斯分布所占的概率密度为标准选择近邻，那么 $p_{j|i}$ 就代表 $x_{i}$ 将选择 $x_j$ 作为它的近邻。对于相近的数据点，条件概率 $p_{j|i}$ 是相对较高的，然而对于分离的数据点，$p_{j|i}$ 几乎是无穷小量（若高斯分布的方差$\sigma_i$ 选择合理）。
+
+其中$\sigma_i$ 是以数据点 $x_{i}$ 为均值的高斯分布标准差，决定$\sigma_i$ 值的方法将在本章后一部分讨论。因为我们只对成对相似性的建模感兴趣，所以可以令 $p_{i|i}$ 的值为零。
+
+现在引入矩阵 Y，Y 是 N*2 阶矩阵，即输入矩阵 X 的 2 维表征。基于矩阵 Y，我们可以构建一个分布 q，其形式与 p 类似。
+
+对于高维数据点 $x_{i}$ 和 $x_j$ 在低维空间中的映射点 $y_i$ 和 $y_j$，计算一个相似的条件概率 $q_{j|i}$ 是可以实现的。我们将计算条件概率 $q_{i|j}$ 中用到的高斯分布的方差设置为 1/2。因此我们可以对映射的低维数据点 $y_j$ 和 $y_i$ 之间的相似度进行建模：
+\begin{equation}\label{eq:sne2}
+	q_{j|i}=\frac{exp(-\|y_i-y_j\|^2)}{\sum_{k\neq i}exp(-\|y_i-y_k\|)^2}
+\end{equation}
+我们的总体目标是选择 Y 中的一个数据点，然后其令条件概率分布 q 近似于 p。这一步可以通过最小化两个分布之间的 KL 散度（损失函数）而实现，这一过程可以定义为\begin{equation}\label{eq:sne3}
+	C=\sum_{i}KL(P_i||Q_i)=\sum_i\sum_jp_{j|i}log\frac{p_{j|i}}{q_{j|i}}
+\end{equation}
+因为我们希望能最小化该损失函数，所以我们可以使用梯度下降进行迭代更新，我们可能对如何迭代感兴趣，但我们会在后文讨论与实现。
+\subsection{使用NumPy构建欧几里得距离矩阵}
+计算 $p_{i|j}$ 和 $q_{i|j}$ 的公式都存在负的欧几里德距离平方，即$-\|x_i - x_j\|^2$，下面可以使用代码实现这一部分：
+计算矩阵$\mathbf{A}_{m\times n}=\mathbf{a}_1+\mathbf{a}_2+\ldots+\mathbf{a}_m$的范数，
+向量$\mathbf{a}_1=[a_1,a_2,a_3,...a_n],\mathbf{a}_2=[b_1,b_2,b_3,\ldots,b_n]$,$\mathbf{a}_{1},\mathbf{a}_2$的欧几里得范数
+\begin{equation}\label{eq:sne4}
+	\mathbf{D}[i,j]=(\mathbf{a}_i-\mathbf{a}_j)(\mathbf{a}_i-\mathbf{a}_j)^T=\|\mathbf{a}_i\|-2\mathbf{a}_i\mathbf{a}_j^T+\|\mathbf{a}_j\|
+\end{equation}
+由\ref{eq:sne3}看出欧几里得距离矩阵对角线元素$D[i,i]$应该全为0:
+\begin{equation}\label{eq:sne5}
+	\begin{split}
+		D = &\begin{bmatrix}
+		0& \|\mathbf{a}_1\|+\|\mathbf{a}_2\|-2\mathbf{a}_1\mathbf{a}_2^T& \ldots&\|\mathbf{a}_1\|+\|\mathbf{a}_n\|-2\mathbf{a_1}\mathbf{a_n}^T\\
+		\|\mathbf{a}_2\|+\|\mathbf{a}_1\|-2\mathbf{a}_2\mathbf{a}_1^T&0& \ldots& \|\mathbf{a}_2\|+\|\mathbf{a}_n\|-2\mathbf{a_2}\mathbf{a_n}^T\\
+		\vdots&\vdots&\ldots&\vdots\\
+		\|\mathbf{a}_n\|+\|\mathbf{a}_1\|-2\mathbf{a}_n\mathbf{a}_1^T&\|\mathbf{a}_n\|+\|\mathbf{a}_2\|-2\mathbf{a}_n\mathbf{a}_2^T& \ldots& \|\mathbf{a}_n\|+\|\mathbf{a}_n\|-2\mathbf{a_n}\mathbf{a_n}^T
+		    \end{bmatrix}\\
+		    =&\begin{bmatrix}
+			\|\mathbf{a}_1\|&\|\mathbf{a}_2\|&\ldots&\|\mathbf{a}_n\|\\
+			\|\mathbf{a}_1\|&\|\mathbf{a}_2\|&\ldots&\|\mathbf{a}_n\|\\
+			\vdots&\vdots&\ldots&\vdots\\
+			\|\mathbf{a}_1\|&\|\mathbf{a}_2\|&\ldots&\|\mathbf{a}_n\|\\
+			\end{bmatrix}+\begin{bmatrix}
+			\|\mathbf{a}_1\|&\|\mathbf{a}_1\|&\ldots&\|\mathbf{a}_1\|\\
+			\|\mathbf{a}_2\|&\|\mathbf{a}_2\|&\ldots&\|\mathbf{a}_2\|\\
+			\vdots&\vdots&\ldots&\vdots\\
+			\|\mathbf{a}_n\|&\|\mathbf{a}_n\|&\ldots&\|\mathbf{a}_n\|\\
+		    \end{bmatrix}\\
+		    -&2\begin{bmatrix}
+			    \mathbf{a}_1\mathbf{a}_1^T& \mathbf{a}_1\mathbf{a}_2^T&\ldots& \mathbf{a}_1\mathbf{a}_n^T\\
+			    \mathbf{a}_2\mathbf{a}_1^T& \mathbf{a}_2\mathbf{a}_2^T&\ldots& \mathbf{a}_2\mathbf{a}_n^T\\
+			\vdots&\vdots&\ldots&\vdots\\
+			    \mathbf{a}_n\mathbf{a}_1^T& \mathbf{a}_n\mathbf{a}_2^T&\ldots& \mathbf{a}_n\mathbf{a}_n^T\\
+		    \end{bmatrix}\\
+	\end{split}
+\end{equation}
+\begin{lstlisting}[language=Python]
+def neg_squared_euc_dists(X):
+    
+   """Compute matrix containing negative squared euclidean
+    distance for all pairs of points in input matrix X
+    # Arguments:
+        X: matrix of size NxD
+    # Returns:
+        NxN matrix D, with entry D_ij = negative squared
+        euclidean distance between rows X_i and X_j
+    """
+    # Math? See https://stackoverflow.com/questions/37009647
+    sum_X = np.sum(np.square(X), 1)    
+    D = np.add(np.add(-2 * np.dot(X, X.T), sum_X).T, sum_X)    
+    return -D
+\end{lstlisting}
+为了更高的计算效率，该函数使用矩阵运算的方式定义，该函数将返回一个 N 阶方阵，其中第 i 行第 j 列个元素为输入点 $x_i$ 和 $x_j$ 之间的负欧几里德距离平方。
+
+使用过神经网络的读者可能熟悉 $exp(\cdot)/\sum exp(\cdot)$ 这样的表达形式，它是一种 softmax 函数，所以我们定义一个 softmax 函数：
+\begin{lstlisting}[language=Python]
+def softmax(X,diag_zero = True):
+    ex = np.exp(X-np.max(X,axis=1).reshape([-1,1]))
+    if diag_zero:
+        np.fill_diagonal(e_x,0.)
+        e_x = e_x+1e-8
+    return e_x/e_x.sum(axis=1).reshape([-1,1])
+\end{lstlisting}
+注意我们需要考虑 $p_{i|i}=0$ 这个条件(\ref{eq:sne1})，所以我们可以替换指数负距离矩阵的对角元素为 0，即使用 np.fill\_diagonal(e\_x, 0.) 方法将 e\_x 的对角线填充为 0。
+
+将这两个函数放在一起后，我们能构建一个函数给出矩阵 P，且元素 P(i,j) 为上式定义的 $p_{i|j}$：
+\begin{lstlisting}[language=Python]
+def calc_prob_matrix(distances,sigma=None):
+    if sigmas is not None:
+        two_sig_sq = 2.*np.square(sigmas.reshape((-1,1)))
+        return softmax(distances/two_sig_sq)
+    else:
+        return softmax(distances)
+\end{lstlisting}
+\subsection{困惑度}
+在上面的代码段中，Sigmas 参数必须是长度为 N 的向量，且包含了每一个$\sigma_i$ 的值，那么我们如何取得这些$\sigma_i$ 呢？这就是困惑度（perplexity）在 SNE 中的作用。条件概率矩阵 P 任意行的困惑度可以定义为：
+\begin{equation}\label{eq:sne6}
+Perp(P_i)=2^{H(P_i)}
+\end{equation}
+其中$H(P_i)$为$P_i$的香农熵，即表达式如下:
+\begin{equation}\label{eq:sne7}
+H(P_i)=-\sum_{j}p_{j|i}\log_2p_{j|i}
+\end{equation}
+在 SNE 和 t-SNE 中，困惑度是我们设置的参数（通常为 5 到 50 间）。我们可以为矩阵 P 的每行设置一个$\sigma_i$，而该行的困惑度就等于我们设置的这个参数。直观来说，如果概率分布的熵较大，那么其分布的形状就相对平坦，该分布中每个元素的概率就更相近一些。
+
+困惑度随着熵增大而变大，因此如果我们希望有更高的困惑度，那么所有的 $p_{j|i}$（对于给定的 i）就会彼此更相近一些。换而言之，如果我们希望概率分布 $P_i$ 更加平坦，那么我们就可以增大$\sigma_i$。我们配置的$\sigma_i$ 越大，概率分布中所有元素的出现概率就越接近于 1/N。实际上增大$\sigma_i$ 会增加每个点的近邻数，这就是为什么我们常将困惑度参数大致等同于所需要的近邻数量。
+\subsection{搜索$\sigma_i$}
+为了确保矩阵 P 每一行的困惑度 $Perp(P_i)$ 就等于我们所希望的值，我们可以简单地执行一个二元搜索以确定$\sigma_i$ 能得到我们所希望的困惑度。这一搜索十分简单，因为困惑度 $Perp(P_i)$ 是随$\sigma_i$ 增加而递增的函数，下面是基本的二元搜索函数：
+\begin{lstlisting}[language=Python]
+def binary_search(eval_fn, target, tol=1e-10, max_iter=10000,lower = 1e-20,upper=1000.):
+    
+"""Perform a binary search over input values to eval_fn.
+    # Arguments
+        eval_fn: Function that we are optimising over.
+        target: Target value we want the function to output.
+        tol: Float, once our guess is this close to target, stop.
+        max_iter: Integer, maximum num. iterations to search for.
+        lower: Float, lower bound of search range.
+        upper: Float, upper bound of search range.
+    # Returns:
+        Float, best input value to function found during search.
+    """
+    
+    for i in range(max_iter):
+        guess = (lower + upper)/2.
+        val = eval_fn(guess)        
+        if val > target:
+            upper = guess
+        else:
+            lower = guess 
+        if np.abs(val - target)<= tol:            
+            break    
+    return guess 
+\end{lstlisting}
+为了找到期望的$\sigma_i$，我们需要将 eval\_fn 传递到 binary\_search 函数，并且将$\sigma_i$ 作为它的参数而返回 $P_i$ 的困惑度。
+
+以下的 find\_optimal\_sigmas 函数确实是这样做的以搜索所有的$\sigma_i$，该函数需要采用负欧几里德距离矩阵和目标困惑度作为输入。距离矩阵的每一行对所有可能的$\sigma_i$ 都会执行一个二元搜索以找到能产生目标困惑度的最优$\sigma$。该函数最后将返回包含所有最优$\sigma_i$ 的 NumPy 向量。
+\begin{lstlisting}[language=Python]
+def calc_perplexity(prob_matrix):
+    
+"""Calculate the perplexity of each row 
+    of a matrix of probabilities."""
+    entropy =-np.sum(prob_matrix * np.log2(prob_matrix), 1)
+    perplexity = 2 ** entropy
+    return perplexity
+def perplexity(distances, sigmas):    
+"""Wrapper function for quick calculation of 
+    perplexity over a distance matrix."""
+    
+    return calc_perplexity(calc_prob_matrix(distances, sigmas))
+def find_optimal_sigmas(distances, target_perplexity):    
+"""For each row of distances matrix, find sigma that results
+    in target perplexity for that role."""
+    sigmas = []
+    # For each row of the matrix (each point in our dataset)
+    
+    for i in range(distances.shape[0]):        
+        # Make fn that returns perplexity of this row given sigma
+        eval_fn = lambda sigma:perplexity(distances[i:i+1, :], np.array(sigma))
+        # Binary search over sigmas to achieve target perplexity
+        correct_sigma = binary_search(eval_fn, target_perplexity)
+        # Append the resulting sigma to our output array
+        sigmas.append(correct_sigma)
+    return np.array(sigmas)
+\end{lstlisting}
+\subsection{对称SNE}
+现在估计 SNE 的所有条件都已经声明了，我们能通过降低成本 C 对 Y 的梯度而收敛到一个良好的二维表征 Y。因为 SNE 的梯度实现起来比较难，所以我们可以使用对称 SNE，对称 SNE 是 t-SNE 论文中一种替代方法。
+
+在对称 SNE 中，我们最小化 $p_{ij}$ 和 $q_{ij}$ 的联合概率分布与 $p_{i|j}$ 和 $q_{i|j}$ 的条件概率之间的 KL 散度，我们定义的联合概率分布 $q_{ij}$ 为：
+\begin{equation}\label{sne:8}
+q_{ij}=\frac{exp(-\|y_i-y_j\|^2)}{\sum_{k\neq i}exp(-\|y_k-y_i\|)}
+\end{equation}
+该表达式就如同我们前面定义的 softmax 函数，只不过分母中的求和是对整个矩阵进行的，而不是当前的行。为了避免涉及到 x 点的异常值，我们不是令 $p_{ij}$ 服从相似的分布，而是简单地令 $p_{ij}=(p_{i|j}+p_{j|i})/2N$。
+
+我们可以简单地编写这些联合概率分布 q 和 p：
+\begin{lstlisting}[language=Python]
+def q_joint(Y):    
+    """Given low-dimensional representations Y, compute
+    matrix of joint probabilities with entries q_ij."""
+    # Get the distances from every point to every other
+    distances = neg_squared_euc_dists(Y)    
+    # Take the elementwise exponent
+    exp_distances = np.exp(distances)  
+    # Fill diagonal with zeroes so q_ii = 0
+    np.fill_diagonal(exp_distances, 0.)
+    # Divide by the sum of the entire exponentiated matrix
+    
+    return exp_distances / np.sum(exp_distances), None
+def p_conditional_to_joint(P):
+    
+"""Given conditional probabilities matrix P, return
+    approximation of joint distribution probabilities."""
+    return (P + P.T) / (2. * P.shape[0])
+\end{lstlisting}
+同样可以定义p\_point函数输入数据矩阵X并返回联合概率P的矩阵，此外我们还能一同估计要求的$\sigma_i$和条件概率:
+\begin{lstlisting}[language=Python]
+def p_joint(X, target_perplexity):    
+"""Given a data matrix X, gives joint probabilities matrix.
+    # Arguments
+        X: Input data matrix.
+    # Returns:
+        P: Matrix with entries p_ij = joint probabilities.
+    """
+    # Get the negative euclidian distances matrix for our data
+    distances = neg_squared_euc_dists(X)    
+    # Find optimal sigma for each row of this distances matrix
+    sigmas = find_optimal_sigmas(distances, target_perplexity)
+    # Calculate the probabilities based on these optimal sigmas
+    p_conditional = calc_prob_matrix(distances, sigmas)
+    # Go from conditional to joint probabilities matrix
+    P = p_conditional_to_joint(p_conditional)
+    return P
+\end{lstlisting}
+所以现在已经定义了联合概率分布 p 与 q，若我们计算了这两个联合分布，那么我们能使用以下梯度更新低维表征 Y 的第 i 行：
+\begin{equation}\label{eq:sne9}
+	\frac{\delta C}{\delta y_i}=4\sum_j{(p_{ij}-q_{ij})(y_i-y_j)}
+\end{equation}
+在 Python 中，我们能使用以下函数估计梯度，即给定联合概率矩阵 P、Q 和当前低维表征 Y 估计梯度：
+\begin{lstlisting}[language=Python]
+def symmetric_sne_grad(P, Q, Y, _):    
+"""Estimate the gradient of the cost with respect to Y"""
+    pq_diff = P - Q  # NxN matrix
+    pq_expanded = np.expand_dims(pq_diff, 2)#NxNx1
+    y_diffs = np.expand_dims(Y, 1) - np.expand_dims(Y, 0)  #NxNx2
+    grad = 4. * (pq_expanded * y_diffs).sum(1)  #Nx2    
+    return grad 
+\end{lstlisting}
+为了向量化变量，np.expand\_dims 方法将十分有用，该函数最后返回的 grad 为 N*2 阶矩阵，其中第 i 行为 dC/dy\_i。一旦我们计算完梯度，那么我们就能利用它执行梯度下降，即通过梯度下降迭代式更新$ y_i$。
+\subsection{估计对称SNE}
+前面已经定义了所有的估计对称 SNE 所需要的函数，下面的训练函数将使用梯度下降算法迭代地计算与更新权重。
+\begin{lstlisting}[language=Python]
+def estimate_sne(X, y, P, rng, num_iters, q_fn, grad_fn, learning_rate,                 momentum, plot):    
+"""Estimates a SNE model.
+    # Arguments
+        X: Input data matrix.
+        y: Class labels for that matrix.
+        P: Matrix of joint probabilities.
+        rng: np.random.RandomState().
+        num_iters: Iterations to train for.
+        q_fn: Function that takes Y and gives Q prob matrix.
+        plot: How many times to plot during training.
+    # Returns:
+        Y: Matrix, low-dimensional representation of X.
+    """
+    # Initialise our 2D representation
+    Y = rng.normal(0., 0.0001, [X.shape[0], 2])
+    # Initialise past values (used for momentum)
+    if momentum:        
+        Y_m2 = Y.copy()        
+	Y_m1 = Y.copy()    
+    # Start gradient descent loop
+    for i in range(num_iters):        
+        # Get Q and distances (distances only used for t-SNE)
+        Q, distances = q_fn(Y)        
+        # Estimate gradients with respect to Y
+        grads = grad_fn(P, Q, Y, distances)
+        # Update Y
+        Y = Y - learning_rate * grads        
+	if momentum: # Add momentum
+	    Y += momentum * (Y_m1 - Y_m2)
+            # Update previous Y's for momentum
+            Y_m2 = Y_m1.copy()            
+	    Y_m1 = Y.copy()        
+	# Plot sometimes
+        if plot and i % (num_iters / plot) == 0:            
+	    categorical_scatter_2d(Y, y, alpha=1.0, ms=6,                                   show=True, figsize=(9, 6))    
+    return Y
+\end{lstlisting}
+为了简化表达，我们将使用 MNIST 数据集中标签为 0、1 和 8 的 200 个数据点，该过程定义在 main() 函数中：
+\begin{lstlisting}[language=Python]
+# Set global parameters
+NUM_POINTS = 200            
+# Number of samples from MNIST
+CLASSES_TO_USE = [0, 1, 8]  
+# MNIST classes to use
+PERPLEXITY = 20
+SEED = 1                    # Random seed
+MOMENTUM = 0.9
+LEARNING_RATE =10.
+NUM_ITERS = 500		# Num iterations to train for
+TSNE = False
+               
+# If False, Symmetric SNE
+NUM_PLOTS = 5               # Num. times to plot in training
+def main():
+    
+    # numpy RandomState for reproducibility
+    rng = np.random.RandomState(SEED)    
+    # Load the first NUM_POINTS 0's, 1's and 8's from MNIST
+    X, y = load_mnist('datasets/',                      
+	digits_to_keep=CLASSES_TO_USE,
+        N=NUM_POINTS)
+    # Obtain matrix of joint probabilities p_ij
+    P = p_joint(X, PERPLEXITY)
+    # Fit SNE or t-SNE
+    Y = estimate_sne(X, y, P, rng,
+             num_iters=NUM_ITERS,
+             q_fn=q_tsne if TSNE else q_joint,
+             grad_fn=tsne_grad if TSNE else symmetric_sne_grad,
+             learning_rate=LEARNING_RATE,
+             momentum=MOMENTUM,
+             plot=NUM_PLOTS)
+\end{lstlisting}
+\subsection{构建t-SNE}
+前面我们已经分析了很多关于随机近邻嵌入的方法与概念，并推导出了对称 SNE，不过幸运的是对称 SNE 扩展到 t-SNE 是非常简单的。真正的区别仅仅是我们定义联合概率分布矩阵 Q 的方式，在 t-SNE 中，我们 $q_{ij}$ 的定义方法可以变化为：
+\begin{equation}\label{eq:sne10}
+q_{ij}=\frac{exp(-\|y_i-y_j\|^2)}{\sum_{k\neq l}exp(-\|y_k-y_l\|^2)}
+\end{equation}
+上式通过假设 $q_{ij}$ 服从自由度为 1 的学生 T 分布（Student t-distribution）而推导出来。Van der Maaten 和 Hinton 注意到该分布有非常好的一个属性，即计数器（numerator）对于较大距离在低维空间中具有反平方变化规律。本质上，这意味着该算法对于低维映射的一般尺度具有不变性。因此，最优化对于相距较远的点和相距较近的点都有相同的执行方式。
+
+这就解决了所谓的「拥挤问题」，即当我们试图将一个高维数据集表征为 2 或 3 个维度时，很难将邻近的数据点与中等距离的数据点区分开来，因为这些数据点都聚集在一块区域。
+
+我们能使用以下函数计算新的 $q_{ij}$
+\begin{lstlisting}[language=Python]
+def q_tsne(Y):    
+"""t-SNE: Given low-dimensional representations Y, compute
+    matrix of joint probabilities with entries q_ij."""
+    distances = neg_squared_euc_dists(Y)    
+    inv_distances = np.power(1. - distances, -1)
+    np.fill_diagonal(inv_distances, 0.)    
+    return inv_distances / np.sum(inv_distances), inv_distances
+\end{lstlisting}
+注意我们使用 1. - distances 代替 1. + distances，该距离函数将返回一个负的距离。现在剩下的就是重新估计损失函数对 Y 的梯度，t-SNE 论文中推导该梯度的表达式为：
+\begin{equation*}
+\frac{\sigma C}{\sigma y_i} = 4\sum_{j}(p_{ij}-q_{ij})(y_i-y_j)
+\end{equation*}
+同样，我们很容易按照计算对称 SNE 梯度的方式构建 t-SNE 的梯度计算方式：
+\begin{lstlisting}[language=Python]
+def tsne_grad(P, Q, Y, inv_distances):    
+"""Estimate the gradient of t-SNE cost with respect to Y."""
+    pq_diff = P - Q    
+    pq_expanded = np.expand_dims(pq_diff, 2)    
+    y_diffs = np.expand_dims(Y, 1) - np.expand_dims(Y, 0)    
+    # Expand our inv_distances matrix so can multiply by y_diffs
+    distances_expanded = np.expand_dims(inv_distances, 2)    
+    # Multiply this by inverse distances matrix
+    y_diffs_wt = y_diffs * distances_expanded    
+    # Multiply then sum over j's
+    grad = 4. * (pq_expanded * y_diffs_wt).sum(1)    
+    return grad 
+\end{lstlisting}
+以上我们就完成了 t-SNE 的具体理解与实现，那么该算法在具体数据集中的可视化效果是怎样的呢？Jake Hoare 给出了实现可视化的效果与对比
