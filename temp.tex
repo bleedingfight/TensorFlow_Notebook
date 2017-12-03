@@ -1,1 +1,67 @@
+\section{整合TensorFlow库}
+当你在模型上做了一些进步处理了一些你正尝试解决的问题，在你的应用上立即测试是很重要的。经常在你的训练数据和实际上真是世界碰到的问题上有些不同，得到一个干净的图像提高产品的体验。
+
+这页讨论当你已经成功的构建和部署TensorFlow移动demo app后整个TensorFlow库进入你自己的移动应用模型。
+\subsection{链接库}
+在你成功的构建了样例后，你将可能想从你的存在的应用上调用TensorFlow。最简单的方法是使用\href{https://www.tensorflow.org/mobile/ios_build?hl=zh-cn#using_cocoapods}{这里}描述的Pod安装，但是如果你想从源代码构建TensorFlow(自定义包含的操作)你讲需要跳出TensorFlow作为一个框架，包含正确的头文件，连接针对构件库和依赖。
+\subsection{Android}
+对于Android，你需要链接包含JAR文件的libandroid\_tensorflow\_inference\_java.jar的Java库。有三种方法包含这个功能到你的程序中:
+\begin{itemize}
+\item 包含jcenter AAR，正如\href{https://github.com/googlecodelabs/tensorflow-for-poets-2/blob/master/android/build.gradle#L59-L65}{example app}
+\item 从\href{ci.tensorflow.org}{http://ci.tensorflow.org/view/Nightly/job/nightly-android/lastSuccessfulBuild/artifact/out/?hl=zh-cn}下载nightly版本的预编译
+\item 用\href{https://github.com/tensorflow/tensorflow/tree/master/tensorflow/contrib/android}{iGithub repo}中的说明构建JAR文件。
+\end{itemize}
+\subsection{iOS}
+
+获取一个在iOS上的TensorFlow库有一点复杂。这里是一个你的iOS app需要的列表:
+\begin{itemize}
+\item 通常添加-L /your/path/tensorflow/contrib/makefile/gen/lib/ and -ltensorflow-core到你的链接器标记，链接 tensorflow/contrib/makefile/gen/lib/libtensorflow-core.a
+\item 添加-L /your/path/tensorflow/contrib/makefile/gen/protobuf\_ios/lib and -lprotobuf and -lprotobuf-lite到你的命令行生成protobuf库
+\item 对于包含的路径，你需要你的TensorFlow元文件的根目录作为入口，如下tensorflow/contrib/makefile/downloads/protobuf/src, tensorflow/contrib/makefile/downloads, tensorflow/contrib/makefile/downloads/eigen, and tensorflow/contrib/makefile/gen/proto 
+\item 确保你的二进制用-force\_load（或者对应的平台）针对TensorFlow库确保链接正确。更多的为什么这需要的细节在下面章节说明，\href{https://www.tensorflow.org/mobile/linking_libs?hl=zh-cn#global_constructor_magic}{ Global constructor magic}在类linux平台，你将需要不同的flags，更多像-Wl,--allow-multiple-definition -Wl,--whole-archive
+\end{itemize}
+你讲需要链接加速器框架，因此这被用于加速一些操作。
+\subsection{全局结构体magic}
+当你尝试从你自己的应用调用TensorFlow一个不太明显的错误是No session factory registered for the given session options。你将需要了解TensorFlow架构才能明白为什么错误发生和如何修复。
+
+这个框架被设计的十分模块化，接了很小的可信和大量的指定的独立对象可能按照需要混合匹配。为了使这工作，C++的代码模型必须让模块容易通知框架关于他们提供的服务，没有要求一个中心列表必须从每个实现被单独更新。很难允许单独的库没有需要的预编译的核被添加他们自己的实现。
+
+为了获得能力，TensorFlow在一些地方使用用一个注册模板。代码看起来如下:
+\begin{lstlisting}[language=C++]
+class MulKernel : OpKernel {
+  Status Compute(OpKernelContext* context) { … }
+};
+REGISTER_KERNEL(MulKernel, “Mul”);
+\end{lstlisting}
+这将在标准的.cc文件链接进你的应用，无论是作为主核心的一部分还是作为分割的自定义库的一部分吗。magic部分是REGISTER\_KERNEL()红是的通知TensorFlow核心必须实现多操作，因此它可能在图上任何要求他的地方调用。
+
+从编程的观点，这建立是非常方便的。在相同的文件实现和注册代码，添加新的实现作为一个简单的编译和链接。困难的部分是REGISTER\_KERNEL()宏用C++实现。C++没有提供一个好的机制处理注册，因此我们必须重排一些代码。如下，宏被如下实现:
+\begin{lstlisting}[language=C++]
+class RegisterMul {
+ public:
+  RegisterMul() {
+    global_kernel_registry()->Register(“Mul”, [](){
+      return new MulKernel()
+    });
+  }
+};
+RegisterMul g_register_mul;
+\end{lstlisting}
+这建立一个RegisterMul类结合一个构造体高数全局内核注册当一些人问如何创建Mul内核时调用什么函数。当有一个全局对象在类中，构造体应该在任何程序的开始以调用。
+尽管这替你来也许容易理解，不幸的是全局对象定义没有被任何其他的代码使用，因此链接器没有被结合这个想法设计，决定可能被删除。因此，狗载体没有被调用，类没有注册。所有的在TensorFlow中的顺序模型，Session实现首先当代码运行的时候被查找，当问题出现时哪一个为特征误差的原因。
+接被强制链接没有从库中删除任何代码，尽管它相信它没有使用。在iOS，这一步可能结合-force\_load flag实现，制定库的路径，在Linux你需要--whole-archive。这些劝说链接没有被强制的删掉，应该保留全局。
+
+实际的多种REGISTER\_*实现是一个复杂的时间，但是他们所有遭遇相同的问题。如果你感兴趣他们是如何工作的,\href{https://github.com/tensorflow/tensorflow/blob/master/tensorflow/core/framework/op_kernel.h#L1091}{ok\_kernel.h}是一个开始学习的好地方。
+
+
+
+
+
+
+
+
+
+
+
+
 

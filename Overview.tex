@@ -138,4 +138,139 @@ TensorFlow Lite 提供一个接口用于硬件加速，如果硬件加速在设�
 \subsection{下一步}
 对于开发者预览，多数文档在GitHub上。请查看\href{https://github.com/tensorflow/tensorflow/tree/master/tensorflow/contrib/lite}{TensorFlow Lite repository}获取更多信息和代码样例，事例应用和更多。
 
+\section{在Android上构建TensorFlow}
+为了在Android设备上开始TensorFlow，我们通过两种方法构建我们的TensorFlow移动demo部署在Android设备上。第一种是Android Studio，让你在IDE下构建和部署。第二个是在Bazel上构建通过ADB命令行部署。
+
+为什么选择一个或者其他的方法？
+一个简单的在Android设备上使用TensorFlow的方法是用Android Studio。如果你没有计划自定义你的TensorFlow构建或者你想用Android Studio的编辑器或者其他的特性去构建一个app仅仅想添加TensorFlow在其之上，我们推荐你使用Android Studio。
+
+如果你正在使用自定义的操作或者有一些其他的原因构建TensorFlow，向下滚动鼠标查看\href{https://www.tensorflow.org/mobile/android_build?hl=zh-cn#build_the_demo_using_bazel} {building the demo with Bazel}
+\subsection{使用Android Studio构建Demo}
+\textbf{要求}\newline
+如果你没有下面要求的软件:
+\begin{itemize}
+\item 按照网站上的说明安装\href{https://developer.android.com/studio/index.html?hl=zh-cn}{Android Studio}
+\item 从Github上克隆TensorFlow仓库\lstinline[language=Bash]{git clone https://github.com/tensorflow/tensorflow}
+\end{itemize}
+\textbf{构建}\newline
+\begin{enumerate}
+\item 打开Android Studio，从欢迎窗口选择Open an existing Android Studio project
+\item 从出现的 Open File or Project导航选择你克隆的TensorFlow Github仓库的目录，点击OK。如果你出现"Failed to find target with hash string 'android-23',你也许需要安装多平台和工具
+\item 打开build.gradle文件(你能用一边面板上的:Project找到Android下的Gradle Scripts zippy)如果你没有，查找nativeBuildSystem变量设置他为none。
+\begin{lstlisting}[language=Bash]
+// set to 'bazel', 'cmake', 'makefile', 'none'
+def nativeBuildSystem = 'none'
+
+\end{lstlisting}
+\item 点击运行按钮（绿色箭头）或者用顶部菜单的Run -> Run 'android'。如果它要你用实例运行，点击Proceed Without Instant Run。你也需要有一个Android设备插上介个开发者选项打开。查看\href{https://developer.android.com/studio/run/device.html?hl=zh-cn}{这里}获取设置开发者设备的详细信息。
+\end{enumerate}
+者安装TensorFlow Demo的三个app到你的手机上，查看\href{https://www.tensorflow.org/mobile/android_build?hl=zh-cn#android_sample_apps}{Android Sample Apps}获取关于他们的更多详细信息。
+\subsection{用Android Studio添加TensorFlow到你的app上}
+为了添加TensorFlow到你自己Android设备上的app，最简单的方法是添加下面的行到你的Gradle build file:
+\begin{lstlisting}[language=Python]
+allprojects {
+    repositories {
+        jcenter()
+    }
+}
+
+dependencies {
+    compile 'org.tensorflow:tensorflow-android:+'
+}
+
+\end{lstlisting}
+自动下载最新版本的TensorFlow作为一个AAR安装它到你的工程上。
+\subsection{使用Bazel构建demo}
+另一个在Android设备上使用TensorFlow构建一个APK的方法是用\href{https://bazel.build/}{Bazel}然后使用\href{https://developer.android.com/studio/command-line/adb.html?hl=zh-cn}{ADB}载入到你的设备。这要求了解一些构建系统和Android开发者工具，但是我们将通过如下引导你:
+\begin{itemize}
+\item 首先，跟着我们的说明\href{https://www.tensorflow.org/install/install_sources?hl=zh-cn}{ installing from sources},者讲引导你通过安装Bazel和克隆TensorFlow代码
+\item 下载Android\href{https://developer.android.com/studio/index.html?hl=zh-cn}{SDK}和\href{https://developer.android.com/ndk/downloads/index.html?hl=zh-cn}{NDK}，如果你没有他们。你需要至少12b的NDK和23的SDK
+\item 在你的复制的TensorFlow源代码，更新\href{https://github.com/tensorflow/tensorflow/blob/master/WORKSPACE}{WORKSPACE}文件结合你的SDK和NSK，这里的<PATH\_TO\_NDK> and <PATH\_TO\_SDK>.
+\item 运行Bazel构建APK demo\lstinline[language=Bash]{bazel build -c opt //tensorflow/examples/android:tensorflow_demo}
+\item 使用\href{https://developer.android.com/studio/command-line/adb.html?hl=zh-cn#move}{ADB}安装到你的设备上\lstinline[language=Bash]{adb install -r bazel-bin/tensorflow/examples/android/tensorflow_demo.apk}
+\end{itemize}
+\begin{quote}
+注意:当使用Bazel为你的Android编译你需要在Bazel命令行添加--config=android,然而在这个例子是Android-only，所以你不需要它
+\end{quote}
+安装三个应用到你的手机上是TensorFlow Demo的一部分。查看\href{https://www.tensorflow.org/mobile/android_build?hl=zh-cn#android_sample_apps}{Android Sample Apps}获取更多关于他们的信息。
+\subsection{Android样例App}
+\href{https://www.github.com/tensorflow/tensorflow/blob/r1.4/tensorflow/examples/android/}{Android example code}是一个简单的工程用相同的代码构建和安装三个app。样例app通过手机的摄像头回去视频。
+\begin{itemize}
+\item TF Classify使用Inception V3模型标记对象指出Imagenet的分类。这里仅仅有1000个盅内，失去了大多数常见的目标包含一些你在真实生活中不太可能碰到的目标，因此结果可能仅供娱乐。例如没有人的分类，因此它将不知到如何结合人的图片猜测，想一个座椅或者氧气罩。如果你想自顶有这个例子识别你关心的对象，你可以使用\href{https://codelabs.developers.google.com/codelabs/tensorflow-for-poets/index.html?hl=zh-cn#0}{TensorFlow for Poets codelab }作为一个例子如何在你自己的数据上训练一个模型。
+\item TF Detect用多个盒子尝试回执摄像头中人的位置的边界盒子。这个盒子给出每个侦测结果的置信度。这个demo也包含追踪两帧间物体的移动，因此运行比TensorFlow推理更频繁。显然帧率越高用户体验越好，但是它估计哪个盒子两帧之间涉及相同的对象，对于实时统计对象很重要。
+\item TF Stylize通过摄像头实现一个是是是风格迁移算法。你可以选择屏幕中那个风格
+混合它们，因此转化分辨率到更高或者更低
+\end{itemize}
+当你构建安装demo，你将在你的手机上看到三个app图标。触摸他们应该打开app让你体验他们做了什么。你能当他们运行的时候通过触摸音量键上激活侧边键。
+\subsection{Android Inference Library}
+因为Android app已经被用Java写，TensorFlow核心为C++，TensorFlow有JNI库连接他们。他的几口针对推理，因此，它提供载入图，建立输入，运行模型计算类似输出的能力，你可以查看\href{https://www.github.com/tensorflow/tensorflow/blob/r1.4/tensorflow/contrib/android/java/org/tensorflow/contrib/android/TensorFlowInferenceInterface.java}{TensorFlowInferenceInterface.java}致部分的方法查看完整的文档。
+
+这个事例程序使用这个接口，因此他们是一个查找例子使用的好的地方。你可以在\href{https://ci.tensorflow.org/view/Nightly/job/nightly-android/?hl=zh-cn}{ci.tensorflow.org}下载预先构建的二进制jars。
+\section{在iOS上构建TensorFlow}
+\subsection{使用CocoaPods}
+最简单的获取在iOS上可用的TensorFlow是通过CocoaPods包管理系统。你可以添加TensorFlow-experimental pod到你的Podfile（安装了一些二进制框架），这使得开始很容易但是自定义很难（你想缩减你的二进制文件尺寸很重要），如果你需要自定义你的库没查看之后的章节应该怎么做。
+\subsection{创建你自己的app}
+r如果你想添加TensorFlow能力到你的app，做下面的步骤:
+\begin{itemize}
+\item 创建自己的app或者载入XCode已经创建的app
+\item 按照下面添加文件Podfile在工程的根目录:
+\begin{lstlisting}[language=Bash]
+target 'YourProjectName'
+pod 'TensorFlow-experimental'
+\end{lstlisting}
+\item 运行pod install下载安装TensorFlow-experimental pod 
+\item 打开YourProjectName.xcworkspace添加你的代码
+\item 在你的app的Build Settings,确保添加\$(inherited)到 Other Linker Flags和Header Search Paths部分
+\end{itemize}
+\subsection{运行样例}
+你将需要XCode7.3或者更新的版本运行我们的iOS样例。
+当前有散了例子：简单，benchmark，和相机。到现在你能通过克隆主要的tensorflow仓库下载样本代码（之后我们计划分割仓库为可用样例）
+
+从TensorFlow文件夹根目录，下载\href{https://storage.googleapis.com/download.tensorflow.org/models/inception5h.zip}{Inception v1}，用下面的步骤提取简单的和相机例子标签和图文件到数据文件夹:
+\begin{lstlisting}[language=Bash]
+mkdir -p ~/graphs
+curl -o ~/graphs/inception5h.zip \
+ https://storage.googleapis.com/download.tensorflow.org/models/inception5h.zip \
+ && unzip ~/graphs/inception5h.zip -d ~/graphs/inception5h
+cp ~/graphs/inception5h/* tensorflow/examples/ios/benchmark/data/
+cp ~/graphs/inception5h/* tensorflow/examples/ios/camera/data/
+cp ~/graphs/inception5h/* tensorflow/examples/ios/simple/data/
+\end{lstlisting}
+改变进入样例目录，下载\href{https://cocoapods.org/pods/TensorFlow-experimental}{Tensorflow-experimental}pod,打开Xcode工作空间，注意安装pod可能花费很长时间因为它很大(~450M).如果你想运行简单的例子，然后:
+\begin{lstlisting}[language=Python]
+cd tensorflow/examples/ios/simple
+pod install
+open tf_simple_example.xcworkspace   # note .xcworkspace, not .xcodeproj
+                                     # this is created by pod install
+\end{lstlisting}
+在XCode仿真器运行简单的app。你应该看到一个有Run Model按钮的屏幕。按下它，你应该看到一些调试输出表明样例Grace Hoper图像在目录中的数据已经被分析，结合多个独一无二的识别。
+
+用同样的过程运行其他的例子。相机样例要求是个真真的设备被连接上。当你构建和运行是你应该得到实时相机的场景，你能指出目标得到实时识别结果。
+\subsection{iOS样本详情}
+针对iOS有三个事例应用，所有都定义在\href{https://www.github.com/tensorflow/tensorflow/blob/r1.4/tensorflow/examples/ios/}{tensorflow/examples/ios}Xcode工程下
+\begin{itemize}
+\item Simple:一个小的例子显示如何用尽量少的行，载入运行TensorFlow模型。它仅仅结合一个按钮组合一个简单的场景，按下就运行模型载入和推理
+\item Camera 一个和Android TF Classify Demo十分类似的demo。它载入Inception V3为实时相机场景输出他的最好的标签估计。正如Android版本，你能用TensorFlow forPoets训练你自己的自定义的模型用最小的代码改动进入这个例子
+\item Benchmark：和Android设备上的基准测试工具类似，很接近Simple但是重复的运行图输出类似的统计
+\end{itemize}
+\subsection{Trubleshooting}
+\begin{itemize}
+\item 确保你用TensorFlow-experimental pod(不是TensorFlow)
+\item TensorFlow-experimental pod当前大学~450M。这么大是应为构建多个平台，pod包含所有的TensorFlow函数。最终app的大小在构建之后减小到(~25M)。在开发的过程中结合完整的pod是很方便的，但是瞎看下面的章节了解你如何构建你自己的TensorFlow库减小尺寸。
+\end{itemize}
+\subsection{从源代码构建TensorFlow iOS库}
+尽管Cocapods是最简单和最容易的开始方式，你有时候需要更灵活的的决定TensorFlow在你的app中应该被传递。例如，你可以从源代码构建iOS库。\href{https://github.com/tensorflow/tensorflow/tree/master/tensorflow/examples/ios#building-the-tensorflow-ios-libraries-from-source}{导航}包含了如何去做。
+
+
+
+
+
+
+
+
+
+
+
+
+
 
