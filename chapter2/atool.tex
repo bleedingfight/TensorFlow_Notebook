@@ -1,0 +1,85 @@
+\section{一个TensorFlow模型文见得开发者工具}
+大多数用户不需要考虑TensorFlow存储在磁盘中文件的内部细节，但是如果你是一个工具开发者也许需要考虑。
+例如你也许想分析模型或者在TensorFlow和其他格式之间转化。这个向导尝试向你解释一些你如何结合主要文件保存模型数据
+的详细工作，确保容易开发一些工具。
+\subsection{Protocol Buffers}
+所有的TensorFlow的文件格式都是基于\href{https://developers.google.com/protocol-buffers/?hl=en}{Protocol Buffers}
+,因此熟悉它是如何工作的很有价值。总结来说你在文本文件中定义数据结构，protobuf用C，Python或者你可以载入的其他语言生成
+类，以一种友好的方式访问数据。我们经常认为Protocol Buffers作为protobufs，我们将在这个向导中使用用这个
+这个惯例。
+\subsection{GraphDef}
+在TensorFlow中图对象是计算的基础。这包含一些节点组成的网络，每个节点代表一个操作，节点作为输入或者输出
+被连接到其它节点，你可以通过调用as\_default\_def()保存它，返回一个GraphDef对象。
+
+GraphDef类是一个定义在
+\href{https://github.com/tensorflow/tensorflow/blob/master/tensorflow/core/framework/graph.proto}{tensorflow/core/framework/graph.proto}定义的ProtoBuf库创建的GraphDef类。
+protobuf工具解析这个文本文件，生成代码载入，存储和操作图定义。如果你看到一个标准的TensorFlow
+文件表示一个模型，它很可能包含protobuf代码保存的一些列序列化的的GraphDef对象。这个生成代码
+用于保存和从文件中载入GraphDef文件。代码通常像下面这样载入这个模型
+\lstinline[language=Python]{graph_def = graph_pb2.GraphDef()}
+这行创建一个空的GraphDef对象，这个类从定义在grapg.proto中定义的本质文件创建。这个对象将从我们的文件
+操作这个对象
+\lstinline[language=Python]{with open(FLAGS.graph,"rb") as f}
+这里我们传递进脚本一个路径获取文件
+\begin{lstlisting}[language=Python]
+if FLAGS.input_binary:
+  graph_def.ParseFromString(f.read())
+else:
+  text_format.Merge(f.read(), graph_def)
+\end{lstlisting}
+\subsubsection{文本或者二进制}
+事实上一个Protobuf我们可以存储进入两种不同的格式。文本格式是一个人类可读的形式，对于调试和编辑
+十分方面，但是当有一些想权重的数值数据存储文本格式的文件将很大。你可以查看\href{https://github.com/tensorflow/tensorboard/blob/master/tensorboard/demo/data/graph_run_run2.pbtxt}{graph\_run\_run2.pbtxt}一个晓得样本
+二进制文件相比文本文件小得多，尽管他们对我们不可读，在这个脚本，我们要求用户应用一个flag指示
+师傅输入是二进制还是文本，因此我们知道正确的函数调用。你可以在\href{https://storage.googleapis.com/download.tensorflow.org/models/inception_v3_2016_08_28_frozen.pb.tar.gz}{inception\_v3 archive}
+找到一个大型二进制文件样本。正如inception\_v3\_2016\_08\_28\_frozen.pb。
+这个API本身可以有一些让人困惑，二进制调用事实上是ParseFromString(),然而我们用一个来自text\_format模块的使用函数
+载入原始的文件。
+\subsection{Nodes}
+当你载入一个文件进入graph\_def变量时，你可以访问里面的数据，对于多数常见目的，重要的章节是节点列表
+存储在节点数目中。这里的代码循换处理这个操作
+\lstinline[language=Python]{for node in graph_def.node}
+每个节点是一个NodeDef对象，定义在\href{https://github.com/tensorflow/tensorflow/blob/master/tensorflow/core/framework/node_def.proto}{tensorflow/core/framework/node\_def.proto}
+,这是TensorFlow图的基本构建模块，每个定义的单独操作用输入连接，这里的number是NodeDef。
+\subsubsection{name}
+每个节点应该有一个独一无二的id，不被其他的图中的节点使用。如果你不指定一个作为你用Python API构建一个graph。
+一个翻译到操作的名字上，想"MatMul"和单调递增的数连接，像为你选择"5"，名字被用于定义两个节点的连接。
+当运行时为你的整个图设置输入和输出。
+\subsubsection{op}
+这定义了运行的操作，例如"Add","MatMul"或者"Conv2"。当一个图运行的时候，op的名字被在实现中注册查找。
+注册通过调用REGISTER\_OP()宏操作。像在
+\href{https://github.com/tensorflow/tensorflow/blob/master/tensorflow/core/ops/nn\_ops.cc}{tensorflow/core/ops/nn\_ops.cc}
+\subsubsection{input}
+一个字符串列表，列表中每个元素是其他节点的名字，通常跟着引号和输出端口。例如，一个节点和两个输入有一个像
+["some\_node\_name","another\_node\_name"],等价于["some\_node\_name:0","another\_node\_name:0"]
+定义节点的第一个输入作为节点的来自“some\_node\_name”的第一个输出，第二个输入来自"anather\_node\_name"的
+第一个输出。
+\subsubsection{device}
+在大多数情况下你可以忽略这个，因为它定义在分布式环境下节点运行的位置，或者什么时候你想强制操作运行在
+CPU或者GPU上。
+\subsubsection{attr}
+这是一个key/value存储节点的的属性。有节不变的参数，一些在像卷积滤波器的尺寸不改变。或者常数操作
+的值。因为有如此多不同类型的属性值，对于字符串，对证书或者tensor值的数组，这里有一个分割的protobuf
+文件定义的数据结构保存他们，在
+\href{https://github.com/tensorflow/tensorflow/blob/master/tensorflow/core/framework/attr_value.proto}{tensorflow/core/framework/attr\_value.proto.}
+每个属性有一个独一无二的名字字符串，期待的属性被列出然后操作被定义。如果一个属性被节点呈现。
+但是如果一个操作定义中的默认的列表，默认被用于图的创建。你可以通过调用node.name访问所有的数据,node.op等
+在Python中节点列表列表存储在GraphDef是一个模型架构的完整定义。
+\subsection{Freezing}
+一个让人难以理解的是训练中的权重不被存储在文件中。相反，他们被保存在
+单个的checkpoint文件中，在graph中的Variable操作，当他们被初始化的时候
+载入最新的值，因此有\href{https://github.com/tensorflow/tensorflow/blob/master/tensorflow/python/tools/freeze_graph.py}{freeze\_graph.py }
+脚本接受一个图定义和一些checkpoint文件同时freeze他们到一个单独的文件，载入GraphDef的时候，
+从最新的chepoint文件获取所有变量的值，当取代Variable操作和Const权重的数值数据存储在他的属性中，
+然后剔除额外的不能用于钱箱推理的节点，vaocun输出结果的GraphDef进一个输出文件。
+\subsection{权重格式}
+如果你正在处理TensorFlow模型表达的神经网络模型，一个常见的问题是提取和解释权重值。一个通用的
+方法存储他们，例如在图中freezed\_graph脚本创建，它作为Const操作包含作为Tensors的权重。这些定义在
+\href{https://github.com/tensorflow/tensorflow/blob/master/tensorflow/core/framework/tensor.proto}{tensorflow/core/framework/tensor.proto}
+包含数据的类型和尺寸，正如值本身。在Python中，你通过NodeDef从一个NodeDef操作获取TensorProto对象表达一个Const操作
+通过调用想some\_node\_def.attr['value'].tensor。
+
+这样给你一个权重数据的对象表达。数据将被存储在有suffix\_val的列表中作为对象类型的索引，例如float\_val对于32位浮点数据类型。
+卷及权重的顺序经常对于处理在不同的框架中转化有技巧的。在TensorFlow中，滤波器权重对于Conv2D操作被存储在第二行。
+期待的数据顺序[filter\_height,filter\_width,input\_depth,output\_depth],这里filter\_count随着
+内存中一个邻接的值滑动平均增加。
