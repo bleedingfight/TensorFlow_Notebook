@@ -1,3 +1,103 @@
+\section{TensorFlow用其他语言}
+\subsection{背景}
+这个文档是针对那些想要在其他语言中创造或者开发TensorFlow功能的开发者。它描述了TensorFlow的特性和在其它编程语言中使用的推荐步骤。
+
+Python是TensorFlow支持的首选语言，当前支持的特性最多。更多的函数正在被移植进TensorFlow（C++实现）核心通过\href{https://www.github.com/tensorflow/tensorflow/blob/r1.4/tensorflow/c/c_api.h}{C API}，客户端语言应该用语言的\href{https://en.wikipedia.org/wiki/Foreign_function_interface}{外部函数接口}调用这个\href{https://www.github.com/tensorflow/tensorflow/blob/r1.4/tensorflow/c/c_api.h}{C API}提供TensorFlow函数。
+\subsection{概览}
+在其它编程语言中提供TensorFlow功能可能分为下面多种情况:
+\begin{itemize}
+\item 运行一个预先定义好的图:给一个GraphDef(或者MetaGraphDef)protocol消息，能创建一个绘画，运行查询得到tensor结果。对于想上手机app或者服务器来说通过预先训练好的模型推理足够的
+\item 图接口:每定义一个TensorFlow操作至少定义一个函数或者添加一个操作到图上。理想的这些函数将被自动生成因此他们保持同步直到操作的定义被修改
+\item 梯度(AKA自动微分)：给一个图和输入输出操作列表，添加操作到图上计算输出与对应输入的偏微分(梯度)。对于图上的类似操作允许定义梯度函数
+\item 函数:定义一个在GraphDef中能被多处调用的子图。在FunctionDefLibrary定义一个FunctionDef包含在GraphDef
+\item 控制流:如果用户指定子图，构造if和while。最好的情况是他们和梯度一起工作
+\item 神经网络库:一些组件结合在一起支持创建神经网络模型和训练他们(可能是分布式设置)。在其它语言有这些将很方便，当前没有计划支持Python外的其他语言。这些库同上面这些特性的包装器
+\end{itemize}
+在一个小的，语言绑定应该支持运行一个预先定义的图，但是多数应该支持图的构建。TensorFlow Python API提供所有的这些特性。
+\subsection{当前状态}
+新的语言支持应该建立的\href{https://www.github.com/tensorflow/tensorflow/blob/r1.4/tensorflow/c/c_api.h}{C API}之上。然而，正如下表所见，不是所有的函数在C中都可用。为\href{https://www.github.com/tensorflow/tensorflow/blob/r1.4/tensorflow/c/c_api.h}{C API}提供更多支持的计划正在进行
+\begin{table}[!h]
+	\begin{tabular}{|p{4cm}|p{6cm}|p{4.7cm}|}
+\hline
+特性&Python&C\\
+\hline
+运行一个预定义的图&tf.import\_graph\_def, tf.Session&	TF\_GraphImportGraphDef, TF\_NewSession\\
+\hline
+结合生成的操作构造图&Yes	&Yes (The C API supports client languages that do this)\\
+\hline
+梯度&tf.gradients	&\\
+\hline
+函数&tf.python.framework.function.Defun&\\
+\hline
+控制流&tf.cond, tf.while\_loop&\\	
+\hline
+神经网络库&tf.train, tf.nn, tf.contrib.layers, tf.contrib.slim&\\
+\hline
+\end{tabular}
+	\caption{语言支持}
+	\label{tab:ex7_1}
+\end{table}
+\newline
+\textbf{推荐方法}\newline
+\subsection{运行一个预定义的图}
+语言绑定希望定义下面的类:
+\begin{itemize}
+\item Graph：一个图表示一个TensorFlow计算。有一些对应C API的TF\_Graph的操作组成，主要用作创建操作和启动会话的参数。在图(TF\_GraphNextOperation)上也支持迭代,通过名字(TF\_GraphOperationByName)查看操作转换为或者从GraphDef rotocol消息(TF\_GraphToGraphDef和TF\_GraphImportGraphDef)转换
+\item Operation：表示图上的一个计算节点。对应C API中的TF\_Operation
+\item Output:表示图中操作的输出。有一个DataType(和最终的形状)也许作为输入参数传送给一个函数进行加操作，或者对于一个Session的Run（）方法获取tensor作为输出。对应C API的TF\_Output。
+\item Session:表示TensorFlow运行环境的类似实例的一个客户端呢。主要工作是构造一个Graph和在图上调用Run（）选项。对应C API中的一个TF\_Session。
+\item Tensor表示数据类型为DataType的N维数组。获取数据进出Session的Run()调用。对应C API的TF\_Tensor。
+\item DataType:一些TensorFlow支持的可能的类型，对应C API中的TF\_DataType和Python API中的dtype对应
+\end{itemize}
+\subsection{图的构造}
+TensorFlow有一些操作和列表不是静态的，因此我们推荐通过手写生成添加操作到图上(军官厚些一些是一个好的找出生成器应该生成什么)，需要生成一个包含一个OpDef protocol消息的函数。有一些方法获取注册操作的OpDefs列表:
+\begin{itemize}
+\item 在CAPI中的TF\_GetAllOpList获取所有祖册的OpDef protocol消息。这可能用用于客户端语言写生成器。这要求客户端语言为了解释OpDef消息有Protocol buffer支持
+\item  C++函数OpRegistry::Global()->GetRegisteredOps()返回所有注册的OpDef的相同的列表（定义在tensorflow/core/framework/op.h）。这可以用与在C++（对于没有protocol buffer 支持的语言来说特别管用）
+写生成器
+\item 通过一个自动的处理ASCII序列版本被周期性的检查tensorflow/core/ops/ops.pbtxt
+\begin{itemize}
+\item 在CameICase中操作的名字。为了按照语言习惯生成函数。例如，如果语言使用snake\_case,使用CameICase态体操作的函数名称
+\item 一个输入和输出列表。对于一字儿通过属性访问的多台，如在\href{https://www.tensorflow.org/extend/adding_an_op}{Adding an op}描述
+\item 一些属性值是否认的。注意一些将被自动推断(如果他们由输入决定)，一些将可选（如果他们有一个默认），一些将要要求(非默认)，
+\item 常用操作，输入，输出和非推理的属性的文档
+\item 一些通过运行环境使用的领域可能被代码生成器胡萝卜
+\end{itemize}
+\end{itemize}
+一个OpDef能转化为text函数添加用TF\_OperationDescription C API添加操作到图上(打包语言的外部函数接口)
+\begin{itemize}
+\item 开始TF\_NewOperation()创建TF\_OperationDescription*
+\item 当输入（依赖于是否输入有一个列表类型）调用TF\_AddInput()或者TF\_AddInputList()
+\item Call TF\_SetAttr*()函数设置非推理的属性。如果你不想覆盖默认值也许跳过属性
+\item 如果需要设置选项范围
+\begin{itemize}
+\item TF\_SetDevice():抢播操作到指定设备
+\item TF\_AddControlInput():添加请求在一个操作开始前另一个操作完成前
+\item TF\_SetAttrString("\_kernel")设置内核标记（很少使用）
+\item TF\_ColocateWith()布置一个操作
+\end{itemize}
+\item 调用TF\_FinishOperation()调用时，添加这个操作到图上，之后不能被修改
+\end{itemize}
+存在样本运行代码代码生成器作为构建程序(Bazel genrule)的一部分。带把生成能用一个自动的cron程序运行，可能在结果中检测。这在生成代码和OpDef的生成之间创建一个分歧进入仓库。但是对于go语言的go get和Rust cargoops希望代码之前生成期望被生成的情况。在最后，对于一些语言代码可能从tensorflow/core/ops/ops.pbtxt动态生成。
+\subsection{处理常数}
+如果用户可以提佛那个仓鼠给输入参数调用将边的更简单。生成的代码转化常熟为操作添加到图上用于作为输入对操作被实例化。
+\subsection{可选参数}
+如果语言允许对一个函数(想关键字参数（默认使用Python）)的可选参数，为可选属性，操作名称，设备，控制输入等使用阿门。在一些语言中这些选项参数可以用于动态scopes（像Python的with块）。没有这些特性，库也许如在C++版本的而TensorFlow API存储构建的样本。
+\subsection{Name scopes}
+用一些scope问津结构支持命名图的操作是一个好的想法，特别是考虑TensorBoard依赖它用合理的方式显示大图。Python和C++有不同的方法：在Python中，使用with块，目录作为名字的一部分。有一个本地线程栈结合scopes定义名字层级结构。名称的最新组件通过用户明确使用或者按照操作被默认添加。在C++中名字的目录部分存储在Scopes对象。NewSubScope()方法添加名字的一部分返回一个新的Scope。最新的名字的组件用WithOpName()方法设置，想Python默认的通过添加的操作命名。Scope对象明确的传递指定的名字。
+\subsection{包装器}
+确保一些函数的私有属性以至于包装器函数做一点额外的工作可能就被替代。这也给一个escape 从生成代码的scope外支持特性。
+
+包装器的一个用法是支持SparseTensor输入输出，一个SparseTensor是一个三个dense tensor的SparseTensor：索引，值，和形状。值是响亮的大小n，形状是响亮的rank，索引时一个矩阵[n,rank]。
+
+另一个原因四用包装器保持状态。有一些这样的操作（例如变量）有一些同伴操作用于操作状态。在Python API有类用于操作，操作的构造体创建op，类的方法添加组件到图上操作状态。
+\subsection{其它的考虑}
+\begin{itemize}
+		\item 它有些关键字用于和语言关键字（或者其他符号哦将残生困难，想库函数的名字或者生成的代码中的变量引用）冲突的关键字重命名操作函数和参数
+		\item 通常对于添加一个Const操作到图上的函数是一个包装器因此生成的函数将有同于的DataType输入
+\end{itemize}
+\subsection{梯度，函数和控制流}
+在这里支持梯度，函数和控制流操作在Python外的语言中不可用，当\href{https://www.github.com/tensorflow/tensorflow/blob/r1.4/tensorflow/c/c_api.h}{C API}提供需要的支持后这将被跟新。
 \section{一个TensorFlow模型文见得开发者工具}
 大多数用户不需要考虑TensorFlow存储在磁盘中文件的内部细节，但是如果你是一个工具开发者也许需要考虑。
 例如你也许想分析模型或者在TensorFlow和其他格式之间转化。这个向导尝试向你解释一些你如何结合主要文件保存模型数据
