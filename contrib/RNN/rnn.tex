@@ -1,0 +1,301 @@
+\documentclass{article}
+\usepackage[space]{ctex}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{hyperref}
+\usepackage{amsmath}
+\usepackage{listings}
+\usepackage{color}
+\graphicspath{{figure/}{../article_pic/}}
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+ 
+\lstdefinestyle{mystyle}{
+    backgroundcolor=\color{backcolour},   
+    commentstyle=\color{codegreen},
+    keywordstyle=\color{magenta},
+    numberstyle=\tiny\color{codegray},
+    stringstyle=\color{codepurple},
+    basicstyle=\footnotesize,
+    breakatwhitespace=false,         
+    breaklines=true,                 
+    captionpos=b,                    
+    keepspaces=true,                 
+    numbers=left,                    
+    numbersep=5pt,                  
+    showspaces=false,                
+    showstringspaces=false,
+    showtabs=false,                  
+    tabsize=2
+}
+ 
+\lstset{style=mystyle}
+\begin{document}
+\subsection{Vanilla Recurrent Neural Network}
+Vanilla 计算单元
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=0.5]{vanilla_unit.png}
+	\caption{Vanilla Unit}
+	\label{fig:1}
+\end{figure}
+计算方式:
+
+\begin{align}
+&h_t = f_W(h_{t-1},x_t)\label{eq:1}\\
+&h_t = tanh(W_{hh}h_{t-1}+W_{xh}x_t)\label{eq:2}\\
+&y_t=W_{hy}h_t\label{eq:3}
+\end{align}
+\begin{itemize}
+\item 公式\ref{eq:1}表示RNN在t时刻的隐藏状态向量$h_t$不仅和前一时刻状态$h_{t-1}$有关，而且还和t时刻输入$x_t$有关。
+\item 公式\ref{eq:2}是RNN隐藏状态的计算方式。
+\item 公式\ref{eq:3}是RNN单元的输出计算方式。
+\end{itemize}
+RNN的计算图如下:
+\begin{figure}[H]
+\centering
+\includegraphics[scale=0.5]{figure/RNN_CG.PNG}
+\caption{循环神经网络的计算图}
+\label{fig:2}
+\end{figure}
+在每个时间步用相同的权重:
+\begin{figure}[H]
+\centering
+\includegraphics[scale=0.5]{figure/RNN_SW.PNG}
+\caption{循环神经网络的计算图（共享权重）}
+\label{fig:3}
+\end{figure}
+多对多的RNN
+\begin{figure}[H]
+\centering
+\includegraphics[scale=0.4]{figure/RNN_M2M.PNG}
+\caption{多对多RNN}
+\label{fig:4}
+\end{figure}
+多对一的计算图:
+\begin{figure}[H]
+\centering
+\includegraphics[scale=0.4]{figure/RNN_M2O.PNG}
+\caption{多对一计算图}
+\label{fig:5}
+\end{figure}
+一对多的计算图:
+\begin{figure}[H]
+\centering
+\includegraphics[scale=0.4]{figure/RNN_O2M.PNG}
+\caption{一对多计算图}
+\label{fig:6}
+\end{figure}
+序列到序列（多对一到一对多）
+\begin{figure}[H]
+\centering
+\includegraphics[scale=0.4]{figure/RNN_S2S.PNG}
+\caption{序列到序列}
+\label{fig:7}
+\end{figure}
+反向传播过程:
+\begin{figure}[H]
+\centering
+\includegraphics[scale=0.4]{figure/RNN_BP.PNG}
+\caption{RNN反向传递}
+\label{fig:8}
+\end{figure}
+截断的反向传播
+\begin{figure}[H]
+\centering
+\includegraphics[scale=0.4]{figure/RNN_TRU1.PNG}
+\caption{截断的RNN反向传递1}
+\label{fig:9}
+\end{figure}
+仅仅传播切断的序列而不是整个完整的序列。
+\begin{figure}[H]
+\centering
+\includegraphics[scale=0.4]{figure/RNN_TRU2.PNG}
+\caption{截断的RNN反向传递2}
+\label{fig:10}
+\end{figure}
+永远在时间步上更新隐藏状态，但是仅仅在一些小的时间步上反向传播。
+
+应用:
+\begin{figure}[H]
+\centering
+\includegraphics[scale=0.4]{figure/Image_Cap.PNG}
+\caption{图像的标注}
+\label{fig:11}
+\end{figure}
+\begin{figure}[H]
+\centering
+\includegraphics[scale=0.4]{figure/Image_Cap_Pro.PNG}
+\caption{图像的标注的处理}
+\label{fig:12}
+\end{figure}
+将CNN的FC层去掉，用CNN抽取的特征直接输入RNN，RNN的隐藏层的更新方式将发生变化,
+之前的$h=\tanh(W_{xh}\cdot x+W_{hh}\cdot h)$变为现在的$h = \tanh(W_{xh}\cdot+W_{hh}\cdot h +W{ih}\cdot v)$
+\begin{figure}[H]
+\centering
+\includegraphics[scale=0.4]{figure/Image_Cap_ProPre.PNG}
+\caption{图像的标注的处理}
+\label{fig:13}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\includegraphics[scale=0.4]{figure/Image_Cap_Attention.PNG}
+\caption{图像的焦点标注的处理}
+\label{fig:14}
+\end{figure}
+
+vanilla rnn的计算过程
+\begin{figure}[H]
+\centering
+\includegraphics[scale=0.4]{figure/vanilla_rnn_bp.PNG}
+\caption{vanilla反向传播}
+\label{fig:15}
+\end{figure}
+\begin{equation}\label{eq:4}
+\begin{split}
+h_t&=\tanh(W_{hh}h_{t-1}+W_{xh}x_t)\\
+&=\tanh\left(\begin{bmatrix}W_{hh}&W_{hx}\end{bmatrix}\cdot\begin{bmatrix}h_{t-1}\\x_t\end{bmatrix}\right)\\
+&=\tanh\left(\mathbf{W}\cdot\begin{bmatrix}h_{t-1}\\x_t\end{bmatrix}\right)\\
+\end{split}
+\end{equation}
+\begin{figure}[H]
+\centering
+\includegraphics[scale=0.4]{figure/vanilla_grad.PNG}
+\caption{vanilla梯度流}
+\label{fig:16}
+\end{figure}
+$\mathbf{W}$的最大奇异值>1:梯度爆炸$\rightarrow$正规化
+\begin{lstlisting}[language=Python]
+grad_norm = np.sum(grad*grad)
+if grad_norm>threshold:
+    grad *=(threshold/grad_norm)
+\end{lstlisting}
+
+
+$\mathbf{W}$的最大奇异值<1:梯度消失,改变RNN结构。
+\subsection{LSTM}
+\begin{equation*}
+\begin{split}
+&\begin{bmatrix}i\\f\\o\\g\end{bmatrix}=\begin{bmatrix}\sigma\\\sigma\\\sigma\\\tanh\end{bmatrix}\mathbf{W}\begin{bmatrix}h_{t-1}\\x_t\end{bmatrix}\\
+&c_t = f\odot c_{t-1}+i\odot g\\
+&h_t = o\odot\tanh(c_t)
+\end{split}
+\end{equation*}
+\begin{itemize}
+	\item f:忘记门，是否删除cell
+	\item i:输入门，是否写入cell
+	\item g:Gate门，如何写入cell
+	\item o:输出门，如何反映cell
+\end{itemize}
+
+$RNN\rightarrow LSTM$
+\begin{figure}[H]
+\centering
+\includegraphics[scale=0.4]{figure/RNN2LSTM.PNG}
+\caption{RNN到LSTM}
+\label{fig:17}
+\end{figure}
+LSTM结构
+\begin{figure}[H]
+\centering
+\includegraphics[scale=0.5]{figure/LSTM.PNG}
+\caption{LSTM结构}
+\label{fig:18}
+\end{figure}
+\begin{equation}\label{eq:5}
+\begin{split}
+&\begin{bmatrix}i\\f\\o\\g\end{bmatrix}=\begin{bmatrix}\sigma\\\sigma\\\sigma\\\tanh\end{bmatrix}\mathbf{W}\begin{bmatrix}h_{t-1}\\x_t\end{bmatrix}\\
+&c_t = f\odot c_{t-1}+i\odot g\\
+&h_t = o\odot\tanh(c_t)
+\end{split}
+\end{equation}
+LSTM GRU
+\begin{equation}
+\begin{split}
+r_t &= \sigma(W_{xr}x_t+W_{hr}h_{t-1}+b_r)\\
+z_t &= \sigma(W_{xz}+W_{hz}h_{t-1}+b_z)\\
+\hat{h}_t &= \tanh(W_{xz}x_t+W_{hh}(r_\odot h_{t-1})+b_h)\\
+h_t &= z_t\odot h_{t-1}+(1-z_t)\odot\hat{h}_t
+\end{split}
+\end{equation}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+循环神经网络按时间轴展开的时候，如下图所示：
+\begin{figure}[H]
+\includegraphics[scale=0.5]{rnn_unroll.png}
+\end{figure}
+图中：
+\begin{enumerate}
+\item $x_t$ 代表时间步 t 的输入；
+\item $s_t$ 代表时间步 t 的隐藏状态，可看作该网络的「记忆」；
+\item $o_t$ 作为时间步 t 时刻的输出；
+\item U、V、W 是所有时间步共享的参数，共享的重要性在于我们的模型在每一时间步以不同的输入执行相同的任务。
+\end{enumerate}
+当把 RNN 展开的时候，网络可被看作每一个时间步都受上一时间步输出影响（时间步之间存在连接）的前馈网络。
+
+两个注意事项
+
+为了更顺利的进行实现，需要清楚两个概念的含义：
+\begin{enumerate}
+\item TensorFlow 中 LSTM 单元格的解释；
+\item 数据输入 TensorFlow RNN 之前先格式化。
+\end{enumerate}
+
+TensorFlow 中 LSTM 单元格的解释
+
+在 TensorFlow 中，基础的 LSTM 单元格声明为：
+
+tf.contrib.rnn.BasicLSTMCell(num\_units)
+
+
+这里，num\_units 指一个 LSTM 单元格中的单元数。num\_units 可以比作前馈神经网络中的隐藏层，前馈神经网络的隐藏层的节点数量等于每一个时间步中一个 LSTM 单元格内 LSTM 单元的 num\_units 数量。下图可以帮助直观理解：
+
+\begin{figure}[H]
+	\includegraphics[scale=0.5]{lstm_unit.png}
+\end{figure}
+每一个 num\_units LSTM 单元都可以看作一个标准的 LSTM 单元：
+
+
+以上图表来自博客（\href{http://colah.github.io/posts/2015-08-Understanding-LSTMs/}{地址}），该博客有效介绍了 LSTM 的概念。
+
+数据输入 TensorFlow RNN 之前先格式化
+
+在 TensorFlow 中最简单的 RNN 形式是 static\_rnn，在 TensorFlow 中定义如下：
+
+tf.static\_rnn(cell,inputs)
+
+
+虽然还有其它的注意事项，但在这里我们仅关注这两个。
+
+inputs 引数接受形态为 [batch\_size,input\_size] 的张量列表。列表的长度为将网络展开后的时间步数，即列表中每一个元素都分别对应网络展开的时间步。比如在 MNIST 数据集中，我们有 28x28 像素的图像，每一张都可以看成拥有 28 行 28 个像素的图像。我们将网络按 28 个时间步展开，以使在每一个时间步中，可以输入一行 28 个像素（input\_size），从而经过 28 个时间步输入整张图像。给定图像的 batch\_size 值，则每一个时间步将分别收到 batch\_size 个图像。详见下图说明：
+\begin{figure}[H]
+	\includegraphics[scale=0.5]{tf_rnn.png}
+\end{figure}
+由 static\_rnn 生成的输出是一个形态为 [batch\_size,n\_hidden] 的张量列表。列表的长度为将网络展开后的时间步数，即每一个时间步输出一个张量。在这个实现中我们只需关心最后一个时间步的输出，因为一张图像的所有行都输入到 RNN，预测即将在最后一个时间步生成。
+\subsection{LSTM MNIST}
+\lstinputlisting[language=Python]{mnist_rnn.py}
+\end{document}
