@@ -260,6 +260,134 @@ open tf_simple_example.xcworkspace   # note .xcworkspace, not .xcodeproj
 \end{itemize}
 \subsection{从源代码构建TensorFlow iOS库}
 尽管Cocapods是最简单和最容易的开始方式，你有时候需要更灵活的的决定TensorFlow在你的app中应该被传递。例如，你可以从源代码构建iOS库。\href{https://github.com/tensorflow/tensorflow/tree/master/tensorflow/examples/ios#building-the-tensorflow-ios-libraries-from-source}{导航}包含了如何去做。
+\section{整合TensorFlow库}
+当你在模型上做了一些进步处理了一些你正尝试解决的问题，在你的应用上立即测试是很重要的。经常在你的训练数据和实际上真是世界碰到的问题上有些不同，得到一个干净的图像提高产品的体验。
+
+这页讨论当你已经成功的构建和部署TensorFlow移动demo app后整个TensorFlow库进入你自己的移动应用模型。
+\subsection{链接库}
+在你成功的构建了样例后，你将可能想从你的存在的应用上调用TensorFlow。最简单的方法是使用\href{https://www.tensorflow.org/mobile/ios_build?hl=zh-cn#using_cocoapods}{这里}描述的Pod安装，但是如果你想从源代码构建TensorFlow(自定义包含的操作)你讲需要跳出TensorFlow作为一个框架，包含正确的头文件，连接针对构件库和依赖。
+\subsection{Android}
+对于Android，你需要链接包含JAR文件的libandroid\_tensorflow\_inference\_java.jar的Java库。有三种方法包含这个功能到你的程序中:
+\begin{itemize}
+\item 包含jcenter AAR，正如\href{https://github.com/googlecodelabs/tensorflow-for-poets-2/blob/master/android/build.gradle#L59-L65}{example app}
+\item 从\href{http://ci.tensorflow.org/view/Nightly/job/nightly-android/lastSuccessfulBuild/artifact/out/?hl=zh-cn}{ci.tensorflow.org}下载nightly版本的预编译
+\item 用\href{https://github.com/tensorflow/tensorflow/tree/master/tensorflow/contrib/android}{iGithub repo}中的说明构建JAR文件。
+\end{itemize}
+\subsection{iOS}
+
+获取一个在iOS上的TensorFlow库有一点复杂。这里是一个你的iOS app需要的列表:
+\begin{itemize}
+\item 通常添加-L /your/path/tensorflow/contrib/makefile/gen/lib/ and -ltensorflow-core到你的链接器标记，链接 tensorflow/contrib/makefile/gen/lib/libtensorflow-core.a
+\item 添加-L /your/path/tensorflow/contrib/makefile/gen/protobuf\_ios/lib and -lprotobuf and -lprotobuf-lite到你的命令行生成protobuf库
+\item 对于包含的路径，你需要你的TensorFlow元文件的根目录作为入口，如下tensorflow/contrib/makefile/downloads/protobuf/src, tensorflow/contrib/makefile/downloads, tensorflow/contrib/makefile/downloads/eigen, and tensorflow/contrib/makefile/gen/proto 
+\item 确保你的二进制用-force\_load（或者对应的平台）针对TensorFlow库确保链接正确。更多的为什么这需要的细节在下面章节说明，\href{https://www.tensorflow.org/mobile/linking_libs?hl=zh-cn#global_constructor_magic}{ Global constructor magic}在类linux平台，你将需要不同的flags，更多像-Wl,--allow-multiple-definition -Wl,--whole-archive
+\end{itemize}
+你讲需要链接加速器框架，因此这被用于加速一些操作。
+\subsection{全局结构体magic}
+当你尝试从你自己的应用调用TensorFlow一个不太明显的错误是No session factory registered for the given session options。你将需要了解TensorFlow架构才能明白为什么错误发生和如何修复。
+
+这个框架被设计的十分模块化，接了很小的可信和大量的指定的独立对象可能按照需要混合匹配。为了使这工作，C++的代码模型必须让模块容易通知框架关于他们提供的服务，没有要求一个中心列表必须从每个实现被单独更新。很难允许单独的库没有需要的预编译的核被添加他们自己的实现。
+
+为了获得能力，TensorFlow在一些地方使用用一个注册模板。代码看起来如下:
+\begin{lstlisting}[language=C++]
+class MulKernel : OpKernel {
+  Status Compute(OpKernelContext* context) { … }
+};
+REGISTER_KERNEL(MulKernel, “Mul”);
+\end{lstlisting}
+这将在标准的.cc文件链接进你的应用，无论是作为主核心的一部分还是作为分割的自定义库的一部分吗。magic部分是REGISTER\_KERNEL()红是的通知TensorFlow核心必须实现多操作，因此它可能在图上任何要求他的地方调用。
+
+从编程的观点，这建立是非常方便的。在相同的文件实现和注册代码，添加新的实现作为一个简单的编译和链接。困难的部分是REGISTER\_KERNEL()宏用C++实现。C++没有提供一个好的机制处理注册，因此我们必须重排一些代码。如下，宏被如下实现:
+\begin{lstlisting}[language=C++]
+class RegisterMul {
+ public:
+  RegisterMul() {
+    global_kernel_registry()->Register(“Mul”, [](){
+      return new MulKernel()
+    });
+  }
+};
+RegisterMul g_register_mul;
+\end{lstlisting}
+这建立一个RegisterMul类结合一个构造体高数全局内核注册当一些人问如何创建Mul内核时调用什么函数。当有一个全局对象在类中，构造体应该在任何程序的开始以调用。
+尽管这替你来也许容易理解，不幸的是全局对象定义没有被任何其他的代码使用，因此链接器没有被结合这个想法设计，决定可能被删除。因此，狗载体没有被调用，类没有注册。所有的在TensorFlow中的顺序模型，Session实现首先当代码运行的时候被查找，当问题出现时哪一个为特征误差的原因。
+接被强制链接没有从库中删除任何代码，尽管它相信它没有使用。在iOS，这一步可能结合-force\_load flag实现，制定库的路径，在Linux你需要--whole-archive。这些劝说链接没有被强制的删掉，应该保留全局。
+
+实际的多种REGISTER\_*实现是一个复杂的时间，但是他们所有遭遇相同的问题。如果你感兴趣他们是如何工作的,\href{https://github.com/tensorflow/tensorflow/blob/master/tensorflow/core/framework/op_kernel.h#L1091}{ok\_kernel.h}是一个开始学习的好地方。
+\subsection{Protobuf问题}
+TensorFlow依赖于\href{https://developers.google.com/protocol-buffers/}{Protocol Buffer}通常成为protobuf。这个库定义数据结构和产品序列为不同的语言对他定义访问代码。娇俏是生成的代码链接共享库为用于生成器的提取相同版本的框架。当protoc时可能是一个问题，这个工具用于从不同版本的protobuf而不是包含在路径中的库和标准链接protoc生成代码。例如，你也许复制构建在~/projects/protobuf-3.0.1.a的protoc，但是你有库安装在/usr/local/lib和/usr/local/include3.0.0版本。
+
+问题的症状是结合protobufs在编译或者链接语法是出现错误。通常构建工具考虑到了这个问题，但是如果你用makefile，确保你正在构建的protobuf库位置和使用正如\href{https://github.com/tensorflow/tensorflow/blob/master/tensorflow/contrib/makefile/Makefile#L18}{这个Makefile}。
+
+另一种情况是当protobuf的touch和源文件需要作为编译程序的一部分是导致错误。这个过程使得编译更复杂，因此，第一个时期必须被传送protobuf定义粗黄健所有需要的代码文件，仅仅在你继续和构建代码库之后。
+
+\subsection{在同样的app中有多个版本的protobuf}
+Protobufs生成的头文件需要作为C++接口的一部分到TensorFlow库以内这是的使用库作为标准的框架变得复杂。
+
+如果你的程序已经使用protocol buffers库版本1，你整合TensorFlow也许会出现一些问题因为他要求版本2。如果你尝试链接两个版本到相同的库，你将看到链接错误因为一些符号冲突。为了解决类似的问题，我们有一个试验脚本在\href{https://github.com/tensorflow/tensorflow/blob/master/tensorflow/contrib/makefile/rename_protobuf.sh}{rename\_protobuf.sh}。
+你需要运行下面目录作为makefile构建的一部分，之后你下载所有的依赖:
+\begin{lstlisting}[language=Bash]
+tensorflow/contrib/makefile/download_dependencies.sh
+tensorflow/contrib/makefile/rename_protobuf.sh 
+\end{lstlisting}
+\subsection{调用TensorFlow API}
+当你有可用框架的时候你需要调用它。常见的模式是你先载入你的代表数值计算的模型，然后运行输入到模型(例如相机的图像)接收输出(例如，预测标签)
+
+在Android，我们提供Java推理库处理这种用法，然而在iOS和Respberry Pi你可以直接调用C++ API。
+\subsection{Android}
+这里是Android上典型的推理库序列:
+\begin{lstlisting}[language=C++]
+// Load the model from disk.
+TensorFlowInferenceInterface inferenceInterface =
+new TensorFlowInferenceInterface(assetManager, modelFilename);
+
+// Copy the input data into TensorFlow.
+inferenceInterface.feed(inputName, floatValues, 1, inputSize, inputSize, 3);
+
+// Run the inference call.
+inferenceInterface.run(outputNames, logStats);
+
+// Copy the output Tensor back into the output array.
+inferenceInterface.fetch(outputName, outputs);
+\end{lstlisting}
+你可以在\href{https://github.com/tensorflow/tensorflow/blob/master/tensorflow/examples/android/src/org/tensorflow/demo/TensorFlowImageClassifier.java#L107}{Android examples}上找到源代码。
+\subsection{iOS和Rasphberry Pi}
+这里是对于iOS和Rasphberry Pi的对应代码:
+\begin{lstlisting}[language=C++]
+// Load the model.
+PortableReadFileToProto(file_path, &tensorflow_graph);
+
+// Create a session from the model.
+tensorflow::Status s = session->Create(tensorflow_graph);
+if (!s.ok()) {
+  LOG(FATAL) << "Could not create TensorFlow Graph: " << s;
+}
+
+// Run the model.
+std::string input_layer = "input";
+std::string output_layer = "output";
+std::vector<tensorflow::Tensor> outputs;
+tensorflow::Status run_status = session->Run({ {input_layer, image_tensor}},
+                           {output_layer}, {}, &outputs);
+if (!run_status.ok()) {
+  LOG(FATAL) << "Running model failed: " << run_status;
+}
+
+// Access the output data.
+tensorflow::Tensor* output = &outputs[0];
+\end{lstlisting}
+这是所有的基于\href{https://www.github.com/tensorflow/tensorflow/blob/r1.4/tensorflow/examples/ios/simple/RunModelViewController.mm}{iOS sample code}，但是没有iOS指定；同样代码应该在任何其它支持C++的平台不可用。你可以找到Raspberry Pi的\href{https://github.com/tensorflow/tensorflow/blob/master/tensorflow/contrib/pi_examples/label_image/label_image.cc}{例子}
+
+
+
+
+
+
+
+
+
+
+
 
 
 
