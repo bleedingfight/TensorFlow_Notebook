@@ -377,6 +377,106 @@ if (!run_status.ok()) {
 tensorflow::Tensor* output = &outputs[0];
 \end{lstlisting}
 这是所有的基于\href{https://www.github.com/tensorflow/tensorflow/blob/r1.4/tensorflow/examples/ios/simple/RunModelViewController.mm}{iOS sample code}，但是没有iOS指定；同样代码应该在任何其它支持C++的平台不可用。你可以找到Raspberry Pi的\href{https://github.com/tensorflow/tensorflow/blob/master/tensorflow/contrib/pi_examples/label_image/label_image.cc}{例子}
+\section{为移动部署准备模型}
+这要求你在训练过程中储模型信息和你想释放它作为移动app的一部分非常不同，这个张建包含从训练模型到产品释放的一些转化工具。
+\subsection{保存的文件格式有什么不同？}
+你可能发现tensorflow保存图的一些不同的方法变得非常的困惑。为了帮组理解，下面是一些不同组建的关于用于何处的介绍。目标通常被定义和序列化为protocol buffers:
+\begin{itemize}
+\item NodeDef:在模型中定义一个操作。他有一个独一无二的名字，一些其他节点的名字列表接收输入，才做类型实现(例如Add或者Mul)和任何需要控制操作的属性。这是TensorFlow基本的计算单元，所有网络节点的工作通过迭代被做，轮流使用每一个。这也许是一个单个的标量或者字符创，但是也保存一整个多为TensorFlow数组。Constent常熟的值被存在NodeDef，因此当序列化的时候大的常熟可能占据一些空间
+\item Checkpoint。另一个通过使用variable操作存储模型值的方法。不想Const操作，这不存储他们的内容作为NodeDef的一部分，因此他们在GraphDef中占据非常小的空间。当计算的时候他们的值在RAM中保持，然后周期性的输出checkpoint文件到磁盘。这通常发生在神经网络被训练和权重被更新的时候，因此它是一个时间敏感的操作，也许发生在分布式的一些工作站上，因此文件格式必须快和灵活。他们存储作为多个checkpoint文件的一部分，结合checkpoint文件中的metadata文件描述c。当你通过API访问（例如传递一个文件名作为命令行参数）checkpoint文件，你见够用通常的前缀和文件关联。如果你有这些文件
+\begin{lstlisting}[language=Bash]
+/tmp/model/model-chkpt-1000.data-00000-of-00002
+/tmp/model/model-chkpt-1000.data-00001-of-00002
+/tmp/model/model-chkpt-1000.index
+/tmp/model/model-chkpt-1000.meta
+\end{lstlisting}
+你讲访问他们作为/tmp/model/chkpt-1000
+\item GraphDef:有一个NodeDefs列表，结合定义计算图执行。在训练中一些节点将为Variables，因此如果你想有一个完整的可运行的图，包含权重，你将需要调用恢复操作从checkpoint文件获取这些值。因为checkpoint载入必须灵活的处理所有的训练请求，这可能是一个在移动端和嵌入式设备实现的技巧，特别是想iOS没有合适的文件系统可用的情况。这里的手写脚本\href{https://www.github.com/tensorflow/tensorflow/blob/r1.4/tensorflow/python/tools/freeze_graph.py}{freeze\_graph.py}。正如上面提到的，仓鼠啊哦做存储他们的值错位NodeDef的有部分，因此如果所有的Variable权重被转化为常数节点。你可以在单次调用中载入结果文件不需要从checkpoint中回复变量值。一个查看GraphDef文件是有时候你已经存储在文本格式以方便查看。这个版本通常有.pbtxt文件后缀，正如二进制文件的.pb后缀一样
+\item FunctionDefLibrary：在GraphDef出现，是搞笑的设置子图，关于输入输出的信息。每个子图可以用作主图的操作，运行简单的实例化不同的节点，用泪水的方式用其它语言包装代码
+\item MetaGraphDef:一个空白的GraphDef仅仅有关于计算网络的信息，但是没有额外的关于魔性的信息或者模型如何使用的我信息。MetaGraphDef包含一个GraphDef定义模型的部分计算，而且包含想signatures的信息（暗示你想要调用的的输入输出，数据和Checkpoint文件存储地），对于一组操作方便的标签
+\item SavedModel：通常享有不同版本的图依赖一些chechpoint的变量。例如，你也许在一张图上需要需要GPU和CPU版本为两者保存权重。你也许需要额外的文件(想标记文件)作为你的模型的一部分。SavedModel文件通过放你保存多版本的图不复制变量，也在同一个bundle存储assert文件处理这些需要。在hood下，用MetaGraphDef和checkpoint文件，沿着额外的metadata文件。如果你用TensorFlow Serving部署web API他的格式你将想用它。
+\end{itemize}
+\subsection{如何获取一个能在移动端运行的模型?}
+多数情况下，结合TensorFlow训练一个模型给你一个包含GraphDef的文件(通常以.pb或者.pbtxt为扩展名)和一些Checkpoint文件。用于移动设备和嵌入设备部署的是被frozen的单个的GraphDef文件或者有一个变量转化为常数的所有文件，为了处理，你将需要在\href{https://www.github.com/tensorflow/tensorflow/blob/r1.4/tensorflow/python/tools/freeze_graph.py}{tensorflow/python/tools/freeze\_graph.py}freeze\_graph.py脚本,你需要像这样运行:
+\begin{lstlisting}[language=Bash]
+bazel build tensorflow/tools:freeze_graph
+bazel-bin/tensorflow/tools/freeze_graph \
+--input_graph=/tmp/model/my_graph.pb \
+--input_checkpoint=/tmp/model/model.ckpt-1000 \
+--output_graph=/tmp/frozen_graph.pb \
+--output_node_names=output_node \
+\end{lstlisting}
+输入input\_graph参数应该指向保存你的模型架构的GraphDef文件。你的GraphDef必须以文本格式存储在磁盘，这种情况下以.pbtxt结尾而不是.pb，你应该添加一个额外的--input\_binary=false标记到命中。
+
+input\_checkpoint应该是最近保存的checkpoint文件。正如checkpoint章节提到的，你需要给常规的前座到checkpoint文件而不是一个完整的名字。
+
+output\_graph定义frozen GraphDef将被存储在哪里。因为它可能包含一些占据较大磁盘空间的权重值，通常它总是保存为二进制的protobuf。
+
+output\_node\_names是一个你想从图中提取的节点的名称列表。这时需要的是因为freezing京城需要明白图的那一部分是实际需要的，那一部分需要人工训练的，想一些总结操作一样。唯一的操作贡献计算给定的输出节点包保持。如果你知道你的图正在被使用。这些应该是节点的名字你传递进Session::run()作为你的获取目标。最简单的摘到节点名称的方法是在Python中构建你的图查看节点对象。在TensorBoard是另一个简单的方法。你可以通过\href{https://github.com/tensorflow/tensorflow/tree/master/tensorflow/tools/graph_transforms/README#inspecting-graphs}{summarize\_graph tool}获取可能的输出建议。
+
+因为TensorFlow的输出格式已经随着时间改变，有一些通常比较少使用的的flag也可以使用，想input\_saver,但是希望你不要用现代的框架版本在图上训练。
+\subsection{用图转换工具}
+你需要高效运行图的一些事是通过\href{https://www.github.com/tensorflow/tensorflow/blob/r1.4/tensorflow/tools/graph_transforms/README.md}{ Graph Transform Tool},这个命令行工具接收一个输入GraphDef作为输入应用一些重写规则，然后写出结果到GraphDef。查看文档获取构建和运行这个工具的更多信息。
+\subsection{移除仅仅训练节点}
+TensorFlow GraphDefs通过训练包含所有的需要反向计算和权重更新的计算，只要查询和解码输入，保存checkpoint。所有的节点不再需要推理，一些像checkpoint保存的文件甚至不支持移动平台。为了创建一个模型文件你可能需要通过运行Graph Transformtool的strip\_unused\_node规则删除这些不需要的操作。
+处理的最薄弱的部分是在推理过程中找出你想用作输入和输出节点的名字。当你开始推理的时候需要要这些方法，但是你也需要他们呢么以至于转换可以计算那一个节点在推理路径中不需要。这也许不同于训练代码。最简单的方法是用TensorBoard决定图中节点被访问。
+
+记住记住，移动设备通常通过传感器收集数据以数组的形式保存，由于训练通常设计带入和解码存储在磁盘上的数据表达。以Inception V3为例，有一个DecodeJpeg op开始图设计用于从磁盘接收JPEG编码的数据转换为任意大小的图像，之后有一个BilinearResize op缩放它到希望的大小，接着一些操作转换字节数据为浮点数，用图希望的方式放大在里面值的幅度。一个典型的移动app讲跳过这些步骤直接从相机开始输入，因此输入节点你讲应用实际上成为输出节点
+\begin{figure}[!h]
+	\centering
+	\includegraphics[scale=0.3]{inception_input.png}
+\end{figure}
+你需要做类似查看找出正确的输出节点。
+如果你已经用一个frozen GraphDef文件，不确保内容尝试使用summarize\_graph工具打印出从图结构中找到的关于输入和输出的信息。这里是一个原始的Inception V3文件的例子
+\lstinline[language=Bash]{bazel run tensorflow/tools/graph_transforms:summarize_graph -- i --in_graph=tensorflow_inception_graph.pb}
+当你明白输入输出节点是什么，你可以分别对应--input\_names和--output\_names参数输入他们到图转化工具，调用strip\_unused\_nodes变换，如下:
+\begin{lstlisting}
+bazel run tensorflow/tools/graph_transforms:transform_graph --
+--in_graph=tensorflow_inception_graph.pb
+--out_graph=optimized_inception_graph.pb --inputs='Mul' --outputs='softmax'
+--transforms='
+  strip_unused_nodes(type=float, shape="1,299,299,3")
+  fold_constants(ignore_errors=true)
+  fold_batch_norms
+  fold_old_batch_norms'
+
+\end{lstlisting}
+一件需要留心的是是你需要制定你想你的输入的大小和类型。这是因为一些你讲传入作为输入用于推理的值需要输入到特殊的Placeholder op操作，转如果他们不存在换也许需要创建他们，用Inception V3的例子，一个Placeholder节点取代以前的Mul节点用于输出resize和rescale图像矩阵。因此我们在调用TensorFlow之前正在处理我们自己。为了保留原始是的名字，这也是为什么我们总是在袖肥的Inception输入Mul然后运行一个session。
+在你运行这个程序后，必将有一个仅仅包含需要运行预测程序的当前节点。在这点上在图上运行度量变得十分有用，因此他的值得再次运行summary\_graph明白在你的模型上有什么。
+\subsection{什么操作应该被包含在移动端?}
+在TensorFlow中有上百个可用的操作，每个操作针对不同的数据类型有多种实现。在移动平台编译后的二进制文件的大小非常重要，因为app捆绑下载的东西越小用户体验越好。如果所有的TensorFlow操作和数据类型被编译进入TensorFlow库中编译库可能有上10M，因此默认只有操作和数据类型的自己被包括。
+
+这意味着如果你载入一个已经在桌面环境下训练过的模型文件，当你在移动平台载入它你也许看到No OpKernel was  registered to support Op错误。首先确保你删除了仅仅训练的节点，因为如果你的op从未执行错误将在载入时发生。如果当你照做后依然出现同样的问题，你将需要查看添加操作到你的构建库。
+
+包含操作和类型的标准有如下类别:
+\begin{itemize}
+	\item 对于其他训练需要是否有用，比如checkpoint文件保存?我们丢弃它
+	\item 是否以来的框架是移动端可用的，如libjpeg。避免额外的依赖，我们博包含DecodeJpeg操作
+	\item 有不常使用的类型?我们不包含操作的boolean变量，因此我们不能在通常的推理图上看到他们中大多数
+\end{itemize}
+操作默认被修剪以适应移动平台的推理，但是可以修改构建文件修改默认。在修改构建文件后，你将需要重新编译TensorFlow。查看下面获取如何去做的更多细节，也可以查看\href{https://www.tensorflow.org/mobile/optimizing?hl=zh-cn#binary_size}{Optimizing}查看更多减小二进制文件尺寸的信息。
+\subsection{定位实现}
+操作被分为两部分。第一部分是操作的定义，什么操作的signature，那个输入，输出，拥有属性。这将占据非常小的空间，这些默认被包含。操作计算的实现在kernel（在tensorflor/core/kernels文件夹）中实现，你需要编译包含C++文件的内核实现进入库。为了找出那个文件是，你可以在源文件中搜索操作的名字。
+\href{https://github.com/search?utf8=%E2%9C%93&q=repo%3Atensorflow%2Ftensorflow+extension%3Acc+path%3Atensorflow%2Fcore%2Fkernels+REGISTER+Mul&type=Code&ref=searchresults}{Here’s an example search in github}
+你讲看到这个搜索正在寻找Mul操作实现，它在tensorflow/core/kernels/cwise\_op\_mul\_1.cc中。你需要用REGISTER开始寻找宏，你关心的操作的名字作为一个字符串参数。
+
+在这种情况下，实现被才分为多个.cc文件，因此你需要在构建他们的过程中包含他们。如果你觉得用命令行搜索代码合适，这里是一个ghrep命令，如果你从TensorFlow仓库的跟目录运行它能定位正确的文件
+\lstinline[language=Bash]{grep 'REGISTER.*"Mul"' tensorflow/core/kernels/*.cc}
+\subsection{添加实现构建}
+如果你用Bazel，为Android构建，你将需要添加文件\href{https://www.github.com/tensorflow/tensorflow/blob/r1.4/tensorflow/core/kernels/BUILD#L3565}{android\_extended\_ops\_group1}或者\href{https://www.github.com/tensorflow/tensorflow/blob/r1.4/tensorflow/core/kernels/BUILD#L3632}{android\_extended\_ops\_group2}目标。你也许需要包含任何的在这里依赖的.cc文件。如果构建报出缺少头文件，添加.h的文件到\href{https://www.github.com/tensorflow/tensorflow/blob/r1.4/tensorflow/core/kernels/BUILD#L3525}{android\_extended\_ops}。如果你用一个makefile在iOS，Raspberry Pi等等，去\href{https://www.github.com/tensorflow/tensorflow/blob/r1.4/tensorflow/contrib/makefile/tf_op_files.txt}{tensorflow/contrib/makefile/tf\_op\_files.txt}添加正确的实现文件。
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
