@@ -1,3 +1,136 @@
+\section{自定义文件读取器}
+要求:
+\begin{itemize}
+	\item 熟悉C++
+	\item 必须下载\href{https://www.tensorflow.org/install/install_sources}{TensorFlow源代码}，并能构建它。
+\end{itemize}
+分割支持文件格式的任务为两部分:
+\begin{itemize}
+	\item 文件格式:我们用一个Reader op从一个文件读一个record(可以为任何字符串)
+	\item 记录格式:我们用解码解析操作转变一个字符串为TensorFlow可用的tensor
+\end{itemize}
+例如，读一个\href{https://en.wikipedia.org/wiki/Comma-separated_values}{CSV文件}，我通过用一个\href{https://www.tensorflow.org/api_docs/python/tf/decode_csv}{ an Op that parses CSV data from a line of text}用\href{https://www.tensorflow.org/api_docs/python/tf/TextLineReader}{ a Reader for text files}
+\subsection{写一个Reader用于文件格式}
+一个Reader有时候从一个文件读取record。有一些Reader Ops的例子已经构建进入TensorFlow了:
+\begin{itemize}
+	\item \href{https://www.tensorflow.org/api_docs/python/tf/TFRecordReader}{tf.TFRecordReader}(\href{https://www.github.com/tensorflow/tensorflow/blob/r1.4/tensorflow/core/kernels/tf_record_reader_op.cc}{(source in kernels/tf\_record\_reader\_op.cc)})
+	\item \href{https://www.tensorflow.org/api_docs/python/tf/FixedLengthRecordReader}{tf.FixedLengthRecordReader}(\href{https://www.github.com/tensorflow/tensorflow/blob/r1.4/tensorflow/core/kernels/fixed_length_record_reader_op.cc}{source in kernels/fixed\_length\_record\_reader\_op.cc})
+	\item \href{https://www.tensorflow.org/api_docs/python/tf/TextLineReader}{tf.TextLineReader}(\href{https://www.github.com/tensorflow/tensorflow/blob/r1.4/tensorflow/core/kernels/text_line_reader_op.cc}{source in kernels/text\_line\_reader\_op.cc})
+\end{itemize}
+你可以查看这些相同接口的所有的expose,唯一不同的是在他们的结构体中。最重要的方法是read。最重要的方法是read。它接受一个队列参数（无论什么时候需要从这里获取文件，例如当read操作第一次运行时，之前的read从文件的最后读取），它产生两个标量tensor:一个字符串key和一个字符串value。
+调用SomeReader创建一个新的SomeReader，你将需要:
+\begin{itemize}
+	\item 在C++中，调用SomeReader定义一个子类\href{https://www.github.com/tensorflow/tensorflow/blob/r1.4/tensorflow/core/framework/reader_base.h}{tensorflow::ReaderBase}
+	\item 在C++中，注册一个新的reader 操作和名字为SomeReader的核心
+	\item 在Python中，调用SomeReader定义一个子类\href{https://www.tensorflow.org/api_docs/python/tf/ReaderBase}{tf.ReaderBase }
+\end{itemize}
+你可以仿所有的C++代码在tensorflow/core/user\_ops/sone\_reader\_op.cc中。这代码读一个文件将进入一个C++ ReaderBase类的后代，这个类定义在
+\href{https://www.github.com/tensorflow/tensorflow/blob/r1.4/tensorflow/core/framework/reader_base.h}{tensorflow/core/kernels/reader\_base.h}。你将需要实现下面方法:
+\begin{itemize}
+	\item OnWorkStartedLocked:打开下一个文件
+	\item ReadLocked:读一个record报告一个EOF/error
+	\item OnWorkFinishedLocked:关闭当前文件
+	\item ResetLocked:获取一个干净的slate，例如一个错误
+\end{itemize}
+这些方法的名称都以Locked结尾，因为Readerbase确保调用这些方法中的一个是获得一个互斥，因此你通常不用单喜线程安全(尽管只有类的保护成员，没有全局状态)
+对于OnWorkStartedLoacked，文件的名字打开是current\_work()方法返回的，ReadLocked有这signature:
+\lstinline[language=Python]{Status ReadLocked(string* key, string* value, bool* produced, bool* at_end)}
+如果ReadLocked成功的从一个文件读取一个record，它应该填充:
+\begin{itemize}
+	\item *key:结合对record的一个识别，人能用于再次找到这个record，你可以从current\_work()包含文件名，添加一个记录号或者无论什么。
+	\item *value:结合record的内容
+	\item *produced:设置为true
+\end{itemize}
+如果你达到的文件的结尾(EOF),设置*at\_end为true。在这种情况下，染回Status::OK()。如果有一个错误，简单的用\href{https://www.github.com/tensorflow/tensorflow/blob/r1.4/tensorflow/core/lib/core/errors.h}{tensorflow/core/lib/core/errors.h }返回他,不修改任何参数。
+
+下一步，你将创建一个实际的Reader op。如果你知道\href{https://www.tensorflow.org/extend/adding_an_op}{the adding an op how-to},这将很有好处。主要步骤:
+\begin{itemize}
+	\item 注册一个op 
+	\item 定义一个OpKernel
+\end{itemize}
+为了注册一个op，你将需要用定义在\href{https://www.github.com/tensorflow/tensorflow/blob/r1.4/tensorflow/core/framework/op.h}{ tensorflow/core/framework/op.h}REGISTER\_OP调用。Reader op从来不接受任何输入总是有一个resource单个输出。他们应该有字符串container和shared\_name属性。你也许选择定义额外的属性配置或者包含在Doc中的文档。例如查看\href{https://www.github.com/tensorflow/tensorflow/blob/r1.4/tensorflow/core/ops/io_ops.cc}{tensorflow/core/ops/io\_ops.cc}
+\begin{lstlisting}[language=C++]
+#include "tensorflow/core/framework/op.h"
+
+REGISTER_OP("TextLineReader")
+    .Output("reader_handle: resource")
+    .Attr("skip_header_lines: int = 0")
+    .Attr("container: string = ''")
+    .Attr("shared_name: string = ''")
+    .SetIsStateful()
+    .SetShapeFn(shape_inference::ScalarShape)
+    .Doc(R"doc(
+A Reader that outputs the lines of a file delimited by '\n'.
+)doc");
+\end{lstlisting}
+为了定义一个OpKernel。Reader能用从ReaderOpKernel(
+\href{https://www.github.com/tensorflow/tensorflow/blob/r1.4/tensorflow/core/framework/reader_op_kernel.h}{tensorflow/core/framework/reader\_op\_kernel.h})
+
+继承的shortcut,调用SetReaderFactory实现一个构造体。在定义你的类后，你将需要用REGISTER\_KERNEL\_BUILDER注册它。一个没有属性的例子:
+\begin{lstlisting}[language=C++]
+#include "tensorflow/core/framework/reader_op_kernel.h"
+
+class TFRecordReaderOp : public ReaderOpKernel {
+ public:
+  explicit TFRecordReaderOp(OpKernelConstruction* context)
+      : ReaderOpKernel(context) {
+    Env* env = context->env();
+    SetReaderFactory([this, env]() { return new TFRecordReader(name(), env); });
+  }
+};
+
+REGISTER_KERNEL_BUILDER(Name("TFRecordReader").Device(DEVICE_CPU),
+                        TFRecordReaderOp);
+\end{lstlisting}
+一个有属性的例子:
+\begin{lstlisting}[language=Python]
+#include "tensorflow/core/framework/reader_op_kernel.h"
+
+class TextLineReaderOp : public ReaderOpKernel {
+ public:
+  explicit TextLineReaderOp(OpKernelConstruction* context)
+      : ReaderOpKernel(context) {
+    int skip_header_lines = -1;
+    OP_REQUIRES_OK(context,
+                   context->GetAttr("skip_header_lines", &skip_header_lines));
+    OP_REQUIRES(context, skip_header_lines >= 0,
+                errors::InvalidArgument("skip_header_lines must be >= 0 not ",
+                                        skip_header_lines));
+    Env* env = context->env();
+    SetReaderFactory([this, skip_header_lines, env]() {
+      return new TextLineReader(name(), skip_header_lines, env);
+    });
+  }
+};
+
+REGISTER_KERNEL_BUILDER(Name("TextLineReader").Device(DEVICE_CPU),
+                        TextLineReaderOp);
+\end{lstlisting}
+最后一步是添加Python包装器。你可以通过\href{https://www.tensorflow.org/extend/adding_an_op#building_the_op_library}{compiling a dynamic library }做到或者如果你从源文件构建TensorFlow，添加到user\_op.py。后面的，你将在\href{https://www.github.com/tensorflow/tensorflow/blob/r1.4/tensorflow/python/user_ops/user_ops.py}{tensorflow/python/user\_ops/user\_ops.py}导入tensorflow.python.ops.io\_ops添加\href{https://www.github.com/tensorflow/tensorflow/blob/r1.4/tensorflow/python/ops/io_ops.py}{io\_ops.ReaderBase}继承。
+\begin{lstlisting}[language=Python]
+from tensorflow.python.framework import ops
+from tensorflow.python.ops import common_shapes
+from tensorflow.python.ops import io_ops
+
+class SomeReader(io_ops.ReaderBase):
+
+    def __init__(self, name=None):
+        rr = gen_user_ops.some_reader(name=name)
+        super(SomeReader, self).__init__(rr)
+
+ops.NotDifferentiable("SomeReader")
+\end{lstlisting}
+你可以在\href{https://www.github.com/tensorflow/tensorflow/blob/r1.4/tensorflow/python/ops/io_ops.py}{tensorflow/python/ops/io\_ops.py}查看一些例子。
+\subsection{写一个操作用于记录格式}
+通常这是一个普通的接受一个标量字符创记录作为输入的操作，因此下面的\href{https://www.tensorflow.org/extend/adding_an_op}{ the instructions to add an Op}
+。你需要选择接受一个标量字符串key作为输入，包含报告不合适格式数据的在输入错误消息。这种方法用户可以更容易记录坏数据来自哪里。
+Ops的用于Record的例子:
+\begin{itemize} 
+\item \href{https://www.tensorflow.org/api_docs/python/tf/parse_single_example}{tf.parse\_single\_example}
+\item \href{https://www.tensorflow.org/api_docs/python/tf/decode_csv}{tf.decode\_csv}
+\item \href{https://www.tensorflow.org/api_docs/python/tf/decode_raw}{tf.decode\_raw}
+\end{itemize}
+注意用多个操作解码类似格式是它可能很有用。例如，你也许有一张图片作为字符串保存在\href{https://www.github.com/tensorflow/tensorflow/blob/r1.4/tensorflow/core/example/example.proto}{ tf.train.Example} \href{https://www.github.com/tensorflow/tensorflow/blob/r1.4/tensorflow/core/example/example.proto}{protocol buffer}。依赖于图片的格式，你将从\href{https://www.tensorflow.org/api_docs/python/tf/parse_single_example}{tf.parse\_single\_example}操作调用\href{https://www.tensorflow.org/api_docs/python/tf/image/decode_jpeg}{tf.image.decode\_jpeg}和\href{https://www.tensorflow.org/api_docs/python/tf/image/decode_png}{tf.image.decode\_png}或者是\href{https://www.tensorflow.org/api_docs/python/tf/decode_raw}{tf.decode\_raw}得到对应的输出。通常使用\href{https://www.tensorflow.org/api_docs/python/tf/slice}{tf.slice}和\href{https://www.tensorflow.org/api_docs/python/tf/reshape}{tf.reshape}得到tf.decode\_raw部分输出。
 \section{用tf.estimator创建Estimator}
 tf.estimator框架使得通过他的高级Estimator API构造和训练机器学习模型变得很容易。Estimator提供你能快速配置昌建模型类型的想regressors和classfiers类快速实例化。
 \begin{itemize}
