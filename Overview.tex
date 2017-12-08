@@ -464,7 +464,265 @@ bazel run tensorflow/tools/graph_transforms:transform_graph --
 \lstinline[language=Bash]{grep 'REGISTER.*"Mul"' tensorflow/core/kernels/*.cc}
 \subsection{添加实现构建}
 如果你用Bazel，为Android构建，你将需要添加文件\href{https://www.github.com/tensorflow/tensorflow/blob/r1.4/tensorflow/core/kernels/BUILD#L3565}{android\_extended\_ops\_group1}或者\href{https://www.github.com/tensorflow/tensorflow/blob/r1.4/tensorflow/core/kernels/BUILD#L3632}{android\_extended\_ops\_group2}目标。你也许需要包含任何的在这里依赖的.cc文件。如果构建报出缺少头文件，添加.h的文件到\href{https://www.github.com/tensorflow/tensorflow/blob/r1.4/tensorflow/core/kernels/BUILD#L3525}{android\_extended\_ops}。如果你用一个makefile在iOS，Raspberry Pi等等，去\href{https://www.github.com/tensorflow/tensorflow/blob/r1.4/tensorflow/contrib/makefile/tf_op_files.txt}{tensorflow/contrib/makefile/tf\_op\_files.txt}添加正确的实现文件。
+\subsection{为移动端优化}
+当你尝试部署在移动设备或者嵌入式设备上时，有一些特殊问题需要处理，当你部署你的模型的时候你将需要考虑他。
 
+这些问题是:
+\begin{itemize}
+\item 模型和执行文件的大小
+\item App速度和模型载入速度
+\item 性能和线程
+\end{itemize}
+\subsection{TensorFlow 最低的设备要求是什么?}
+你需要至少一兆的程序存储空间和多兆RAM运行基本的TensorFlow环境，因此对于DSP或者微控制器来说是不合适的。相比于这些，贵大的约束是设备的计算速度，和是否你能用较低的代价为你的应用运行模型。你可以在\href{https://www.tensorflow.org/mobile/optimizing?hl=zh-cn#how_to_profile_your_model}{How to Profile your Model}使用基准测试工具了解你的模型需要多少FLOPs，然后使用这个经验法则估计他们将在不同的设备上运行多快。例如，现代的智能手机也许有10GGLOPs/s，因此你希望从一个5GFLOP模型是每秒两帧，尽管你也许做的比较差的依赖同计算样板提取什么。
+
+模型依赖是的在比较旧的或者资源少的手机上运行TensorFlow成为了可能。对更多的内存使用，我们通常需要确保TensorFlow创建的中间缓存不要太大，你也可以检查基准输出。
+
+\subsection{Speed}
+一个很高优先级的模型部署是找出五河更快的运行推理给出一个好的用户体验。首先是查看执行图要求的浮点操作。你可以使用benchmark\_model工具获取原始的估计。
+\begin{lstlisting}[language=C++]
+bazel build -c opt tensorflow/tools/benchmark:benchmark_model && \
+bazel-bin/tensorflow/tools/benchmark/benchmark_model \
+--graph=/tmp/inception_graph.pb --input_layer="Mul:0" \
+--input_layer_shape="1,299,299,3" --input_layer_type="float" \
+--output_layer="softmax:0" --show_run_order=false --show_time=false \
+--show_memory=false --show_summary=true --show_flops=true --logtostderr
+\end{lstlisting}
+这将给你显示运行图需要多少操作。你也可以用这信息找出你的模型在目标上如何可行。例如，2016年出的高端手机能每秒到200亿FLOPs。因此你可能希望的罪加速度要求在大约500ms范围达到100亿 Flops。在想Rasphberry Pi3上可能有50亿Flops，你也许仅仅没两步得到一个推理。
+
+有这些估计帮助你计划在设备上能湖区真是计算。如果迷行有太多操作，然后有一些机会优化架构减少数量。
+高级的技术包含\href{https://arxiv.org/abs/1602.07360}{SqueezeNet} \href{https://arxiv.org/abs/1704.04861}{MobileNet}（针对移动设备快速但是牺牲少量精度）。你也可以查看一些可用的模型，及时老的模型，也许也很小。例如，Inception V1仅仅有700万参数，相比于Inception V3的240万参数，要求3亿FLOPs而不是v3的9亿参数。
+\subsection{模型大小}
+运行在设备上的模型需要被存储在设备上的某个地方，非常大的神经网络可能有数百兆。多数用户不愿从app store下载非常大的原件包，因此你想保证你的模型尽可能小。更进一步，越小的神经网络丝能在移动设备上运行的越快。
+为了明白你磁盘上的网络多大，在上面（查看\href{https://www.tensorflow.org/mobile/prepare_models?hl=zh-cn}{Preparing models}了解更多关于这个工具的信息）运行freeze\_graph和strip\_unused\_nodes通过查看你的GraphDef的大小。因此当它仅仅包含推理相关的节点时。再次检查你的结果，运行summarize\_graph工具查看多少参数是常数:
+\begin{lstlisting}[language=Bash]
+bazel build tensorflow/tools/graph_transforms:summarize_graph && \
+bazel-bin/tensorflow/tools/graph_transforms/summarize_graph \
+--in_graph=/tmp/tensorflow_inception_graph.pb
+\end{lstlisting}
+这个命令应该给你类似下面的输出:
+\begin{lstlisting}[language=Python]
+No inputs spotted.
+Found 1 possible outputs: (name=softmax, op=Softmax)
+Found 23885411 (23.89M) const parameters, 0 (0) variable parameters,
+and 99 control_edges
+Op types used: 489 Const, 99 CheckNumerics, 99 Identity, 94
+BatchNormWithGlobalNormalization, 94 Conv2D, 94 Relu, 11 Concat, 9 AvgPool,
+5 MaxPool, 1 Sub, 1 Softmax, 1 ResizeBilinear, 1 Reshape, 1 Mul, 1 MatMul,
+1 ExpandDims, 1 DecodeJpeg, 1 Cast, 1 BiasAdd 
+\end{lstlisting}
+我们当前意图的重要部分是常数参数的数量。在多数模型中讲被存储作为32位浮点数，因此如果你将参数乘上4，你应该得到接近磁盘上文件的大小。你可以用8位参数在最终的结果中损失很小的精度。因此如果你的文件太大你可以尝试使用\href{https://www.tensorflow.org/performance/quantization?hl=zh-cn}{quantize\_weights}减小参数:
+\begin{lstlisting}[language=Bash]
+bazel build tensorflow/tools/graph_transforms:transform_graph && \
+bazel-bin/tensorflow/tools/graph_transforms/transform_graph \
+--in_graph=/tmp/tensorflow_inception_optimized.pb \
+--out_graph=/tmp/tensorflow_inception_quantized.pb \
+--inputs='Mul:0' --outputs='softmax:0' --transforms='quantize_weights'
+\end{lstlisting}
+如果你查看结果文件的大小，你应该看到它有原来23M文件的1/4。
+
+另一个变换是round\_weights,，它并不能是文件变得更小，但是它是文件能压缩quantize\_weights使用时的相同大小。他的特殊用途是移动部署，利用app在用户下载前安装包被压缩。
+
+原始文件用标准的算法不能压缩的很好，因为一的数可能非常不同。round\_weights变换保持权重参数以浮点数存储，但是四舍五入他们到最近的值。这意味着存储的模型中有一些重复的字节模式，因此亚索可能带来尺寸的巨大减小，在一些情况下大小僵尸你作为8位存储。
+round\_weights的另一个好处是框架不用分配临时buffer给解包的参数当我们必须的时候我们仅仅使用quantize\_weights。这保存一些时延(尽管结果应该被缓存以至于仅仅在第一次运行时花费)保证他能用内存映射，正如后面描述的。
+\subsection{二进制文件的大小}
+移动端和服务端最大不同是二进制文件的到校很重要。在桌面环境下它通常有上百兆，但是对于移动和嵌入式app保持二进制文件足够小以至于用户能轻松下载。正如上面提到的，TensorFlow包含默认操作实现的子集，但是最后的可执行文件仍然有12M。俄日了奸笑着，你可以建立你确实需要仅仅包含操作实现的库，基于自动分析你的模型。使用它。
+\begin{itemize}
+\item 在你的模型上运行tools/print\_required\_ops/print\_selective\_registration\_header.py生成使op能用的头文件
+\item 放置ops\_to\_register.h文件到编译器能找到的路径。这可以是你的TensorFlow源文件的根目录。
+\item 用SELECTIVE\_REGISTRATION定义构建TensorFlow，例如通过传递--copts="-DSELECTIVE\_REGISTERATION"到你的Bazel构建命令。
+\end{itemize}
+这个处理重新编译库以至于仅仅你需要的操作和类型被包含，这可能极大地减小可执行文件的大小。例如，结合Inception v3,新的大小仅仅1.5M。
+\subsection{如何探测你的模型}
+当你了解你的设备的峰值性能后，值得查看当前性能。使用表真的TensorFlow基准，而不是在更大的app中运行它，帮助隔离TensorFlow与时延。\href{https://www.github.com/tensorflow/tensorflow/blob/r1.4/tensorflow/tools/benchmark/}{tensorflow/tools/benchmark}工具设计用来帮助你做这个。为了在你的桌面机器中运行Inception V3，构架基准模型:
+\begin{lstlisting}[language=Bash]
+bazel build -c opt tensorflow/tools/benchmark:benchmark_model && \
+bazel-bin/tensorflow/tools/benchmark/benchmark_model \
+--graph=/tmp/tensorflow_inception_graph.pb --input_layer="Mul" \
+--input_layer_shape="1,299,299,3" --input_layer_type="float" \
+--output_layer="softmax:0" --show_run_order=false --show_time=false \
+--show_memory=false --show_summary=true --show_flops=true --logtostderr 
+\end{lstlisting}
+你应该看到类似下面的输出:
+\begin{lstlisting}[language=Bash]
+============================== Top by Computation Time ==============================
+[node
+ type]  [start]  [first] [avg ms]     [%]  [cdf%]  [mem KB]  [Name]
+Conv2D   22.859   14.212   13.700  4.972%  4.972%  3871.488  conv_4/Conv2D
+Conv2D    8.116    8.964   11.315  4.106%  9.078%  5531.904  conv_2/Conv2D
+Conv2D   62.066   16.504    7.274  2.640% 11.717%   443.904  mixed_3/conv/Conv2D
+Conv2D    2.530    6.226    4.939  1.792% 13.510%  2765.952  conv_1/Conv2D
+Conv2D   55.585    4.605    4.665  1.693% 15.203%   313.600  mixed_2/tower/conv_1/Conv2D
+Conv2D  127.114    5.469    4.630  1.680% 16.883%    81.920  mixed_10/conv/Conv2D
+Conv2D   47.391    6.994    4.588  1.665% 18.548%   313.600  mixed_1/tower/conv_1/Conv2D
+Conv2D   39.463    7.878    4.336  1.574% 20.122%   313.600  mixed/tower/conv_1/Conv2D
+Conv2D  127.113    4.192    3.894  1.413% 21.535%   114.688  mixed_10/tower_1/conv/Conv2D
+Conv2D   70.188    5.205    3.626  1.316% 22.850%   221.952  mixed_4/conv/Conv2D
+
+============================== Summary by node type ==============================
+[Node type]  [count]  [avg ms]    [avg %]    [cdf %]  [mem KB]
+Conv2D            94   244.899    88.952%    88.952% 35869.953
+BiasAdd           95     9.664     3.510%    92.462% 35873.984
+AvgPool            9     7.990     2.902%    95.364%  7493.504
+Relu              94     5.727     2.080%    97.444% 35869.953
+MaxPool            5     3.485     1.266%    98.710%  3358.848
+Const            192     1.727     0.627%    99.337%     0.000
+Concat            11     1.081     0.393%    99.730%  9892.096
+MatMul             1     0.665     0.242%    99.971%     4.032
+Softmax            1     0.040     0.015%    99.986%     4.032
+<>                 1     0.032     0.012%    99.997%     0.000
+Reshape            1     0.007     0.003%   100.000%     0.000
+
+Timings (microseconds): count=50 first=330849 curr=274803 min=232354 max=415352 avg=275563 std=44193
+Memory (bytes): count=50 curr=128366400(all same)
+514 nodes defined 504 nodes observed
+\end{lstlisting}
+这是总结的视图，他能通过show\_summary标记显示。为了解释他首先表格是一个节点花费时间的列表。花费时间的排序，从左到右，列是:
+\begin{itemize}
+\item 节点类型，操作的种类
+\item op的开始时间，显示序列操作在哪里下降
+\item 首先是毫秒，是第一次运行基准测试花费了多少时间，因此通过博人20运行是执行得到可行的统计。第一次对于发现操作计算花费很有用，然后缓存数据
+\item 所有运行的操作的平均时间，毫秒
+\item 运行op占据的总时间的百分比。对于理解热点在哪里很有用。
+\item 之前所有表格中操作的时间。他对于理解层中什么分布式的工作，查看多少节点花费了大多数的时间很有用
+\item 节点的名字
+\end{itemize}
+第二个表格类似但是通过类似节点才分时间，通过op的种类组合他们。这对于理解那个操作实现想要优化或者从表中消除是很有用的。表格从开始排列多数费时的操作，仅仅显示前10个入口，对于其他的节点结合placeholder，列从左往右是:
+\begin{itemize}
+\item 典型被分析的节点
+\item 这种类型所有节点的累计平均时间，毫秒
+\item 操作类型总共时间的多少比例被花费
+\item 比这个操作类型更高的累计时间花费，因此你可以理解workload的分布
+\item 这个输出的多少内存被占用
+\end{itemize}
+两个建立的表格使得你能很容易的复制和粘贴他们的结果到电子表格文件，因此他们被介个tabs作为列的分割输出。通过节点类型的总结当查找油画机会可能很有用，因为它是代码花费时间的关键点。在这种情况下，你可能看到Conv2D操作大约90\%的执行时间。这是一个图优化的符号，因为卷积和举着成是神经网络的计算workload。
+正如经验指出，更多的考虑如果你查看一些其他的操作占据超过一个晓得时间比例。对于神经网络，通常不涉及大矩阵乘法通常应该比单个小，因此如果你的一些时间进入了这里，这意味着你的网络不是一个有花的结构，或者实现这些操作的代码没有优化到它能优化的底部。如果你看到这些情况总是欢迎你查看\href{https://github.com/tensorflow/tensorflow/issues}{Performance bugs }或者patch,特别是如果你包含一个附件模型展示这个行为和命令行用于在基准测试工具上运行。
+
+为了在左面环境上运行下面，但是这个工具在Android上工作，这对于移动部署很有用，下面的在arm64bit上运行示例的命令:
+\begin{lstlisting}[language=Bash]
+bazel build -c opt --config=android_arm64 \ 
+tensorflow/tools/benchmark:benchmark_model
+adb push bazel-bin/tensorflow/tools/benchmark/benchmark_model /data/local/tmp
+adb push /tmp/tensorflow_inception_graph.pb /data/local/tmp/
+adb shell '/data/local/tmp/benchmark_model \
+--graph=/data/local/tmp/tensorflow_inception_graph.pb --input_layer="Mul" \
+--input_layer_shape="1,299,299,3" --input_layer_type="float" \
+--output_layer="softmax:0" --show_run_order=false --show_time=false \
+--show_memory=false --show_summary=true'
+\end{lstlisting}
+你可以用和桌面满相同的方法解释上面的命令，如果你对于找出输入输出名字和类型有点麻烦查看\href{https://www.tensorflow.org/mobile/prepare_models?hl=zh-cn}{Preparing models}页默认关于你的模型如何检测这些，查看summarize\_graph工具也许给你一些帮助信息。
+
+这不支持iOS下的命令行，因此在\href{https://www.github.com/tensorflow/tensorflow/blob/r1.4/tensorflow/examples/ios/benchmark}{tensorflow/examples/ios/benchmark}中有一个分割的例子，包的功能和标准app的功能相同。食醋胡统计设备屏幕和调试日志。如果你想为Android例子在屏幕上统计，你可以通过按压音量上键打开他们。
+
+\subsection{探测你的app}
+你通过benchmark工具查看的从模型生成的输出包含作为标准TensorFlow的一部分，这意味着你必须在你自己的应用中访问他们，你可以查看一个\href{https://www.github.com/tensorflow/tensorflow/blob/r1.4/tensorflow/examples/ios/benchmark/BenchmarkViewController.mm?l=139}{例子}
+
+基本的步骤是:
+\begin{itemize}
+\item 创建StatSummarizer对象\lstinline[language=C++]{tensorflow::StatSummarizer stat_summarizer(tensorflow_graph);}
+\item 建立选项:
+\begin{lstlisting}[language=Python]
+tensorflow::RunOptions run_options;
+run_options.set_trace_level(tensorflow::RunOptions::FULL_TRACE);
+tensorflow::RunMetadata run_metadata;
+\end{lstlisting}
+\item 运行图:
+\begin{lstlisting}[language=Python]
+run_status = session->Run(run_options, inputs, output_layer_names, {},
+                          output_layers, &run_metadata);
+
+\end{lstlisting}
+\item 计算打印结果\begin{lstlisting}[language=Python]
+assert(run_metadata.has_step_stats());
+const tensorflow::StepStats& step_stats = run_metadata.step_stats();
+stat_summarizer->ProcessStepStats(step_stats);
+stat_summarizer->PrintStepStats();
+\end{lstlisting}
+\end{itemize}
+\subsection{可视化模型}
+多数搞笑的加速你的代码的方法是通过修改你的模型因为它做很少的工作。左到这个你需要明白你的模型在做什么，可视化它是一个好的一步。为了获取高级图概览，使用\href{https://github.com/tensorflow/tensorboard}{TensorBoard}
+\subsection{线程}
+TensorFlow桌面环境有一个高级的县城模式，如果可以将尝试运行多个操作。在我们的在我们的属于李成为"Inter-op parallelism"(烤炉避免和"intra-op"弄混，你可以把他当做"between-op"),你可以通过在会话选项中指定inter\_op\_parallelism\_threads。
+
+默认，移动设备连续的运行操作，这是inter\_op\_parallielism\_threads被设置为1。移动处理器通常有一些核心很小的的cache，因此运行多个互不影响在分开的内存区域对性能没有帮助。"Intra-op parallelism"或者("Within-op")可能很有用，特别是对于计算受限的操作想卷积(不同的线程可以输入相同的小的存储区)。
+
+在移动端，一个操作多少线程将被使用同默认设置核心数，或者当核心不被决定的时候为2。你可以在会话选项设置intra\_op\_parallelism\_threads覆盖默认的线程数。如果你有自己的线程处理繁重的任务一个好的想法是减少默认线程数量，一直以他们不能相互影响。为了查看更多会话选项，查看\href{https://www.github.com/tensorflow/tensorflow/blob/r1.4/tensorflow/core/protobuf/config.proto}{ ConfigProto}
+\subsection{使用移动数据重新训练}
+在移动app上运行模型的一个最大的问题是精度不能代表训练数据。例如，多数ImageNet照片well-gramed以至于对象在图片的中铁建，well-lit和正规lens的shot。手机设备上的相片经常帧率低，badly lit，可能有鱼眼畸变。
+
+解决方案是扩展从你的应用捕获的训练集。这步设计额外的工作，因此你将必须自己标记样本，但是及时你用它扩展你的原始的训练数据，他可能对训练数据集有帮助。为了通过做这个改善训练集合，通过福鼎其他的想复制或者差的标签样本修复其他的质量问题是最好的提升精度分方法。通常比使用不同的技术修改你的模型架构更有效。
+\subsection{减少模型载入时间和内存footprint}
+大多数的操所系统运与你用内存映射载入一个文件，而不是通过通常的I/O API。相对于在堆上分配一个内存区域而是从磁盘复制字节进去，你简单的高数操作系统使得文件的整个内容在内存中出现。这有一些好处:
+\begin{itemize}
+\item 载入速度
+\item 减少page（增加性能）
+\item 不为你的app计数RAM预算
+\end{itemize}
+TensorFlow也支持能从一些模型文件映射权重。因为在ProtoBuf序列化格式的限制，我们必须改变我们的模型载入和处理代码。这个内存映射工作是我们有一个文件，第一部分是正常GraphDef序列为protocol buffer wire格式，但是权重以一种方式添加以至于能被直接映射。
+为了创建这个文件，运行tensorflow/contrib/util:conver\_graphdef\_memmapped\_format工具。这接受在GraphDef文件通过freeze\_graph运行，转化它到权重被添加到最后的格式。因此文件不在是一个标准的GraphDef protobuf，你需要做一些改变载入代码。你可以在LoadMemoryMappedModel()函数中\href{https://www.github.com/tensorflow/tensorflow/blob/r1.4/tensorflow/examples/ios/camera/tensorflow_utils.mm?l=147}{iOS Cammera demo app}查看这个例子。
+
+同样的代码(结合Object C调用获取文件的过去文件的替代)可以用在其他的平台。因为我们用内存银蛇，我们需要通过创建一个特殊的TensorFlow环境对象监理文件我们将使用:
+\begin{lstlisting}[language=C++]
+std::unique_ptr<tensorflow::MemmappedEnv> memmapped_env;
+memmapped_env->reset(
+      new tensorflow::MemmappedEnv(tensorflow::Env::Default()));
+tensorflow::Status mmap_status =
+      (memmapped_env->get())->InitializeFromFile(file_path);
+\end{lstlisting}
+你然后需要在这个环境传递子序列，唱着歌载入图:
+\begin{lstlisting}[language=C++]
+tensorflow::GraphDef tensorflow_graph;
+tensorflow::Status load_graph_status = ReadBinaryProto(
+    memmapped_env->get(),
+    tensorflow::MemmappedFileSystem::kMemmappedPackageDefaultGraphDef,
+    &tensorflow_graph);
+\end{lstlisting}
+你也需要创建会话结合一个指针到环境:
+\begin{lstlisting}[language=C++]
+tensorflow::SessionOptions options;
+options.config.mutable_graph_options()
+    ->mutable_optimizer_options()
+    ->set_opt_level(::tensorflow::OptimizerOptions::L0);
+options.env = memmapped_env->get();
+
+tensorflow::Session* session_pointer = nullptr;
+tensorflow::Status session_status =
+    tensorflow::NewSession(options, &session_pointer);
+
+\end{lstlisting}
+这里有一件事需要注意，我们禁用了自动优化，因此在一些情况下，浙江折叠子树，创建一个tensor值的复制（我们不想用更多的RAM）
+
+当你进行这些步的时候，你可以用session和graph作为normal，你应该看到载入时间和内存使用减小。
+
+\subsection{从简单的复制保护模型文件}
+默认，你的模型将从一个被存在磁盘上标准的序列化的protobuf。理论上任何人可以复制你的模型，你也许不想这样。然而，实际上多数模型通过优化变得如此专用和混淆，风险类似在竞争者反编译和重瞳你的代码，但是如果你想使得他结合普通的用户访问你的文件是不可能的采用如下步骤。
+
+我们多数代码使用\href{https://www.github.com/tensorflow/tensorflow/blob/r1.4/tensorflow/core/platform/env.cc?q=core/platform/env.cc&l=409}{ReadBinaryProto()}方便的调用从磁盘载入GraphDef。这要求一个没有加密的protobuf。幸运的，调用实现是相当直接应该很容易在内存中写一个等价可以加密的。这里一些代码显示你可以使用自己的加密环境如何读和加密一个protobuf。
+\begin{lstlisting}[language=C++]
+Status ReadEncryptedProto(Env* env, const string& fname,
+                          ::tensorflow::protobuf::MessageLite* proto) {
+  string data;
+  TF_RETURN_IF_ERROR(ReadFileToString(env, fname, &data));
+
+  DecryptData(&data);  // Your own function here.
+
+  if (!proto->ParseFromString(&data)) {
+    TF_RETURN_IF_ERROR(stream->status());
+    return errors::DataLoss("Can't parse ", fname, " as binary proto");
+  }
+  return Status::OK();
+}
+\end{lstlisting}
+为了使用这，你将需要定义一个DecryptData()函数。他可能想下面这样简单:
+\begin{lstlisting}[language=C++]
+void DecryptData(string* data) {
+  for (int i = 0; i < data.size(); ++i) {
+    data[i] = data[i] ^ 0x23;
+  }
+}
+
+\end{lstlisting}
+你也许想要一些更复杂的，但是明确你将需要当前scope外的什么?
 
 
 
