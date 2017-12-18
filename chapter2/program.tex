@@ -722,7 +722,302 @@ assert sess_2.graph is g_2
 g = tf.get_default_graph()
 print(g.get_operations())
 \end{lstlisting}
-\section{数据集}
+\section{保存和恢复}
+这章解释如何保存和恢复\href{https://www.tensorflow.org/programmers_guide/variables?hl=zh-cn}{变量}和模型。
+\subsection{保存和恢复变量}
+一个TensorFlow变量提供通过你的程序表示和操作共享，永久状态的最佳方法。（查看\href{https://www.tensorflow.org/programmers_guide/variables?hl=zh-cn}{Variable获取详情}）这章解释如何保存和恢复变量，注意，Estimator自动保存和恢复变量(在model\_dir)
+
+tftrain.Saver类提供方法保存和恢复模型。tf.train.Saver构造体提供方法保存和恢复模型。tf.train.Saver构造体添加save和restore操作到图上，或者一个制定的列表图上的变量。Saver对象提供方法运行这些操作，指定checkpoint文件写入或者读取的路径。
+
+saver将保存所有的你的模型上定义的变量。如果你载入一个模型不知道如何构建他的图(例如，如果你挣写一个常规程序载入模型)，然后读保存和恢复模型概览章节.
+
+TensorFlow保存变量在二进制的checkpoint文件，通俗讲，映射名称到tensor值。
+\subsection{保存变量}
+结合tf.train.Saver()创建一个Saver关咯模型中的所有变量。例如，下面的代码段展示如何调用tf.train.Saver.save方法保存变量到checkpoint文件:
+\begin{lstlisting}[language=Python]
+# Create some variables.
+v1 = tf.get_variable("v1", shape=[3], initializer = tf.zeros_initializer)
+v2 = tf.get_variable("v2", shape=[5], initializer = tf.zeros_initializer)
+
+inc_v1 = v1.assign(v1+1)
+dec_v2 = v2.assign(v2-1)
+
+# Add an op to initialize the variables.
+init_op = tf.global_variables_initializer()
+
+# Add ops to save and restore all the variables.
+saver = tf.train.Saver()
+
+# Later, launch the model, initialize the variables, do some work, and save the
+# variables to disk.
+with tf.Session() as sess:
+  sess.run(init_op)
+  # Do some work with the model.
+  inc_v1.op.run()
+  dec_v2.op.run()
+  # Save the variables to disk.
+  save_path = saver.save(sess, "/tmp/model.ckpt")
+  print("Model saved in file: %s" % save_path)
+\end{lstlisting}
+\subsection{恢复变量}
+tf.train.Saver对象不仅保存变量到checkpoint文件，也恢复变量。注意当你从文件恢复变量时你不是必须提前初始化他们。例如，下面的代码段展示如何调用tf.train.Saver.restore方法从checkpoint恢复变量。
+\begin{lstlisting}[language=Python]
+tf.reset_default_graph()
+
+# Create some variables.
+v1 = tf.get_variable("v1", shape=[3])
+v2 = tf.get_variable("v2", shape=[5])
+
+# Add ops to save and restore all the variables.
+saver = tf.train.Saver()
+
+# Later, launch the model, use the saver to restore variables from disk, and
+# do some work with the model.
+with tf.Session() as sess:
+  # Restore variables from disk.
+  saver.restore(sess, "/tmp/model.ckpt")
+  print("Model restored.")
+  # Check the values of the variables
+  print("v1 : %s" % v1.eval())
+  print("v2 : %s" % v2.eval())
+\end{lstlisting}
+\subsection{选择什么变量存储和恢复}
+如果你没有传递任何参数给tf.train.Saver(),saver处理所有的在图中的变量。每个变量被存储在变量创建的传递的名字下。
+
+明确为checkpoint文件中的变量指定名字有事很有用。例如，你也许有训练的模型的变量名字为"weights",你想恢复他的值为一个名称为"params"的变量。
+
+有时仅仅在保存和恢复用于模型的变量的子集时有用。例如，你已经训练了一个5层神经网络，你现在想训练一个新的6层模型重用存在的5层训练的权重。你可以用saver恢复前五层的权重。
+
+你可以按照下面通过传递tf.train.Saver()结构体容易的自定名字和变量保存和载入变量:
+\begin{itemize}
+\item 一个变量列表(将存储在他们的名字下)
+\item 一个Python字典，keys是使用的名字和是管理的变量
+\end{itemize}
+稍后继续保存/恢复例子:
+\begin{lstlisting}[language=Python]
+tf.reset_default_graph()
+# Create some variables.
+v1 = tf.get_variable("v1", [3], initializer = tf.zeros_initializer)
+v2 = tf.get_variable("v2", [5], initializer = tf.zeros_initializer)
+
+# Add ops to save and restore only `v2` using the name "v2"
+saver = tf.train.Saver({"v2": v2})
+
+# Use the saver object normally after that.
+with tf.Session() as sess:
+  # Initialize v1 since the saver will not.
+  v1.initializer.run()
+  saver.restore(sess, "/tmp/model.ckpt")
+
+  print("v1 : %s" % v1.eval())
+  print("v2 : %s" % v2.eval())
+\end{lstlisting}
+注意:
+\begin{itemize}
+\item 如果你需要保存和恢复模型变量的不同子集，你可以创建一些Saver对象。同样的变量可以在多个saver对象中被坚挺；他得知仅仅当Saver.restore()方法运行时改变。
+\item 如果你仅仅在会话开始时恢复一个模型变量的子集，你必须为其他变量运行一个初始化操作。查看\href{https://www.tensorflow.org/api_docs/python/tf/variables_initializer?hl=zh-cn}{tf.variables\_initializer}获取更多信息。
+\item 为了查看在checkpoint中的变量，你可以使用\href{https://www.github.com/tensorflow/tensorflow/blob/r1.4/tensorflow/python/tools/inspect_checkpoint.py}{inspect\_checkpoint}库，特别是print\_tensors\_in\_checkpoint\_file函数
+\item 默认。Saver为每个变量使用\href{https://www.tensorflow.org/api_docs/python/tf/Variable?hl=zh-cn#name}{tf.Variable.name}的值。然而，当你创建一个Saver对象的时候，你也许小可为在checkpoint文件中的变量选择名字。
+\end{itemize}
+\subsection{保存和恢复模型概览}
+当你想保存和载入变量，图和图的metadata-basiclly,当你想保存和恢复你的默认，我们推荐使用SavedModel。SavedModel是一个语言中立，可恢复的，封闭的序列个事。SavedModel使得高级系统和工具产生，消耗，变换TensorFlow模型可行，包含tf.saved\_model APIs，Estimator APIs有一个CLI。
+\subsection{APIs 构建和载入一个SavedModel}
+这章集中注意力在SPIs用于构建和载入一个SavedModel，特别是当使用低级TensorFlow APIs的时候。
+\subsection{构建一个SavedModel}
+我们提供一个SavedModel \href{https://www.tensorflow.org/api_docs/python/tf/saved_model/builder?hl=zh-cn}{builder}的Python实现。SavedModelBuilder类提供函数保存多个MetaGraphDef。一个MetaGraph是一个数据流图，加他的关联的变量，assert和签名。一个MetaGraphDef是表示MetaGraph的proto buffer。一个signature是来自图的输入和输出集合。
+
+如果声明需要被保存和写入或者复制到磁盘，他们可以被提供然后首先MetaGrapgDef被添加。如果多MetaGraphDef关联一个同样名字的assert，仅仅第一个版本保留。
+
+每个MetaGraphDef添加到SavedModel必须被用户制定的tags注释。tags提供一个均值企鹅报制定的MetaGraphDef载入和恢复没见着变量的共享集合和assert。这些tags通常注释一个MetaGraphDef集合他的功能(例如servinf和训练)，可选的硬件指定aspect(例如GPU)。
+例如，下面的代码按时一个典型的使用SavedModelBuilder去构建一个SavedModel:
+\begin{lstlisting}[language=Python]
+export_dir = ...
+...
+builder = tf.saved_model_builder.SavedModelBuilder(export_dir)
+with tf.Session(graph=tf.Graph()) as sess:
+  ...
+  builder.add_meta_graph_and_variables(sess,
+                                       [tag_constants.TRAINING],
+                                       signature_def_map=foo_signatures,
+                                       assets_collection=foo_assets)
+...
+# Add a second MetaGraphDef for inference.
+with tf.Session(graph=tf.Graph()) as sess:
+  ...
+  builder.add_meta_graph([tag_constants.SERVING])
+...
+builder.save()
+\end{lstlisting}
+\subsection{在Python中载入一个SavedModel}
+Python版本的SavedModel\href{https://www.tensorflow.org/api_docs/python/tf/saved_model/loader?hl=zh-cn}{载入器}为SavedModel提供载入和恢复能力。载入操作要求下面的信息:
+\begin{lstlisting}[language=Python]
+\item 在会话中恢复图定义和变量
+\item tags用于确保MetaGraphDef载入
+\item SavedModel目录
+\end{lstlisting}
+在载入时，变量自己assets，签名用作制定MetaGraphDef将被存储在应用session。
+\begin{lstlisting}[language=Python]
+export_dir = ...
+...
+with tf.Session(graph=tf.Graph()) as sess:
+  tf.saved_model.loader.load(sess, [tag_constants.TRAINING], export_dir)
+  ...
+\end{lstlisting}
+\subsection{在C++中载入一个SavedModel}
+C++版本的SavedModel \href{https://github.com/tensorflow/tensorflow/blob/master/tensorflow/cc/saved_model/loader.h}{载入器}提供一个API从一个路径载入SavedModel，尽管允许SessionOptions和RunOptions。你必须制定tags结合图被载入。载入的SavedModel版本被作为SavedModelBundle访问并且包含MetaGraphDef和Session被载入。
+\begin{lstlisting}[language=C++]
+const string export_dir = ...
+SavedModelBundle bundle;
+...
+LoadSavedModel(session_options, run_options, export_dir, {kSavedModelTagTrain},
+               &bundle)
+\end{lstlisting}
+\subsection{标准的常数}
+SavedModel为各种使用情况提供灵活的构建和载入TensorFlow图。对多数使用情况，SavedModel的API提供一些在Python和C++中的常数，容易通过工具重用和共享。
+\subsection{标准的MetaGraphDef tags}
+你也许设置tag唯一的确认一个保存在SavedModel的MetaGraphDef。一些常用的tags在下面制定:
+\begin{itemize}
+\item \href{https://github.com/tensorflow/tensorflow/blob/master/tensorflow/python/saved_model/tag_constants.py}{Python}
+\iten \href{https://github.com/tensorflow/tensorflow/blob/master/tensorflow/cc/saved_model/tag_constants.h}{C++}
+\end{itemize}
+\subsection{标准的MetaGraphDef tags}
+一个\href{https://github.com/tensorflow/tensorflow/blob/master/tensorflow/core/protobuf/meta_graph.proto}{SignatureDef }是一个protocol buffer定义图支持的计算签名。通常输入keys输出keys，方法名称在:
+\begin{itemize}
+\item \href{https://github.com/tensorflow/tensorflow/blob/master/tensorflow/python/saved_model/signature_constants.py}{Python}
+\item \href{https://github.com/tensorflow/tensorflow/blob/master/tensorflow/cc/saved_model/signature_constants.h}{C++}
+\end{itemize}
+\subsection{结合Estimator使用SavedModel}
+在训练一个Estimator模型后，你也许想从模型创建一个服务接受请求返回结果。你可以在你的机器上本地运行这样的一个服务或者规模化部署在云端。
+
+为了准备训练的Estimator服务，你必须导出它为标准的SavedModel格式。
+\begin{itemize}
+\item 制定输出节点和对应的可以被服务的(分类，回归，预测)\href{https://github.com/tensorflow/serving/blob/master/tensorflow_serving/apis/prediction_service.proto}{APIs}
+\item 导出你的模型为SavedModel格式
+\ite 从本地server和请求的预测服务模型
+\end{itemize}
+\subsection{准备服务输入}
+在训练中，一个\href{https://www.tensorflow.org/get_started/input_fn?hl=zh-cn}{input\_fn()}接受数据通过模型准备他。在服务时间，类似的，一个serving\_input\_receiver\_fn()接受推理请求为模型准备他们。函数有下面的目的:
+\begin{itemize}
+\item 添加一个Placeholder到图上服务系统接获取推理请求
+\item 为了添加任何额外的操从输入格式转化将来模型希望的Tensor 
+\end{itemize}
+一个函数返回一个\href{https://www.tensorflow.org/api_docs/python/tf/estimator/export/ServingInputReceiver?hl=zh-cn}{tf.estimator.export.ServingInputReceiver}对象，打包placeholder和将来Tensor的结果在一起。
+一个典型的样例是推理请求以序列化的tf.Example到达，因此servinf\_input\_receiver\_fn()创建一个单独的字符串placeholder接收他们，这serving\_input\_receiver\_fn()单后表示添加一个\href{https://www.tensorflow.org/api_docs/python/tf/parse_example?hl=zh-cn}{tf.parse\_examples}操作到图上代表解析tf.Examples。
+当写像serving\_input\_receiver\_fn()的时候，你必须传递一个解析的规范到\href{https://www.tensorflow.org/api_docs/python/tf/parse_example?hl=zh-cn}{tf.parse_example }告诉解析器什么特征的名字被期望和如何映射他们为Tensor。一个解析器说明接受一个来自特征名字到\href{https://www.tensorflow.org/api_docs/python/tf/FixedLenFeature?hl=zh-cn}{tf.FixedlenFeature}\href{https://www.tensorflow.org/api_docs/python/tf/VarLenFeature?hl=zh-cn}{tf.VarLenFeature}和\href{https://www.tensorflow.org/api_docs/python/tf/SparseFeature?hl=zh-cn}{tf.SparseFeature}的字典。注意这解析说明应该不包含任何标签和权重列，因为这将在服务时间可用，对比下解析规范在训练时间用在input\_fn()。
+
+结合
+\begin{lstlisting}[language=Python]
+feature_spec = {'foo': tf.FixedLenFeature(...),
+                'bar': tf.VarLenFeature(...)}
+
+def serving_input_receiver_fn():
+  """An input receiver that expects a serialized tf.Example."""
+  serialized_tf_example = tf.placeholder(dtype=tf.string,
+                                         shape=[default_batch_size],
+                                         name='input_example_tensor')
+  receiver_tensors = {'examples': serialized_tf_example}
+  features = tf.parse_example(serialized_tf_example, feature_spec)
+  return tf.estimator.export.ServingInputReceiver(features, receiver_tensors)
+\end{lstlisting}
+\href{https://www.tensorflow.org/api_docs/python/tf/estimator/export/build_parsing_serving_input_receiver_fn?hl=zh-cn}{tf.estimator.export.build\_parsing\_serving\_input\_receiver\_fn }利用函数提供通常情况的输入接收器。
+\begin{quote}
+\textbf{注意:}当在本地服务器上训练一个用于预测 API模型是，解析步骤不需要应为模型将接受原始数据。
+\end{quote}
+甚至如果你请求不解析或者其他的输入处理，如果服务系统将直接feed特征Tensor，你必须始终提供一个serving\_input\_receiver\_fn()为将来的Tensor创建placeholder传递他们。\href{https://www.tensorflow.org/api_docs/python/tf/estimator/export/build_raw_serving_input_receiver_fn?hl=zh-cn}{tf.estimator.export.build\_raw\_serving\_input\_receiver\_fn}w为这提供效用。
+
+如果有些效用不满足你的需要，你能写自己的serving、——input、——receiver、——fn()。一种情况是如果你的训练input\_fn()需要合并一些处理逻辑必须能在服务时间概括这些逻辑。为了减少训练服务偏斜，我们推荐压缩这样的处理在一个函数中，然后同input\_fn()和serving\_input\_receiver\_fn()中调用。
+
+注意serving\_input\_receiver\_fn()也决定签名的输入比例。当写一个的serving\_input\_receiver\_fn()的时候，你必须告诉解析器签名希望和如何映射他们到你的模型希望的输入。通过对比，签名的输出比例由模型决定。
+\subsection{执行导出}
+为了导出你训练的Estimator，调用\href{https://www.tensorflow.org/api_docs/python/tf/estimator/Estimator?hl=zh-cn#export_savedmodel}{tf.estimator.Estimator.export\_savedmodel }结合导出的基础路径和servinf\_input\_receiver\_fn。
+\lstinline[language=Python]{estimator.export_savedmodel(export_dir_base, serving_input_receiver_fn)}
+这个方法通过调用serving\_input\_receiver\_fn()获取特征Tensor，构建一个新的图。然后调用这个Estimator的model\_fn()生成基于这些特征的模型图。它开始一个新的Session，默认恢复最近的checkpoint。（如果需要的话，一个不同的checkpoint能被传递）最后它在哥顶的export\_dir\_base（例如export\_dir\_base/<timestamp>）创建一个时间戳导出目录,写一个SavedModel进去包含一个从这会话保存的单独的MetaGraphDef。
+\begin{quote}
+\textbf{注意:}垃圾收集旧的导入是你的责任。否则连续的导入将在export\_dir\_base下累积。
+\end{quote}
+\subsection{制定一个自定义模型的输出}
+当写一个自定义的model\_fn，你必须填充\href{https://www.tensorflow.org/api_docs/python/tf/estimator/EstimatorSpec?hl=zh-cn}{tf.estimator.EstimatorSpec }export\_outputs返回的值的元素。这是一个字典\{name:output\}描述用于导出和服务的输出签名。
+
+通常情况下做一个单独的预测，这字典包含一个元素，name是不重要的。在multi-header模型，每个head被一个在这个字典中的输入表示。在这种情况下name是你的选择的字符串能在服务时间被用于请求一个制定的head。
+每个output值必须是一个ExportOutput对象如:\href{https://www.tensorflow.org/api_docs/python/tf/estimator/export/ClassificationOutput?hl=zh-cn}{tf.estimator.export.ClassificationOutput},\href{https://www.tensorflow.org/api_docs/python/tf/estimator/export/RegressionOutput?hl=zh-cn}{tf.estimator.export.RegressionOutput}或者\href{https://www.tensorflow.org/api_docs/python/tf/estimator/export/PredictOutput?hl=zh-cn}{tf.estimator.export.PredictOutput}。
+\begin{quote}
+\textbf{注意:}在mult-header情形下，一个SignatureDef将被model\_fn返回的export\_outpus字典的每个元素生成。这些SignatureDefs当提供给对象的ExportOutput输入是在输入时不同。输入总是有serving\_input\_receiver\_fn提供。一个推理请求也许通过name制定head。一个head必须使用\href{https://www.github.com/tensorflow/tensorflow/blob/r1.4/tensorflow/python/saved_model/signature_constants.py}{signature\_constants.DEFAULT\_SERVING\_SIGNATURE\_DEF\_KEY }指示当推理请求没有指定的时候那个SignatureDef将被服务。
+\end{quote}
+\subsection{服务导入的本地模型}
+对于本地不熟，你可以用\href{http://github.com/tensorflow/serving}{TensorFlow Serving}服务你的吗O型，一个开源的项目载入SavedModel和利用它作为\href{http://www.grpc.io/}{gRPC}服务。
+
+首先\href{http://github.com/tensorflow/serving}{安装TensorFlow Serving}
+
+然后构建运行本地的模型服务器，替代\$export\_dir\_base结合你上面导出的SavedModel:
+\begin{lstlisting}[language=C++]
+bazel build //tensorflow_serving/model_servers:tensorflow_model_server
+bazel-bin/tensorflow_serving/model_servers/tensorflow_model_server --port=9000 --model_base_path=$export_dir_base 
+\end{lstlisting}
+现在你有一个服务器通过gRPC的9000端口监听推理。
+\subsection{从一个本地服务器请求预测}
+服务器根据\href{https://github.com/tensorflow/serving/blob/master/tensorflow_serving/apis/prediction_service.proto#L15}{PredictionService}对应gRPC API服务定义响应请求。(嵌套的protocol buffer被定义在\href{https://github.com/tensorflow/serving/blob/master/tensorflow_serving/apis}{neighboring files}).
+从API服务定义中，gRPC框架在多用语言中提供远程访问API生成客户库文件。在一个用Bazel构建的项目中，这枯萎自动构建并且提供这样的依赖(例如使用Python)
+\begin{lstlisting}[language=Python]
+ deps = [
+    "//tensorflow_serving/apis:classification_proto_py_pb2",
+    "//tensorflow_serving/apis:regression_proto_py_pb2",
+    "//tensorflow_serving/apis:predict_proto_py_pb2",
+    "//tensorflow_serving/apis:prediction_service_proto_py_pb2"
+  ]
+\end{lstlisting}
+Python客户端代码可以然后导入库:
+\begin{lstlisting}[language=Python]
+from tensorflow_serving.apis import classification_pb2
+from tensorflow_serving.apis import regression_pb2
+from tensorflow_serving.apis import predict_pb2
+from tensorflow_serving.apis import prediction_service_pb2
+\end{lstlisting}
+\begin{quote}
+\textbf{注意:}prediction\_service\_pb2定义服务为一个整体因此总是被要求。然而一个典型的客户将需要仅仅classfication\_pb2,regression\_pb2和prediction\pb2,依赖请求的类型。
+\end{quote}
+发送一个gRPC请求然后通过集合protocol buffer包含请求数据然后传递数据到服务桩(stub)。注意现在请求protocol buffer被创建空的然后通过\href{https://developers.google.com/protocol-buffers/docs/reference/python-generated?hl=zh-cn}{generated protocol buffer API}填充。
+\begin{lstlisting}[language=Python]
+from grpc.beta import implementations
+
+channel = implementations.insecure_channel(host, int(port))
+stub = prediction_service_pb2.beta_create_PredictionService_stub(channel)
+
+request = classification_pb2.ClassificationRequest()
+example = request.input.example_list.examples.add()
+example.features.feature['x'].float_list.value.extend(image[0].astype(float))
+
+result = stub.Classify(request, 10.0)  # 10 secs timeout
+\end{lstlisting}
+在这个例子中的返回结果是一个ClassficationResponse protocol buffer。
+这是一个框架例子，请查看TensorFlow serving文档和\href{https://github.com/tensorflow/serving/tree/master/tensorflow_serving/example}{例子}查看详情。
+\begin{quote}
+\textbf{注意:}ClassficationRequest和RegressionRequest包含一个tensorflow.serving.Input protocol buffer,它包含已了tensorflow.Example protocol buffers列表。PredictRequest，相比之下，通过TensorProto包含一个从特征名称到值的映射。对应，当用Classfy和Regress SPIs，TensorFlow servingfeed序列化的tf。Examples到图上，因此你的serving\_input\_receiver\_fn应该包含一个tf.parse\_example()操作。当用一般的Predict API的时候，然而TensorFlow Serving feed原始的特征数据到图上，因此通过serving\_input\_receiver\_fn()应该被使用。
+\end{quote}
+\subsection{CLI查看和执行SavedModel}
+你可以使用SavedModel命令行接口(CLI)查看和执行一个SavedModel。例如，你可以使用CLI查看模型的SignatureDef。CLI是你能快速确认模型的输入tensor的形状和数据类型。然而，如果你想测试你的模型，你可以通过在sample输入中传递sample输入用CLI做一个明确的选择(例如，Python表达式)然后获取输出。
+\subsection{安装SavedModel CLI}
+一般来说，你可以用两种方式安装TensorFlow:
+\begin{itemize}
+\item 安装一个预先编译好的TensorFlow二进制
+\item 通过从源代码构建TensorFlow 
+\end{itemize}
+如果你通过预定义的TensorFlow二进制安装TensorFlow，然后SavedModel CLI已经安装在你的系统上，路径为bin\\saved\_nodel\_cli。
+如果你通过TensorFlow原来马安装，你必须寻星下面的命令构建saved\_model\_cli：
+\begin{lstlisting}[language=Bash]
+bazel build tensorflow/python/tools:saved_model_cli
+\end{lstlisting}
+\subsection{命令概览}
+SavedModel CLI在SavedModel中的一个MetaGraphDef中支持下面的命令:
+\begin{itemize}
+\item show 显示在SavedModel中的MetaGraphDef一个计算
+\item run 在MetaGraphDef上的一个计算
+\end{itemize}
+\subsection{显示}
+
+
+
+
+\section{导入数据}
 Dataset模块允许你从简单的，可重用的片段输入pipeline。例如图像模块的pipeline
 也许集合分布式文件系统的数据，随机扰动每张图片，随机融合选中的图片为一个batch来训练,pipeline的text模型能利用元素提取的文本数据，转换它们为查找表embedding的标志符将不同长度的序列放在一起成为一个batch。Dataset API使得处理大型数据，不同数据格式和复杂的转换变得很容易。
 一个 Dataset
