@@ -5,7 +5,7 @@
 \item training
 \item evaluation
 \item prediction
-\item export for servinf
+\item export for serving
 \end{itemize}
 你既可以用我们提供的预先定义好的Estimator也可以写你自己的自定义的Estimator。所有的自定义的或预先提供的Estimators都基于\href{https://www.tensorflow.org/api_docs/python/tf/estimator/Estimator?hl=zh-cn}{tf.estimator.Estimator}类。
 \begin{quote}
@@ -47,7 +47,7 @@ def input_fn(dataset):
 \end{lstlisting}
 (查看\href{https://www.tensorflow.org/programmers_guide/datasets?hl=zh-cn}{Importing Data}获取详细信息)
 \end{itemize}
-\item 定义特征列。每个\href{https://www.tensorflow.org/api_docs/python/tf/feature_column?hl=zh-cn}{tf.feature\_column}确定特征名字，他的类型和输入预处理。例如，下面的的代码创建三个包含整数和浮点数据的特征列。三个特征列也制定一个lambda程序调用原始数据的缩放:\newline
+\item 定义特征列。每个\href{https://www.tensorflow.org/api_docs/python/tf/feature_column?hl=zh-cn}{tf.feature\_column}确定特征名字，它的类型和输入预处理。例如，下面的的代码创建三个包含整数和浮点数据的特征列。三个特征列也制定一个lambda程序调用原始数据的缩放:\newline
 \begin{lstlisting}[language=Python]
 # Define three numeric feature columns.
 population = tf.feature_column.numeric_column('population')
@@ -81,7 +81,7 @@ estimator.train(input_fn=my_training_set, steps=2000)
 \subsection{推荐的工作流程}
 推荐的工作流程如下:
 \begin{enumerate}
-\item 假设存在一个合适的预定义的Estimator，用它构建你的第一个模型，用他的结果建立一个baseline
+\item 假设存在一个合适的预定义的Estimator，用它构建你的第一个模型，用它的结果建立一个baseline
 \item 构建测试你的pipeline，包含使用这个预定义的Estimator的关于你的数据的完整性和真实性
 \item 如果合适的Estimator可用，运行试验决定哪个pre-made Estimator产生最好的结果
 \item 可能的话，进一步提高你的模型构建你自定义的Estimator
@@ -103,7 +103,7 @@ est_inception_v3.train(input_fn=my_training_set, steps=2000)
 \end{lstlisting}
 更多细节查看\href{https://www.tensorflow.org/api_docs/python/tf/keras/estimator/model_to_estimator?hl=zh-cn}{tf.keras.estimator.model\_to\_estimator }。
 \section{Tensor}
-Tensorflow正如它的名字表达的是定义tensor的计算。一个tensor是一个概括的矩阵和向量，并且有能力表示更高的维度，我们写Tensorflow程序，主要的对象就是tf.Tensor,一个tensor定义计算的一部分最后生成值。TensorFlow程序首先用tensor建立一个图，然后运行图获得想要的数据。一个tensor需要指定两个参数:数据类型和形状。Tensor中的数据类型相同，而且总是可知的，形状可能仅仅部分知道。
+Tensorflow正如它的名字表达的一样是定义tensor的计算。一个tensor是一个概括的矩阵和向量，并且有能力表示更高的维度，我们写Tensorflow程序，主要的对象就是tf.Tensor,一个tensor定义计算的一部分,最后生成值。TensorFlow程序首先用tensor建立一个图，然后运行图获得想要的数据。一个tensor需要指定两个参数:数据类型和形状。Tensor中的数据类型相同，而且总是可知的，形状可能仅仅部分知道。
 下面是一些特殊的Tensor类型:
 \begin{itemize}
 \item	tf.Variable
@@ -200,9 +200,9 @@ n&[D0,D1,\ldots,$D_{n-1}$]&N维tensor的形状[$D_0,D_1,\ldots,D_{n-1}$]&\\
 \end{tabular}
 \end{table}
 \subsection{获取tf.Tensor对象的形状}
-当建立图的时候tensor的形状已知是很有用的，你可以通过tensor的shape属性得到。得到完全定义的tf.Tensor的形状可以使用tf.shape操作。这个方法你可以建立一个图操作tensor的形状。
+当建立图的时候tensor的形状已知是很有用的，你可以通过tensor的shape属性得到它的形状。得到完全定义的tf.Tensor的形状可以使用tf.shape操作。这个方法你可以建立一个图操作tensor的形状。
 
-例如，这里有如何创建一个和给定矩阵列数相同的全零向量。
+例如，这里显示如何创建一个和给定矩阵列数相同的全零向量。
 \begin{lstlisting}[language=Python]
 zeros = tf.zeros(tf.shape(my_matrix)[1])
 \end{lstlisting}
@@ -227,7 +227,7 @@ matrixAlt = tf.reshape(matrixB, [4, 3, -1])  # Reshape existing content into a
 yet_another = tf.reshape(matrixAlt, [13, 2, -1])  # ERROR!
 \end{lstlisting}
 \subsection{数据类型}
-tf.Tensor不可能有一个以上的数据类型。然而序列化任意数据结构作为字符串存储处在tf.Tensor里是可能的。
+tf.Tensor不可能有一个以上的数据类型。然而序列化任意数据结构作为字符串存储在tf.Tensor里是可能的。
 
 可以使用tf.cast转换一种数据类型到另一种。
 \begin{lstlisting}[language=Python]
@@ -268,10 +268,10 @@ result = t + 1  # Now when result is evaluated the value of `t` will be printed.
 \end{lstlisting}
 当你计算result你将计算result依赖的每个结果，因为result依赖于t，然后计算t，打印它的输入，t被打印。
 \section{Variable}
-Tensorflow变量是最好的在你的程序中表现共享，永久状态的方法，Vaiables通过tf.Variable类操作。一个tf.Variable代表随着在它上面的操作的进行它的值可能被改变
-和tf.Tensor不同在于tf.Variable存在于session.run之外。一个tf.vaiable存储永久tensor，指定操作允许你读和修改它的值修改能通过多个tf.Session可视化，因此多个worker对于同一个tf.Variable可以查看到同样的值。
+Tensorflow变量是在你的程序中表现共享，永久状态的最好的方法，Vaiables通过tf.Variable类操作。一个tf.Variable代表随着在它上面的操作的进行它的值可能被改变。
+和tf.Tensor不同在于tf.Variable存在于session.run之外。一个tf.Vaiable存储永久tensor，指定操作允许你读和修改它的值,修改能通过多个tf.Session可视化，因此多个worker对于同一个tf.Variable可以查看到同样的值。
 \subsection{创建变量}
-创建变量最好的方法是调用tf.get\_variable函数。这个函数要求你指定变量的名字，名字将作为副本访问相同的变量，和checkpoint和导入模型是变量的名字一样。tf.get\_variable也允许你重用一个先前创建的有同样名字的变量，使得定义重用层很方便。
+创建变量最好的方法是调用tf.get\_variable函数。这个函数要求你指定变量的名字，名字将作为副本访问相同的变量，与checkpoint和导入模型时变量的名字一样。tf.get\_variable也允许你重用一个先前创建的有同样名字的变量，使得定义重用层很方便。
 创建变量提供名字和形状。
 \begin{lstlisting}[language=Python]
 	my_variable = tf.get_variable("my_variable",[1,2,3])
@@ -285,19 +285,21 @@ TensorFlow提供很一些方便的初始化器，你也可以通过有值的tf.T
 \begin{lstlisting}[language=Python]
 	other_variable = tf.get_variable("other_variable",dtype=tf.int32,initializer=tf.constant([23,42]))
 \end{lstlisting}
-所以当你用tf.Tensor作为初始化器你不要指定变量的形状，因为初始化器用你的Ttensor的形状。
+所以当你用tf.Tensor作为初始化器你不要指定变量的形状，因为初始化器用你的Tensor的形状。
 \subsection{变量集合}
 因为断开一部分TensorFlow程序也许是想创建变量，这有时候是一个简单的访问它们的方法。因此TensorFlow提供了collections(集合)代表有名字的tensor列表或者其它对象，像tf.Variable实体。
 
 默认每个tf.Variable被放在下面的两个collections：tf.Graphkeys.Global\_VARIABLE（可以被多个设备共享的变量）,tf.Graphkeys.TRAINABLE\_VARIABLE（TensorFlow将计算梯度的变量）。如果你不想一个变量被训练，将它增加到tf.GraphKeys.LOCAL\_VARIABLE集合。例如下面的代码段展示了如何增加一个my\_local变量到这个集合。
 \begin{lstlisting}[language=Python]
 my_local = tf.get_variable("my_local",shape=(),collections=[tf.GraphKeys.LOCAL_VARIABLES])
+# TensorFlow1.4后续版本使用
+# my_local = tf.get_variable("my_local",shape=(),collections=[tf.GraphKeys.GLOBAL_VARIABLES])
 \end{lstlisting}
 你也可以指定trainable=False。
 \begin{lstlisting}[language=Python]
 my_non_trainable = tf.get_variable("my_non_variable",shape=(),trainable=False)
 \end{lstlisting}
-你也可以用你自己的collections.任何字符串都是一个可用的集合的名字，不需要明确的创建集合。增加一个变量(或者任何对象)到集合后创建变量，调用tf.add\_to\_collection。例如，你可以用下面的代码增加一个已经存在的变量my\_local到一个my\_collection\_name集合:
+你也可以用你自己的collections。任何字符串都是一个可用的集合的名字，不需要明确的创建集合。增加一个变量(或者任何对象)到集合后创建变量，调用tf.add\_to\_collection。例如，你可以用下面的代码增加一个已经存在的变量my\_local到一个my\_collection\_name集合:
 \begin{lstlisting}[language=Python]
 	tf.add_to_collection("my_collection_name",my_local)
 \end{lstlisting}
@@ -311,7 +313,7 @@ tf.get_collection("my_collection_name")
 with tf.device("gpu:1"):
     v = tf.get_variable("v",1)
 \end{lstlisting}
-对于变量在正确的设备上部署是很重要的。有时候放变量在worker上而不是参数服务器上，例如可能极大的减缓训练，在最坏的情况下让每个worker独立的复制每个变量。为此我们提供了tf.train.replica\_device\_setter。自动防止变量到参数servers上。例如:
+对于变量在正确的设备上部署是很重要的。有时候放变量在worker上而不是参数服务器上，例如可能极大的减缓训练，在最坏的情况下让每个worker独立的复制每个变量。为此我们提供了tf.train.replica\_device\_setter。自动放置变量到参数servers上。例如:
 \begin{lstlisting}[language=Python]
 cluster_spec={
 	"ps":["ps0:2222","ps1:2222"],
@@ -325,7 +327,7 @@ tf.estimator.Estimator和Keras在你训练模型前自动初始化变量。
 
 明确的初始化是很有用的，因为它让你从checkpoint载入模型不用重复运行代价高昂的初始化器同时允许决定什么时候随机初始化的变量在分布式设置上被共享。
 
-为了在开始训练之前初始化可训练的变量，调用tf\_global\_variables\_initilizer().这个函数是一个初始化tf.GraphKeys\_variable.GLOBAL\_VARIABLES集合所有变量的操作。运行下面的操作初始化所有的变量:
+为了在开始训练之前初始化可训练的变量，调用tf\_global\_variables\_initilizer().这个函数是一个初始化tf.GraphKeys.GLOBAL\_VARIABLES集合所有变量的操作。运行下面的操作初始化所有的变量:
 \begin{lstlisting}[language=Python]
 session.run(tf.global_variable_initializer())
 \end{lstlisting}
@@ -337,21 +339,20 @@ session.run(my_variable.initializer)
 \begin{lstlisting}[language=Python]
 print(session.run(tf.report_uninitialized_variables()))
 \end{lstlisting}
-注意，默认情况下tf.global\_variables\_initializer不指定变量的初始化顺序。因此一个初始化值依赖于另一个初始化值，你可能得到错误。任何时候你在一个不是所有的变量被初始化（用一个变量的值时候另一个变量正在初始化）的环境下最好用variable.initialized\_value()代替variable。
+注意，默认情况下tf.global\_variables\_initializer不指定变量的初始化顺序。因此一个初始化值依赖于另一个初始化值时，你可能得到错误。任何时候你在一个不是所有的变量被初始化（用一个变量值的时候另一个变量正在初始化）的环境下最好用variable.initialized\_value()代替variable。
 \begin{lstlisting}[language=Python]
 v = tf.get_variable("v",shape=(),initializer=tf.zeros_initializer())
 w = tf.get_variable("w",initializer=tf.initialized_value()+1)
 \end{lstlisting}
 \subsection{用变量}
-为了在TensorFlow图总使用tf.Variable,简单的把变量当作tf.Tensor。
+为了在TensorFlow图中使用tf.Variable,简单的把变量当作tf.Tensor。
 \begin{lstlisting}[language=Python]
 v = tf.get_variable("v",shape=(),initializer=tf.zeros_initializer())
-w = v+1#w是一个基于v的值计算的Tensor，任何时候一个用在表达式中的变量自动转化一个tf.Tensor到它的值。
+w = v+1    # w是一个基于v的值计算的Tensor，任何时候一个用在表达式中的变量自动转化一个tf.Tensor到它的值。
 \end{lstlisting}
 赋值给一个变量用方法assign,assign\_add和tf.Variable。例如你可以这样调用这些方法:
 \begin{lstlisting}[language=Python]
 v = tf.get_variable("v",shape=(),initializer=tf.zeros_initializer)
-	assignment = v.assign_add(1)
 assignment = v.assign_add(1)
 tf.global_variable_initializer().run()
 assignment.run()
@@ -370,20 +371,20 @@ TensorFlow保存变量在一个二进制文件中，大体上是映射变量的�
 \subsection{保存变量}
 用tf.train.Saver()创建一个Saver管理模型的所有变量。例如，下面的代码段展示了如何调用tf.train.Saver.save()方法保存变量为一个checkpoint文件。
 \begin{lstlisting}[language=Python]
-#创建变量
+# 创建变量
 v1 = tf.get_variable("v1",shape=[3],initializer = tf.zeros_initializer)
 v2 = tf.get_variable("v2",shape=[5],initializer = tf.zeros_initializer)
 inc_v1 = v1.assign(v1+1)
 dec_v2 = v2.assign(v2-1)
-#增加一个操作初始化变量
+# 增加一个操作初始化变量
 init_op = tf.global_variables_initializer()
-#增加操作保存所有的变量
+# 增加操作保存所有的变量
 saver = tf.train.Saver()
-#载入模型初始化变量，保存变量到磁盘
+# 载入模型初始化变量，保存变量到磁盘
 with tf.Session() as sess:
     sess.run(init_op)
-    inc_v1.op.run()
-    dec_v2.op.run()
+    inc_v1.op.run(session = sess)
+    dec_v2.op.run(session = sess)
     save_path = saver.save(sess,'./model.ckpt')
     print("Model saved in file:%s"%save_path)
 \end{lstlisting}
@@ -401,7 +402,7 @@ with tf.Session() as sess:
     print("v2:%s"%v2.eval())
 \end{lstlisting}
 \subsection{选择变量恢复}
-如果你不传递任何参数为tf.train.Saver(),saver处理图上所有的变量。每个变量按照变量创建的时候给定的名字保存。有时候明确的指定checkpoint文件中的变量的名字是有用的。例如你也许训练一个五层神经网络，你现在想重用之前的五层网络训练一个新的6层网络，你可以用saver恢复前面5层的权重。你可以通过传递给tf.train.Saver()构造体变量列表的名字或者(一个key是名字value是值的)Python字典保存和载入变量。
+如果你不传递任何参数给tf.train.Saver(),saver处理图上所有的变量。每个变量按照变量创建的时候给定的名字保存。有时候明确的指定checkpoint文件中的变量的名字是有用的。例如你也许训练一个五层神经网络，你现在想重用之前的五层网络训练一个新的6层网络，你可以用saver恢复前面5层的权重。你可以通过传递给tf.train.Saver()构造体变量列表的名字或者(一个key是名字value是值的)Python字典保存和载入变量。
 \begin{lstlisting}[language=Python]
 tf.reset_default_graph()
 	v1 = tf.get_variable("v1",[3],initializer = tf.zeros_initializer)
@@ -544,7 +545,7 @@ with tf.device("/job:worker"):
     layer_1 = tf.matmul(train_batch,weight_1)+biases_1
     layer_2 = tf.matmul(train_batch,weight_2)+biases_2
 \end{lstlisting}
-tf.device给你很高的灵活度度来选择放置单个操作或者更大范围的TensorFlow图。在一些情况下，有简单的算法。例如tf.train.replica\_device\_setter API可以用tf.device防止操作data-parallel distributed training.例如下面的代码段显示tf.train.replica\_device\_setter应用不同的放置策略到tf.Virable对象和其它操作:
+tf.device给你很高的灵活度度来选择放置单个操作或者更大范围的TensorFlow图。在一些情况下，有简单的算法。例如tf.train.replica\_device\_setter API可以用tf.device放置操作data-parallel distributed training.例如下面的代码段显示tf.train.replica\_device\_setter应用不同的放置策略到tf.Virable对象和其它操作:
 \begin{lstlisting}[language=Python]
 with tf.device(tf.train.replica_device_setter(ps_tasks=3)):
 # tf.Variable objects are, by default, placed on tasks in "/job:ps" in a
