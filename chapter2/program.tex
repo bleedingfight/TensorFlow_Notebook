@@ -267,7 +267,7 @@ print(t)  # This will print the symbolic tensor when the graph is being built.
 result = t + 1  # Now when result is evaluated the value of `t` will be printed.
 \end{lstlisting}
 当你计算result你将计算result依赖的每个结果，因为result依赖于t，然后计算t，打印它的输入，t被打印。
-\section{Variable}
+\section{Variable}\label{sec:Variable}
 Tensorflow变量是在你的程序中表现共享，永久状态的最好的方法，Vaiables通过tf.Variable类操作。一个tf.Variable代表随着在它上面的操作的进行它的值可能被改变。
 和tf.Tensor不同在于tf.Variable存在于session.run之外。一个tf.Vaiable存储永久tensor，指定操作允许你读和修改它的值,修改能通过多个tf.Session可视化，因此多个worker对于同一个tf.Variable可以查看到同样的值。
 \subsection{创建变量}
@@ -471,42 +471,55 @@ with tf.variable_scope(scope,reuse=True):
     output2 = my_image_filter(input2)
 \end{lstlisting}
 \section{图(Graphs)和会话(Session)}
-TensorFlow用数据流图(dataflow graph)代表操作间的相应的计算。这导致首先你需要先定义图，创建TensorFlow Session通过本地设备或远程设备运行图的一部分。这个向导对于你想用低级变量模型是很有用的。要记得像tf.estimator.Estimator和Keras中的API对于用户端隐藏了图和会话的细节。
+TensorFlow用数据流图(dataflow graph)代表操作间的相应的计算。这导在低级的编程模型中你首先定义数据流图，然后创建一个TensorFlow会话在本地或者远程设备上运行图的一部分。
+
+这个向导对于你想直接用低级编程模型是很有用的。更高级的API像\href{https://www.tensorflow.org/api_docs/python/tf/estimator/Estimator?hl=zh-cn}{tf.estimator.Estimator}和Keras对于用户端隐藏了图和会话的细节。但是如果你想明白这些API是如何实现的，这个向导也许很有用。
 \subsection{为什么用数据流图？}
 数据流图对于并行编程来说是一个常见的模型。在数据流图中，节点(node)代表了计算单元，边(edge)代表了数据消耗和产生。例如在TensorFlow图中，tf.matmul操作将对应两个边(两个相乘的矩阵)单个节点一个输出(相乘的结果)。
 TensorFlow利用数据流图计算有如下好处:
 \begin{itemize}
 \item 并行性:通过指定边代表不同操作间的依赖，系统能很容易的识别能并行执行的操作。
-\item 分布执行:通过用边代表值在不同操作间的流动，这对于tensorflow分割你的程序到不同的机器上的设备(CPUs,GPUs,TPUs)上,TensorFlow插入必须的计算和不同设备间的协调。
-\item 编译：TensorFlow的XLA compiler可以用你的数据流图的信息生成更快的代码，例如通过融合连接操作。
-\item 数据流图是一个代表你模型的代码，你可以用Python建立图，存储在SavedModel，为了更低的推理延迟在C++程序中恢复。
+\item 分布执行:通过用边代表值在不同操作间的流动，这对于tensorflow分割你的程序到不同的机器上的设备(CPUs,GPUs,TPUs)上是可能的,TensorFlow插入必须的计算和不同设备间的协调。
+\item 编译：TensorFlow的\href{https://www.tensorflow.org/performance/xla/index?hl=zh-cn}{XLA compiler}可以用你的数据流图的信息生成更快的代码，例如通过融合连接操作。
+\item 数据流图是一个代表你模型的代码，你可以用Python建立图，存储在\href{https://www.tensorflow.org/programmers_guide/saved_model?hl=zh-cn}{SavedModel}，为了更低的推理延迟在C++程序中恢复。
+\end{itemize}
+\subsection{什么是\href{https://www.tensorflow.org/api_docs/python/tf/Graph?hl=zh-cn}{tf.Graph}}
+一个\href{https://www.tensorflow.org/api_docs/python/tf/Graph?hl=zh-cn}{tf.Graph}包含两个相关的种类信息:
+\begin{itemize}
+\item Graph structure:图的节点和边，只是单个操作如何被组合在一起，但是不是但是没有规定他们如何使用。图结构想一个集合代码:查看它可以传递有用的信息，但是它不包含源代码传递的所有有用信息。
+\item Graph collection:TensorFlow提供一个通常的机制存储在\href{https://www.tensorflow.org/api_docs/python/tf/Graph?hl=zh-cn}{tf.Graph}中的metadada集合。\href{https://www.tensorflow.org/api_docs/python/tf/add_to_collection?hl=zh-cn}{tf.add\_to\_collection}函数是你结合一个有key的(这里\href{https://www.tensorflow.org/api_docs/python/tf/GraphKeys?hl=zh-cn}{ tf.GraphKeys }定义一些标准的key)对象列表。一些TensorFlow库的一部分使用这设备:例如当你创建一个\href{https://www.tensorflow.org/api_docs/python/tf/Variable?hl=zh-cn}{ tf.Variable },这被默认添加到代表全局变量和可训练变量的集合中。当你后来创建一个\href{https://www.tensorflow.org/api_docs/python/tf/train/Saver?hl=zh-cn}{ tf.train.Saver }或者\href{https://www.tensorflow.org/api_docs/python/tf/train/Optimizer?hl=zh-cn}{tf.train.Optimizer}，这个变量在集合中用作默认参数。
 \end{itemize}
 \subsection{建立一个tf.Graph}
-大多数的TensorFlow的开始阶段构造一个数据流图，在这个阶段，你利用TensorFlow的API函数构造tf.Operation(节点)和tf.Tensor(边)对象，添加它们到图实例上。TensorFlow提供默认的图到相同上下文环境下的API函数，例如:
+大多数的TensorFlow的开始阶段构造一个数据流图，在这个阶段，你利用TensorFlow的API函数构造\href{https://www.tensorflow.org/api_docs/python/tf/Operation?hl=zh-cn}{tf.Operation}(节点)和\href{https://www.tensorflow.org/api_docs/python/tf/Tensor?hl=zh-cn}{tf.Tensor}(边)对象，添加它们到\href{https://www.tensorflow.org/api_docs/python/tf/Graph?hl=zh-cn}{图}实例上。TensorFlow提供默认的图到相同上下文环境下的API函数，例如:
 \begin{itemize}
 \item 调用tf.constant(42.0)创建一个tf.Operation生成值42.0,添加值到默认的图上，返回一个代表这个常量值的tf.Tensor。
 \item 调用tf.matmul(x,y)创建一个tf.Tensor对象x,y用tf.Operation相乘，增加它到默认的图上，返回一个代表相乘结果的tf.Tensor。
-\item 执行 v=tf.Variable(0)给图添加一个tf.Operation到图上，操作将在tf.Session.run调用前存储可以写的Tensor值。tf.Variable对象包装这个操作，然后它能被像tensor一样使用，Tensor将读取当前存储的值。tf.Variable对象有assign和assign\_add之类的方法，当方法被执行的时候，更新存储的值。
-\item 调用tf.train.Optimizer.minimize将操作和tensor添加到默认的图上计算梯度，返回一个tf.Operation,当运行的时候，用图读设置变量。
+\item 执行 v=tf.Variable(0)添加到图上，一个操作将存储一个可写的tensor变量在\href{https://www.tensorflow.org/api_docs/python/tf/Session?hl=zh-cn#run}{tf.Session.run}调用前保存值。变量对象包装这个操作，可以像\href{https://www.tensorflow.org/programmers_guide/graphs?hl=zh-cn#tensor-like-objects}{一个tensor}使用，将读当前存储得值。tf.Variavle对象也有像\href{https://www.tensorflow.org/api_docs/python/tf/Variable?hl=zh-cn#assign}{assign}和\href{https://www.tensorflow.org/api_docs/python/tf/Variable?hl=zh-cn#assign_add}{assign\_add}方法创建tf.Operation对象，当执行的时候更新存储值。（查看\nameref{sec:Variable}获取关于变量的更多信息）
+\item 调用\href{https://www.tensorflow.org/api_docs/python/tf/train/Optimizer?hl=zh-cn#minimize}{tf.train.Optimizer.minimize}将添加操作和tensor到默认的图上计算梯度，返回一个tf.Operation,当运行的时候，使用这些题都到一些变量上。
 \end{itemize}
-多数程序依赖于默认的图，在TensorFlow API调用大多数程序仅仅添加操作和tensor到默认的图上，并不执行实际的计算。当你通过这些tf.Tensor和tf.Operation表示你的函数,传递给tf.Session进行计算。
-\subsection{命名你的操作}
+多数程序依赖于默认的图，查看\href{https://www.tensorflow.org/programmers_guide/graphs?hl=zh-cn#dealing_with_multiple_graphs}{处理多图}获取更多高级使用情况。高级的想\href{https://www.tensorflow.org/api_docs/python/tf/estimator/Estimator?hl=zh-cn}{ tf.estimator.Estimator }API管理你的行为上的默认的图，for example也许创建不同的图训练和评估。
+\begin{quote}
+	\textbf{注意:}调用在TensorFlow API中多数函数添加操作和tensor到默认的图上，但是不执行实际的操作。相反，你组合这些韩勇直到你有一个tf.Tensor胡哦哦这tf.Operation表示总体积算（想执行梯度下降和传递对象到tf.Session执行计算。）
+\end{quote}
+\subsection{命名操作}
 tf.Graph对象给它包含的tf.Operation对象定义了一个namespace。TensorFlow自动为你图上的操作选择一个独一无二的名字，而且指定操作名字使程序易读和方便调试。TensorFlow API提供了两个操作来覆盖操作的名字:
 \begin{itemize}
 \item 每个API函数在创建一个新的tf.Operation或者返回一个新的tf.Tensor时接收一个name选项。例如tf.constant(42.0,name="answer")创建一个新的操作名字叫answer，返回一个名字为”answer:0“的tf.Tensor。如果默认图已经包含了名字为"answer"的操作，TensorFlow将添加"-1","-2"等等，例如:
 \begin{lstlisting}[language=Python]
-c_0 = tf.constant(0,name="c")#操作的名字为"c"
-c_1 = tf.constant(2,name="c")#操作的名字为"c_1"
+c_0 = tf.constant(0,name="c")	#操作的名字为"c"
+c_1 = tf.constant(2,name="c")	#操作的名字为"c_1"
 with tf.name_scope("outer"):
-    c_2 = tf.constant(2,name="c")#操作的名字为outer/c
+    c_2 = tf.constant(2,name="c")	#操作的名字为outer/c
     with tf.name_scope("inner"):
         c_2 = tf.constant(3,name="c")
-    c_4 = tf.constant(4,name="c")#操作名字为"outer/c_1"
+    c_4 = tf.constant(4,name="c")	#操作名字为"outer/c_1"
     with tf.name_scope("inner"):
         c_5 = tf.constant(5,name="c")
 \end{lstlisting}
 \end{itemize}
-tf.Tensor对象隐藏为tf.Operation名字，之后tf.Operation将产生tensor作为输出。一个tensor的名字形式"<OP\_NAME>:<i>",这里:
+图的可视化使用name scope组织操作减少图可视化的复杂度。查看\href{https://www.tensorflow.org/programmers_guide/graphs?hl=zh-cn#visualizing_your_graph}{可视化你的图}了解更多信息。
+
+注意tf.Tensor对象在tf.Operation后被隐含的声明产生tensor作为输出。一个tensor名字来自"<OP\_NAME>:i",这里:
 \begin{itemize}
 \item "<OP\_NAME>"是产生它的操作的名字。
 \item "<i>"是一个整数操作输出的tensor的索引。
@@ -522,7 +535,7 @@ tf.Tensor对象隐藏为tf.Operation名字，之后tf.Operation将产生tensor�
 \item <JOB\_NAME>是一个alpha数字，不是以数字开头
 \item <DEVICE\_TYPE>是一个注册的设备。
 \item <TASK\_INDEX>一个非负整数代表job中的任务的索引
-\item <JOB\_NAME>查看tf.train.ClusterSpec查看更多关于jobs和tasks的解释。
+\item <JOB\_NAME>查看\href{https://www.tensorflow.org/api_docs/python/tf/train/ClusterSpec?hl=zh-cn}{ tf.train.ClusterSpec }查看更多关于jobs和tasks的解释。
 \item <DEVICE\_INDEX>:一个代表device索引的非负整数，例如为了区别在同一进程中的不同GPU。
 \end{itemize}
 你不需要指定设备的每一部分，例如，如果你运行在一个单GPU的机器上，你也许用tf.device添加一些操作到CPU和GPU上。
@@ -567,11 +580,11 @@ with tf.device(tf.train.replica_device_setter(ps_tasks=3)):
 \item list(tensor-like对象的列表)
 \item Python标量:bool,float,int,str。
 \end{itemize}
-你可以用tf.register\_tensor\_convension\_function。
+你可以用\href{https://www.tensorflow.org/api_docs/python/tf/register_tensor_conversion_function?hl=zh-cn}{tf.register\_tensor\_convension\_function。}
 
-默认，每次你的相同的tensor-like对象TensorFlow将创建一个新的tf.Tensor。如果tensor-like对象很大(numpy.ndarray包含一些训练样本),当你多次使用你也许会超出内存。为了避免这样，手动调用tf.convert\_to\_tensor在tensor-like对象，用tf.Tensor返回。
+默认，每次你用相同的tensor-like对象TensorFlow将创建一个新的tf.Tensor。如果tensor-like对象很大(numpy.ndarray包含一些训练样本),当你多次使用你也许会超出内存。为了避免这样，手动调用tf.convert\_to\_tensor在tensor-like对象，用tf.Tensor返回。
 \subsection{在tf.Session执行图}
-TensorFlow用tf.session类代表客户程序（通常是Python程序），通过一个类似的接口在(C++也可用),一个tf.Session对象提供访问在本地机器上的设备，远程设备用分布式的TensorFlow域。它也缓存一些关于你的tf.Graph的信息以至于你能高效的运行相同的计算多次。
+TensorFlow用tf.session类代表客户程序（通常是Python程序），尽管类似的接口其他语言中(C++)也可用,一个tf.Session对象提供访问在本地机器上的设备，分布式的TensorFlow运行环境中访问远程设备。它也缓存一些关于你的tf.Graph的信息以至于你能高效的运行相同的计算多次。
 \subsection{创建tf.Session}
 如果你用低层的TensorFlow API，你可以为当前图创建一个tf.Session
 \begin{lstlisting}[language=Python]
@@ -585,13 +598,13 @@ with tf.Session("grpc://example.org:2222"):
 高级API像tf.train.MonitoredTrainingSession或者tf.estimator.Estimator将为你创建和管理一个tf.Session。APIs接收target和config参数(或者作为tf.estimator.RunConfig的一部分)，含义如下:
 tf.Session.\_\_init\_\_接收三个参数:
 \begin{itemize}
-	\item target 如果这个参数为空，会话仅仅用在本地机器上。然而，你也许指定grpc:// URL指定TensorFlow Server地址,让会话访问server上的所有设备。查看tf.train.Server查看TensorFlow创建server的详细信息。例如通常between-graph replication配置，tf.Session在同一进程中作为客户连接tf.train.Server。
-	\item graph 默认情况下新的tf.Session将被限制到仅能在当前的图上运行操作。如果你在你的程序中用多个图，你可以在创建会话的时候指定tf.Graph。
+	\item target 如果这个参数为空，会话仅仅用在本地机器上。然而，你也许指定grpc:// URL指定TensorFlow Server地址,让会话访问server上的所有设备。查看\href{https://www.tensorflow.org/api_docs/python/tf/train/Server?hl=zh-cn}{tf.train.Server}查看TensorFlow创建server的详细信息。例如通常between-graph replication配置，tf.Session在同一进程中作为客户连接tf.train.Server。\href{https://www.tensorflow.org/deploy/distributed?hl=zh-cn}{ distributed TensorFlow }步数向导描述其他的常见情形。
+	\item graph 默认情况下新的tf.Session将被限制到仅能在当前的图上运行操作。如果你在你的程序(查看\href{https://www.tensorflow.org/programmers_guide/programming-with-multiple-graphs?hl=zh-cn}{Programming with multiple graphs }获取更多详情)中用多个图，你可以在创建会话的时候指定tf.Graph。
 	\item config 这个参数允许你指定tf.Configproto控制session的行为。例如包含一些配置选项。
-	\item allow\_soft\_placement 设置设个参数为True使用soft 设备放置算法，该算法忽略tf.device注释,尝试放置CPU-only操作在GPU设备上。
-	\item cluster\_def:当用分布式的TensorFlow，这个选项允许你指定用于计算的机器，提供不同job名字的映射任务索引和网络地址。
+	\item allow\_soft\_placement 设置设个参数为True使用soft 设备放置算法，该算法忽略tf.device注释,尝试放置CPU-only操作在GPU设备上，然后放他们在CPU上。
+	\item cluster\_def:当用分布式的TensorFlow，这个选项允许你指定用于计算的机器，提供不同job名字的映射任务索引和网络地址。查看\href{https://www.tensorflow.org/api_docs/python/tf/train/ClusterSpec?hl=zh-cn#as_cluster_def}{ tf.train.ClusterSpec.as\_cluster\_def }获取更多详情
 	\item graph\_option.optimizer\_options:在执行前提供控制优化TensorFlow的执行。
-	\item gpu\_options.allow\_grouth:设置为True改变GPU内存分配因至于它的随着内存分配渐渐增长，而不是启动的时候分配尽量多的内存。
+	\item gpu\_options.allow\_grouth:设置为True改变GPU显存分配以至于它的随着现存分配渐渐增长，而不是启动的时候分配尽量多的内存。
 \end{itemize}
 \subsection{用tf.Session.run执行操作}
 tf.Session.run是运行tf.Operation和评估tf.Tensor的主要操作，可以传递一个或者更多的tf.Operation和tf.Tensor或者tensor-like 类型的对象，像tf.Variable。这些fetch决定了tf.Graph的使用与计算fetch的所有子图操作的输出。例如下面的代码片段显示了不同的参数能操作不同的子图执行:
@@ -602,7 +615,7 @@ y = tf.matmul(x,w)
 output = tf.nn.softmax(y)
 init_op = w.initializer
 with tf.Session() as sess:
-#初始化变量
+# 初始化变量
     sess.run(init_op)
     print(sess.run(output))
     y_val,output_val = sess.run([y,output])
@@ -614,22 +627,22 @@ y = tf.square(x)
 with tf.Session() as sess:
     print(sess.run(y,{x:[1.0,2.0,3.0]}))
     print(sess.run(y,{x:[0.0,0.0,5.0]}))
-    #sess.run(y) 运行z此代码会Raise  `tf.errors.InvalidArgumentError`
-    #因为当你计算一个tensor的时候它以来的值应该给定。
-    #sess.run(y,{x:37.0})Raises `ValueError`,因为37.0的形状不匹配
+    sess.run(y) 运行z此代码会Raise  `tf.errors.InvalidArgumentError`
+    # 因为当你计算一个tensor的时候它以来的值应该给定。
+    # sess.run(y,{x:37.0})Raises `ValueError`,因为37.0的形状不匹配
 \end{lstlisting}
 tf.Session.run也接收一个选项options参数使你指定调用的选项，run\_metadata参数使你收集关于执行的metadata。例如你可以用下面的选项处理执行信息:
 \begin{lstlisting}[language=Python]
 y = tf.matmul([[37.0,-23.0],[1.0,4.0]],tf.random_uniform([2,2]))
 with tf.Session() as sess:
-	#定义sess.run的选项
+	# 定义sess.run的选项
     options = tf.RunOptions()
     options.output_partition_graphs = True
     options.trace_level = tf.RunOptions.FULL_TRACE
-#定义返回metadata的容器
+# 定义返回metadata的容器
 metadata = tf.RunMetadata()
 sess.run(y,options=options,run_metadata=metdadata)
-#打印每个设备执行的子图
+# 打印每个设备执行的子图
 print(metadata.partition_graphs)
 \end{lstlisting}
 \subsection{GraphDef和MetaGraphDef}
@@ -655,7 +668,7 @@ TensorFlow用数据流图作为程序的表示，一个tf.Graph包含两个相�
 	\item 你可以传递它们的名字到return\_elements列表从导入的图中返回tf.Tensor或者tf.Operation对象
 \end{itemize}
 \subsection{可视化你的图}
-TensorFlow提供一个工具帮助你理解你图中的代码。图的可视化是tensorBoard
+TensorFlow提供一个工具帮助你理解你图中的代码。图的可视化是TensorBoard
 的一个组件它在你的浏览器中生成你的图的结构。最简单的创建可视化的方法是当创建tf.summary.FileWriter时传递tf.Graph
 \begin{lstlisting}[language=Python]
 # Build your graph.
@@ -680,7 +693,10 @@ writer.close()
 	\includegraphics[scale=0.3]{mnist_cnn.png}
 \end{figure}
 \subsection{用多图编程}
-注意当训练一个模型的时候，通常的使用你的代码的方式是用一个图训练你的模型，另一个图评估或者在你的训练好的模型执行推理。在一些情况下，推理图将不同于训练图，例如像dropout，batch normalization在不同的情况下用不同的操作。更进一步,默认的程序像tf.train.Saver用tf.Variable对象的名字在不同的checkpoint中的变量中识别。当用这种方式编程的时候，你可以完全用Python处理建立，执行图，你也可以在同一进程用多个图。TensorFlow提供了一个默认的图隐含的在相同的上下文环境传递所有的API函数。对于一些程序，单个图是足够的，然而tensorFlow也提供了方法操作默认的节点,下面的情况下可能很有用:
+\begin{quote}
+注意当训练一个模型的时候，通常的使用你的代码的方式是用一个图训练你的模型，另一个图评估或者在你的训练好的模型执行推理。在一些情况下，推理图将不同于训练图，例如像dropout，batch normalization在不同的情况下用不同的操作。更进一步,默认的程序像tf.train.Saver用tf.Variable对象的名字在不同的checkpoint中的变量中识别。当用这种方式编程的时候，你可以完全用Python处理建立，执行图，你也可以在同一进程用多个图。
+\end{quote}
+TensorFlow提供了一个默认的图隐含的在相同的上下文环境传递所有的API函数。对于一些程序，单个图是足够的，然而tensorFlow也提供了方法操作默认的图,下面的情况在高级使用情况可能很有用:
 \begin{itemize}
 	\item 一个tf.Graph为tf.Operation对象定义了tf.Operation的namespace，每个图中的操作必须有独一无二的名字。TensorFlow将通过添加"\_1","\_2"形成独一无二的名字，因此如果它们的名字已经被传出去了，用多个操作创建图给你对操作的名字更好的控制。
 	\item 默认的图存储关于每个tf.Operation和tf.Tensor的信息。如果你的程序创建了很多互不连接的子图，用不同的tf.Graph建立子图可能更高效，因此不相关的状态可能被垃圾收集器收集。
