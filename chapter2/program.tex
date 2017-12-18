@@ -1,5 +1,108 @@
 \chapter{Tensorflow基础}
-\section{Tensorflow基础概念}
+\section{Estimators}
+这篇文章介绍简化机器学习程序的高级TensorFlow API\href{https://www.tensorflow.org/api_docs/python/tf/estimator?hl=zh-cn}{ Estimators }。Estimator封装下面的行为:
+\begin{itemize}
+\item training
+\item evaluation
+\item prediction
+\item export for servinf
+\end{itemize}
+你既可以用我们提供的预先定义好的Estimator也可以写你自己的自定义的Estimator。所有的自定义的或预先提供的Estimators都基于\href{https://www.tensorflow.org/api_docs/python/tf/estimator/Estimator?hl=zh-cn}{tf.estimator.Estimator}类。
+\begin{quote}
+注意:TensorFlow在\href{https://www.tensorflow.org/api_docs/python/tf/contrib/learn/Estimator?hl=zh-cn}{tf.contrib.learn.Estimator }包含一个你不应该使用的废弃的Estimator。
+\end{quote}
+\subsection{高级Estimator}
+Estimators提供下面的好处:
+\begin{itemize}
+\item 你可以不用改变你的模型在本地主机或者多服务器环境下运行Estimator-based。更进一步，你可以在CPU，GPU或者没有记录你的模型的TPU运行Estimator-base的模型
+\item Estimators简化了模型开发者回见的共同实现
+\item 你可以用高级直接代码开发一个艺术模型的状态，简单来讲，通常用Estimator创建模型比TensorFlow低级API要更简单。
+\item Estimators本身构建在简化自定义的tf.layers中
+\item Estimators为你构建一个图。换句话说，你不用构件图
+\item Estimator提供了一个安全的分布式的训练循环控制如何或者什么时候做：
+\begin{itemize}
+\item 构建图
+\item 初始化变量
+\item 开始队列
+\item 处理异常
+\item 创建checkpoint文件并且从失败中恢复
+\item 为TensorBoard保存总结文件
+\end{itemize}
+\end{itemize}
+当用Estimator写一个应用时，你必须从模型中分开输入pipeline。分开简化了在不同数据集上的试验。
+\subsection{自定义的Estimator}
+自定义的Estimator使得你能在高于TensorFlow APIs的高级概念级别上工作。你不用担心创建计算图和会话因为Estimator为你处理所有的plubmbing。预定义的Estimator为你创建管理\href{https://www.tensorflow.org/api_docs/python/tf/Graph?hl=zh-cn}{图}和\href{https://www.tensorflow.org/api_docs/python/tf/Session?hl=zh-cn}{会话}对象。进一步，预定义的Estimators让你做最小的代码改动结合不同的模型架构试验。\href{https://www.tensorflow.org/api_docs/python/tf/estimator/DNNClassifier?hl=zh-cn}{DNNClassfier}，例如一个自定义的Estimators类通过dense，前馈神经网络训练分类模型。
+\subsection{预定义的Estimator程序结构}
+一个预先定义的Estimator的TensorFlow程序通常由四步组成:
+\begin{enumerate}
+\item 写一个或者更多的数据集导入函数。例如也许创建一个函数导入训练集创建另一个函数导入测试集。每个数据集导入函数必须有两个对象:
+\begin{itemize}
+\item 一个包含对应特征数据的key为特征名字的value是Tensor的词典
+\item 一个Tensor包含一个或者更多标签\newline
+例如，下面的代码吧、描述了基本的输入函数框架:
+\begin{lstlisting}[language=Python]
+def input_fn(dataset):
+   ...  # manipulate dataset, extracting feature names and the label
+   return feature_dict, label
+\end{lstlisting}
+(查看\href{https://www.tensorflow.org/programmers_guide/datasets?hl=zh-cn}{Importing Data}获取详细信息)
+\end{itemize}
+\item 定义特征列。每个\href{https://www.tensorflow.org/api_docs/python/tf/feature_column?hl=zh-cn}{tf.feature\_column}确定特征名字，他的类型和输入预处理。例如，下面的的代码创建三个包含整数和浮点数据的特征列。三个特征列也制定一个lambda程序调用原始数据的缩放:\newline
+\begin{lstlisting}[language=Python]
+# Define three numeric feature columns.
+population = tf.feature_column.numeric_column('population')
+crime_rate = tf.feature_column.numeric_column('crime_rate')
+median_education = tf.feature_column.numeric_column('median_education',
+                    normalizer_fn='lambda x: x - global_education_mean')
+\end{lstlisting}
+\item 实例化相关的预定义Estimator。例如有一个预先定义的名字为LinearClassfier 的Estimator实现:
+\begin{lstlisting}[language=Python]
+# Instantiate an estimator, passing the feature columns.
+estimator = tf.estimator.Estimator.LinearClassifier(
+    feature_columns=[population, crime_rate, median_education],
+    )
+\end{lstlisting}
+
+\item 调用一个训练，评估，推理方法。例如，所有的Estimator提供一个训练方法训练模型。\newline
+\begin{lstlisting}[language=Python]
+# my_training_set is the function created in Step 1
+estimator.train(input_fn=my_training_set, steps=2000)
+\end{lstlisting}
+\end{enumerate}
+\subsection{预定义Estimators的好处}
+预定义的Estimators编码最佳实践提供下面的好处:
+\begin{itemize}
+\item 最佳决定不同计算图的不同部分应该运行在单台机器或者集群上实现方案的实践
+\item 最佳事件(总结)和普遍的有用的总结时间
+\end{itemize}
+如果你不用自定义的Estimator，你自己必须实现上面的特征。
+\subsection{自定义Estimators}
+每个Estimator（预定义或者是自定义）的核心是模型函数，它包含了构建训练，评估，预测图的方法。然后当你使用一个预定义的Estimator有些人已经实现了模型函数，当依赖一个自定义的Estimator时，你必须自己写模型函数。一个\href{https://www.tensorflow.org/extend/estimators?hl=zh-cn}{ companion document }解释如何写一个模型函数。
+\subsection{推荐的工作流程}
+推荐的工作流程如下:
+\begin{enumerate}
+\item 假设存在一个合适的预定义的Estimator，用它构建你的第一个模型，用他的结果建立一个baseline
+\item 构建测试你的pipeline，包含使用这个预定义的Estimator的关于你的数据的完整性和真实性
+\item 如果合适的Estimator可用，运行试验决定哪个pre-made Estimator产生最好的结果
+\item 可能的话，进一步提高你的模型构建你自定义的Estimator
+\end{enumerate}
+\subsection{从Keras模型创建Estimator}
+你可以转化已经存在的Keras模型为Estimator。这样做能使得你的Keras模型获得Estimator‘s的力量，想分布式的训练。如下面样例调用\href{https://www.tensorflow.org/api_docs/python/tf/keras/estimator/model_to_estimator?hl=zh-cn}{ tf.keras.estimator.model\_to\_estimator}
+\begin{lstlisting}[language=Python]
+# Instantiate a Keras inception v3 model.
+keras_inception_v3 = tf.keras.applications.inception_v3.InceptionV3(weights=None)
+# Compile model with the optimizer, loss, and metrics you'd like to train with.
+keras_inception_v3.compile(optimizer=tf.keras.optimizers.SGD(lr=0.0001, momentum=0.9),
+                          loss='categorical_crossentropy',
+                          metric='accuracy')
+# Create an Estimator from the compiled Keras model.
+est_inception_v3 = tf.keras.estimator.model_to_estimator(keras_model=keras_inception_v3)
+# Treat the derived Estimator as you would any other Estimator. For example,
+# the following derived Estimator calls the train method:
+est_inception_v3.train(input_fn=my_training_set, steps=2000)
+\end{lstlisting}
+更多细节查看\href{https://www.tensorflow.org/api_docs/python/tf/keras/estimator/model_to_estimator?hl=zh-cn}{tf.keras.estimator.model\_to\_estimator }。
+\section{Tensor}
 Tensorflow正如它的名字表达的是定义tensor的计算。一个tensor是一个概括的矩阵和向量，并且有能力表示更高的维度，我们写Tensorflow程序，主要的对象就是tf.Tensor,一个tensor定义计算的一部分最后生成值。TensorFlow程序首先用tensor建立一个图，然后运行图获得想要的数据。一个tensor需要指定两个参数:数据类型和形状。Tensor中的数据类型相同，而且总是可知的，形状可能仅仅部分知道。
 下面是一些特殊的Tensor类型:
 \begin{itemize}
@@ -61,7 +164,7 @@ my_image = tf.zeros([10, 299, 299, 3])  # batch x height x width x color
 \subsection{获取Tensor对象的rank}
 你可以使用tf.rank方法获取tensor对象的rank。例如下面获取my3d的rank。
 \begin{lstlisting}[language=Python]
-r = tf.rank(my2d)#在图运行后，r将保持值3。
+r = tf.rank(my3d)	#在图运行后，r将保持值3。
 \end{lstlisting}
 \subsection{Tensor的切片}
 因为tf.Tensor是n维cell阵列，为了访问tf.Tensor的单个cell，你需要指定索引。
@@ -70,14 +173,16 @@ r = tf.rank(my2d)#在图运行后，r将保持值3。
 \begin{lstlisting}[language=Python]
 my_scale = my_vector[2]
 \end{lstlisting}
-如果你想动态的选择向量中的元素，你可以指定[]一个tf.Tensor。
+如果你想动态的选择向量中的元素，你可以指定[]获取一个tf.Tensor。
 传递一个数值访问矩阵的子向量:
 \begin{lstlisting}[language=Python]
 my_row_vetor = my_matrix[2]
 my_column_vector = my_matrix[:, 3]
 \end{lstlisting}
 \subsection{形状}
-shape是tensor每一维元素的个数。TensorFlow在构造图的时候自动计算形状。有时候自动计算可能不知道rank，如果rank已经知道，每一维的形状可能直到可能不知道。
+shape是tensor每一维元素的个数。TensorFlow在构造图的时候自动计算形状。有时候自动计算可能不知道rank，如果rank已经知道，每一维的形状可能知道可能不知道。
+\begin{table}[H]\label{tb:pro1}
+\centering
 \begin{tabular}{|c|c|c|c|}
 \hline
 rank&shape&维数&example\\
@@ -93,15 +198,16 @@ rank&shape&维数&example\\
 n&[D0,D1,\ldots,$D_{n-1}$]&N维tensor的形状[$D_0,D_1,\ldots,D_{n-1}$]&\\
 \hline
 \end{tabular}
+\end{table}
 \subsection{获取tf.Tensor对象的形状}
-当建立图的时候tensor的形状已知是很有用的，你可以通过tensor的shape属性得到。得到完全定义的tf.Tensor的形状可以使用Tf.shape操作。这个方法你可以建立一个图操作tensor的形状。
+当建立图的时候tensor的形状已知是很有用的，你可以通过tensor的shape属性得到。得到完全定义的tf.Tensor的形状可以使用tf.shape操作。这个方法你可以建立一个图操作tensor的形状。
 
-例如，这里是如何如何创建一个和给定矩阵列数相同的全零向量。
+例如，这里有如何创建一个和给定矩阵列数相同的全零向量。
 \begin{lstlisting}[language=Python]
 zeros = tf.zeros(tf.shape(my_matrix)[1])
 \end{lstlisting}
 \subsection{改变Tensor的形状}
-tensor的元素个数是所有形状值的乘积。标量的元素总是1.因此，因为有相同元素不同形状的tensor，转变它们的形状是很方便的。可以使用tf.reshape.
+tensor的元素个数是所有形状值的乘积。标量的元素形状总是1.因此，因为有相同元素不同形状的tensor，转变它们的形状是很方便的。可以使用tf.reshape.
 
 下面例子展示了如何reshape tensor。
 \begin{lstlisting}[language=Python]
@@ -121,22 +227,23 @@ matrixAlt = tf.reshape(matrixB, [4, 3, -1])  # Reshape existing content into a
 yet_another = tf.reshape(matrixAlt, [13, 2, -1])  # ERROR!
 \end{lstlisting}
 \subsection{数据类型}
-tf.Tensor不可能有一个以上的数据类型。然而序列化数据结构作为字符串尺寸处在tf.Tensor里是可能的。
+tf.Tensor不可能有一个以上的数据类型。然而序列化任意数据结构作为字符串存储处在tf.Tensor里是可能的。
 
 可以使用tf.cast转换一种数据类型到另一种。
 \begin{lstlisting}[language=Python]
 # Cast a constant integer tensor into floating point.
-	float_tensor = tf.cast(tf.constant([1, 2, 3]), dtype=tf.float32)
+float_tensor = tf.cast(tf.constant([1, 2, 3]), dtype=tf.float32)
 \end{lstlisting}
 通过Tensor的dtype查看tensor的数据类型。你通过python对象创建tf.Tensor的时候需要指定数据类型。如果你不指定TensorFlow选择一个代表你数据的数据类型。TensorFlow转换Python整数为tf.int32,浮点数为tf.float32。转换数组时TensorFlow用和numpy相同的规则。
-\subsection{计算Tensor}
+\subsection{评价Tensor}
 当计算图被创建后你可以通过运行计算tf.Tensor获取指定的值。用Tensor.eval方法简单的计算:
 \begin{lstlisting}[language=Python]
+sess = tf.Session()
 constant = tf.constant([1,2,3])
 tensor = constant*constant
-print(tensor.eval())
+print(tensor.eval(session=sess))
 \end{lstlisting}
-eval方法仅仅当tf.Session()被激活时可用。Tensor.eval然后会得到一个和tensor相同内容的numpy数组。有时候没有上下文计算tf.Tensor是不可能的。例如，tensor依赖于Placeholder在提供给Placeholder值之前不能计算。
+eval方法仅仅当tf.Session()被激活时可用。Tensor.eval然后会得到一个和tensor相同数据类型的numpy数组。有时候没有上下文计算tf.Tensor是不可能的。例如，tensor依赖于Placeholder在提供给Placeholder值之前不能计算。
 \begin{lstlisting}[language=Python]
 p = tf.placeholder(tf.float32)
 t = p + 1.0
@@ -149,7 +256,7 @@ t.eval(feed_dict={p:2.0})  # This will succeed because we're feeding a value
 出于调试目的，你想要打印tf.Tesor的值。tfdbg提供了高级的调制支持。TensorFlow用下面的模板打印tf.Tensor:
 \begin{lstlisting}[language=Python]
 t = <<some tensorflow operation>>
-print (t)  # This will print the symbolic tensor when the graph is being built.
+print(t)  # This will print the symbolic tensor when the graph is being built.
          # This tensor does not have a value in this context.
 \end{lstlisting}
 这段代码打印tf.Tensor对象不是它的值，TensorFlow提供了tf.Print操作，然后第一个没有改变的Tensor参数然后打印tf.Tensor的第二个参数。
