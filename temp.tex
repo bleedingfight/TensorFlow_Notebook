@@ -1,0 +1,257 @@
+\section{分布式的TensorFlow}\label{sec:分布式TensorFlow}
+这个文档解释如何创建一个TensorFlow服务器集群，如何部署一个计算图到集群上。我们假设你熟悉写一个TensorFlow程序的\href{https://www.tensorflow.org/get_started/get_started?hl=zh-cn}{基本概念}
+\subsection{你好分布式的TensorFlow}
+查看TensorFlow集群上的行为，执行下面:
+\begin{lstlisting}[language=Python]
+# Start a TensorFlow server as a single-process "cluster".
+$ python
+>>> import tensorflow as tf
+>>> c = tf.constant("Hello, distributed TensorFlow!")
+>>> server = tf.train.Server.create_local_server()
+>>> sess = tf.Session(server.target)  # Create a session on the server.
+>>> sess.run(c)
+'Hello, distributed TensorFlow!'
+\end{lstlisting}
+这个\href{https://www.tensorflow.org/api_docs/python/tf/train/Server?hl=zh-cn#create_local_server}{tf.train.Server.create\_local\_server}方法结合一个in-process服务器创建一个单进程的集群，
+\subsection{创建一个集群}
+一个TensorFlow集群是一系列的加入到TensorFlow图上分布执行的任务。每个任务结合一个TensorFlow服务器。包含一个用来创建会话的master和执行图上操作的worker。一个集群可以分为一个或者更多的jobs,每个jobs包含一个或者更多的task。
+
+为了创建一个集群，你在集群上的task开启一个TensorFlow服务器。每个task在不同的机器上运行，但是你可以在同样机器上运行多个task(例如控制不同的GPU设备)，在每个任务中做下面:
+\begin{enumerate}
+\item 创建一个tf.train.ClusterSpec描述集群上的鄋task。这应该对于吗，每个人物都一样。
+\item 创建一个tf.train.Server,传递tf.train.ClusterSpec到构造体，确认本地task的job名称和task索引
+\subsection{创建一个tf.train.CluasterSpec描述集群}
+集群制定了目录映射job名称到一些网络地址的列表。传递目录到\href{https://www.tensorflow.org/api_docs/python/tf/train/ClusterSpec?hl=zh-cn}{tf.train.ClusterSpec}构造体。例如:
+
+\begin{table}[H]
+\centering
+\begin{tabular}{|p{8cm}|p{6cm}|}
+\hline
+tf.train.ClusterSpec construction&可用的tasks\\
+\hline
+tf.train.ClusterSpec({
+
+"local":["localhost:2222","localhost:2223"]})&/job:local.task:0,job:local/task:1\\
+\begin{lstlisting}[language=Python]
+tf.train.ClusterSpec({
+    "worker": [
+        "worker0.example.com:2222",
+        "worker1.example.com:2222",
+        "worker2.example.com:2222"
+    ],
+    "ps": [
+        "ps0.example.com:2222",
+        "ps1.example.com:2222"
+    ]})
+\end{lstlisting}&/job:worker/task:0\newline/job:worker/task:1\newline/job:worker/task:2\newline/job:ps/task:0\newline/job:ps/task:1\\
+\hline
+\end{tabular}
+\end{table}
+\end{enumerate}
+\subsection{在每个task创建一个tf.train.Server实例}
+一个\href{https://www.tensorflow.org/api_docs/python/tf/train/Server}{ tf.train.Server }独享包含一些本地device，在他的tf.trainClusterSpec中有一些连接到其它的task，一个\href{https://www.tensorflow.org/api_docs/python/tf/Session}{ tf.Session }
+可以执行分布式的计算，每个服务器是一个在其中指定task索引的job。一个服务器能和任何在集群中的其他的服务器通信。
+
+例如，为了启动一个运行在localhost:2223和localhost:2223的包含两个服务器的集群，在本地机器上运行下边的不同的进程:
+\begin{lstlisting}[language=Python]
+# In task 0:
+cluster = tf.train.ClusterSpec({"local": ["localhost:2222", "localhost:2223"]})
+server = tf.train.Server(cluster, job_name="local", task_index=0)
+
+# In task 1:
+cluster = tf.train.ClusterSpec({"local": ["localhost:2222", "localhost:2223"]})
+server = tf.train.Server(cluster, job_name="local", task_index=1)
+\end{lstlisting}
+\begin{quote}
+\textbf{注意:}手动指定集群可能有点可笑，特别是大规模的集群。我们开发工具用于通过程序启动tasks。例如我们使用像\href{http://kubernetes.io/}{Kubernetes}的集群管理器。如果有特殊的集群管理器支持，请在\href{https://github.com/tensorflow/tensorflow/issues}{报告}
+\end{quote}
+\subsection{在你的模型上指定分布式的设备}
+为了在一个特别的进程上部署一个操作，你可以使用同样的\href{https://www.tensorflow.org/api_docs/python/tf/device}{tf.device}函数用于指定是否操作运行在CPU或者GPU上。例如:
+\begin{lstlisting}[language=Python]
+with tf.device("/job:ps/task:0"):
+  weights_1 = tf.Variable(...)
+  biases_1 = tf.Variable(...)
+
+with tf.device("/job:ps/task:1"):
+  weights_2 = tf.Variable(...)
+  biases_2 = tf.Variable(...)
+
+with tf.device("/job:worker/task:7"):
+  input, labels = ...
+  layer_1 = tf.nn.relu(tf.matmul(input, weights_1) + biases_1)
+  logits = tf.nn.relu(tf.matmul(layer_1, weights_2) + biases_2)
+  # ...
+  train_op = ...
+
+with tf.Session("grpc://worker7.example.com:2222") as sess:
+  for _ in range(10000):
+    sess.run(train_op)
+\end{lstlisting}
+在上面的例子，变量创造在ps job中的两个task中，模型的密集计算的部分在worker job上被创建。TensorFlow插入合适的数据在不同的jobs之间转换(从ps到worker的前向传递和worker到ps之间的使用梯度)
+\subsection{复制训练}
+一个常见的训练配置成为数据并行化，涉及在一个worker job上多个task训练相同的模型的不同的mini-batch的数据。。所有的task通常运行在不同的机器上。有一些方法在TensorFlow中指定这个结构，我们正在构建库检查指定复制模型的工作，可能的方法包括:
+\begin{enumerate}
+\item In-graph replication:这个方法，用户构建一个单个的tf.Graph包含一些参数(tf.Variable节点天际到/jobs:ps);多个模型的稠密计算的拷贝，每个被添加到/job:ps上的不同的task
+\item Between-graph replication:这个方法每个/job:worker task又分开的客户，通常在相同的进程中作为worker task。每个客户构建一个类似的图包含参数(使用\href{https://www.tensorflow.org/api_docs/python/tf/train/replica_device_setter}{ tf.train.replica\_device\_setter }添加到/job:ps前映射他们到同样的任务);一个单个复制模型的密集计算的一部分，添加到在/job:worker中的本地task。
+\item Asynchronous training 在这个方法，每个图没有coordination的执行复制有独立的训练循环执行。它兼容上面的表格。
+\item Synchronous training在这个方法，所有的复制为当前的参数读取相同的值，并行计算梯度，然后放他们在一起。它兼容in-graph复制(例如用平均梯度在\href{https://github.com/tensorflow/models/tree/master/tutorials/image/cifar10/cifar10_multi_gpu_train.py}{ CIFAR-10 multi-GPU trainer },在between-graph复制(例如用\href{https://www.tensorflow.org/api_docs/python/tf/train/SyncReplicasOptimizer}{tf.train.SyncReplicasOptimizer}))
+\end{enumerate}
+\subsection{放他们在一起(例如训练器程序)}
+下面的程序显示的分布式的训练器程序的框架，实现between-graph replication和asynchronous training，他包含参数服务器和worker task的代码
+\begin{lstlisting}[language=Python]
+import argparse
+import sys
+
+import tensorflow as tf
+
+FLAGS = None
+
+def main(_):
+  ps_hosts = FLAGS.ps_hosts.split(",")
+  worker_hosts = FLAGS.worker_hosts.split(",")
+
+  # Create a cluster from the parameter server and worker hosts.
+  cluster = tf.train.ClusterSpec({"ps": ps_hosts, "worker": worker_hosts})
+
+  # Create and start a server for the local task.
+  server = tf.train.Server(cluster,
+                           job_name=FLAGS.job_name,
+                           task_index=FLAGS.task_index)
+
+  if FLAGS.job_name == "ps":
+    server.join()
+  elif FLAGS.job_name == "worker":
+
+    # Assigns ops to the local worker by default.
+    with tf.device(tf.train.replica_device_setter(
+        worker_device="/job:worker/task:%d" % FLAGS.task_index,
+        cluster=cluster)):
+
+      # Build model...
+      loss = ...
+      global_step = tf.contrib.framework.get_or_create_global_step()
+
+      train_op = tf.train.AdagradOptimizer(0.01).minimize(
+          loss, global_step=global_step)
+
+    # The StopAtStepHook handles stopping after running given steps.
+    hooks=[tf.train.StopAtStepHook(last_step=1000000)]
+
+    # The MonitoredTrainingSession takes care of session initialization,
+    # restoring from a checkpoint, saving to a checkpoint, and closing when done
+    # or an error occurs.
+    with tf.train.MonitoredTrainingSession(master=server.target,
+                                           is_chief=(FLAGS.task_index == 0),
+                                           checkpoint_dir="/tmp/train_logs",
+                                           hooks=hooks) as mon_sess:
+      while not mon_sess.should_stop():
+        # Run a training step asynchronously.
+        # See `tf.train.SyncReplicasOptimizer` for additional details on how to
+        # perform *synchronous* training.
+        # mon_sess.run handles AbortedError in case of preempted PS.
+        mon_sess.run(train_op)
+
+if __name__ == "__main__":
+  parser = argparse.ArgumentParser()
+  parser.register("type", "bool", lambda v: v.lower() == "true")
+  # Flags for defining the tf.train.ClusterSpec
+  parser.add_argument(
+      "--ps_hosts",
+      type=str,
+      default="",
+      help="Comma-separated list of hostname:port pairs"
+  )
+  parser.add_argument(
+      "--worker_hosts",
+      type=str,
+      default="",
+      help="Comma-separated list of hostname:port pairs"
+  )
+  parser.add_argument(
+      "--job_name",
+      type=str,
+      default="",
+      help="One of 'ps', 'worker'"
+  )
+  # Flags for defining the tf.train.Server
+  parser.add_argument(
+      "--task_index",
+      type=int,
+      default=0,
+      help="Index of task within the job"
+  )
+  FLAGS, unparsed = parser.parse_known_args()
+  tf.app.run(main=main, argv=[sys.argv[0]] + unparsed)
+\end{lstlisting}
+为了使用两个参数服务器和两个worker开始训练器，下面的命令行(假设脚本成为trainer.py)
+\begin{lstlisting}[language=Python]
+# On ps0.example.com:
+$ python trainer.py \
+     --ps_hosts=ps0.example.com:2222,ps1.example.com:2222 \
+     --worker_hosts=worker0.example.com:2222,worker1.example.com:2222 \
+     --job_name=ps --task_index=0
+# On ps1.example.com:
+$ python trainer.py \
+     --ps_hosts=ps0.example.com:2222,ps1.example.com:2222 \
+     --worker_hosts=worker0.example.com:2222,worker1.example.com:2222 \
+     --job_name=ps --task_index=1
+# On worker0.example.com:
+$ python trainer.py \
+     --ps_hosts=ps0.example.com:2222,ps1.example.com:2222 \
+     --worker_hosts=worker0.example.com:2222,worker1.example.com:2222 \
+     --job_name=worker --task_index=0
+# On worker1.example.com:
+$ python trainer.py \
+     --ps_hosts=ps0.example.com:2222,ps1.example.com:2222 \
+     --worker_hosts=worker0.example.com:2222,worker1.example.com:2222 \
+     --job_name=worker --task_index=1
+\end{lstlisting}
+\section{词汇}
+\subsection{Client}
+一个client通常是一个构建TensorFlow图和使用集群构造一个tensorflow::Session的程序。Clients通常使用C++写或者Python。一个简单的client程序可以直接和多个TensorFlow服务器交互(查看上面的Replicated)，一个服务器可以服务多个client。
+\subsection{Cluster}
+一个TensorFlow Cluster由一个或者更多的jobs组成，每个分成一个列表或者更多的task。一个集群通常服务于特别的搞基对象，像一个神经网络，并行使用一些机器。一个集群通过\href{https://www.tensorflow.org/api_docs/python/tf/train/ClusterSpec}{tf.train.ClusterSpec}对象定义。
+\subsection{Job}
+一个job有一些tasks组成，通常用英语常见的目的。例如，一个命名为ps的job(对于参数服务器)通常控制节点存储和变量更新；一个命名为worker的job通常控制无状态节点执行稠密计算任务。在一个job中的任务在不同的机器上运行。一些job角色很灵活:例如一个worker也许维持一些状态。
+\subsection{Master service}
+一些RPC服务提供远程访问一些分布式的设备和行为作为一个会话目标。主要的服务实现tensorflow::Session接口，一个吊事corrdinatin工作的通过一个或者更多的"worker serivices"。所有的TensorFLow服务器实现master service。
+\subsection{Task}
+一个task对应指定的TensorFlow服务器，通常和单个的进程相关。一个任务属于一个特别的job通过在task中jobs列表的索引确认。
+\subsection{TensorFlow server}
+一个运行在\href{https://www.tensorflow.org/api_docs/python/tf/train/Server}{tf.train.Server}的实例，他是一个集群，到处一个Master service和sorker service。
+\subsection{Worker service}
+一个RPC 服务使用它的本地devices执行TensorFlow图的一部分。一个worker服务实现\href{https://www.github.com/tensorflow/tensorflow/blob/r1.4/tensorflow/core/protobuf/worker_service.proto}{worker\_service.proto}所有的TensorFlow实现worker service。
+\section{如何在Hadoop上运行TensorFlow}
+这个文档描述了如何在Hadoop上运行TensorFlow。浙江被扩展运行在多个集群管理上，不仅仅是在描述的HDFS上。
+\subsection{HDFS}
+假设你熟悉\href{https://www.tensorflow.org/api_guides/python/reading_data}{reading data}
+
+为了使用HDFS改变你用于去屑数据的文件路径到HDFS路径。例如:
+\begin{lstlisting}[language=Bash]
+filename_queue = tf.train.string_input_producer([
+    "hdfs://namenode:8020/path/to/file1.csv",
+    "hdfs://namenode:8020/path/to/file2.csv",
+])
+\end{lstlisting}
+如果你想使用在你的HDFS配置文件中指定的名称节点，修改前缀为hdfs://default/。
+
+当启动你的TensorFlow程序的时候，下面的环境变量必须设置:
+\begin{enumerate}
+\item JAVA\_HOME:你的java的安装位置
+\item HADOOP\_HDFS\_HOME:你的HDFS安装的位置。你可以统统运行下面的命令设置环境变量:
+\begin{lstlisting}[language=Bash]
+{{shell source ${HADOOP_HOME}/libexec/hadoop-config.sh}}
+\end{lstlisting}
+\item LD\_LIBRARY\_PATH:包含libjvm.so的路径，libhdfs.so的路径可选，因此你的Hadoop分布没有安装libhdfs.so在\$HADOOP\_HDFS\_HOME/lib/native。在Linux上:\begin{lstlisting}[language=Bash]{[language=Bash]{shell export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:${JAVA_HOME}/jre/lib/amd64/server}}
+\item CLASSPATH Hadoop jars必须预先被添加到你的正在运行的TensorFlow程序。CLASSPATH设置通过\$\{HADOOP\_HOME\}/libexec/
+hadoop-config.sh是足够的，Globs必须安装libhdfs文档描述的那样扩展:
+\end{enumerate}
+\begin{lstlisting}[language=Python]
+shell CLASSPATH=$(${HADOOP_HDFS_HOME}/bin/hadoop classpath --glob) python your_script.py
+\end{lstlisting}。对于更老的Hadoop/libhdfs(老于2.6.0)，你必须手动扩展路classpathwildcard。更多的信息查看\href{https://issues.apache.org/jira/browse/HADOOP-10903}{HADOOP-10903}
+\end{enumerate}
+
+如果Hadoop集群在安全模式下，下面的环境变量必须被设置:
+KRB5CCNAME:Kerberos路径 ticket缓存文件的路径。例如:\lstinline[language=Bash]{shell export KRB5CCNAME=/tmp/krb5cc_10002}
+
+如果你在\nameref{sec:分布式TensorFlow}运行，了解所有的worker必须有环境变量设置和Hadoop安装。
