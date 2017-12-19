@@ -1,0 +1,923 @@
+\section{添加一个新的操作}
+如果你想创建一个TensorFlow库没有的操作，我们推荐你首先尝试使用Python写作为一个存在的Python操作或者函数。如果这不可能，你可以创建一个自定义的C++操作。有一些你想创建一个自定义的C++操作的原因:
+\begin{itemize}
+	\item 如果已经存在的操作不能组合或者不容易组合表示你的操作
+	\item 已经存在的原语无法高效的表达你的操作
+	\item 如果你想手动融合一个编译器很难融合的原语
+\end{itemize}
+例如想想你想实现一些像中间池化(median pooling)，类似于最大池化操作，但是在滑动窗计算中位数而不是计算最大值。通过使用已有的操作是可能的(例如ExtractImagePatches 和TopK)，但是考虑到性能和高效的内存使用，我们可以有更加聪明的做法，融合操作。通常最有价值的尝试是表达你想使用的操作组合，如果证明很困难或者很低效仅仅选择添加新的操作。
+
+为了结合你自己的操作，你将需要:
+\begin{enumerate}
+	\item 在一个C++文件中注册新的操作。操作注册定义为操作的功能定义了一个接口，是操作的独立实现。例如，操作注册定义操作的名字和操作的输入和输出。他也都没获得用于tensor形状推理的形状函数
+	\item 在C++中实现操作。实现操作被称为核心(kernel),他是你第一步注册的具体实现。可以有多个用于不同输入输出类型或者架构的核心(例如CPU，GPU)
+	\item 创建一个Python包装器(可选)。这个包装器是用于在Python创建操作的公共API。一个默认的包装器从注册生成。可以被之间试用或者添加
+	\item 写一个函数计算操作的梯度(可选)
+	\item 测试操作。为了方便我们通常在Python中使用，但是我们也能在C++中测试操作。如果你定义梯度，你可以结合Python的\href{https://www.tensorflow.org/api_docs/python/tf/test/compute_gradient_error?hl=zh-cn}{ gradient checker }验证。查看\href{https://www.github.com/tensorflow/tensorflow/blob/r1.4/tensorflow/python/kernel_tests/relu_op_test.py}{relu\_op\_test.py}是一个类似Relu的前向操作和梯度测试的例子。
+\end{enumerate}
+预先要求:
+\begin{itemize}
+\item 熟悉C++
+\item 必须安装了TensorFlow二进制文件或者下载了TensorFlow源代码，并且能编译它
+\end{itemize}
+\subsection{定义操作的接口}
+你通过结合TensorFlow系统定义操作的接口注册一个操作。在注册中，你指定你的操作的名字，输入(类型和名称)和输出(类型和名称)，正如docstring觉任何的\href{https://www.tensorflow.org/extend/adding_an_op?hl=zh-cn#attrs}{attrs}也许要求的一样。
+
+为了看着如何工作，假设你想创建一个操作接收int32 tensor作为参数输出他的拷贝，但是所有的第一个元素设置为0.为了做到这个，创建一个名称为zero\_out.cc。然后添加一个调用到REGISTER\_OP宏为你的操作定义接口:
+\begin{lstlisting}[language=C++]
+#include "tensorflow/core/framework/op.h"
+#include "tensorflow/core/framework/shape_inference.h"
+
+using namespace tensorflow;
+
+REGISTER_OP("ZeroOut")
+    .Input("to_zero: int32")
+    .Output("zeroed: int32")
+    .SetShapeFn([](::tensorflow::shape_inference::InferenceContext* c) {
+      c->set_output(0, c->input(0));
+      return Status::OK();
+    });
+
+\end{lstlisting}
+这个ZeroOut操作接收32位整数输入的to\_zero tensor，输出一个32位整数zeroed tensor。操作也用形状函数确保输入tensor的形状和输入tensor的一样。例如，如果输入是一个形状为[10,20]的tensor，然后指定输出的形状也是[10,20]。
+\begin{quote}
+注意名称:一个操作的名字必须是在CamelCase并且他必须是在二进制文件中注册的在所有的其他操作中是独一无二的。
+\end{quote}
+\subsection{实现一个操作的核心}
+在你定义接口后，提供一个或者更多的操作的实现。为了创建一个可信，创建一个继承自OpKernel的类如在Computer方法。computer方法提供一个context参数类型OpKernelContext*,通过它你可以获取像输入和输入tensor这样的有用的东西。添加你的核心岛你上面创建的文件中，可信也许想这样:
+\begin{lstlisting}[language=C++]
+#include "tensorflow/core/framework/op_kernel.h"
+
+using namespace tensorflow;
+
+class ZeroOutOp : public OpKernel {
+ public:
+  explicit ZeroOutOp(OpKernelConstruction* context) : OpKernel(context) {}
+
+  void Compute(OpKernelContext* context) override {
+    // Grab the input tensor
+    const Tensor& input_tensor = context->input(0);
+    auto input = input_tensor.flat<int32>();
+
+    // Create an output tensor
+    Tensor* output_tensor = NULL;
+    OP_REQUIRES_OK(context, context->allocate_output(0, input_tensor.shape(),
+                                                     &output_tensor));
+    auto output_flat = output_tensor->flat<int32>();
+
+    // Set all but the first element of the output tensor to 0.
+    const int N = input.size();
+    for (int i = 1; i < N; i++) {
+      output_flat(i) = 0;
+    }
+
+    // Preserve the first input value if possible.
+    if (N > 0) output_flat(0) = input(0);
+  }
+};
+
+\end{lstlisting}
+在实现你的核心后，你结合TensorFlow系统注册它。在注册中，你指定你将运行的核心的不同的约束。例如，你也许有一个为CPU设计的核心和GPU分开。
+
+为了为ZeroOut做这个操作，添加下面代码到zero\_out.cc:
+\lstinline[language=C++]{REGISTER_KERNEL_BUILDER(Name("ZeroOut").Device(DEVICE_CPU), ZeroOutOp);}
+\begin{quote}
+重点:你的OpKernel的核心也许被同时访问。你的Computer方法必须是线程安全的。确保对类的成员任何访问是互斥的。或者更佳的，不通过类成员共享状态，考虑使用一个\href{https://www.github.com/tensorflow/tensorflow/blob/r1.4/tensorflow/core/framework/resource_mgr.h}{ResourceMgr}跟踪op的状态。
+\end{quote}
+\subsection{多线程CPU核心}
+为了写一个多线程的CPU核心，在\href{https://www.github.com/tensorflow/tensorflow/blob/r1.4/tensorflow/core/util/work_sharder.h}{work\_sharder.h}中使用共享函数。这个函数通过线程配置用于intra-op线程共享计算函数(查看\href{https://www.github.com/tensorflow/tensorflow/blob/r1.4/tensorflow/core/protobuf/config.proto}{config.proto}中的intra\_op\_parallelism\_threads)
+\subsection{GPU核心}
+一个GPU核心通过两部分实现:OpKernel和CUDA核心和他的启动代码。
+
+有事OpKernel实现在CPU和GPU中类似，比如查看输入和分配输出。在这种情况下，建议实现:
+\begin{enumerate}
+\item 在device上定义OpKernel模板和tensor的原语类型
+\item 为了对输出做实际的计算，计算函数调用一个模板函数结构
+\item 为定义在同一文件中的GPUDevice指定函数，但是对于GPUDevice的指定定义在.cu.cc文件，因此他将结合CUDA编译器编译
+\end{enumerate}
+下面是实现的样例:
+\begin{lstlisting}[language=C++]
+// kernel_example.h
+#ifndef KERNEL_EXAMPLE_H_
+#define KERNEL_EXAMPLE_H_
+
+template <typename Device, typename T>
+struct ExampleFunctor {
+  void operator()(const Device& d, int size, const T* in, T* out);
+};
+
+#if GOOGLE_CUDA
+// Partially specialize functor for GpuDevice.
+template <typename Eigen::GpuDevice, typename T>
+struct ExampleFunctor {
+  void operator()(const Eigen::GpuDevice& d, int size, const T* in, T* out);
+};
+#endif
+
+#endif KERNEL_EXAMPLE_H_
+\end{lstlisting}
+\begin{lstlisting}[language=C++]
+// kernel_example.cc
+#include "example.h"
+#include "tensorflow/core/framework/op_kernel.h"
+
+using namespace tensorflow;
+
+using CPUDevice = Eigen::ThreadPoolDevice;
+using GPUDevice = Eigen::GpuDevice;
+
+// CPU specialization of actual computation.
+template <typename T>
+struct ExampleFunctor<CPUDevice, T> {
+  void operator()(const CPUDevice& d, int size, const T* in, T* out) {
+    for (int i = 0; i < size; ++i) {
+      out[i] = 2 * in[i];
+    }
+  }
+};
+
+// OpKernel definition.
+// template parameter <T> is the datatype of the tensors.
+template <typename Device, typename T>
+class ExampleOp : public OpKernel {
+ public:
+  explicit ExampleOp(OpKernelConstruction* context) : OpKernel(context) {}
+
+  void Compute(OpKernelContext* context) override {
+    // Grab the input tensor
+    const Tensor& input_tensor = context->input(0);
+
+    // Create an output tensor
+    Tensor* output_tensor = NULL;
+    OP_REQUIRES_OK(context, context->allocate_output(0, input_tensor.shape(),
+                                                     &output_tensor));
+
+    // Do the computation.
+    OP_REQUIRES(context, input_tensor.NumElements() <= tensorflow::kint32max,
+                errors::InvalidArgument("Too many elements in tensor"));
+    ExampleFunctor<Device, T>()(
+        context->eigen_device<Device>(),
+        static_cast<int>(input_tensor.NumElements()),
+        input_tensor.flat<T>().data(),
+        output_tensor->flat<T>().data());
+  }
+};
+
+// Register the CPU kernels.
+#define REGISTER_CPU(T)                                          \
+  REGISTER_KERNEL_BUILDER(                                       \
+      Name("Example").Device(DEVICE_CPU).TypeConstraint<T>("T"), \
+      ExampleOp<CPUDevice, T>);
+REGISTER_CPU(float);
+REGISTER_CPU(int32);
+
+// Register the GPU kernels.
+#ifdef GOOGLE_CUDA
+#define REGISTER_GPU(T)                                          \
+  /* Declare explicit instantiations in kernel_example.cu.cc. */ \
+  extern template ExampleFunctor<GPUDevice, float>;              \
+  REGISTER_KERNEL_BUILDER(                                       \
+      Name("Example").Device(DEVICE_GPU).TypeConstraint<T>("T"), \
+      ExampleOp<GPUDevice, T>);
+REGISTER_GPU(float);
+REGISTER_GPU(int32);
+#endif  // GOOGLE_CUDA
+
+\end{lstlisting}
+\begin{lstlisting}[language=C++]
+// kernel_example.cu.cc
+#ifdef GOOGLE_CUDA
+#define EIGEN_USE_GPU
+#include "example.h"
+#include "tensorflow/core/util/cuda_kernel_helper.h"
+
+using namespace tensorflow;
+
+using GPUDevice = Eigen::GpuDevice;
+
+// Define the CUDA kernel.
+template <typename T>
+__global__ void ExampleCudaKernel(const int size, const T* in, T* out) {
+  for (int i = blockIdx.x * blockDim.x + threadIdx.x; i < size;
+       i += blockDim.x * gridDim.x) {
+    out[i] = 2 * ldg(in + i);
+  }
+}
+
+// Define the GPU implementation that launches the CUDA kernel.
+template <typename T>
+void ExampleFunctor<GPUDevice, T>::operator()(
+    const GPUDevice& d, int size, const T* in, T* out) {
+  // Launch the cuda kernel.
+  //
+  // See core/util/cuda_kernel_helper.h for example of computing
+  // block count and thread_per_block count.
+  int block_count = 1024;
+  int thread_per_block = 20;
+  ExampleCudaKernel<T>
+      <<<block_count, thread_per_block, 0, d.stream()>>>(size, in, out);
+}
+
+// Explicitly instantiate functors for the types of OpKernels registered.
+template struct ExampleFunctor<GPUDevice, float>;
+template struct ExampleFunctor<GPUDevice, int32>;
+
+#endif  // GOOGLE_CUDA
+\end{lstlisting}
+\subsection{构建一个操作库}
+使用你的系统编译器编译你的op(TensorFlow二进制安装)
+你应该能结合你的系统上的像g++或者clang的C++编译器编译zero\_out.cc。二进制的pip安装包安装你系统指定位置的需要边编译的你的操作的头文件和库。然而，TensorFlow Python库提供get\_function获得header目录，get\_lib目录有一个共享的对象链接。这里是这些函数在ubuntu机器上的的输出
+\begin{lstlisting}[language=Bash]
+$ python
+>>> import tensorflow as tf
+>>> tf.sysconfig.get_include()
+'/usr/local/lib/python2.7/site-packages/tensorflow/include'
+>>> tf.sysconfig.get_lib()
+'/usr/local/lib/python2.7/site-packages/tensorflow'
+\end{lstlisting}
+假设你安装了g++,下面的命令便以你的操作为动态链接库:
+\begin{lstlisting}[language=Bash]
+TF_INC=$(python -c 'import tensorflow as tf; print(tf.sysconfig.get_include())')
+TF_LIB=$(python -c 'import tensorflow as tf; print(tf.sysconfig.get_lib())')
+g++ -std=c++11 -shared zero_out.cc -o zero_out.so -fPIC -I$TF_INC -I$TF_INC/external/nsync/public -L$TF_LIB -ltensorflow_framework -O2
+\end{lstlisting}
+在MAC OS X，额外的标记构建.so文件时需要额外的标记``-undefined dynamic\_lookup''。
+\begin{quote}
+注意gcc版本大于等于5.自从版本5后gcc使用心得C++ \href{https://gcc.gnu.org/gcc-5/changes.html#libstdcxx}{ABI}。使用老的ABI用gcc4构建的二进制pip安装包在tensorflow官网上能找到。如果你使用gcc=>5,添加-D\_GLIBCXX\_USE\_CXX11\_ABI=0到命令行确保库兼容老的abi。更进一步如果你是用源代码创建的TensorFlow包记得添加--cxxopt="-D\_GLIBCXX\_USE\_CXX11\_ABI=0"到bazel目录编译Python包。
+\end{quote}
+\subsection{使用Bazel编译(TensorFlow源代码安装)}
+如果你有TensorFlow源代码安装，你可以使用TensorFlow的构建系统编译你的操作，放一个BUILD文件在\href{https://www.github.com/tensorflow/tensorflow/blob/r1.4/tensorflow/core/user_ops/}{tensorflow/core/user\_ops}目录下的Bazel构建规则中。
+\begin{lstlisting}[language=Bash]
+load("//tensorflow:tensorflow.bzl", "tf_custom_op_library")
+
+tf_custom_op_library(
+    name = "zero_out.so",
+    srcs = ["zero_out.cc"],
+)
+
+\end{lstlisting}
+运行下面的命令构建zero\_out.so
+\begin{lstlisting}[language=Bash]
+bazel build --config opt //tensorflow/core/user_ops:zero_out.so
+\end{lstlisting}
+\begin{quote}
+注意:尽管你结合标准的cc\_library规则创建了一个共享库，我们强烈推荐你使用tf\_custom\_op\_library宏。它添加一些依赖，执行检查确保共享库和TensorFlow的plugin载入机制兼容。
+\end{quote}
+\subsection{Python中使用op}
+TensorFlow Python API提供\href{https://www.tensorflow.org/api_docs/python/tf/load_op_library?hl=zh-cn}{ tf.load\_op\_library }函数载入动态库结合TensorFlow框架注册操作。load\_load\_library返回一个白包含操作和核心的Python包装器模块这样，当你构建操作，你可以运行下面的Python代码:
+\begin{lstlisting}[language=Python]
+import tensorflow as tf
+zero_out_module = tf.load_op_library('./zero_out.so')
+with tf.Session(''):
+  zero_out_module.zero_out([[1, 2], [3, 4]]).eval()
+
+# Prints
+array([[1, 0], [0, 0]], dtype=int32)
+
+\end{lstlisting}
+记住，生成的函数将被给一个snake\_case名称(对比\href{https://www.python.org/dev/peps/pep-0008/}{PEP8})。因此你的操作在C++中命名为ZeroOut,Python函数将通过zero\_out调用。
+
+为了确保操作可用做正常的Python代入函数，在一个Python原来打文件中加上load\_op\_library也许很有用。
+\begin{lstlisting}[language=Python]
+import tensorflow as tf
+
+zero_out_module = tf.load_op_library('./zero_out.so')
+zero_out = zero_out_module.zero_out
+\end{lstlisting}
+\subsection{验证操作的效果}
+一个验证你的操作是否成功的方法是为她写一个测试。创建文件zero\_out\_op\_test.py：
+\begin{lstlisting}[language=Python]
+import tensorflow as tf
+
+class ZeroOutTest(tf.test.TestCase):
+  def testZeroOut(self):
+    zero_out_module = tf.load_op_library('./zero_out.so')
+    with self.test_session():
+      result = zero_out_module.zero_out([5, 4, 3, 2, 1])
+      self.assertAllEqual(result.eval(), [5, 0, 0, 0, 0])
+
+if __name__ == "__main__":
+  tf.test.main()
+\end{lstlisting}
+然后运行你的测试(假设你安装了TensorFlow)
+\lstinline[language=Bash]{python zero_out_op_test.py}
+\subsection{为你的操作构建高级特性}
+现在你知道如何构建一个基本的操作和实现,我们将查看更多的复杂的事，你讲通常需要构建金你的操作.
+\subsection{条件检查和验证}
+上面假设操作应用于任何形状的tensor。如果他仅仅应用到向量呢？这意味着添加一个检查到上面的OpKernel实现
+\begin{lstlisting}[language=C++]
+  void Compute(OpKernelContext* context) override {
+    // Grab the input tensor
+    const Tensor& input_tensor = context->input(0);
+
+    OP_REQUIRES(context, TensorShapeUtils::IsVector(input_tensor.shape()),
+                errors::InvalidArgument("ZeroOut expects a 1-D vector."));
+    // ...
+  }
+
+\end{lstlisting}
+这声明输入是一个向量，如果没有返回一个设置InvalidArgument状态。\href{https://www.github.com/tensorflow/tensorflow/blob/r1.4/tensorflow/core/lib/core/errors.h}{OP\_REQUIRES macro}接收三个参数:
+\begin{itemize}
+\item contex可以使一个OpKernelContex或者OpKernelConstruction指针(查看\href{https://www.github.com/tensorflow/tensorflow/blob/r1.4/tensorflow/core/framework/op_kernel.h}{tensorflow/core/framework/op\_kernel.h}),对于他的SetStatus()方法
+\item 条件，例如在\href{https://www.github.com/tensorflow/tensorflow/blob/r1.4/tensorflow/core/framework/tensor_shape.h}{ tensorflow/core/framework/tensor\_shape.h}有一个函数验证tensor形状
+\item 他的错误，由一个Status对象宝石。查看\href{https://www.github.com/tensorflow/tensorflow/blob/r1.4/tensorflow/core/lib/core/status.h}{tensorflow/core/lib/core/status.h}。一个Status由类型（频繁的InvalidArgument，查看类型列表）和消息。构建一个错误的函数可能在\href{https://www.github.com/tensorflow/tensorflow/blob/r1.4/tensorflow/core/lib/core/errors.h}{tensorflow/core/lib/core/errors.h}找到
+\end{itemize}
+作为一种选择，如果你想测试是否一个status对象返回与一些函数是一个错误，并且如果因此返回，使用\href{https://www.github.com/tensorflow/tensorflow/blob/r1.4/tensorflow/core/lib/core/errors.h}{OP\_REQUIRES\_OK}.两个宏都来自于出错时的函数返回。
+\subsection{操作注册}
+\subsubsection*{attrs}
+操作可以有属性，他的数值型当操作添加到图上时被设置。有一些用于配置操作，他们得知可以在核心实现和在输入和输出类型注册中访问。使用输入而不是属性，因为输入更灵活。这是因为属性是常数必须定义在图构造时候。相比之下输入时Tensor，他的值可以使动态的，输入可以通过设置feed在每一步改变值，。Attr用于可以用于结合输入不能做到是：任何配置影响签名(输入输出类型和数量)或者不能随着step改变的情况。
+当你注册操作时定义一个attr，通过使用Attr方法指定他的名字和类型，期望的形式如下:
+\lstinline[language=Python]{<name>: <attr-type-expr>}
+这里的<name>以字母开始可以由字母开始可以包含单词字母和下划线，<sttr-type-expr>是下面表达类型的一种：
+例如，如果你不想ZeroOut保留一个用户指定的索引而是仅仅是第0个元素，你可以像这样注册操作:
+\begin{lstlisting}[language=C++]
+
+REGISTER_OP("ZeroOut")
+    .Attr("preserve_index: int")
+    .Input("to_zero: int32")
+    .Output("zeroed: int32");
+
+\end{lstlisting}
+注意对于输入输出来说\href{https://www.tensorflow.org/extend/adding_an_op?hl=zh-cn#attr_types}{属性类型}不同的\href{https://www.tensorflow.org/api_docs/python/tf/DType?hl=zh-cn}{tensor类型}。
+你的核心可以通过contex参数方位在他的构造体中的属性:
+\begin{lstlisting}[language=C++]
+class ZeroOutOp : public OpKernel {
+ public:
+  explicit ZeroOutOp(OpKernelConstruction* context) : OpKernel(context) {
+    // Get the index of the value to preserve
+    OP_REQUIRES_OK(context,
+                   context->GetAttr("preserve_index", &preserve_index_));
+    // Check that preserve_index is positive
+    OP_REQUIRES(context, preserve_index_ >= 0,
+                errors::InvalidArgument("Need preserve_index >= 0, got ",
+                                        preserve_index_));
+  }
+  void Compute(OpKernelContext* context) override {
+    // ...
+  }
+ private:
+  int preserve_index_;
+};
+
+\end{lstlisting}
+可以使用Cimpute方法计算:
+\begin{lstlisting}[language=C++]
+void Compute(OpKernelContext* context) override {
+    // ...
+
+
+    // We're using saved attr to validate potentially dynamic input
+    // So we check that preserve_index is in range
+    OP_REQUIRES(context, preserve_index_ < input.dimension(0),
+                errors::InvalidArgument("preserve_index out of range"));
+
+    // Set all the elements of the output tensor to 0
+    const int N = input.size();
+    for (int i = 0; i < N; i++) {
+      output_flat(i) = 0;
+    }
+
+    // Preserve the requested input value
+    output_flat(preserve_index_) = input(preserve_index_);
+  }
+
+\end{lstlisting}
+\subsubsection{属性的类型}
+下面是属性中支持的类型:
+\begin{itemize}
+\item string:任何的字节序列
+\item int:一个有符号的整数
+\item float:一个浮点数
+\item bool:True或者False
+\item type:一个\href{https://www.github.com/tensorflow/tensorflow/blob/r1.4/tensorflow/core/framework/types.cc}{DataType}中的值
+\item shape:一个\href{https://www.github.com/tensorflow/tensorflow/blob/r1.4/tensorflow/core/framework/tensor_shape.proto}{TensorShapeProto}
+\item list<type>:一个<type>列表，这里的<type>是上面的类型。注意list(list(<type>))不可用
+\end{itemize}
+查看\href{https://www.github.com/tensorflow/tensorflow/blob/r1.4/tensorflow/core/framework/op_def_builder.cc}{op\_def\_builder.cc:FinalizeAttr }获得一个定义的列表。
+\subsubsection{默认值和限制}
+属性有默认值，一些属性的类型可能有限制。为了定义一个受限的属性，你可以使用下面的<attr-type-expr>：
+\begin{itemize}
+\item \{'<string>','<string2>'\}:值必须是<string1>或者<string2>中的字符串、类型的名称，字符串，当你是用这个语法时默认。这模拟一个enum：
+\begin{lstlisting}[language=C++]
+REGISTER_OP("EnumExample")
+    .Attr("e: {'apple', 'orange'}");
+
+\end{lstlisting}
+\item \{<type1>,<type2>\}:type的值是上面type类型，必须是<type1>或者<type2>,这里<type1>和<type2>支持\href{https://www.tensorflow.org/api_docs/python/tf/DType?hl=zh-cn}{Tensor类型}。你不指定属性的类型为type。这是暗示，当你有一个类型列表在\{...\}中。例如在这个例子中属性t必须是int32，类型，一个浮点数或者一个bool:
+\begin{lstlisting}[language=C++]
+REGISTER_OP("RestrictedTypeExample")
+    .Attr("t: {int32, float, bool}");
+
+\end{lstlisting}
+\item 类型的限制
+\begin{itemize}
+	\item numbertype:type限制为数字(非字符串或者非bool)类型
+	\item realnumbertype:像numbertype没有f复数类型
+	\item quantiziedtype:像numbertype必须紧紧是量化的数字类型
+	这指定在\href{https://www.github.com/tensorflow/tensorflow/blob/r1.4/tensorflow/core/framework/types.h}{tensorflow/core/framework/types.h}函数定义的允许类型的列表(像NumberTypes())。在这个例子中属性t必须是数值类型:\lstinline[language=C++]{c++ REGISTER_OP("NumberType") .Attr("t: numbertype");}对于这个操作:\lstinline[language=Python]{python tf.number_type(t=tf.int32) # Valid tf.number_type(t=tf.bool) # Invalid}列表合一结合其他的列表和单个的类型。下面的操作允许类洗净t为任意的数值类型，或者bool类型:
+	\begin{lstlisting}[language=Bash]{
+	python tf.number_or_boolean_type(t=tf.int32) # Valid tf.number_or_boolean_type(t=tf.bool) # Valid tf.number_or_boolean_type(t=tf.string) # Invalid}
+	\end{lstlisting}
+\end{itemize}
+\item int >= <n>:值必须是一个整数，它的值大于或者等于<n>,这里的<n>是一个自然数\\
+例如，下面的操作注册指定的属性a必须是一个小于2的值:
+\begin{lstlisting}[language=Python]
+REGISTER_OP("MinIntExample")
+    .Attr("a: int >= 2");
+
+\end{lstlisting}
+\item list(<type>) >=<n>:一个<type>类型雷彪，他的长度大于或者等于<n>
+\end{itemize}
+例如，下面的操作注册指定属性a是一个type列表(既可以是int32也可以是float),值最小为3:
+\begin{lstlisting}[language=C++]
+REGISTER_OP("TypeListExample")
+    .Attr("a: list({int32, float}) >= 3");
+\end{lstlisting}
+为了为属性设置默认值（使得它在生成的代码中可选），添加<default>到末尾，正如:
+\begin{lstlisting}[language=C++]
+REGISTER_OP("AttrDefaultExample")
+    .Attr("i: int = 0");
+
+\end{lstlisting}
+这支持用于proto表示GraphDef定义的默认值语法:
+\begin{lstlisting}[language=C++]
+REGISTER_OP("AttrDefaultExampleForAllTypes")
+   .Attr("s: string = 'foo'")
+   .Attr("i: int = 0")
+   .Attr("f: float = 1.0")
+   .Attr("b: bool = true")
+   .Attr("ty: type = DT_INT32")
+   .Attr("sh: shape = { dim { size: 1 } dim { size: 2 } }")
+   .Attr("te: tensor = { dtype: DT_INT32 int_val: 5 }")
+   .Attr("l_empty: list(int) = []")
+   .Attr("l_int: list(int) = [2, 3, 5, 7]");
+
+\end{lstlisting}
+注意type的值使用\href{https://www.tensorflow.org/api_docs/python/tf/DType?hl=zh-cn}{the DT\_* names for the types}
+\subsubsection{多态}
+对于能接受不同类型的输入和产生不同类型输出的操作，我们可以在注册操作的时候在\href{https://www.tensorflow.org/extend/adding_an_op?hl=zh-cn#inputs_and_outputs}{ an input or output type}指定\href{https://www.tensorflow.org/extend/adding_an_op?hl=zh-cn#attrs}{一个属性}。通常你讲注册一个OpKernel支持每种类型。
+
+例如，如果你想ZeroOut操作早float，int32上工作，你的操作注册也许像这样:
+\begin{lstlisting}[language=Python]
+REGISTER_OP("ZeroOut")
+    .Attr("T: {float, int32}")
+    .Input("to_zero: T")
+    .Output("zeroed: T");
+
+\end{lstlisting}
+你的操作注册限制指定输入类型必须是float或者int32，输出类型与之相同，因为有类型T。
+
+在命名是注意：输入，输出和属性生成应该给定snake\_case名称。异常是属性用作输入类型或者在输入中的类型。这属性可以在操作添加到图上的时候被推理因此不再操作函数中出现，例如，最后的ZerosOut将生成一个像下面的Python函数:
+\begin{lstlisting}[language=Python]
+def zero_out(to_zero, name=None):
+  """...
+  Args:
+    to_zero: A `Tensor`. Must be one of the following types:
+        `float32`, `int32`.
+    name: A name for the operation (optional).
+
+  Returns:
+    A `Tensor`. Has the same type as `to_zero`.
+  """
+
+\end{lstlisting}
+如果to\_zero传递一个int32 tensor，然后T自动设置为int32(实际上为DT\_INT32)。折推力属性给大写或者CamelCase名称。
+比较操作有一个type属性决定输出属性:
+\begin{lstlisting}[language=Python]
+REGISTER_OP("StringToNumber")
+    .Input("string_tensor: string")
+    .Output("output: out_type")
+    .Attr("out_type: {float, int32} = DT_FLOAT");
+    .Doc(R"doc(
+Converts each string in the input Tensor to the specified numeric type.
+)doc");
+\end{lstlisting}
+在这种情况下，用户必须指定输出类型，正如在Python中生成的
+\begin{lstlisting}[language=Python]
+def string_to_number(string_tensor, out_type=None, name=None):
+  """Converts each string in the input Tensor to the specified numeric type.
+
+  Args:
+    string_tensor: A `Tensor` of type `string`.
+    out_type: An optional `tf.DType` from: `tf.float32, tf.int32`.
+      Defaults to `tf.float32`.
+    name: A name for the operation (optional).
+
+  Returns:
+    A `Tensor` of type `out_type`.
+  """
+
+\end{lstlisting}
+\begin{lstlisting}[language=C++]
+#include "tensorflow/core/framework/op_kernel.h"
+
+class ZeroOutInt32Op : public OpKernel {
+  // as before
+};
+
+class ZeroOutFloatOp : public OpKernel {
+ public:
+  explicit ZeroOutFloatOp(OpKernelConstruction\* context)
+      : OpKernel(context) {}
+
+  void Compute(OpKernelContext\* context) override {
+    // Grab the input tensor
+    const Tensor& input\_tensor = context->input(0);
+    auto input = input\_tensor.flat<float>();
+
+    // Create an output tensor
+    Tensor* output = NULL;
+    OP\_REQUIRES\_OK(context,
+                   context->allocate\_output(0, input_tensor.shape(), &output));
+    auto output\_flat = output->template flat<float>();
+
+    // Set all the elements of the output tensor to 0
+    const int N = input.size();
+    for (int i = 0; i < N; i++) {
+      output\_flat(i) = 0;
+    }
+
+    // Preserve the first input value
+    if (N > 0) output\_flat(0) = input(0);
+  }
+};
+
+// Note that TypeConstraint<int32>("T") means that attr "T" (defined
+// in the op registration above) must be "int32" to use this template
+// instantiation.
+REGISTER\_KERNEL\_BUILDER(
+    Name("ZeroOut")
+    .Device(DEVICE\_CPU)
+    .TypeConstraint<int32>("T"),
+    ZeroOutOpInt32);
+REGISTER\_KERNEL\_BUILDER(
+    Name("ZeroOut")
+    .Device(DEVICE\_CPU)
+    .TypeConstraint<float>("T"),
+    ZeroOutFloatOp);
+
+\end{lstlisting}
+为了保留\href{https://www.tensorflow.org/extend/adding_an_op?hl=zh-cn#backwards_compatibility}{向后兼容},你应该添加一个属性到存在的操作时指定一个\href{https://www.tensorflow.org/extend/adding_an_op?hl=zh-cn#default_values_constraints}{默认值}
+\begin{lstlisting}
+REGISTER_OP("ZeroOut")
+  .Attr("T: {float, int32} = DT_INT32")
+  .Input("to_zero: T")
+  .Output("zeroed: T")
+
+\end{lstlisting}
+你想声明更多属性，声明为souble:
+\begin{lstlisting}[language=C++]
+REGISTER_OP("ZeroOut")
+    .Attr("T: {float, double, int32}")
+    .Input("to_zero: T")
+    .Output("zeroed: T");
+
+\end{lstlisting}
+相比于写另一个OpKernel结合上面余下的代码，你需要能写一个C++模板代替。你将每次overload是有一个和新注册(REGISTER\_KERNEL\_BUILDER调用)
+\begin{lstlisting}[language=C++]
+template <typename T>
+class ZeroOutOp : public OpKernel {
+ public:
+  explicit ZeroOutOp(OpKernelConstruction* context) : OpKernel(context) {}
+
+  void Compute(OpKernelContext* context) override {
+    // Grab the input tensor
+    const Tensor& input_tensor = context->input(0);
+    auto input = input_tensor.flat<T>();
+
+    // Create an output tensor
+    Tensor* output = NULL;
+    OP_REQUIRES_OK(context,
+                   context->allocate_output(0, input_tensor.shape(), &output));
+    auto output_flat = output->template flat<T>();
+
+    // Set all the elements of the output tensor to 0
+    const int N = input.size();
+    for (int i = 0; i < N; i++) {
+      output_flat(i) = 0;
+    }
+
+    // Preserve the first input value
+    if (N > 0) output_flat(0) = input(0);
+  }
+};
+
+// Note that TypeConstraint<int32>("T") means that attr "T" (defined
+// in the op registration above) must be "int32" to use this template
+// instantiation.
+REGISTER_KERNEL_BUILDER(
+    Name("ZeroOut")
+    .Device(DEVICE_CPU)
+    .TypeConstraint<int32>("T"),
+    ZeroOutOp<int32>);
+REGISTER_KERNEL_BUILDER(
+    Name("ZeroOut")
+    .Device(DEVICE_CPU)
+    .TypeConstraint<float>("T"),
+    ZeroOutOp<float>);
+REGISTER_KERNEL_BUILDER(
+    Name("ZeroOut")
+    .Device(DEVICE_CPU)
+    .TypeConstraint<double>("T"),
+    ZeroOutOp<double>);
+
+\end{lstlisting}
+如果你有超过一个couple需要overload你可以放注册在宏中。
+\begin{lstlisting}[language=C++]
+#include "tensorflow/core/framework/op_kernel.h"
+
+#define REGISTER_KERNEL(type)                                       \
+  REGISTER_KERNEL_BUILDER(                                          \
+      Name("ZeroOut").Device(DEVICE_CPU).TypeConstraint<type>("T"), \
+      ZeroOutOp<type>)
+
+REGISTER_KERNEL(int32);
+REGISTER_KERNEL(float);
+REGISTER_KERNEL(double);
+
+#undef REGISTER_KERNEL
+\end{lstlisting}
+依赖于你在你的和心中注册的类型泪飚，你可续能用一个\href{https://www.github.com/tensorflow/tensorflow/blob/r1.4/tensorflow/core/framework/register_types.h}{tensorflow/core/framework/register\_types.h}钟提供的宏:
+\begin{lstlisting}[language=C++]
+#include "tensorflow/core/framework/op_kernel.h"
+#include "tensorflow/core/framework/register_types.h"
+
+REGISTER_OP("ZeroOut")
+    .Attr("T: realnumbertype")
+    .Input("to_zero: T")
+    .Output("zeroed: T");
+
+template <typename T>
+class ZeroOutOp : public OpKernel { ... };
+
+#define REGISTER_KERNEL(type)                                       \
+  REGISTER_KERNEL_BUILDER(                                          \
+      Name("ZeroOut").Device(DEVICE_CPU).TypeConstraint<type>("T"), \
+      ZeroOutOp<type>)
+
+TF_CALL_REAL_NUMBER_TYPES(REGISTER_KERNEL);
+
+#undef REGISTER_KERNEL
+\end{lstlisting}
+\subsubsection{输入输出列表}
+另外能接受或者产生不同的类型，操作可以consume或者生成一些tensor变量。在下个例子中，属性T保存一个；列表类型，用作输入in和输出out的类型。输入和输出是type类型tensor雷彪（tensor的数和类型和输入相同，因此都为T）
+\begin{lstlisting}[language=C++]
+REGISTER_OP("PolymorphicListExample")
+    .Attr("T: list(type)")
+    .Input("in: T")
+    .Output("out: T");
+
+\end{lstlisting}
+你可以放限制在列表中可以被指定的类型上。在下个情况，输入是一个float和double类型的tensor雷彪。操作接受，例如，输入类型(float,double,float)和在这个case中输出类型将为(float,double,float)。
+\begin{lstlisting}[language=C++]
+REGISTER_OP("ListTypeRestrictionExample")
+    .Attr("T: list({float, double})")
+    .Input("in: T")
+    .Output("out: T");
+\end{lstlisting}
+如果你想列表中所有的tensor类型相同，你也许像这样:
+\begin{lstlisting}[language=C++]
+REGISTER_OP("IntListInputExample")
+    .Attr("N: int")
+    .Input("in: N * int32")
+    .Output("out: int32");
+
+\end{lstlisting}
+这接受一个int32 tensor列表，使用一个int属性N指定列表的长度。这可以使得\href{https://www.tensorflow.org/extend/adding_an_op?hl=zh-cn#type_polymorphism}{ type polymorphic}很好。在下个例子中，输入是一个相同(没有指定类型类型的列表列表.输出是一个匹配的tensor:
+\begin{lstlisting}[language=Python]
+REGISTER_OP("SameListInputExample")
+    .Attr("N: int")
+    .Attr("T: type")
+    .Input("in: N * T")
+    .Output("out: T");
+
+\end{lstlisting}
+默认，tensor雷彪有一个最小的长度1.你可以使用\href{https://www.tensorflow.org/extend/adding_an_op?hl=zh-cn#default_values_constraints}{ a ">=" constraint on the corresponding attr}改变默认，这下面的例子，输入是一个至少2 int32 Tensor的列表:
+\begin{lstlisting}[language=C++]
+REGISTER_OP("MinLengthIntListExample")
+    .Attr("N: int >= 2")
+    .Input("in: N * int32")
+    .Output("out: int32");
+
+\end{lstlisting}
+同样的语法在list(type)属性中也工作:
+\begin{lstlisting}[language=C++]
+EGISTER_OP("MinimumLengthPolymorphicListExample")
+    .Attr("T: list(type) >= 3")
+    .Input("in: T")
+    .Output("out: T");
+
+\end{lstlisting}
+\subsubsection{输入和输出}
+为了总结上面，一个op操作可以有多个输入和输出:
+\begin{lstlisting}[language=C++]
+REGISTER_OP("MultipleInsAndOuts")
+    .Input("y: int32")
+    .Input("z: float")
+    .Output("a: string")
+    .Output("b: int32");
+
+\end{lstlisting}
+每个输入和输出是下面的形式:
+\begin{lstlisting}[language=C++]
+<name>: <io-type-expr>
+\end{lstlisting}
+这里的<name>以字母开头可以使下划线,<io-type-expr>是下面的表达类型
+\begin{itemize}
+\item <type>,这里的<type>是一个支持的输入类型(例如float,int32,string)。指定给定类型的单个tensor\\
+\begin{lstlisting}[language=C++]
+REGISTER_OP("BuiltInTypesExample")
+    .Input("integers: int32")
+    .Input("complex_numbers: complex64");
+
+\end{lstlisting}
+\item <attr-type>,这里的<attr-type>是一个\href{https://www.tensorflow.org/extend/adding_an_op?hl=zh-cn#attrs}{属性类型的名字或者list(type)（可能的受限类型）。这语法允许多态操作
+\begin{lstlisting}[language=C++]
+REGISTER_OP("PolymorphicSingleInput")
+    .Attr("T: type")
+    .Input("in: T");
+
+REGISTER_OP("RestrictedPolymorphicSingleInput")
+    .Attr("T: {int32, int64}")
+    .Input("in: T");
+
+\end{lstlisting}
+参考一个type(list)属性允许你接受一个tensor序列
+\begin{lstlisting}[language=Python]
+REGISTER_OP("ArbitraryTensorSequenceExample")
+    .Attr("T: list(type)")
+    .Input("in: T")
+    .Output("out: T");
+
+REGISTER_OP("RestrictedTensorSequenceExample")
+    .Attr("T: list({int32, int64})")
+    .Input("in: T")
+    .Output("out: T");
+\end{lstlisting}
+注意在输出out中tensor的数量和类型和输入in相同，因为两者都是T。
+\item 对于一个有相同类型<number> * <type>中的tensor序列。这里的<number>是\href{https://www.tensorflow.org/extend/adding_an_op?hl=zh-cn#attrs}{属性}中类型为int的名字。<type>既可以是\href{https://www.tensorflow.org/api_docs/python/tf/DType?hl=zh-cn}{a specific type like int32 or float},或者属性的名字有type类型，正如第一个例子，这操作接受一个int32 tensor列表。
+\begin{lstlisting}[language=C++]
+REGISTER_OP("Int32SequenceExample")
+    .Attr("NumTensors: int")
+    .Input("in: NumTensors * int32")
+
+\end{lstlisting}
+由于操作接受一个任何类型的tensor列表，只要我们有相同的:
+\begin{lstlisting}[language=C++]
+REGISTER_OP("SameTypeSequenceExample")
+    .Attr("NumTensors: int")
+    .Attr("T: type")
+    .Input("in: NumTensors * T")
+
+\end{lstlisting}
+\item 为了参考一个tensor：Ref(<type>)，这里的<type>是之前类型中的一个
+\end{itemize}
+注意名称:任何用在输入类型中的属性。喜欢上这些推力属性用大写名字(如T或者N)，否者输入，输出，属性有想函数参数的名字(例如num\_outputs).更多细节查看\href{https://www.tensorflow.org/extend/adding_an_op?hl=zh-cn#naming}{earlier note on naming}
+
+更多细节查看\href{https://www.github.com/tensorflow/tensorflow/blob/r1.4/tensorflow/core/framework/op_def_builder.h}{tensorflow/core/framework/op_def_builder.h}
+\subsubsection{向后兼容}
+让我们假设你写了一个焊好的自定义的操作和其他人共享，因此你高兴用你的操作自定义。然而，你想用什么方式改变操作。
+通常，改变存在，检查指定必须向后兼容：改变指定操作必须不能打破先前从就得指定中g构造的序列化的GraphDef protocol buffer。GraphDef兼容如\href{https://www.tensorflow.org/programmers_guide/version_compat?hl=zh-cn#compatibility_of_graphs_and_checkpoints}{这里描述}
+有一些方法保留向后兼容.
+\begin{enumerate}
+\item 一个新的属性添加到一个操作必须有值被默认定义，默认值操作必须有原始的行为。为了改变不是多态的操作为多态操作，你必须给定一个默认值到新的类型的attr保留原始的默认签名。例如如果你的操作是:REGISTER_OP("MyGeneralUnaryOp") .Input("in: float") .Output("out: float");\\
+你可以用下面使得多态向后兼容:
+\begin{lstlisting}[language=C++]
+  REGISTER_OP("MyGeneralUnaryOp")
+       .Input("in: T")
+       .Output("out: T")
+       .Attr("T: numerictype = DT_FLOAT");
+
+\end{lstlisting}
+\item 你可以安全的做一个限制在一个少限制的属性上。例如你可以从\{int32,int64\}改变成\{int32,int64,float\}或者type。或者你也许从\{"apple","orange"\}改变为{"apple","banana","origin}或者string
+\item 你可以改变输入/输出为输入/输出列表,只要列表类型和旧的签名匹配。
+\item 你可以添加一个新的输入/输出列表，如果它是空的话。
+\item 名称空间任何你创建的新的操作，通过前缀操作的名字结合一些独特的特性到你的项目，这避免你的操作和任何在TensorFlow将来也许包含的的操作冲突
+\item 计划。尝试预期将来使用的操作。一些签名改变不能用兼容的方式(例如，是一个相同类型的列表变为其他类型的列表)
+\end{enumerate}
+完整的安全或者不安全的列表可以在\href{https://www.github.com/tensorflow/tensorflow/blob/r1.4/tensorflow/core/framework/op_compatibility_test.cc}{tensorflow/core/framework/op_compatibility_test.cc}。如果你不能是你的改变向后箭筒，然后用新的语法创建一个新的操作。
+
+注意当这些改变可以和GraphDef维持兼容的时候，生成的Python代码可能以一种和之前调用不兼容的方式改变。Python API默认可以通过手写Python包装器改变，为了保证老的签名执行添加新的选项参数到末尾。通常不兼容的改变也许当TensorFlow主版本改变是出现不兼容，必须适应\href{https://www.tensorflow.org/programmers_guide/version_compat?hl=zh-cn#compatibility_of_graphs_and_checkpoints}{GraphDef version semantics}
+\subsection{GPU支持}
+你可以为GPU和GPU实现不同的OpKernel注册，像\href{https://www.tensorflow.org/extend/adding_an_op?hl=zh-cn#polymorphism}{ register kernels for different types}.这有一些GPU支持的例子在\href{https://www.github.com/tensorflow/tensorflow/blob/r1.4/tensorflow/core/kernels/}{ tensorflow/core/kernels/}。注意一些核心一个CPU版本在.cc文件中，一个GPU版本的在以\_gpu.cu.cc结尾的文件中，一些代码在一个.h文件中共享。
+例如，\href{https://www.tensorflow.org/api_docs/python/tf/pad?hl=zh-cn}{tf.pad}有一切但是GPU核心在\href{https://www.github.com/tensorflow/tensorflow/blob/r1.4/tensorflow/core/kernels/pad_op.cc}{tensorflow/core/kernels/pad\_op.cc}。GPU核心在\href{https://www.github.com/tensorflow/tensorflow/blob/r1.4/tensorflow/core/kernels/pad_op_gpu.cu.cc}{tensorflow/core/kernels/pad_op_gpu.cu.cc}共享代码是定义在\href{https://www.github.com/tensorflow/tensorflow/blob/r1.4/tensorflow/core/kernels/pad_op.h}{tensorflow/core/kernels/pad\_op.h}的末班。我们这么组织代码有两个原因：它允许你在GPU和CPU实现上共享代码，但是放GPU实现在一个单独的文件以至于他仅仅能被GPU编译。一件值得注意的是是，即使当GPU核心版本的pad被使用。它任何需要他的padding输入CPU内存。padding输入输出被保存在CPU上，添加HostMemory()调用核心注册。
+
+\begin{lstlisting}[language=C++]
+#define REGISTER_GPU_KERNEL(T)                         \
+  REGISTER_KERNEL_BUILDER(Name("Pad")                  \
+                              .Device(DEVICE_GPU)      \
+                              .TypeConstraint<T>("T")  \
+                              .HostMemory("paddings"), \
+                          PadOp<GPUDevice, T>)
+
+\end{lstlisting}
+\subsection{为GPU设备便有核心}
+查看\href{https://www.github.com/tensorflow/tensorflow/blob/r1.4/tensorflow/examples/adding_an_op/cuda_op_kernel.cu.cc}{cuda\_op\_kernel.cu.cc}了解使用CUDA核心实现一个操作的例子。tf\_custom\_op\_library接受一个gpu\_secs参数,在这些参数中包含cuda核心(*.cu.cc文件)的源文件列表可以被指定。对于使用二进制安装TensorFLow的用户，CUDA核心必须被NVIDIA nvcc编译器编译。下面是一些编译\href{https://www.github.com/tensorflow/tensorflow/blob/r1.4/tensorflow/examples/adding_an_op/cuda_op_kernel.cu.cc}{cuda\_op\_kernel.cu.cc }和\href{https://www.github.com/tensorflow/tensorflow/blob/r1.4/tensorflow/examples/adding_an_op/cuda_op_kernel.cc}{cuda\_op\_kernel.cc }为 动态载入的库:
+\begin{lstlisting}[language=Bash]
+nvcc -std=c++11 -c -o cuda_op_kernel.cu.o cuda_op_kernel.cu.cc \
+-I $TF_INC -I$TF_INC/external/nsync/public -D GOOGLE_CUDA=1 -x cu -Xcompiler -fPIC
+
+g++ -std=c++11 -shared -o cuda_op_kernel.so cuda_op_kernel.cc \
+cuda_op_kernel.cu.o -I $TF_INC -I$TF_INC/external/nsync/public -fPIC -lcudart -L$TF_LIB -ltensorflow_framework
+\end{lstlisting}
+上面产生的cuda\_op\_kernel.so可以被在Python中使用tf.load\_op\_library函数载入。
+
+注意如果你的CUDA库没有安装在/usr/local/lib64,你将需要在上面第二条命令(g++)中明确指定。例如，如果你的CUDA安装在/use/local/cuda-8.0中添加-L /usr/local/cuda-8.0/lib64/
+\begin{quote}
+注意在一些linux设置中nvcc编译需要额外的选项。添加-D\_MWAITXINTRIN\_H\_INCLUDED到nvcc命令行避免来自mwaitxintrin.h的错误。
+\end{quote}
+\subsection{在Python中实现梯度}
+给定一个梯度操作，TensorFlow使用自动微分(反向)添加新的操作表示已经存在的操作(查看\href{https://www.tensorflow.org/api_guides/python/train?hl=zh-cn#gradient_computation}{梯度计算})。为了使自动微分能在新的操作上工作，你必须注册一个梯度函数计算对应的操作的输入给定梯度后的操作输出。
+
+数学上，如果一个操作计算$y=f(x)$的注册梯度操作通过链式法则转化梯度损失L对y的梯度$\
+partial L/\partial y$为$\partial L/\partial x$的梯度。
+\[\frac{\partial L}{\partial x} = \frac{\partial L}{\partial y}\frac{\partial y}{\partial x}=\frac{\partial L}{\partial y}\frac{\partial f}{\partial x}\]
+在ZeroOut这个例子中，仅仅一个输入影响输出，因此对应输入的梯度是一个洗漱的one hot tensor。如下面表达:
+\begin{lstlisting}[language=Python]
+from tensorflow.python.framework import ops
+from tensorflow.python.ops import array_ops
+from tensorflow.python.ops import sparse_ops
+
+@ops.RegisterGradient("ZeroOut")
+def _zero_out_grad(op, grad):
+  """The gradients for `zero_out`.
+
+  Args:
+    op: The `zero_out` `Operation` that we are differentiating, which we can use
+      to find the inputs and outputs of the original op.
+    grad: Gradient with respect to the output of the `zero_out` op.
+
+  Returns:
+    Gradients with respect to the input of `zero_out`.
+  """
+  to_zero = op.inputs[0]
+  shape = array_ops.shape(to_zero)
+  index = array_ops.zeros_like(shape)
+  first_grad = array_ops.reshape(grad, [-1])[0]
+  to_zero_grad = sparse_ops.sparse_to_dense([index], shape, first_grad, 0)
+  return [to_zero_grad]  # List of one Tensor, since we have one input
+
+\end{lstlisting}
+详细的使用\href{https://www.tensorflow.org/api_docs/python/tf/RegisterGradient?hl=zh-cn}{tf.RegisterGradient}注册梯度函数如下:
+\begin{itemize}
+	\item 对于一个单输出的操作，梯度函数接受一个tf.Operation操作和tfTensor grad构建新的操作\href{https://www.tensorflow.org/api_docs/python/framework?hl=zh-cn#Operation.inputs}{opinputs[i]} ,\href{https://www.tensorflow.org/api_docs/python/framework?hl=zh-cn#Operation.outputs}{op.outputs[i]}和grad。任何attr的信息都能在\href{https://www.tensorflow.org/api_docs/python/tf/Operation?hl=zh-cn#get_attr}{tf.Operation.get_attr}找到
+	\item 如果操作有多个输出，梯度函数将得到op和grads，这里的grads是一个对应每个输出的列表。梯度函数的结果必须是一个表示每个输入对应输出的Tensor对象列表
+	\item 如果没有定义输入的梯度，像整数梯度用于索引，对应的染回的梯度应该为None。例如，对一个op接受一个浮点tensor x和整数索引i，梯度函数应该返回[x\_grad,None]
+	\item 如果操作没有有意义的梯度，你讲不需要注册任何梯度，只要操作的梯度不需要就行。在一些情况下，一个操作没有很好的定义梯度但是可以在计算梯度时调用。这里你可以使用ops.NotDifferential自动的向后传播0.
+\end{itemize}
+注意在梯度函数被调用的时候，仅仅操作的数据流图可用，不是tensor数据本身。这样计算必须在图的执行时间用其他的TensorFlow操作执行。
+\subsection{C++中的形状函数}
+TensorFlow API有一个成为形状推理得特性在图没有执行的时候提供tensor的形状信息。形状推理在C++ REGISTER\_OP声明中每个操作类型通过shape function支持推理，扮演两个角色:在图够早的时候声明输入形状兼容，指定输出的形状。
+
+形状函数作为操作定义在shape\_inference::InferenceContex类。例如在ZeroOut中形状函数:
+\begin{lstlisting}[language=C++]
+.SetShapeFn([](::tensorflow::shape_inference::InferenceContext* c) {
+      c->set_output(0, c->input(0));
+      return Status::OK();
+    });
+
+\end{lstlisting}
+c->set_output(0,c->input(0));申明第一个输出形状应该被设置为第一个输入的形状。如果上面例子中输出按照他的inedx被选择，第二个参数set\_output应该是一个ShapeHandle对象。你可以通过默认的构造体创建一个空的ShapeHandle对象。ShapeHandle可以在\href{https://www.github.com/tensorflow/tensorflow/blob/r1.4/tensorflow/core/framework/common_shape_fns.h}{common\_shape\_fns.h}中找到，按照下面使用:
+\begin{lstlisting}[language=C++]
+REGISTER_OP("ZeroOut")
+    .Input("to_zero: int32")
+    .Output("zeroed: int32")
+    .SetShapeFn(::tensorflow::shape_inference::UnchangedShape);
+
+\end{lstlisting}
+形状函数也约束输入的形状。对于\href{ZeroOut}{https://www.tensorflow.org/extend/adding_an_op?hl=zh-cn#validation}{结合一个向量形状约束}，函数形状如下:
+\begin{lstlisting}[language=C++]
+ .SetShapeFn([](::tensorflow::shape_inference::InferenceContext* c) {
+      ::tensorflow::shape_inference::ShapeHandle input;
+      TF_RETURN_IF_ERROR(c->WithRank(c->input(0), 1, &input));
+      c->set_output(0, input);
+      return Status::OK();
+    });
+\end{lstlisting}
+WithRank调用验证输入形状c->input(0) 有一个一维形状(或者如果输入性状不可知，输出形状将为一个未知维度的向量)
+
+如果你的操作是\href{https://www.tensorflow.org/extend/adding_an_op?hl=zh-cn#polymorphism}{多输入的多态}，你可以使用InferenceContex成员决定多少形状被检查，Merge验证所有的兼容的形状（访问指示长度的属性，结合InferenceContext::GetAttr提供访问操作的属性）
+\begin{lstlisting}[language=C++]
+ .SetShapeFn([](::tensorflow::shape_inference::InferenceContext* c) {
+      ::tensorflow::shape_inference::ShapeHandle input;
+      ::tensorflow::shape_inference::ShapeHandle output;
+      for (size_t i = 0; i < c->num_inputs(); ++i) {
+        TF_RETURN_IF_ERROR(c->WithRank(c->input(i), 2, &input));
+        TF_RETURN_IF_ERROR(c->Merge(output, input, &output));
+      }
+      c->set_output(0, output);
+      return Status::OK();
+    });
+
+\end{lstlisting}
+因此形状推理是一个可选的特性，tensor的形状可能是动态的，形状函数必须健壮到应对输入不完整的信息。在\href{https://www.github.com/tensorflow/tensorflow/blob/r1.4/tensorflow/core/framework/shape_inference.h}{ InferenceContext }中的方法Merge允许调用器声明两个形状相同，即使装着之一或者两个没有完整的信息。对于所有的核心的TensorFlow操作和任何不同的使用例子形状函数被定义。
+
+InferenceContex类有一些函数用于定义形状函数操作。例如，你可以使用InferenceContext::Dim 和 InferenceContext::WithValue指定验证部分维度的值。你可以指定输出维度是sum/pruduct（使用InferenceContext::Add 和 InferenceContext::Multiply）的两个输入维度的乘积。查看InferenceContex类了解所有的可形状装的操作。下面的地址设置第一个输出的形状为(n,3)这里第一个输入有形状(n,...)
+\begin{lstlisting}[language=C++]
+.SetShapeFn([](::tensorflow::shape_inference::InferenceContext* c) {
+    c->set_output(0, c->Matrix(c->Dim(c->input(0), 0), 3));
+    return Status::OK();
+});
+
+\end{lstlisting}
+如果你有一个复杂的形状函数，你应该考虑添加一个测试验证不同的输入性状结合产生希望的输出形状。你可以查看\href{https://www.github.com/tensorflow/tensorflow/blob/r1.4/tensorflow/core/ops/array_ops_test.cc}{测试操作核心}如何写一个test。(INFER\_OK和INFER\_ERROR有一点神秘，但是尝试压缩在测试中指定表达输入和输出形状中。现在查看相关的评论理解形状字符串指定)
