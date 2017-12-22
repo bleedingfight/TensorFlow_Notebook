@@ -1,2 +1,2 @@
-# 这个文档用于记录一些Python工具介绍
+# This document used to intruduce for you some dl arithmetic
 
