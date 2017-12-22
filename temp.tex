@@ -1,4 +1,4 @@
-\section{对于ML初学者的MNIST}
+\section{对于ML初学者的MNIST}\label{sec:start}
 这个导航针对于对机器学习和TensorFlow生疏的读者。如果你知道MNIST，softmax回归，你最好查看\href{https://www.tensorflow.org/get_started/mnist/pros}{faster paced turotial}。开始任何导航前确保你安装了\href{https://www.tensorflow.org/install/index}{TensorFlow}。
 当一个人学习如何编程，他们通常做的第一件事就是打印Hello World。MNIST对于机器学习就像编程的Hello World。
 
@@ -189,3 +189,42 @@ print(sess.run(accuracy, feed_dict={x: mnist.test.images, y_: mnist.test.labels}
 这很好?不，事实上，很差。这是因为我们使用了一个非常简单的模型。结合一些改变，我们可以得到97\%。最好的模型可以达到99.7\%的精度(更多信息查看\href{https://rodrigob.github.io/are_we_there_yet/build/classification_datasets_results}{结果列表})
 
 我们从这个模型学到的重要的。一球，如果你正对结果感到沮丧。查看\href{https://www.tensorflow.org/get_started/mnist/pros}{下一个导航}这里我们使用TensorFlow做了一些更好的，学习构建更多精妙的模型。
+\section{针对专家的深度MNIST}
+TensorFlow是一个强大的大规模数值计算库。这里一个任务是实现和训练深度神经网络。在这个导航我们将学习基本的构造TensorFlow模块构造深度卷积MNIST分类器。
+
+这个介绍假设你熟悉想MNIST数据集和神经网络。如果你没有相关背景查看\ref{sec:start}。开始导航前确保TensorFlow被安装了。
+
+\subsection{关于这个导航}
+这个导航的第一部分解释在\href{https://www.github.com/tensorflow/tensorflow/blob/r1.4/tensorflow/examples/tutorials/mnist/mnist_softmax.py}{mnist\_softmax.py}代码，一个基础的TensorFlow模型。第二部分显示提高精度的一些方法。
+你可以从这个导航复制粘贴相关代码段到Python环境，或者你可以下载完整的代码实现\href{https://www.github.com/tensorflow/tensorflow/blob/r1.4/tensorflow/examples/tutorials/mnist/mnist_softmax.py}{mnist_softmax.py}
+
+我们将在这个导航中完成:
+\begin{itemize}
+\item 基于看到的每一个像素为识别MNIST数字创建一个softmax回归函数
+\item 使用TensorFlow训练模型通过"看"很多样本识别数字（运行我们的第一个TensorFlow会话）
+\item 使用我们的测试集检查模型的精度
+\item 构建，训练测试多层卷积神经网络改进结果
+\end{itemize}
+\subsection{开始}
+在开始创建我们的模型前，我们将首先载入MNIST数据集开始TensorFlow会话。
+\subsection{载入MNIST数据集}
+如果你从这个导航复制粘贴代码，以这两行开始将自动的下载读入数据:
+\begin{pythoncode}
+from tensorflow.examples.tutorials.mnist import input_data
+mnist = input_data.read_data_sets('MNIST_data', one_hot=True)
+\end{pythoncode}
+这里的mnist是一个轻量级的存储numpy数组训练，验证，测试集。它也踢动一个函数通过minibatch迭代。
+\subsection{开始TensorFlow交互式会话(InteractiveSession)}
+TensorFlow依赖于一个搞笑的C++后端计算。连接到后端成为一个会话。通常使用TensorFlow程序首先创建一个图然后在会话中启动它。
+
+这里我们使用方便的交互式会话类，使得TensorFlow能更灵活的构造你的代码。它允许你交互操作构建一个\href{https://www.tensorflow.org/get_started/get_started#the_computational_graph}{计算图}然后运行图。这当你在想IPython这样的交互式环境中使用是很方便。如果你没有使用一个交互式会话，然后在你开启一个会话前你应该构建整个计算图启动图。
+\begin{pythoncode}
+import tensorflow as tf
+sess = tf.InteractiveSession()
+\end{pythoncode}
+\subsection{计算图}
+为了在Python中搞笑的处理数值计算，我们通过使用一个想\href{http://www.numpy.org/}{Numpy}的库在Python外通过其它语言实现的高效代码做代价高昂的矩阵乘法。不幸的是转换回Python每个操作任然有一些开销。如果你在分布式环境或者在GPU上计算这些开销将很巨大，这里转换数据代价很高。
+
+TensorFlow在Python外做计算量重的工作，但是进一步避免这开销。从Python外运行带个的昂贵的操作，TensorFlow让我们描述操作交互的图然后子啊Python外运行。这方法类似于Theano和Torch。
+
+Python代码的角色是构建这个外部计算图，然后指示计算图的那一部分应该运行。查看\ref{sec:start}计算图章节获取更多细节。
