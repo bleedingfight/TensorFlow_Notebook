@@ -113,5 +113,18 @@ LSTM 另一个比较重要的特征是它的序列处理方式，LSTM 利用这�
 
 并非所有在单元状态运行的信息都适合在特定时间输出。我们将用一个实例进行展示：
 我们使用 Keras，它是一个用于神经网络的高阶 API，并在 TensorFlow 或 Theano 之上工作。因此在进入代码之前，请确保你已安装运行正常的 Keras。好的，我们开始生成文本！
+
+1. 首先导入必要的软件包:
+\inputminted[firstline=1,firstnumber=1,lastline=7,linenos,breaklines,breakanywhere]{python}{lstm_predict.py}
+2. 下载数据:
+\inputminted[firstline=8,firstnumber=8,lastline=15,linenos,breaklines,breakanywhere]{python}{lstm_predict.py}
+3. 将数据集中的单词映射为数值，然后分为50个序列，准备好数据。
+\inputminted[firstline=16,firstnumber=16,lastline=37,linenos,breaklines,breakanywhere]{python}{lstm_predict.py}
+4. 加速计算，当第一次训练完成后会保存模型和权重为my.h5文件。再次运行的时候直接载入，加速计算。
+\inputminted[firstline=38,firstnumber=38,lastline=51,linenos,breaklines,breakanywhere]{python}{lstm_predict.py}
+5. 预测验证模型
+\inputminted[firstline=39,firstnumber=39,lastline=65,linenos,breaklines,breakanywhere]{python}{lstm_predict.py}
+完整的源代码\href{https://github.com/bleedingfight/tfnote/blob/article/lstm_txt.py}{lstm\_predict.py}。
+
 \end{document}
 
