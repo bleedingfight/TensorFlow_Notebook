@@ -4,8 +4,10 @@
 \usepackage{minted}
 \usepackage{float}
 \graphicspath{{pic/}}
-\usepackage{hyperref}
+\usepackage[colorlinks=true,allcolors=blue]{hyperref}
+\title{LSTM预测语句序列}
 \begin{document}
+\maketitle
 当安排日程时，我们首先会考虑是否有会议预订。但是如果需要为更重要的事情腾出时间，我们可能会取消某些次要的会议。
 
 但是 RNN 并不能做到这样，为了添加一个新信息，它需要通过一个函数完全地转换当前的信息。因此信息是以整体为单位进行修改的，模型并没有考虑重要的和不重要的信息。
@@ -126,5 +128,8 @@ LSTM 另一个比较重要的特征是它的序列处理方式，LSTM 利用这�
 \inputminted[firstline=39,firstnumber=39,lastline=65,linenos,breaklines,breakanywhere]{python}{lstm_predict.py}
 完整的源代码\href{https://github.com/bleedingfight/tfnote/blob/article/lstm_txt.py}{lstm\_predict.py}。
 
+原文链接:\href{https://www.analyticsvidhya.com/blog/2017/12/fundamentals-of-deep-learning-introduction-to-lstm/}{Pranjal Srivastava}
+
+译文链接:\href{http://mp.weixin.qq.com/s?__biz=MzA3MzI4MjgzMw==&mid=2650734862&idx=1&sn=1a2adda4da7bd7509f10556e8ae218f4&chksm=871ac570b06d4c6644802a4dafe8ab56805ed642dba2e1e4b29ccbaa0d9245c522b7c9a28308&mpshare=1}{机器之心}
 \end{document}
 

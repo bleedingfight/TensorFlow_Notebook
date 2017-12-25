@@ -44,7 +44,7 @@ def main():
         model.add(Dropout(0.2))
         model.add(Dense(Y_modified.shape[1],activation='softmax'))
         model.compile(loss='categorical_crossentropy',optimizer = 'adam')
-        model.fit(X_modified,Y_modified,epochs=10,batch_size=len(Y)//1000)
+        model.fit(X_modified,Y_modified,epochs=100,batch_size=len(Y)//1000)
         EarlyStopping(monitor='val_loss',patience=0,verbose=0,mode='auto')
         model.save('my.h5')
     else:
