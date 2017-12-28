@@ -1,0 +1,68 @@
+\documentclass{article}
+\usepackage[space]{ctex}
+\usepackage{graphicx}
+\usepackage{minted}
+\usepackage[margin=2.5cm]{geometry}
+\usepackage{xcolor}
+\usepackage{float}
+\begin{document}
+使用FFMPEG从视频文件提取图像
+
+如果你需要从视频文件中提取图像，你可以从视频中提取所有的帧为图像文件。下面的命令行从video.webm提取所有的帧:
+
+\mintinline{bash}{ffmpeg -i video.webm thumb%04d.jpg -hide_banner}
+\begin{itemize}
+	\item -i 接输入视频文件
+	\item 	thumb\%04d\%.jpg是输出文件。在这个例子中为jpg文件，因此ffmpeg将输出jpg文件。我们制定thumb\%04d.jpg和"\%04d"在文件名称中，FFMPEG将提取图像按照thumb0000.jpgthumb0001.jpg等等。我们制定ffmpeg输出文件有4维"\%04d，我们可以改变它产生更多，比如"\%6d
+	\item -hidden\_banner 隐藏ffmpeg的编译信息。
+\end{itemize}
+在这个例子中仅仅使用jpg文件作为输出，但是我们也能使用像png或者bmp格式。
+
+警告：如果我们从一个长视频获取所有的帧，我们可能获得成百上千张图片，磁盘容量可能是一个大问题。
+
+\section{仅仅提取一帧}
+因为提取所有的图像通常不太好处理，通常使用更多的是提取单个视频图像。这样能更好的从视频获取重要部分。
+
+对于同样的video.webm文件，我们想提取一个图像的第7秒的图像，作为视频中我们认为重要的一部分。我们可以使用ffmpeg使用下面的目录提取这一时刻的帧:
+
+\mintinline{bash}{ffmpeg -i video.webm -ss 00:00:07.000 -vframes 1 thumb.jpg}
+\begin{itemize}
+	\item -ss 我们使用这个参数给定时间(00:00:07.000是视频中第7s)。这参数使得ffmpeg搜索这一秒然后处理，因此它提取这一瞬间的帧
+	\item -vframes 这个参数告诉ffmpeg提取的帧数(这里是一帧)。ffmpeg将仅仅提取一张图片输出为thumb.jpg。这里我们没有使用\%04d这样的参数，但是可以使用。
+\end{itemize}
+有时候我们检查图片的质量才发现他们质量和我们想要的不同(从视频文件中提取帧可能导致低质量的帧)。一个好办法是从视频的重要部分提取超过一帧。我们可以使用下面的命令:
+
+\mintinline{bash}{ffmpeg -i video.webm -ss 00:00:07.000 -vframes 3 thumb%04d.jpg -hide_banner}
+这里我们使用\%04d输出，按照我们的要求输出3帧，因此我们得到3张jpg图像。结合这个命令我们将从提示中获得前三帧，之后ffmpeg搜索视频的第二个7秒。
+\section{在规定时间提取帧}
+另一个用于从视频文件提取图像的方法是每x秒提取一张图片。用这个方法我们不会想第一个例子一样得到很多图片，我们不限制从视频的特定时间选择图像。
+
+\mintinline{bash}{ffmpeg -i video.webm -vf fps=1 thumb%04d.jpg -hide_banner}
+在这个例子中我们用一个新的参数:
+
+vf:这个参数用于ffmpeg过去视频。我们可以用一个过滤。这个例子中我用"fps=1",因此ffmpeg将过滤视频提取一张图片（每秒一帧）输出。我么使用thumb\%0d.jpg作为输出提取多个文件。
+
+因此我们得到视频文件每秒的图像，thumn0000.jpg,thumb0001.jpg等等。
+
+我们已经使用这个过滤器每秒提取一张图片，但是我们可以使用它结合其他的参数提取图像。我们可以每5秒提取一张图像：
+
+\mintinline{bash}{ffmpeg -i video.webm -vf fps=1/5 thumb%04d.jpg -hide_banner}
+
+在这个例子中我们使用“fps=1/5”指定ffmpeg将每5秒提取一张图片。我们可以改变这个参数为"fps=1/10"每10s提取一张图像。
+\section{从视频中提取关键帧}
+关键帧（有时候也叫索引帧）是用作视频文件参考的图片。关键帧有点复杂，但是正如之前总结的他们可以用作索引以至于视频播放器能容易的搜索它，他们可以用做下面帧的参考以至于视频解码器存储关键帧和下面帧的不同而不是所有的帧。
+
+这也是为什么我们能在这个帧上获得更好的图像的原因。视频中关键帧之间的时间周期。关键帧配置
+当我们创建视频文件时可以被改变因此他也许有多种配置以至于作者习惯创建视频。周期通常是2到5秒。
+
+为了从视频中提取关键帧，我们使用下面的命令:
+
+\mintinline{bash}{ffmpeg -i video.webm -vf "select=eq(pict_type\,I)" -vsync vfr thumb%04d.jpg -hide_banner}
+
+\begin{itemize}
+	\item -vf我们用一个视频过滤器，这里的视频过滤器比之前的有点复杂。我们使用"select=eq(pic\_type\,I)"将使得过滤器选择关键帧的所有图片("puc\_type\,I"查找图像类型索引，"eq"查找等于，因此我们可以将它解释为选择索引图像的所有)
+	\item -vsync vfr:这个参数告诉过滤器使用一个变化的比特率视频同步。如果我们不用这个参数ffmpeg将不能找到唯一的关键帧，显示提取其它的帧可能不被正确处理。
+\end{itemize}
+在这个例子中我们从14s的视频中提取6张图像(因此视频每两秒有一个关键帧)但是我们之前已经说过，变量一带与视频文件。
+
+\end{document}
