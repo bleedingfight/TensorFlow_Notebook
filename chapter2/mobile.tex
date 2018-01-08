@@ -183,10 +183,10 @@ dependencies {
 \subsection{使用Bazel构建demo}\label{subseq:Bazel构建}
 另一个在Android设备上使用TensorFlow构建一个APK的方法是用\href{https://bazel.build/}{Bazel}然后使用\href{https://developer.android.com/studio/command-line/adb.html?hl=zh-cn}{ADB}载入到你的设备。这要求了解一些构建系统和Android开发者工具，但是我们将通过如下引导你:
 \begin{itemize}
-\item 首先，跟着我们的说明\href{https://www.tensorflow.org/install/install_sources?hl=zh-cn}{ installing from sources},者将引导你通过安装Bazel和克隆TensorFlow代码
-\item 下载Android\href{https://developer.android.com/studio/index.html?hl=zh-cn}{SDK}和\href{https://developer.android.com/ndk/downloads/index.html?hl=zh-cn}{NDK}，如果你没有它们。你需要至少12b的NDK和23的SDK
-\item 在你的复制的TensorFlow源代码，更新\href{https://github.com/tensorflow/tensorflow/blob/master/WORKSPACE}{WORKSPACE}文件结合你的SDK和NSK，这里的<PATH\_TO\_NDK> and <PATH\_TO\_SDK>.
-\item 运行Bazel构建APK demo\lstinline[language=Bash]{bazel build -c opt //tensorflow/examples/android:tensorflow_demo}
+\item 首先，跟着我们的说明\href{https://www.tensorflow.org/install/install_sources?hl=zh-cn}{ installing from sources},这将引导你通过安装Bazel和克隆TensorFlow代码
+\item 下载Android\href{https://developer.android.com/studio/index.html?hl=zh-cn}{SDK}和\href{https://developer.android.com/ndk/downloads/index.html?hl=zh-cn}{NDK}，如果你没有这两个工具的话。你需要至少12b的NDK和23的SDK
+\item 在你的复制的TensorFlow源代码，更新\href{https://github.com/tensorflow/tensorflow/blob/master/WORKSPACE}{WORKSPACE}文件和你的SDK和NSK位置，这里的<PATH\_TO\_NDK> and <PATH\_TO\_SDK>.
+\item 运行Bazel构建APK demo \lstinline[language=Bash]{bazel build -c opt //tensorflow/examples/android:tensorflow_demo}
 \item 使用\href{https://developer.android.com/studio/command-line/adb.html?hl=zh-cn#move}{ADB}安装到你的设备上\lstinline[language=Bash]{adb install -r bazel-bin/tensorflow/examples/android/tensorflow_demo.apk}
 \end{itemize}
 \begin{quote}
