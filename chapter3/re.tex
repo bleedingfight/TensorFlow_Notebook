@@ -62,7 +62,6 @@ awk '条件类型1{动作1} 条件类型2{动作2}'filename:awk乐意处理后�
 \end{itemize}
 \begin{table}[h!]
 \centering
-{\rowcolors{2}{green!80!yellow!50}{green!70!yellow!40}
 \begin{tabular}{ |p{3cm}|p{3cm}|  }
 	\hline 
 	变量名称 & 代表含义 \\
@@ -71,8 +70,7 @@ awk '条件类型1{动作1} 条件类型2{动作2}'filename:awk乐意处理后�
 	NR    &目前awk所处理的是第几行的数据\\
 	FS & 目前的分割字符，预设是空格键 \\
 	\hline
-\end{tabular}}
-	\caption{awk参数}
+\end{tabular}
 \end{table}
 示例:
 \begin{itemize}
@@ -81,7 +79,6 @@ awk '条件类型1{动作1} 条件类型2{动作2}'filename:awk乐意处理后�
 awk的逻辑运算字。
 \begin{table}[h]
 \centering
-{\rowcolors{2}{blue!80!yellow!50}{green!70!yellow!40}
 	\begin{tabular}{|c|c|}
 		\hline
 		运算单元&代表含义\\
@@ -91,7 +88,7 @@ awk的逻辑运算字。
 		==&等于\\
 		!=&不等于\\
 		\hline
-	\end{tabular}}
+	\end{tabular}
 \end{table}
 
 \textit{例子}
@@ -110,7 +107,6 @@ cat /etc/passwd|\
 \end{center}
 \newpage
 \begin{table}[h]
-{\rowcolors{3}{blue!70!yellow!30}{blue!70!yellow!10}
 \centering
 \begin{tabular}{ |p{1cm}|p{3cm}|p{6cm}|  }
    \hline
@@ -128,7 +124,7 @@ cat /etc/passwd|\
 	\$&\textit{匹配字符串结尾}&\textit{abc\$表示abc且在一个字符串的结尾}\\
 	()&\textit{分组标记，内部只能使用|操作符}&\textit{(abc)表示abc，(abc|def)表示abc或者def}\\
 	\hline
-\end{tabular}}
+\end{tabular}
 \caption{常用参数}
 \end{table}
 \begin{itemize}

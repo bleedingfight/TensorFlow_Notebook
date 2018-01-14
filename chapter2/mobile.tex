@@ -43,7 +43,7 @@ TensorFlow提供一个预先训练好的模型描绘在图像中检测到的人�
 \subsection{手势识别}
 不论是用手或者其它的姿势控制应用，从图像中识别或者分析加速度传感器数据是很有用的。创建这些模型超过了这个向导的内容，但是TensorFlow能高效的部署它们。
 \subsection{光学字符识别}
-Google翻译的实时相机查看是一个设备检测文字的交互高效的好的例子。在图像中识别文字有一些步骤，首先识别文字呈现的区域，就是目标定位，可以使用类似的技术解决。当你有文字区域后你将需要解释它为字符，然后用语言模型猜测它们表达的是什么意思。最简单的评估文字表达的意思是分割文本行为单个的文字然后使用简单的神经网络框住每个字符。你可以用MNIST模型（TensorFlow导航）获得一个好的结果，你也可以想一个更高级的方案解决输入。一个高级的使用是用LSTM模型处理一行文本，模型自己处理片段为不同的字符。
+Google翻译的实时相机查看是一个设备检测文字的交互高效的好的例子。在图像中识别文字有一些步骤，首先识别文字呈现的区域，就是目标定位，可以使用类似的技术解决。当你有文字区域后你将需要解释它为字符，然后用语言模型猜测它们表达的是什么意思。最简单的评估文字表达的意思是分割文本行为单个的文字然后使用简单的神经网络框住每个字符。你可以用MNIST模型（TensorFlow导航）获得一个好的结果，你也可以像一个更高级的方案解决输入。一个高级的使用是用LSTM模型处理一行文本，模型自己处理片段为不同的字符。
 \subsection{翻译}
 即使在没有网络的情况下准确的翻译一种语言到另一种语言是很重要的使用场景。深度网络在这些任务上很高效，你能找到一些不同的文学模型描述。经常seq2seq循环模型能运行单个图处理整个翻译，结合需要运行分割的解析场景。
 \subsection{文本分类}
@@ -186,7 +186,7 @@ dependencies {
 \item 首先，跟着我们的说明\href{https://www.tensorflow.org/install/install_sources?hl=zh-cn}{ installing from sources},这将引导你通过安装Bazel和克隆TensorFlow代码
 \item 下载Android\href{https://developer.android.com/studio/index.html?hl=zh-cn}{SDK}和\href{https://developer.android.com/ndk/downloads/index.html?hl=zh-cn}{NDK}，如果你没有这两个工具的话。你需要至少12b的NDK和23的SDK
 \item 在你的复制的TensorFlow源代码，更新\href{https://github.com/tensorflow/tensorflow/blob/master/WORKSPACE}{WORKSPACE}文件和你的SDK和NSK位置，这里的<PATH\_TO\_NDK> and <PATH\_TO\_SDK>.
-\item 运行Bazel构建APK demo \lstinline[language=Bash]{bazel build -c opt //tensorflow/examples/android:tensorflow_demo}
+\item 运行Bazel构建APK demo \bashinline{bazel build -c opt //tensorflow/examples/android:tensorflow_demo}
 \item 使用\href{https://developer.android.com/studio/command-line/adb.html?hl=zh-cn#move}{ADB}安装到你的设备上\lstinline[language=Bash]{adb install -r bazel-bin/tensorflow/examples/android/tensorflow_demo.apk}
 \end{itemize}
 \begin{quote}
@@ -194,23 +194,23 @@ dependencies {
 \end{quote}
 安装三个应用到你的手机上是TensorFlow Demo的一部分。查看\href{https://www.tensorflow.org/mobile/android_build?hl=zh-cn#android_sample_apps}{Android Sample Apps}获取更多关于它们的信息。
 \subsection{Android样例App}
-\href{https://www.github.com/tensorflow/tensorflow/blob/r1.4/tensorflow/examples/android/}{Android example code}是一个简单的工程用相同的代码构建和安装三个app。样例app通过手机的摄像头回去视频。
+\href{https://www.github.com/tensorflow/tensorflow/blob/r1.4/tensorflow/examples/android/}{Android example code}是一个简单的工程用相同的代码构建和安装三个app。样例app通过手机的摄像头获取视频。
 \begin{itemize}
-\item TF Classify使用Inception V3模型标记对象指出Imagenet的分类。这里仅仅有1000个种类，失去了大多数常见的目标包含一些你在真实生活中不太可能碰到的目标，因此结果可能仅供娱乐。例如没有人的分类，因此它将不知到如何结合人的图片猜测，想一个座椅或者氧气罩。如果你想自顶有这个例子识别你关心的对象，你可以使用\href{https://codelabs.developers.google.com/codelabs/tensorflow-for-poets/index.html?hl=zh-cn#0}{TensorFlow for Poets codelab }作为一个例子如何在你自己的数据上训练一个模型。
-\item TF Detect用多个盒子尝试回执摄像头中人的位置的边界盒子。这个盒子给出每个侦测结果的置信度。这个demo也包含追踪两帧间物体的移动，因此运行比TensorFlow推理更频繁。显然帧率越高用户体验越好，但是它估计哪个盒子两帧之间涉及相同的对象，对于实时统计对象很重要。
-\item TF Stylize通过摄像头实现一个是是是风格迁移算法。你可以选择屏幕中那个风格
+\item TF Classify使用Inception V3模型标记对象指出Imagenet的分类。这里仅仅有1000个种类，失去了大多数常见的目标包含一些你在真实生活中不太可能碰到的目标，因此结果可能仅供娱乐。例如没有人的分类，因此它将不知到如何结合人的图片猜测，像一个座椅或者氧气罩。如果你想自定义这个例子识别你关心的对象，你可以使用\href{https://codelabs.developers.google.com/codelabs/tensorflow-for-poets/index.html?hl=zh-cn#0}{TensorFlow for Poets codelab }作为一个例子如何在你自己的数据上训练一个模型。
+\item TF Detect用多个盒子尝试绘制摄像头中人的位置的边界盒子。这个盒子给出每个侦测结果的置信度。这个demo也包含追踪两帧间物体的移动，因此运行比TensorFlow推理更频繁。显然帧率越高用户体验越好，但是它估计哪个盒子两帧之间涉及相同的对象，对于实时统计对象很重要。
+\item TF Stylize通过摄像头实现一个实时风格迁移算法。你可以选择屏幕中那个风格
 混合它们，因此转化分辨率到更高或者更低
 \end{itemize}
 当你构建安装demo，你将在你的手机上看到三个app图标。触摸它们应该打开app让你体验它们做了什么。你能当它们运行的时候通过触摸音量键上激活侧边键。
 \subsection{Android Inference Library}
-因为Android app已经被用Java写，TensorFlow核心为C++，TensorFlow有JNI库连接它们。它的几口针对推理，因此，它提供载入图，建立输入，运行模型计算类似输出的能力，你可以查看\href{https://www.github.com/tensorflow/tensorflow/blob/r1.4/tensorflow/contrib/android/java/org/tensorflow/contrib/android/TensorFlowInferenceInterface.java}{TensorFlowInferenceInterface.java}致部分的方法查看完整的文档。
+因为Android app已经被用Java写，TensorFlow核心为C++，TensorFlow有JNI库连接它们。它的接口针对推理，因此，它提供载入图，建立输入，运行模型计算类似输出的能力，你可以查看\href{https://www.github.com/tensorflow/tensorflow/blob/r1.4/tensorflow/contrib/android/java/org/tensorflow/contrib/android/TensorFlowInferenceInterface.java}{TensorFlowInferenceInterface.java}的方法的完整的文档。
 
 这个实例程序使用这个接口，因此它们是一个查找例子使用的好的地方。你可以在\href{https://ci.tensorflow.org/view/Nightly/job/nightly-android/?hl=zh-cn}{ci.tensorflow.org}下载预先构建的二进制jars。
 \section{在iOS上构建TensorFlow}
 \subsection{使用CocoaPods}
-最简单的获取在iOS上可用的TensorFlow是通过CocoaPods包管理系统。你可以添加TensorFlow-experimental pod到你的Podfile（安装了一些二进制框架），这使得开始很容易但是自定义很难（你想缩减你的二进制文件尺寸很重要），如果你需要自定义你的库没查看之后的章节应该怎么做。
+最简单的获取在iOS上可用的TensorFlow是通过CocoaPods包管理系统。你可以添加TensorFlow-experimental pod到你的Podfile（安装了一些二进制框架），这使得开始很容易但是自定义很难（你想缩减你的二进制文件尺寸很重要），如果你需要能自定义你的库，查看下面的章节。
 \subsection{创建你自己的app}
-r如果你想添加TensorFlow能力到你的app，做下面的步骤:
+如果你想添加TensorFlow能力到你的app，做下面的步骤:
 \begin{itemize}
 \item 创建自己的app或者载入XCode已经创建的app
 \item 按照下面添加文件Podfile在工程的根目录:
@@ -224,7 +224,7 @@ pod 'TensorFlow-experimental'
 \end{itemize}
 \subsection{运行样例}
 你将需要XCode7.3或者更新的版本运行我们的iOS样例。
-当前有散了例子：简单，benchmark，和相机。到现在你能通过克隆主要的tensorflow仓库下载样本代码（之后我们计划分割仓库为可用样例）
+当前有三个例子：simple，benchmark，和camera。到现在你能通过克隆主要的tensorflow仓库下载样本代码（之后我们计划分割仓库为可用样例）
 
 从TensorFlow文件夹根目录，下载\href{https://storage.googleapis.com/download.tensorflow.org/models/inception5h.zip}{Inception v1}，用下面的步骤提取简单的和相机例子标签和图文件到数据文件夹:
 \begin{lstlisting}[language=Bash]
@@ -236,7 +236,7 @@ cp ~/graphs/inception5h/* tensorflow/examples/ios/benchmark/data/
 cp ~/graphs/inception5h/* tensorflow/examples/ios/camera/data/
 cp ~/graphs/inception5h/* tensorflow/examples/ios/simple/data/
 \end{lstlisting}
-改变进入样例目录，下载\href{https://cocoapods.org/pods/TensorFlow-experimental}{Tensorflow-experimental}pod,打开Xcode工作空间，注意安装pod可能花费很长时间因为它很大(~450M).如果你想运行简单的例子，然后:
+改变进入样例目录，下载\href{https://cocoapods.org/pods/TensorFlow-experimental}{Tensorflow-experimental}pod,打开Xcode工作空间，注意安装pod可能花费很长时间,因为它很大(~450M).如果你想运行简单的例子，然后:
 \begin{lstlisting}[language=Python]
 cd tensorflow/examples/ios/simple
 pod install
@@ -245,9 +245,9 @@ open tf_simple_example.xcworkspace   # note .xcworkspace, not .xcodeproj
 \end{lstlisting}
 在XCode仿真器运行简单的app。你应该看到一个有Run Model按钮的屏幕。按下它，你应该看到一些调试输出表明样例Grace Hoper图像在目录中的数据已经被分析，结合多个独一无二的识别。
 
-用同样的过程运行其它的例子。相机样例要求是个真真的设备被连接上。当你构建和运行是你应该得到实时相机的场景，你能指出目标得到实时识别结果。
+用同样的过程运行其它的例子。相机样例要求是个真正的设备被连接上。当你构建和运行时你应该得到实时相机的场景，你能指出目标得到实时识别结果。
 \subsection{iOS样本详情}
-针对iOS有三个实例应用，所有都定义在\href{https://www.github.com/tensorflow/tensorflow/blob/r1.4/tensorflow/examples/ios/}{tensorflow/examples/ios}Xcode工程下
+针对iOS有三个实例应用，所有都定义在\href{https://www.github.com/tensorflow/tensorflow/blob/r1.4/tensorflow/examples/ios/}{tensorflow/examples/ios} Xcode工程下
 \begin{itemize}
 \item Simple:一个小的例子显示如何用尽量少的行，载入运行TensorFlow模型。它仅仅结合一个按钮组合一个简单的场景，按下就运行模型载入和推理
 \item Camera 一个和Android TF Classify Demo十分类似的demo。它载入Inception V3为实时相机场景输出它的最好的标签估计。正如Android版本，你能用TensorFlow forPoets训练你自己的自定义的模型用最小的代码改动进入这个例子
@@ -256,12 +256,12 @@ open tf_simple_example.xcworkspace   # note .xcworkspace, not .xcodeproj
 \subsection{Trubleshooting}
 \begin{itemize}
 \item 确保你用TensorFlow-experimental pod(不是TensorFlow)
-\item TensorFlow-experimental pod当前大学~450M。这么大是应为构建多个平台，pod包含所有的TensorFlow函数。最终app的大小在构建之后减小到(~25M)。在开发的过程中结合完整的pod是很方便的，但是瞎看下面的章节了解你如何构建你自己的TensorFlow库减小尺寸。
+\item TensorFlow-experimental pod当前大约450M。这么大是因为构建多个平台，pod包含所有的TensorFlow函数。最终app的大小在构建之后减小到(~25M)。在开发的过程中结合完整的pod是很方便的，查看下面的章节了解你如何构建你自己的TensorFlow库,减小尺寸。
 \end{itemize}
 \subsection{从源代码构建TensorFlow iOS库}
-尽管Cocapods是最简单和最容易的开始方式，你有时候需要更灵活的的决定TensorFlow在你的app中应该被传递。例如，你可以从源代码构建iOS库。\href{https://github.com/tensorflow/tensorflow/tree/master/tensorflow/examples/ios#building-the-tensorflow-ios-libraries-from-source}{导航}包含了如何去做。
+尽管Cocapods是最简单和最容易的开始方式，你有时候需要更灵活的决定TensorFlow在你的app中应该被传递。例如，你可以从源代码构建iOS库。\href{https://github.com/tensorflow/tensorflow/tree/master/tensorflow/examples/ios#building-the-tensorflow-ios-libraries-from-source}{导航}包含了如何去做。
 \section{整合TensorFlow库}
-当你在模型上做了一些进步处理了一些你正尝试解决的问题，在你的应用上立即测试是很重要的。经常在你的训练数据和实际上真是世界碰到的问题上有些不同，得到一个干净的图像提高产品的体验。
+当你在模型上做了一些进步处理了一些你正尝试解决的问题，在你的应用上立即测试是很重要的。经常在你的训练数据和实际上真实世界碰到的问题有些不同，得到一个干净的图像提高产品的体验。
 
 这页讨论当你已经成功的构建和部署TensorFlow移动demo app后整个TensorFlow库进入你自己的移动应用模型。
 \subsection{链接库}
@@ -271,7 +271,7 @@ open tf_simple_example.xcworkspace   # note .xcworkspace, not .xcodeproj
 \begin{itemize}
 \item 包含jcenter AAR，正如\href{https://github.com/googlecodelabs/tensorflow-for-poets-2/blob/master/android/build.gradle#L59-L65}{example app}
 \item 从\href{http://ci.tensorflow.org/view/Nightly/job/nightly-android/lastSuccessfulBuild/artifact/out/?hl=zh-cn}{ci.tensorflow.org}下载nightly版本的预编译
-\item 用\href{https://github.com/tensorflow/tensorflow/tree/master/tensorflow/contrib/android}{iGithub repo}中的说明构建JAR文件。
+\item 用\href{https://github.com/tensorflow/tensorflow/tree/master/tensorflow/contrib/android}{Github repo}中的说明构建JAR文件。
 \end{itemize}
 \subsection{iOS}
 
@@ -286,7 +286,7 @@ open tf_simple_example.xcworkspace   # note .xcworkspace, not .xcodeproj
 \subsection{全局结构体magic}
 当你尝试从你自己的应用调用TensorFlow一个不太明显的错误是No session factory registered for the given session options。你将需要了解TensorFlow架构才能明白为什么错误发生和如何修复。
 
-这个框架被设计的十分模块化，接了很小的可信和大量的指定的独立对象可能按照需要混合匹配。为了使这工作，C++的代码模型必须让模块容易通知框架关于它们提供的服务，没有要求一个中心列表必须从每个实现被单独更新。很难允许单独的库没有需要的预编译的核被添加它们自己的实现。
+这个框架被设计的十分模块化，接了很小的核心和大量的指定的独立对象可能按照需要混合匹配。为了使这工作，C++的代码模型必须让模块容易通知框架关于它们提供的服务，没有要求一个中心列表必须从每个实现被单独更新。很难允许单独的库没有需要的预编译的核被添加它们自己的实现。
 
 为了获得能力，TensorFlow在一些地方使用用一个注册模板。代码看起来如下:
 \begin{lstlisting}[language=C++]
@@ -295,7 +295,7 @@ class MulKernel : OpKernel {
 };
 REGISTER_KERNEL(MulKernel, “Mul”);
 \end{lstlisting}
-这将在标准的.cc文件链接进你的应用，无论是作为主核心的一部分还是作为分割的自定义库的一部分吗。magic部分是REGISTER\_KERNEL()红是的通知TensorFlow核心必须实现多操作，因此它可能在图上任何要求它的地方调用。
+这将标准的.cc文件链接进你的应用，无论是作为主核心的一部分还是作为分割的自定义库的一部分。magic部分是REGISTER\_KERNEL()宏能通知TensorFlow核心必须实现乘法操作，因此它能在图上任何请求它的地方调用。
 
 从编程的观点，这建立是非常方便的。在相同的文件实现和注册代码，添加新的实现作为一个简单的编译和链接。困难的部分是REGISTER\_KERNEL()宏用C++实现。C++没有提供一个好的机制处理注册，因此我们必须重排一些代码。如下，宏被如下实现:
 \begin{lstlisting}[language=C++]
@@ -309,20 +309,21 @@ class RegisterMul {
 };
 RegisterMul g_register_mul;
 \end{lstlisting}
-这建立一个RegisterMul类结合一个构造体高数全局内核注册当一些人问如何创建Mul内核时调用什么函数。当有一个全局对象在类中，构造体应该在任何程序的开始以调用。
-尽管这替你来也许容易理解，不幸的是全局对象定义没有被任何其它的代码使用，因此链接器没有被结合这个想法设计，决定可能被删除。因此，狗载体没有被调用，类没有注册。所有的在TensorFlow中的顺序模型，Session实现首先当代码运行的时候被查找，当问题出现时哪一个为特征误差的原因。
-接被强制链接没有从库中删除任何代码，尽管它相信它没有使用。在iOS，这一步可能结合-force\_load flag实现，制定库的路径，在Linux你需要--whole-archive。这些劝说链接没有被强制的删掉，应该保留全局。
+这结合构造体建立一个RegisterMul类告诉全局内核当有人询问如何创建一个Mul核心的时候什么函数被调用。当有一个全局对象在类中，构造体应该在任何程序的开始以调用。
+尽管这容易理解，不幸的是全局对象定义没有被任何其它的代码使用，因此链接器没有被结合这个想法设计，决定可能被删除。因此，构造体没有被调用，类没有注册。所有的在TensorFlow中的排序的模型，Session实现首先当代码运行的时候被查找，这也是为什么当问题出现时显示属性错误的原因。
 
-实际的多种REGISTER\_*实现是一个复杂的时间，但是它们所有遭遇相同的问题。如果你感兴趣它们是如何工作的,\href{https://github.com/tensorflow/tensorflow/blob/master/tensorflow/core/framework/op_kernel.h#L1091}{ok\_kernel.h}是一个开始学习的好地方。
+解强制链接器不从库中删除任何代码，即使它相信它没有使用。在iOS，这一步可能结合-force\_load flag实现，指定库的路径，在Linux你需要--whole-archive。这些告诉链接器不被强制的删掉，应该保留全局。
+
+实际的多种REGISTER\_*实现是一个复杂的实践，但是他们遭遇相同的问题。如果你感兴趣它们是如何工作的,\href{https://github.com/tensorflow/tensorflow/blob/master/tensorflow/core/framework/op_kernel.h#L1091}{ok\_kernel.h}是一个开始学习的好地方。
 \subsection{Protobuf问题}
-TensorFlow依赖于\href{https://developers.google.com/protocol-buffers/}{Protocol Buffer}通常成为protobuf。这个库定义数据结构和产品序列为不同的语言对它定义访问代码。娇俏是生成的代码链接共享库为用于生成器的提取相同版本的框架。当protoc时可能是一个问题，这个工具用于从不同版本的protobuf而不是包含在路径中的库和标准链接protoc生成代码。例如，你也许复制构建在~/projects/protobuf-3.0.1.a的protoc，但是你有库安装在/usr/local/lib和/usr/local/include3.0.0版本。
+TensorFlow依赖于\href{https://developers.google.com/protocol-buffers/}{Protocol Buffer}通常称为protobuf。这个库定义数据结构和产品序列为不同的语言对它定义访问代码。技巧是生成的代码链接共享库为用于生成器的提取相同版本的框架。当protoc时可能是一个问题，这个工具用于从不同版本的protobuf而不是包含在路径中的库和标准链接protoc生成代码。例如，你可以复制构建在~/projects/protobuf-3.0.1.a的protoc，但是你需要库已经安装在/usr/local/lib和/usr/local/include 3.0.0版本。
 
-问题的症状是结合protobufs在编译或者链接语法是出现错误。通常构建工具考虑到了这个问题，但是如果你用makefile，确保你正在构建的protobuf库位置和使用正如\href{https://github.com/tensorflow/tensorflow/blob/master/tensorflow/contrib/makefile/Makefile#L18}{这个Makefile}。
+问题的症状是结合protobufs在编译或者链接时出现错误。通常构建工具考虑到了这个问题，但是如果你用makefile，确保你正在本地使用它构建的protobuf库，正如\href{https://github.com/tensorflow/tensorflow/blob/master/tensorflow/contrib/makefile/Makefile#L18}{这个Makefile}。
 
-另一种情况是当protobuf的touch和源文件需要作为编译程序的一部分是导致错误。这个过程使得编译更复杂，因此，第一个时期必须被传送protobuf定义粗黄健所有需要的代码文件，仅仅在你继续和构建代码库之后。
+另一种情况是当protobuf的touch和源文件需要作为编译程序的一部分时导致错误。这个过程使得编译更复杂，因此，第一步必须被传送protobuf定义创建所有需要的代码文件，之后你可以继续和构建代码库。
 
-\subsection{在同样的app中有多个版本的protobuf}
-Protobufs生成的头文件需要作为C++接口的一部分到TensorFlow库以内这是的使用库作为标准的框架变得复杂。
+\subsection{在同样的app中有多个版本的protobufs}
+Protobufs生成的头文件需要作为C++接口的一部分到整个TensorFlow库，这复杂了作为标准框架使用库。
 
 如果你的程序已经使用protocol buffers库版本1，你整合TensorFlow也许会出现一些问题因为它要求版本2。如果你尝试链接两个版本到相同的库，你将看到链接错误因为一些符号冲突。为了解决类似的问题，我们有一个试验脚本在\href{https://github.com/tensorflow/tensorflow/blob/master/tensorflow/contrib/makefile/rename_protobuf.sh}{rename\_protobuf.sh}。
 你需要运行下面目录作为makefile构建的一部分，之后你下载所有的依赖:
@@ -333,7 +334,7 @@ tensorflow/contrib/makefile/rename_protobuf.sh
 \subsection{调用TensorFlow API}
 当你有可用框架的时候你需要调用它。常见的模式是你先载入你的代表数值计算的模型，然后运行输入到模型(例如相机的图像)接收输出(例如，预测标签)
 
-在Android，我们提供Java推理库处理这种用法，然而在iOS和Respberry Pi你可以直接调用C++ API。
+在Android上，我们提供Java推理库处理这种用法，然而在iOS和Respberry Pi你可以直接调用C++ API。
 \subsection{Android}
 这里是Android上典型的推理库序列:
 \begin{lstlisting}[language=C++]
@@ -376,14 +377,14 @@ if (!run_status.ok()) {
 // Access the output data.
 tensorflow::Tensor* output = &outputs[0];
 \end{lstlisting}
-这是所有的基于\href{https://www.github.com/tensorflow/tensorflow/blob/r1.4/tensorflow/examples/ios/simple/RunModelViewController.mm}{iOS sample code}，但是没有iOS指定；同样代码应该在任何其它支持C++的平台不可用。你可以找到Raspberry Pi的\href{https://github.com/tensorflow/tensorflow/blob/master/tensorflow/contrib/pi_examples/label_image/label_image.cc}{例子}
+这是所有的基于\href{https://www.github.com/tensorflow/tensorflow/blob/r1.4/tensorflow/examples/ios/simple/RunModelViewController.mm}{iOS sample code}，但是没有iOS指定；同样代码应该在任何其它支持C++的平台上可用。你可以找到Raspberry Pi的\href{https://github.com/tensorflow/tensorflow/blob/master/tensorflow/contrib/pi_examples/label_image/label_image.cc}{例子}
 \section{为移动部署准备模型}
-这要求你在训练过程中储模型信息和你想释放它作为移动app的一部分非常不同，这个张建包含从训练模型到产品释放的一些转化工具。
+这要求你在训练过程中储模型信息和你想释放它作为移动app的一部分非常不同，这个章节包含从训练模型到产品释放的一些转化工具。
 \subsection{保存的文件格式有什么不同？}
-你可能发现tensorflow保存图的一些不同的方法变得非常的困惑。为了帮组理解，下面是一些不同组建的关于用于何处的介绍。目标通常被定义和序列化为protocol buffers:
+你可能发现tensorflow保存图的一些不同的方法变得非常的困惑。为了帮组理解，下面是一些不同组件的关于用于何处的介绍。目标通常被定义和序列化为protocol buffers:
 \begin{itemize}
 \item NodeDef:在模型中定义一个操作。它有一个独一无二的名字，一些其它节点的名字列表接收输入，才做类型实现(例如Add或者Mul)和任何需要控制操作的属性。这是TensorFlow基本的计算单元，所有网络节点的工作通过迭代被做，轮流使用每一个。这也许是一个单个的标量或者字符创，但是也保存一整个多为TensorFlow数组。Constent常熟的值被存在NodeDef，因此当序列化的时候大的常熟可能占据一些空间
-\item Checkpoint。另一个通过使用variable操作存储模型值的方法。不想Const操作，这不存储它们的内容作为NodeDef的一部分，因此它们在GraphDef中占据非常小的空间。当计算的时候它们的值在RAM中保持，然后周期性的输出checkpoint文件到磁盘。这通常发生在神经网络被训练和权重被更新的时候，因此它是一个时间敏感的操作，也许发生在分布式的一些工作站上，因此文件格式必须快和灵活。它们存储作为多个checkpoint文件的一部分，结合checkpoint文件中的metadata文件描述c。当你通过API访问（例如传递一个文件名作为命令行参数）checkpoint文件，你见够用通常的前缀和文件关联。如果你有这些文件
+\item Checkpoint。另一个通过使用variable操作存储模型值的方法。不像Const操作，这不存储它们的内容作为NodeDef的一部分，因此它们在GraphDef中占据非常小的空间。当计算的时候它们的值在RAM中保持，然后周期性的输出checkpoint文件到磁盘。这通常发生在神经网络被训练和权重被更新的时候，因此它是一个时间敏感的操作，也许发生在分布式的一些工作站上，因此文件格式必须快和灵活。它们存储作为多个checkpoint文件的一部分，结合checkpoint文件中的metadata文件描述c。当你通过API访问（例如传递一个文件名作为命令行参数）checkpoint文件，你见够用通常的前缀和文件关联。如果你有这些文件
 \begin{lstlisting}[language=Bash]
 /tmp/model/model-chkpt-1000.data-00000-of-00002
 /tmp/model/model-chkpt-1000.data-00001-of-00002
@@ -391,13 +392,13 @@ tensorflow::Tensor* output = &outputs[0];
 /tmp/model/model-chkpt-1000.meta
 \end{lstlisting}
 你将访问它们作为/tmp/model/chkpt-1000
-\item GraphDef:有一个NodeDefs列表，结合定义计算图执行。在训练中一些节点将为Variables，因此如果你想有一个完整的可运行的图，包含权重，你将需要调用恢复操作从checkpoint文件获取这些值。因为checkpoint载入必须灵活的处理所有的训练请求，这可能是一个在移动端和嵌入式设备实现的技巧，特别是想iOS没有合适的文件系统可用的情况。这里的手写脚本\href{https://www.github.com/tensorflow/tensorflow/blob/r1.4/tensorflow/python/tools/freeze_graph.py}{freeze\_graph.py}。正如上面提到的，仓鼠啊哦做存储它们的值错位NodeDef的有部分，因此如果所有的Variable权重被转化为常数节点。你可以在单次调用中载入结果文件不需要从checkpoint中回复变量值。一个查看GraphDef文件是有时候你已经存储在文本格式以方便查看。这个版本通常有.pbtxt文件后缀，正如二进制文件的.pb后缀一样
-\item FunctionDefLibrary：在GraphDef出现，是搞笑的设置子图，关于输入输出的信息。每个子图可以用作主图的操作，运行简单的实例化不同的节点，用泪水的方式用其它语言包装代码
-\item MetaGraphDef:一个空白的GraphDef仅仅有关于计算网络的信息，但是没有额外的关于魔性的信息或者模型如何使用的我信息。MetaGraphDef包含一个GraphDef定义模型的部分计算，而且包含想signatures的信息（暗示你想要调用的的输入输出，数据和Checkpoint文件存储地），对于一组操作方便的标签
-\item SavedModel：通常享有不同版本的图依赖一些chechpoint的变量。例如，你也许在一张图上需要需要GPU和CPU版本为两者保存权重。你也许需要额外的文件(想标记文件)作为你的模型的一部分。SavedModel文件通过放你保存多版本的图不复制变量，也在同一个bundle存储assert文件处理这些需要。在hood下，用MetaGraphDef和checkpoint文件，沿着额外的metadata文件。如果你用TensorFlow Serving部署web API它的格式你将想用它。
+\item GraphDef:有一个NodeDefs列表，结合定义计算图执行。在训练中一些节点将为Variables，因此如果你想有一个完整的可运行的图，包含权重，你将需要调用恢复操作从checkpoint文件获取这些值。因为checkpoint载入必须灵活的处理所有的训练请求，这可能是一个在移动端和嵌入式设备实现的技巧，特别是像iOS没有合适的文件系统可用的情况。这里的手写脚本\href{https://www.github.com/tensorflow/tensorflow/blob/r1.4/tensorflow/python/tools/freeze_graph.py}{freeze\_graph.py}。正如上面提到的，常数操作存储它们的值作为NodeDef的一部分，因此如果所有的Variable权重被转化为常数节点。你可以在单次调用中载入结果文件,不需要从checkpoint中恢复变量值。GraphDef文件有时候你已经存储在文本格式以方便查看。这个版本通常有.pbtxt文件后缀，正如二进制文件的.pb后缀一样
+\item \href{https://www.github.com/tensorflow/tensorflow/blob/r1.4/tensorflow/core/framework/function.proto}{FunctionDefLibrary}：在GraphDef出现，是高效的设置子图，关于输入输出的信息。每个子图可以用作主图的操作，运行简单的实例化不同的节点，用泪水的方式用其它语言包装代码
+\item \href{https://www.github.com/tensorflow/tensorflow/blob/r1.4/tensorflow/core/protobuf/meta_graph.proto}{MetaGraphDef}:一个空白的GraphDef仅仅有关于计算网络的信息，但是没有额外的关于模型的信息或者模型如何使用的信息。MetaGraphDef包含一个GraphDef定义模型的部分计算，而且包含像signatures的信息（暗示你想要调用的的输入输出，数据和Checkpoint文件存储地），对于一组操作方便的标签
+\item SavedModel：通常享有不同版本的图依赖一些chechpoint的变量。例如，你也许在一张图上需要需要GPU和CPU版本为两者保存权重。你也许需要额外的文件(像标记文件)作为你的模型的一部分。SavedModel文件通过存放你保存的多版本的图不复制变量，也在同一个bundle存储assert文件处理这些需要。在hood下，用MetaGraphDef和checkpoint文件，伴随着额外的metadata文件。如果你用TensorFlow Serving部署web API它的格式你将想使用它。
 \end{itemize}
 \subsection{如何获取一个能在移动端运行的模型?}
-多数情况下，结合TensorFlow训练一个模型给你一个包含GraphDef的文件(通常以.pb或者.pbtxt为扩展名)和一些Checkpoint文件。用于移动设备和嵌入设备部署的是被frozen的单个的GraphDef文件或者有一个变量转化为常数的所有文件，为了处理，你将需要在\href{https://www.github.com/tensorflow/tensorflow/blob/r1.4/tensorflow/python/tools/freeze_graph.py}{tensorflow/python/tools/freeze\_graph.py}freeze\_graph.py脚本,你需要像这样运行:
+多数情况下，结合TensorFlow训练一个模型给你一个包含GraphDef的文件(通常以.pb或者.pbtxt为扩展名)和一些Checkpoint文件。用于移动设备和嵌入设备部署的是被frozen的单个的GraphDef文件或者由一个变量转化为常数的所有文件，为了处理，你将需要在\href{https://www.github.com/tensorflow/tensorflow/blob/r1.4/tensorflow/python/tools/freeze_graph.py}{tensorflow/python/tools/freeze\_graph.py}脚本,你需要像这样运行:
 \begin{lstlisting}[language=Bash]
 bazel build tensorflow/tools:freeze_graph
 bazel-bin/tensorflow/tools/freeze_graph \
@@ -406,22 +407,23 @@ bazel-bin/tensorflow/tools/freeze_graph \
 --output_graph=/tmp/frozen_graph.pb \
 --output_node_names=output_node \
 \end{lstlisting}
-输入input\_graph参数应该指向保存你的模型架构的GraphDef文件。你的GraphDef必须以文本格式存储在磁盘，这种情况下以.pbtxt结尾而不是.pb，你应该添加一个额外的--input\_binary=false标记到命中。
+输入input\_graph参数应该指向保存你的模型架构的GraphDef文件。你的GraphDef必须以文本格式存储在磁盘，这种情况下以.pbtxt结尾而不是.pb，你应该添加一个额外的--input\_binary=false标记到命令中。
 
-input\_checkpoint应该是最近保存的checkpoint文件。正如checkpoint章节提到的，你需要给常规的前座到checkpoint文件而不是一个完整的名字。
+input\_checkpoint应该是最近保存的checkpoint文件。正如checkpoint章节提到的，你需要给常规的前缀到checkpoint文件而不是一个完整的名字。
 
 output\_graph定义frozen GraphDef将被存储在哪里。因为它可能包含一些占据较大磁盘空间的权重值，通常它总是保存为二进制的protobuf。
 
-output\_node\_names是一个你想从图中提取的节点的名称列表。这时需要的是因为freezing京城需要明白图的那一部分是实际需要的，那一部分需要人工训练的，想一些总结操作一样。唯一的操作贡献计算给定的输出节点包保持。如果你知道你的图正在被使用。这些应该是节点的名字你传递进Session::run()作为你的获取目标。最简单的摘到节点名称的方法是在Python中构建你的图查看节点对象。在TensorBoard是另一个简单的方法。你可以通过\href{https://github.com/tensorflow/tensorflow/tree/master/tensorflow/tools/graph_transforms/README#inspecting-graphs}{summarize\_graph tool}获取可能的输出建议。
+output\_node\_names是一个你想从图中提取的节点的名称列表。这时需要的是因为freezing进程需要明白图的哪一部分是实际需要的，哪一部分需要人工训练的，像一些总结操作一样。唯一的贡献计算给输出节点将被保存的操作。如果你知道你的图正在被使用。这些应该是节点的名字你传递进Session::run()作为你的获取目标。最简单的摘到节点名称的方法是在Python中构建你的图查看节点对象。在TensorBoard是另一个简单的方法。你可以通过\href{https://github.com/tensorflow/tensorflow/tree/master/tensorflow/tools/graph_transforms/README#inspecting-graphs}{summarize\_graph tool}获取可能的输出建议。
 
-因为TensorFlow的输出格式已经随着时间改变，有一些通常比较少使用的的flag也可以使用，想input\_saver,但是希望你不要用现代的框架版本在图上训练。
+因为TensorFlow的输出格式已经随着时间改变，有一些通常比较少使用的的flag也可以使用，像input\_saver,但是希望你不要用现代的框架版本在图上训练。
 \subsection{用图转换工具}
-你需要高效运行图的一些事是通过\href{https://www.github.com/tensorflow/tensorflow/blob/r1.4/tensorflow/tools/graph_transforms/README.md}{ Graph Transform Tool},这个命令行工具接收一个输入GraphDef作为输入应用一些重写规则，然后写出结果到GraphDef。查看文档获取构建和运行这个工具的更多信息。
+你需要在设备上高效运行图的一些事是通过\href{https://www.github.com/tensorflow/tensorflow/blob/r1.4/tensorflow/tools/graph_transforms/README.md}{ Graph Transform Tool},这个命令行工具接收一个输入GraphDef作为输入应用一些你要求的重写规则，然后写出结果到GraphDef。查看文档获取构建和运行这个工具的更多信息。
 \subsection{移除仅仅训练节点}
 TensorFlow GraphDefs通过训练包含所有的需要反向计算和权重更新的计算，只要查询和解码输入，保存checkpoint。所有的节点不再需要推理，一些像checkpoint保存的文件甚至不支持移动平台。为了创建一个模型文件你可能需要通过运行Graph Transformtool的strip\_unused\_node规则删除这些不需要的操作。
-处理的最薄弱的部分是在推理过程中找出你想用作输入和输出节点的名字。当你开始推理的时候需要要这些方法，但是你也需要它们呢么以至于转换可以计算那一个节点在推理路径中不需要。这也许不同于训练代码。最简单的方法是用TensorBoard决定图中节点被访问。
 
-记住记住，移动设备通常通过传感器收集数据以数组的形式保存，由于训练通常设计带入和解码存储在磁盘上的数据表达。以Inception V3为例，有一个DecodeJpeg op开始图设计用于从磁盘接收JPEG编码的数据转换为任意大小的图像，之后有一个BilinearResize op缩放它到希望的大小，接着一些操作转换字节数据为浮点数，用图希望的方式放大在里面值的幅度。一个典型的移动app将跳过这些步骤直接从相机开始输入，因此输入节点你将应用实际上成为输出节点
+处理的最薄弱的部分是在推理过程中找出你想用作输入和输出的节点的名字。当你开始推理的时候需要这些方法，但是你也需要它们以至于转换可以计算哪一个节点在推理路径中不需要。这也许不同于训练代码。最简单的方法是用TensorBoard决定图中节点被访问。
+
+记住，移动设备通常通过传感器收集数据以数组的形式保存，由于训练通常涉及载入和解码存储在磁盘上的数据表达。以Inception V3为例，有一个DecodeJpeg op开始图设计用于从磁盘接收JPEG编码的数据转换为任意大小的图像，之后有一个BilinearResize op缩放它到希望的大小，接着一些操作转换字节数据为浮点数，用图希望的方式放大在里面值的幅度。一个典型的移动app将跳过这些步骤直接从相机开始输入，因此输入节点你将应用实际上成为输出Mul节点
 \begin{figure}[!h]
 	\centering
 	\includegraphics[scale=0.3]{inception_input.png}
@@ -441,26 +443,27 @@ bazel run tensorflow/tools/graph_transforms:transform_graph --
   fold_old_batch_norms'
 
 \end{lstlisting}
-一件需要留心的是是你需要制定你想你的输入的大小和类型。这是因为一些你将传入作为输入用于推理的值需要输入到特殊的Placeholder op操作，转如果它们不存在换也许需要创建它们，用Inception V3的例子，一个Placeholder节点取代以前的Mul节点用于输出resize和rescale图像矩阵。因此我们在调用TensorFlow之前正在处理我们自己。为了保留原始是的名字，这也是为什么我们总是在袖肥的Inception输入Mul然后运行一个session。
+一件需要留心的事是你需要指定你想的输入的大小和类型。这是因为一些你将传入作为输入用于推理的值需要输入到特殊的Placeholder op操作，转如果它们不存在换也许需要创建它们，用Inception V3的例子，一个Placeholder节点取代以前的Mul节点用于输出resize和rescale图像矩阵。因此我们在调用TensorFlow之前正在处理我们自己。为了保留原始的名字，这也是为什么我们总是feed输入到Mul后结合我们修改的Ineption图然后运行一个session。
 在你运行这个程序后，必将有一个仅仅包含需要运行预测程序的当前节点。在这点上在图上运行度量变得十分有用，因此它的值得再次运行summary\_graph明白在你的模型上有什么。
 \subsection{什么操作应该被包含在移动端?}
-在TensorFlow中有上百个可用的操作，每个操作针对不同的数据类型有多种实现。在移动平台编译后的二进制文件的大小非常重要，因为app捆绑下载的东西越小用户体验越好。如果所有的TensorFlow操作和数据类型被编译进入TensorFlow库中编译库可能有上10M，因此默认只有操作和数据类型的自己被包括。
+在TensorFlow中有上百个可用的操作，每个操作针对不同的数据类型有多种实现。在移动平台编译后的二进制文件的大小非常重要，因为app捆绑下载的东西越小用户体验越好。如果所有的TensorFlow操作和数据类型被编译进入TensorFlow库中编译库可能有上10M，因此默认只有操作和数据类型的自己被包含。
 
-这意味着如果你载入一个已经在桌面环境下训练过的模型文件，当你在移动平台载入它你也许看到No OpKernel was  registered to support Op错误。首先确保你删除了仅仅训练的节点，因为如果你的op从未执行错误将在载入时发生。如果当你照做后依然出现同样的问题，你将需要查看添加操作到你的构建库。
+这意味着如果你载入一个已经在桌面环境下训练过的模型文件，当你在移动平台载入它时你也许看到No OpKernel was  registered to support Op错误。首先确保你删除了仅仅训练的节点，因为如果你的op从未执行，错误将在载入时发生。如果当你照做后依然出现同样的问题，你将需要查看添加操作到你的构建库。
 
 包含操作和类型的标准有如下类别:
 \begin{itemize}
-	\item 对于其它训练需要是否有用，比如checkpoint文件保存?我们丢弃它
-	\item 是否以来的框架是移动端可用的，如libjpeg。避免额外的依赖，我们博包含DecodeJpeg操作
+	\item 他们是不是仅仅在反向传播或者梯度计算中有用?因此移动集中在推理，我们不包含这些。
+	\item 他们对于其他训练需要，像checkpoint保存是有用的？这里我们leave out 
+	\item 是否依赖的框架是移动端可用的，如libjpeg。避免额外的依赖，我们不包含DecodeJpeg操作
 	\item 有不常使用的类型?我们不包含操作的boolean变量，因此我们不能在通常的推理图上看到它们中大多数
 \end{itemize}
 操作默认被修剪以适应移动平台的推理，但是可以修改构建文件修改默认。在修改构建文件后，你将需要重新编译TensorFlow。查看下面获取如何去做的更多细节，也可以查看\href{https://www.tensorflow.org/mobile/optimizing?hl=zh-cn#binary_size}{Optimizing}查看更多减小二进制文件尺寸的信息。
 \subsection{定位实现}
-操作被分为两部分。第一部分是操作的定义，什么操作的signature，那个输入，输出，拥有属性。这将占据非常小的空间，这些默认被包含。操作计算的实现在kernel（在tensorflor/core/kernels文件夹）中实现，你需要编译包含C++文件的内核实现进入库。为了找出那个文件是，你可以在源文件中搜索操作的名字。
+操作被分为两部分。第一部分是操作的定义，什么操作的signature声明，哪个输入，输出，拥有属性。这将占据非常小的空间，这些默认被包含。操作计算的实现在kernel（在tensorflor/core/kernels文件夹）中实现，你需要编译包含C++文件的内核实现进入库。为了找出那个文件是，你可以在源文件中搜索操作的名字。
 \href{https://github.com/search?utf8=%E2%9C%93&q=repo%3Atensorflow%2Ftensorflow+extension%3Acc+path%3Atensorflow%2Fcore%2Fkernels+REGISTER+Mul&type=Code&ref=searchresults}{Here’s an example search in github}
 你将看到这个搜索正在寻找Mul操作实现，它在tensorflow/core/kernels/cwise\_op\_mul\_1.cc中。你需要用REGISTER开始寻找宏，你关心的操作的名字作为一个字符串参数。
 
-在这种情况下，实现被才分为多个.cc文件，因此你需要在构建它们的过程中包含它们。如果你觉得用命令行搜索代码合适，这里是一个ghrep命令，如果你从TensorFlow仓库的跟目录运行它能定位正确的文件
+在这种情况下，实现拆分分为多个.cc文件，因此你需要在构建它们的过程中包含它们。如果你觉得用命令行搜索代码合适，这里是一个grep命令，如果你从TensorFlow仓库的根目录运行它能定位正确的文件
 \lstinline[language=Bash]{grep 'REGISTER.*"Mul"' tensorflow/core/kernels/*.cc}
 \subsection{添加实现构建}
 如果你用Bazel，为Android构建，你将需要添加文件\href{https://www.github.com/tensorflow/tensorflow/blob/r1.4/tensorflow/core/kernels/BUILD#L3565}{android\_extended\_ops\_group1}或者\href{https://www.github.com/tensorflow/tensorflow/blob/r1.4/tensorflow/core/kernels/BUILD#L3632}{android\_extended\_ops\_group2}目标。你也许需要包含任何的在这里依赖的.cc文件。如果构建报出缺少头文件，添加.h的文件到\href{https://www.github.com/tensorflow/tensorflow/blob/r1.4/tensorflow/core/kernels/BUILD#L3525}{android\_extended\_ops}。如果你用一个makefile在iOS，Raspberry Pi等等，去\href{https://www.github.com/tensorflow/tensorflow/blob/r1.4/tensorflow/contrib/makefile/tf_op_files.txt}{tensorflow/contrib/makefile/tf\_op\_files.txt}添加正确的实现文件。
@@ -474,12 +477,12 @@ bazel run tensorflow/tools/graph_transforms:transform_graph --
 \item 性能和线程
 \end{itemize}
 \subsection{TensorFlow 最低的设备要求是什么?}
-你需要至少一兆的程序存储空间和多兆RAM运行基本的TensorFlow环境，因此对于DSP或者微控制器来说是不合适的。相比于这些，贵大的约束是设备的计算速度，和是否你能用较低的代价为你的应用运行模型。你可以在\href{https://www.tensorflow.org/mobile/optimizing?hl=zh-cn#how_to_profile_your_model}{How to Profile your Model}使用基准测试工具了解你的模型需要多少FLOPs，然后使用这个经验法则估计它们将在不同的设备上运行多快。例如，现代的智能手机也许有10GGLOPs/s，因此你希望从一个5GFLOP模型是每秒两帧，尽管你也许做的比较差的依赖同计算样板提取什么。
+你需要至少一兆的程序存储空间和多兆RAM运行基本的TensorFlow环境，因此对于DSP或者微控制器来说是不合适的。相比于这些，最大的约束是设备的计算速度和是否你能用较低的代价为你的应用运行模型。你可以在\href{https://www.tensorflow.org/mobile/optimizing?hl=zh-cn#how_to_profile_your_model}{How to Profile your Model}使用基准测试工具了解你的模型需要多少FLOPs，然后使用这个经验法则估计它们将在不同的设备上运行多快。例如，现代的智能手机也许有10GFLOPs/s，因此你希望从一个5GFLOP模型是每秒两帧，尽管你也许做的比较差的依赖同计算样板提取什么。
 
-模型依赖是的在比较旧的或者资源少的手机上运行TensorFlow成为了可能。对更多的内存使用，我们通常需要确保TensorFlow创建的中间缓存不要太大，你也可以检查基准输出。
+模型依赖是的在比较旧的或者资源少的手机上运行TensorFlow成为了可能。只要你优化你的网络结合延迟budget在尽可能限制的RAM，我们需要最大程度确保TensorFlow创建的中间缓存不要太大，你也可以检查基准输出。
 
 \subsection{Speed}
-一个很高优先级的模型部署是找出五河更快的运行推理给出一个好的用户体验。首先是查看执行图要求的浮点操作。你可以使用benchmark\_model工具获取原始的估计。
+一个很高优先级的模型部署是找出如何更快的运行推理给出一个好的用户体验。首先是查看执行图要求的浮点操作。你可以使用benchmark\_model工具获取原始的估计。
 \begin{lstlisting}[language=C++]
 bazel build -c opt tensorflow/tools/benchmark:benchmark_model && \
 bazel-bin/tensorflow/tools/benchmark/benchmark_model \
@@ -488,12 +491,12 @@ bazel-bin/tensorflow/tools/benchmark/benchmark_model \
 --output_layer="softmax:0" --show_run_order=false --show_time=false \
 --show_memory=false --show_summary=true --show_flops=true --logtostderr
 \end{lstlisting}
-这将给你显示运行图需要多少操作。你也可以用这信息找出你的模型在目标上如何可行。例如，2016年出的高端手机能每秒到200亿FLOPs。因此你可能希望的罪加速度要求在大约500ms范围达到100亿 Flops。在想Rasphberry Pi3上可能有50亿Flops，你也许仅仅没两步得到一个推理。
+这将给你显示运行图需要多少操作。你也可以用这信息找出你的模型在目标上如何可行。例如，2016年出的高端手机能每秒到200亿FLOPs。因此你可能希望的最佳速度要求在大约500ms范围达到100亿 Flops。在像Rasphberry Pi 3上可能有50亿Flops，你也许仅仅没每步得到一个推理。
 
-有这些估计帮助你计划在设备上能湖区真是计算。如果迷行有太多操作，然后有一些机会优化架构减少数量。
+有这些估计帮助你计划在设备上能获取真是的估计。如果模型有太多操作，然后有一些机会优化架构减少数量。
 高级的技术包含\href{https://arxiv.org/abs/1602.07360}{SqueezeNet} \href{https://arxiv.org/abs/1704.04861}{MobileNet}（针对移动设备快速但是牺牲少量精度）。你也可以查看一些可用的模型，及时老的模型，也许也很小。例如，Inception V1仅仅有700万参数，相比于Inception V3的240万参数，要求3亿FLOPs而不是v3的9亿参数。
 \subsection{模型大小}
-运行在设备上的模型需要被存储在设备上的某个地方，非常大的神经网络可能有数百兆。多数用户不愿从app store下载非常大的原件包，因此你想保证你的模型尽可能小。更进一步，越小的神经网络丝能在移动设备上运行的越快。
+运行在设备上的模型需要被存储在设备上的某个地方，非常大的神经网络可能有数百兆。多数用户不愿从app store下载非常大的捆绑包，因此你想保证你的模型尽可能小。更进一步，越小的神经网络能在移动设备上运行的越快。
 为了明白你磁盘上的网络多大，在上面（查看\href{https://www.tensorflow.org/mobile/prepare_models?hl=zh-cn}{Preparing models}了解更多关于这个工具的信息）运行freeze\_graph和strip\_unused\_nodes通过查看你的GraphDef的大小。因此当它仅仅包含推理相关的节点时。再次检查你的结果，运行summarize\_graph工具查看多少参数是常数:
 \begin{lstlisting}[language=Bash]
 bazel build tensorflow/tools/graph_transforms:summarize_graph && \
@@ -521,12 +524,12 @@ bazel-bin/tensorflow/tools/graph_transforms/transform_graph \
 \end{lstlisting}
 如果你查看结果文件的大小，你应该看到它有原来23M文件的1/4。
 
-另一个变换是round\_weights,，它并不能是文件变得更小，但是它是文件能压缩quantize\_weights使用时的相同大小。它的特殊用途是移动部署，利用app在用户下载前安装包被压缩。
+另一个变换是round\_weights,，它并不能使文件变得更小，但是它是文件能压缩quantize\_weights使用时的相同大小。它的特殊用途是移动部署，利用app在用户下载前安装包被压缩。
 
-原始文件用标准的算法不能压缩的很好，因为一的数可能非常不同。round\_weights变换保持权重参数以浮点数存储，但是四舍五入它们到最近的值。这意味着存储的模型中有一些重复的字节模式，因此亚索可能带来尺寸的巨大减小，在一些情况下大小僵尸你作为8位存储。
-round\_weights的另一个好处是框架不用分配临时buffer给解包的参数当我们必须的时候我们仅仅使用quantize\_weights。这保存一些时延(尽管结果应该被缓存以至于仅仅在第一次运行时花费)保证它能用内存映射，正如后面描述的。
+原始文件用标准的算法不能压缩的很好，因为每个类似的数的位数可能非常不同。round\_weights变换保持权重参数以浮点数存储，但是四舍五入它们到最近的值。这意味着存储的模型中有一些重复的字节模式，因此压缩可能带来尺寸的巨大减小，在一些情况下为了尽量小的存储他们被作为8位存储。
+round\_weights的另一个好处是框架不用分配临时buffer给解包的参数,当我们必须的时候我们仅仅使用quantize\_weights。这保存一些时延(尽管结果应该被缓存以至于仅仅在第一次运行时花费)保证它能用内存映射，正如后面描述的。
 \subsection{二进制文件的大小}
-移动端和服务端最大不同是二进制文件的到校很重要。在桌面环境下它通常有上百兆，但是对于移动和嵌入式app保持二进制文件足够小以至于用户能轻松下载。正如上面提到的，TensorFlow包含默认操作实现的子集，但是最后的可执行文件仍然有12M。俄日了奸笑着，你可以建立你确实需要仅仅包含操作实现的库，基于自动分析你的模型。使用它。
+移动端和服务端最大不同是二进制文件的大小很重要。在桌面环境下它通常有上百兆，但是对于移动和嵌入式app保持二进制文件足够小以至于用户能轻松下载。正如上面提到的，TensorFlow包含默认操作实现的子集，但是最后的可执行文件仍然有12M。为了减小这，你可以建立你确实需要仅仅包含操作实现的库，基于自动分析你的模型。使用它。
 \begin{itemize}
 \item 在你的模型上运行tools/print\_required\_ops/print\_selective\_registration\_header.py生成使op能用的头文件
 \item 放置ops\_to\_register.h文件到编译器能找到的路径。这可以是你的TensorFlow源文件的根目录。
@@ -534,7 +537,7 @@ round\_weights的另一个好处是框架不用分配临时buffer给解包的参
 \end{itemize}
 这个处理重新编译库以至于仅仅你需要的操作和类型被包含，这可能极大地减小可执行文件的大小。例如，结合Inception v3,新的大小仅仅1.5M。
 \subsection{如何探测你的模型}
-当你了解你的设备的峰值性能后，值得查看当前性能。使用表真的TensorFlow基准，而不是在更大的app中运行它，帮助隔离TensorFlow与时延。\href{https://www.github.com/tensorflow/tensorflow/blob/r1.4/tensorflow/tools/benchmark/}{tensorflow/tools/benchmark}工具设计用来帮助你做这个。为了在你的桌面机器中运行Inception V3，构架基准模型:
+当你了解你的设备的峰值性能后，值得查看当前性能。使用标准的TensorFlow基准，而不是在更大的app中运行它，帮助隔离TensorFlow与时延。\href{https://www.github.com/tensorflow/tensorflow/blob/r1.4/tensorflow/tools/benchmark/}{tensorflow/tools/benchmark}工具设计用来帮助你做这个。为了在你的桌面机器中运行Inception V3，构架基准模型:
 \begin{lstlisting}[language=Bash]
 bazel build -c opt tensorflow/tools/benchmark:benchmark_model && \
 bazel-bin/tensorflow/tools/benchmark/benchmark_model \
@@ -581,13 +584,13 @@ Memory (bytes): count=50 curr=128366400(all same)
 \begin{itemize}
 \item 节点类型，操作的种类
 \item op的开始时间，显示序列操作在哪里下降
-\item 首先是毫秒，是第一次运行基准测试花费了多少时间，因此通过博人20运行是执行得到可行的统计。第一次对于发现操作计算花费很有用，然后缓存数据
+\item 首先是毫秒，是第一次运行基准测试花费了多少时间，因此通过默认20次运行得到真实的统计。第一次对于发现操作计算花费很有用，然后缓存数据
 \item 所有运行的操作的平均时间，毫秒
 \item 运行op占据的总时间的百分比。对于理解热点在哪里很有用。
 \item 之前所有表格中操作的时间。它对于理解层中什么分布式的工作，查看多少节点花费了大多数的时间很有用
 \item 节点的名字
 \end{itemize}
-第二个表格类似但是通过类似节点才分时间，通过op的种类组合它们。这对于理解那个操作实现想要优化或者从表中消除是很有用的。表格从开始排列多数费时的操作，仅仅显示前10个入口，对于其它的节点结合placeholder，列从左往右是:
+第二个表格类似但是通过类似名称节点拆分时间，通过op的种类组合它们。这对于理解哪个操作实现想要优化或者从表中消除是很有用的。表格从开始排列多数费时的操作，仅仅显示前10个入口，对于其它的节点结合placeholder，列从左往右是:
 \begin{itemize}
 \item 典型被分析的节点
 \item 这种类型所有节点的累计平均时间，毫秒
@@ -595,10 +598,11 @@ Memory (bytes): count=50 curr=128366400(all same)
 \item 比这个操作类型更高的累计时间花费，因此你可以理解workload的分布
 \item 这个输出的多少内存被占用
 \end{itemize}
-两个建立的表格使得你能很容易的复制和粘贴它们的结果到电子表格文件，因此它们被介个tabs作为列的分割输出。通过节点类型的总结当查找油画机会可能很有用，因为它是代码花费时间的关键点。在这种情况下，你可能看到Conv2D操作大约90\%的执行时间。这是一个图优化的符号，因为卷积和举着成是神经网络的计算workload。
-正如经验指出，更多的考虑如果你查看一些其它的操作占据超过一个晓得时间比例。对于神经网络，通常不涉及大矩阵乘法通常应该比单个小，因此如果你的一些时间进入了这里，这意味着你的网络不是一个有花的结构，或者实现这些操作的代码没有优化到它能优化的底部。如果你看到这些情况总是欢迎你查看\href{https://github.com/tensorflow/tensorflow/issues}{Performance bugs }或者patch,特别是如果你包含一个附件模型展示这个行为和命令行用于在基准测试工具上运行。
+两个建立的表格使得你能很容易的复制和粘贴它们的结果到电子表格文件，因此它们被这个tabs作为列的分割输出。通过节点类型的总结当查找优化机会可能很有用，因为它是代码花费时间的关键点。在这种情况下，你可能看到Conv2D操作大约90\%的执行时间。这是一个图优化的符号，因为卷积和矩阵乘作为神经网络的计算workload的bulk。
 
-为了在左面环境上运行下面，但是这个工具在Android上工作，这对于移动部署很有用，下面的在arm64bit上运行示例的命令:
+正如经验指出，更多的考虑如果你查看一些其它的操作占据超过一个小的时间比例。对于神经网络，通常不涉及大矩阵乘法通常应该比单个小，因此如果你的一些时间进入了这里，这意味着你的网络不是一个优化的结构，或者实现这些操作的代码没有优化到最优。如果你看到这些情况欢迎你查看\href{https://github.com/tensorflow/tensorflow/issues}{Performance bugs }或者patch,特别是如果你包含一个附件模型展示这个行为和命令行用于在基准测试工具上运行。
+
+为了在桌面环境上运行下面，但是这个工具在Android上工作，这对于移动部署很有用，下面的在arm 64bit上运行示例的命令:
 \begin{lstlisting}[language=Bash]
 bazel build -c opt --config=android_arm64 \ 
 tensorflow/tools/benchmark:benchmark_model
@@ -610,9 +614,9 @@ adb shell '/data/local/tmp/benchmark_model \
 --output_layer="softmax:0" --show_run_order=false --show_time=false \
 --show_memory=false --show_summary=true'
 \end{lstlisting}
-你可以用和桌面满相同的方法解释上面的命令，如果你对于找出输入输出名字和类型有点麻烦查看\href{https://www.tensorflow.org/mobile/prepare_models?hl=zh-cn}{Preparing models}页默认关于你的模型如何检测这些，查看summarize\_graph工具也许给你一些帮助信息。
+你可以用和桌面版相同的方法解释上面的命令，如果你在找出输入输出名字和类型遇到了点麻烦，查看\href{https://www.tensorflow.org/mobile/prepare_models?hl=zh-cn}{Preparing models}页了解你的模型如何检测这些，查看summarize\_graph工具也许给你一些帮助信息。
 
-这不支持iOS下的命令行，因此在\href{https://www.github.com/tensorflow/tensorflow/blob/r1.4/tensorflow/examples/ios/benchmark}{tensorflow/examples/ios/benchmark}中有一个分割的例子，包的功能和标准app的功能相同。食醋胡统计设备屏幕和调试日志。如果你想为Android例子在屏幕上统计，你可以通过按压音量上键打开它们。
+这不支持iOS下的命令行，因此在\href{https://www.github.com/tensorflow/tensorflow/blob/r1.4/tensorflow/examples/ios/benchmark}{tensorflow/examples/ios/benchmark}中有一个分割的例子，包的功能和标准app的功能相同。输出统计设备屏幕和调试日志。如果你想为Android例子在屏幕上统计，你可以通过按压音量上键打开它们。
 
 \subsection{探测你的app}
 你通过benchmark工具查看的从模型生成的输出包含作为标准TensorFlow的一部分，这意味着你必须在你自己的应用中访问它们，你可以查看一个\href{https://www.github.com/tensorflow/tensorflow/blob/r1.4/tensorflow/examples/ios/benchmark/BenchmarkViewController.mm?l=139}{例子}
@@ -640,19 +644,19 @@ stat_summarizer->PrintStepStats();
 \end{lstlisting}
 \end{itemize}
 \subsection{可视化模型}
-多数搞笑的加速你的代码的方法是通过修改你的模型因为它做很少的工作。左到这个你需要明白你的模型在做什么，可视化它是一个好的一步。为了获取高级图概览，使用\href{https://github.com/tensorflow/tensorboard}{TensorBoard}
+多数高效的加速你的代码的方法是通过修改你的模型，因为它做很少的工作。做到这个你需要明白你的模型在做什么，可视化它是一个好的一步。为了获取高级图概览，使用\href{https://github.com/tensorflow/tensorboard}{TensorBoard}
 \subsection{线程}
-TensorFlow桌面环境有一个高级的县城模式，如果可以将尝试运行多个操作。在我们的在我们的属于李成为"Inter-op parallelism"(烤炉避免和"intra-op"弄混，你可以把它当做"between-op"),你可以通过在会话选项中指定inter\_op\_parallelism\_threads。
+TensorFlow桌面环境有一个高级的线程模式，如果可以尝试运行多个操作。在我们的术语中这被称为"Inter-op parallelism"(考虑避免和"intra-op"弄混，你可以把它当做"between-op"),你可以通过在会话选项中指定inter\_op\_parallelism\_threads。
 
-默认，移动设备连续的运行操作，这是inter\_op\_parallielism\_threads被设置为1。移动处理器通常有一些核心很小的的cache，因此运行多个互不影响在分开的内存区域对性能没有帮助。"Intra-op parallelism"或者("Within-op")可能很有用，特别是对于计算受限的操作想卷积(不同的线程可以输入相同的小的存储区)。
+默认，移动设备连续的运行操作，这是inter\_op\_parallielism\_threads被设置为1。移动处理器通常有一些核心很小的的cache，因此运行多个互不影响在分开的内存区域对性能没有帮助。"Intra-op parallelism"或者("Within-op")可能很有用，特别是对于计算受限的操作像卷积(不同的线程可以输入相同的小的存储区)。
 
-在移动端，一个操作多少线程将被使用同默认设置核心数，或者当核心不被决定的时候为2。你可以在会话选项设置intra\_op\_parallelism\_threads覆盖默认的线程数。如果你有自己的线程处理繁重的任务一个好的想法是减少默认线程数量，一直以它们不能相互影响。为了查看更多会话选项，查看\href{https://www.github.com/tensorflow/tensorflow/blob/r1.4/tensorflow/core/protobuf/config.proto}{ ConfigProto}
+在移动端，一个操作默认多少线程将使用这些核心数，或者当核心不被决定的时候为2。你可以在会话选项设置intra\_op\_parallelism\_threads覆盖默认的线程数。如果你有自己的线程处理繁重的任务一个好的想法是减少默认线程数量，以至于它们不能相互影响。为了查看更多会话选项，查看\href{https://www.github.com/tensorflow/tensorflow/blob/r1.4/tensorflow/core/protobuf/config.proto}{ ConfigProto}
 \subsection{使用移动数据重新训练}
-在移动app上运行模型的一个最大的问题是精度不能代表训练数据。例如，多数ImageNet照片well-gramed以至于对象在图片的中铁建，well-lit和正规lens的shot。手机设备上的相片经常帧率低，badly lit，可能有鱼眼畸变。
+在移动app上运行模型的一个最大的问题是精度不能代表训练数据。例如，多数ImageNet照片是well-gramed以至于对象在图片的中间，well-lit和正规lens的shot。手机设备上的相片经常帧率低，badly lit，可能有鱼眼畸变。
 
-解决方案是扩展从你的应用捕获的训练集。这步设计额外的工作，因此你将必须自己标记样本，但是及时你用它扩展你的原始的训练数据，它可能对训练数据集有帮助。为了通过做这个改善训练集合，通过福鼎其它的想复制或者差的标签样本修复其它的质量问题是最好的提升精度分方法。通常比使用不同的技术修改你的模型架构更有效。
+解决方案是扩展从你的应用捕获的训练集。这步设计额外的工作，因此你将必须自己标记样本，但是即使你用它扩展你的原始的训练数据，它可能对训练数据集有帮助。为了通过做这个改善训练集合，通过修复其它的像复制或者差的标签样本修复其它的质量问题是最好的提升精度分方法。通常比使用不同的技术修改你的模型架构更有效。
 \subsection{减少模型载入时间和内存footprint}
-大多数的操所系统运与你用内存映射载入一个文件，而不是通过通常的I/O API。相对于在堆上分配一个内存区域而是从磁盘复制字节进去，你简单的高数操作系统使得文件的整个内容在内存中出现。这有一些好处:
+大多数的操作系统允许你用内存映射载入一个文件，而不是通过通常的I/O API。相比于在堆上分配一个内存区域而是从磁盘复制字节进去，你简单的告诉操作系统使得整个文件的内容在内存中出现。这有一些好处:
 \begin{itemize}
 \item 载入速度
 \item 减少page（增加性能）
@@ -661,7 +665,7 @@ TensorFlow桌面环境有一个高级的县城模式，如果可以将尝试运�
 TensorFlow也支持能从一些模型文件映射权重。因为在ProtoBuf序列化格式的限制，我们必须改变我们的模型载入和处理代码。这个内存映射工作是我们有一个文件，第一部分是正常GraphDef序列为protocol buffer wire格式，但是权重以一种方式添加以至于能被直接映射。
 为了创建这个文件，运行tensorflow/contrib/util:conver\_graphdef\_memmapped\_format工具。这接受在GraphDef文件通过freeze\_graph运行，转化它到权重被添加到最后的格式。因此文件不在是一个标准的GraphDef protobuf，你需要做一些改变载入代码。你可以在LoadMemoryMappedModel()函数中\href{https://www.github.com/tensorflow/tensorflow/blob/r1.4/tensorflow/examples/ios/camera/tensorflow_utils.mm?l=147}{iOS Cammera demo app}查看这个例子。
 
-同样的代码(结合Object C调用获取文件的过去文件的替代)可以用在其它的平台。因为我们用内存银蛇，我们需要通过创建一个特殊的TensorFlow环境对象监理文件我们将使用:
+同样的代码(结合Object C调用获取文件的过去文件的替代)可以用在其它的平台。因为我们用内存映射，我们需要通过创建一个特殊的TensorFlow环境对象建立文件我们将使用:
 \begin{lstlisting}[language=C++]
 std::unique_ptr<tensorflow::MemmappedEnv> memmapped_env;
 memmapped_env->reset(
@@ -669,7 +673,7 @@ memmapped_env->reset(
 tensorflow::Status mmap_status =
       (memmapped_env->get())->InitializeFromFile(file_path);
 \end{lstlisting}
-你然后需要在这个环境传递子序列，唱着歌载入图:
+你然后需要在这个环境传递子序列，像这样载入图:
 \begin{lstlisting}[language=C++]
 tensorflow::GraphDef tensorflow_graph;
 tensorflow::Status load_graph_status = ReadBinaryProto(
@@ -688,14 +692,13 @@ options.env = memmapped_env->get();
 tensorflow::Session* session_pointer = nullptr;
 tensorflow::Status session_status =
     tensorflow::NewSession(options, &session_pointer);
-
 \end{lstlisting}
-这里有一件事需要注意，我们禁用了自动优化，因此在一些情况下，浙江折叠子树，创建一个tensor值的复制（我们不想用更多的RAM）
+这里有一件事需要注意，我们禁用了自动优化，因此在一些情况下，这将折叠子树，创建一个tensor值的复制（我们不想用更多的RAM）
 
 当你进行这些步的时候，你可以用session和graph作为normal，你应该看到载入时间和内存使用减小。
 
 \subsection{从简单的复制保护模型文件}
-默认，你的模型将从一个被存在磁盘上标准的序列化的protobuf。理论上任何人可以复制你的模型，你也许不想这样。然而，实际上多数模型通过优化变得如此专用和混淆，风险类似在竞争者反编译和重瞳你的代码，但是如果你想使得它结合普通的用户访问你的文件是不可能的采用如下步骤。
+默认，你的模型将从一个被存在磁盘上标准的序列化的protobuf中。理论上任何人可以复制你的模型，你也许不想这样。然而，实际上多数模型用于专业领域，有类似在竞争者反编译和重用你的代码的风险，但是如果你想使得它结合普通的用户访问你的文件时可以采用如下步骤。
 
 我们多数代码使用\href{https://www.github.com/tensorflow/tensorflow/blob/r1.4/tensorflow/core/platform/env.cc?q=core/platform/env.cc&l=409}{ReadBinaryProto()}方便的调用从磁盘载入GraphDef。这要求一个没有加密的protobuf。幸运的，调用实现是相当直接应该很容易在内存中写一个等价可以加密的。这里一些代码显示你可以使用自己的加密环境如何读和加密一个protobuf。
 \begin{lstlisting}[language=C++]
@@ -713,7 +716,7 @@ Status ReadEncryptedProto(Env* env, const string& fname,
   return Status::OK();
 }
 \end{lstlisting}
-为了使用这，你将需要定义一个DecryptData()函数。它可能想下面这样简单:
+为了使用这，你将需要定义一个DecryptData()函数。它可能像下面这样简单:
 \begin{lstlisting}[language=C++]
 void DecryptData(string* data) {
   for (int i = 0; i < data.size(); ++i) {
@@ -722,61 +725,5 @@ void DecryptData(string* data) {
 }
 
 \end{lstlisting}
-你也许想要一些更复杂的，但是明确你将需要当前scope外的什么?
-\section{为移动部署准备模型}
-这要求你在训练过程中储模型信息和你想释放它作为移动app的一部分非常不同，这个张建包含从训练模型到产品释放的一些转化工具。
-\subsection{保存的文件格式有什么不同？}
-你可能发现tensorflow保存图的一些不同的方法变得非常的困惑。为了帮组理解，下面是一些不同组建的关于用于何处的介绍。目标通常被定义和序列化为protocol buffers:
-\begin{itemize}
-\item NodeDef:在模型中定义一个操作。它有一个独一无二的名字，一些其它节点的名字列表接收输入，才做类型实现(例如Add或者Mul)和任何需要控制操作的属性。这是TensorFlow基本的计算单元，所有网络节点的工作通过迭代被做，轮流使用每一个。这也许是一个单个的标量或者字符创，但是也保存一整个多为TensorFlow数组。Constent常熟的值被存在NodeDef，因此当序列化的时候大的常熟可能占据一些空间
-\item Checkpoint。另一个通过使用variable操作存储模型值的方法。不想Const操作，这不存储它们的内容作为NodeDef的一部分，因此它们在GraphDef中占据非常小的空间。当计算的时候它们的值在RAM中保持，然后周期性的输出checkpoint文件到磁盘。这通常发生在神经网络被训练和权重被更新的时候，因此它是一个时间敏感的操作，也许发生在分布式的一些工作站上，因此文件格式必须快和灵活。它们存储作为多个checkpoint文件的一部分，结合checkpoint文件中的metadata文件描述c。当你通过API访问（例如传递一个文件名作为命令行参数）checkpoint文件，你见够用通常的前缀和文件关联。如果你有这些文件
-\begin{lstlisting}[language=Bash]
-/tmp/model/model-chkpt-1000.data-00000-of-00002
-/tmp/model/model-chkpt-1000.data-00001-of-00002
-/tmp/model/model-chkpt-1000.index
-/tmp/model/model-chkpt-1000.meta
-\end{lstlisting}
-你将访问它们作为/tmp/model/chkpt-1000
-\item GraphDef:有一个NodeDefs列表，结合定义计算图执行。在训练中一些节点将为Variables，因此如果你想有一个完整的可运行的图，包含权重，你将需要调用恢复操作从checkpoint文件获取这些值。因为checkpoint载入必须灵活的处理所有的训练请求，这可能是一个在移动端和嵌入式设备实现的技巧，特别是想iOS没有合适的文件系统可用的情况。这里的手写脚本\href{https://www.github.com/tensorflow/tensorflow/blob/r1.4/tensorflow/python/tools/freeze_graph.py}{freeze\_graph.py}。正如上面提到的，仓鼠啊哦做存储它们的值错位NodeDef的有部分，因此如果所有的Variable权重被转化为常数节点。你可以在单次调用中载入结果文件不需要从checkpoint中回复变量值。一个查看GraphDef文件是有时候你已经存储在文本格式以方便查看。这个版本通常有.pbtxt文件后缀，正如二进制文件的.pb后缀一样
-\item FunctionDefLibrary：在GraphDef出现，是搞笑的设置子图，关于输入输出的信息。每个子图可以用作主图的操作，运行简单的实例化不同的节点，用泪水的方式用其它语言包装代码
-\item MetaGraphDef:一个空白的GraphDef仅仅有关于计算网络的信息，但是没有额外的关于魔性的信息或者模型如何使用的我信息。MetaGraphDef包含一个GraphDef定义模型的部分计算，而且包含想signatures的信息（暗示你想要调用的的输入输出，数据和Checkpoint文件存储地），对于一组操作方便的标签
-\item SavedModel：通常享有不同版本的图依赖一些chechpoint的变量。例如，你也许在一张图上需要需要GPU和CPU版本为两者保存权重。你也许需要额外的文件(想标记文件)作为你的模型的一部分。SavedModel文件通过放你保存多版本的图不复制变量，也在同一个bundle存储assert文件处理这些需要。在hood下，用MetaGraphDef和checkpoint文件，沿着额外的metadata文件。如果你用TensorFlow Serving部署web API它的格式你将想用它。
-\end{itemize}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+你也许想要一些更复杂的，但是明确你将需要当前scope之外的什么?
 
