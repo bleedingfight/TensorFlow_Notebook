@@ -1,0 +1,215 @@
+\section{Android TensorFlow支持}
+这个目录定义组件(本地.so库和Java Jar)在Android上支持TensorFlow。这包含:
+\begin{itemize}
+\item \href{https://github.com/tensorflow/tensorflow/blob/master/tensorflow/java/README.md}{TensorFlow Java API}
+\item 一个TensorFlowInferenceInterface类提供一个晓得APIsurface用于模型执行的推理和性能总结。
+\end{itemize}
+对样例使用，查看在\href{https://github.com/tensorflow/tensorflow/blob/master/tensorflow/examples/android}{TensorFlow Android Demo}中的\href{https://github.com/tensorflow/tensorflow/blob/master/tensorflow/examples/android/src/org/tensorflow/demo/TensorFlowImageClassifier.java}{TensorFlowImageClassifier.java}。
+
+为了预构建库，查看\href{https://ci.tensorflow.org/view/Nightly/job/nightly-android/}{ nightly Android build artifacts }了解最近的构建。
+
+TensorFlow推理结构作为一个\href{https://bintray.com/google/tensorflow/tensorflow}{JCenter package}（查看tensorflow-android目录）可以用在工程中的build.gradle文件被包含在你的android工程中:
+\begin{jsoncode}
+allprojects {
+    repositories {
+        jcenter()
+    }
+}
+
+dependencies {
+    compile 'org.tensorflow:tensorflow-android:+'
+}
+\end{jsoncode}
+这将告诉Gradle使用在\href{https://jcenter.bintray.com/org/tensorflow/tensorflow-android/}{JCenter}释放的\href{https://bintray.com/google/tensorflow/tensorflow/_latestVersion}{最新版本}的TensorFlow AAR。如果你希望在你的app中指定的释放TensorFlow的版本，替换+为明确的版本标签。
+
+为了构建你自己的库(如果，例如，你想支持常规的TensorFlow操作)，选择你偏爱的方法:
+\subsection{bazel}
+第一个Bazel设置说明在\href{https://github.com/tensorflow/tensorflow/blob/master/tensorflow/examples/android/README.md}{ tensorflow/examples/android/README.md }
+
+然后构建本地TF库:
+\begin{bashcode}
+bazel build -c opt //tensorflow/contrib/android:libtensorflow_inference.so \
+   --crosstool_top=//external:android/crosstool \
+   --host_crosstool_top=@bazel_tools//tools/cpp:toolchain \
+   --cpu=armeabi-v7a
+\end{bashcode}
+取代armeabi-v7a结合你的目标架构。
+
+库文件将在:\newline
+\bashinline{bazel-bin/tensorflow/contrib/android/libtensorflow_inference.so}\newline
+为了构建Java counterpart:\newline 
+\bashinline{bazel build //tensorflow/contrib/android:android_tensorflow_inference_java}\newline
+你将发现JAR文件在:\newline
+\bashinline{bazel-bin/tensorflow/contrib/android/libandroid_tensorflow_inference_java.jar}
+\subsection{CMake}
+使用cmake构建一个包含AAR文件的文档查看\href{https://github.com/tensorflow/tensorflow/blob/master/tensorflow/contrib/android/cmake}{tensorflow/contrib/android/cmake}
+\subsection{AssetmanagerFileSystem}
+这个目录包含一个TensorFlow文件系统支持Android asset管理。当写本地(C++)结合TensorFlow代码时也许很有用。对于通常使用，上面的库将很高效。
+\section{图转换工具}
+\subsection{介绍}
+当你训练好了一个模型像在产品中部署它的时候，你讲想修改它使他能在最终的环境中运行的更好。例如如果你针对手机你也许想通过量化权重缩小文件大小，或者优化batch normalization或者其他仅仅训练的特征。图转化框架提供了合适的工具修改计算图，一个框架使得它很容易写你自己的修改。
+
+这个导航由三个主要部分构成，首先导航给出如何执行常见任务，其次索引包含所有的不同被包含的转化。结合选项使用它们最后知道创建你自己的转化。
+\subsection{使用图转化工具}
+在模型上的图转化工具设计用来保存GraphDef文件，通常在二进制的protobug格式中。这是在TensorFlow计算图中低级的定义，包含节点列表和他们之间的输入输出连接。如果你使用Python API训练你的模型，这将通常保存你的checkpoint文件在同样的目录下，后缀通常是.pb。
+
+如果你想结合训练的参数，例如，量化权重，你想需要运行\href{https://github.com/tensorflow/tensorflow/blob/master/tensorflow/python/tools/freeze_graph.py}{tensorflow/python/tools/freeze\_graph.py}转化checkpoint值为嵌入在图文件中的常数。
+
+你可以按照这样调用图转换工具:
+\begin{bashcode}
+bazel build tensorflow/tools/graph_transforms:transform_graph
+bazel-bin/tensorflow/tools/graph_transforms/transform_graph \
+--in_graph=tensorflow_inception_graph.pb \
+--out_graph=optimized_inception_graph.pb \
+--inputs='Mul:0' \
+--outputs='softmax:0' \
+--transforms='
+strip_unused_nodes(type=float, shape="1,299,299,3")
+remove_nodes(op=Identity, op=CheckNumerics)
+fold_old_batch_norms
+'
+\end{bashcode}
+这里的参数指定从图的哪里读取，哪里写入转化的版本，输入输出层是什么，什么变换修改图。转换作为一个名称列表给定，可以有些参数。这些转换定义了修改的pipeline用于生成输出。有时候你在其它出现之前需要一些转换，列表的顺序让你制定什么首先出现。注意优化remove\_nodes(op=Identity,op=CheckNumbers)将用控制流操作打包模型，正如tf.cond，tf.map\_fn和tf.while。
+\subsection{查看图}
+工具支持的一些变换需要知道模型的输入输出层是什么。对模型训练处理最好的源，分类输入将成为节点从训练集接收数据，预测输入。如果你不确定用\href{https://github.com/tensorflow/tensorflow/blob/master/tensorflow/tools/graph_transforms/summarize_graph_main.cc}{summarize\_graph}工具查看模型和提供输出输出节点可能的猜测，只要其他信息对于调试管用。这里有一个如何在\href{http://download.tensorflow.org/models/image/imagenet/inception-2015-12-05.tgz}{Inception V3 graph}上训练的例子:
+\begin{bashcode}
+bazel build tensorflow/tools/graph_transforms:summarize_graph
+bazel-bin/tensorflow/tools/graph_transforms/summarize_graph --in_graph=tensorflow_inception_graph.pb 
+\end{bashcode}
+\subsection{常用情况}
+这个章节对于常用的转化pipeline有小的向导，针对想快速完成任务的用户。他们一些人使用InceptionV3模型作为他们的例子，可以从\href{http://download.tensorflow.org/models/image/imagenet/inception-2015-12-05.tgz}{这里}下载。
+\subsection{优化部署}
+如果你完成训练你的模型想部署它到服务器或者移动设备上，你将希望及可能快的裕兴，正如非基本的表达。这个清单移除所有的在推理中没有调用的节点，缩小表达式为单个节点，通过pre-multiplying权重卷积优化一些乘法操作使用batch normalization。
+\begin{bashcode}
+bazel build tensorflow/tools/graph_transforms:transform_graph
+bazel-bin/tensorflow/tools/graph_transforms/transform_graph \
+--in_graph=tensorflow_inception_graph.pb \
+--out_graph=optimized_inception_graph.pb \
+--inputs='Mul' \
+--outputs='softmax' \
+--transforms='
+  strip_unused_nodes(type=float, shape="1,299,299,3")
+  remove_nodes(op=Identity, op=CheckNumerics)
+  fold_constants(ignore_errors=true)
+  fold_batch_norms
+  fold_old_batch_norms'
+\end{bashcode}
+batch norm折叠包括两次因为两个batch norm在TensorFlow中使用。老版本的实现结合单个BatchNormWithGlobalNormalization操作，但是将被废弃，最近的方法使用单个操作实现相同的计算。两个转化以至于风格被识别和优化。
+\subsection{修复在移动端损失的内核错误}
+移动版本的TensorFlow集中注意力在推理，因此对于bazel默认支持的操作列表在\href{https://github.com/tensorflow/tensorflow/blob/master/tensorflow/core/kernels/BUILD}{tensorflow/core/kernels/BUILD:android_extended_ops}并且\href{https://github.com/tensorflow/tensorflow/blob/master/tensorflow/contrib/makefile/tf_op_files.txt}{tensorflow/contrib/makefile/tf\_op\_files.txt }对于make不包含一些相关训练。这可能因为当一个GraphDef被载入时No OpKernel was registered to support Op错误，甚至操作将步执行。
+
+如果你看到这误差同时这是一个你想在移动端运行的操作，然后你将需要做本地修改构建文件以包含正确的.cc文件定义它。在一些情况下op仅仅是一个来自训练处理的退化的残留，如果它是真的然后你将运行\href{https://github.com/tensorflow/tensorflow/blob/r1.4/tensorflow/tools/graph_transforms/README.md#strip_unused_nodes}{strip\_unused\_nodes}指定你的推理的输入输出移除不需要的节点:
+\begin{bashcode}
+bazel build tensorflow/tools/graph_transforms:transform_graph
+bazel-bin/tensorflow/tools/graph_transforms/transform_graph \
+--in_graph=tensorflow_inception_graph.pb \
+--out_graph=optimized_inception_graph.pb \
+--inputs='Mul' \
+--outputs='softmax' \
+--transforms='
+  strip_unused_nodes(type=float, shape="1,299,299,3")
+  fold_constants(ignore_errors=true)
+  fold_batch_norms
+  fold_old_batch_norms'
+\end{bashcode}
+\subsection{缩小文件尺寸}
+如果你正打算作为你的移动app的一部分部署你的模型，然后保持下载尺寸尽可能小是很重要的。对于多数TensorFlow模型，为文件的大小最大的贡献者是传入卷积和全连接层的权重，因此任意你可以减小存储尺寸是都是很重要的。幸运的事多数神经网络存在噪声，因此可能改变权重在损失中的表达损失很小的精度是可能的。
+
+在iOS和Android app上包下载前被压缩，因此最简单的减少你的用户的贷款需要接收你的app提供原始数据压缩更容易。但是默认权重被作为浮点值被存储，即使很小的不同，因此没有压缩的很好。如果你四舍五入权重以至于接近权重被存储作为相同的值。结果位流有一些重复因此压缩更高效。为了在你的模型上使用这个技术，运行\href{https://github.com/tensorflow/tensorflow/blob/r1.4/tensorflow/tools/graph_transforms/README.md#round_weights}{round_weights}变换。
+\begin{bashcode}
+bazel build tensorflow/tools/graph_transforms:transform_graph
+bazel-bin/tensorflow/tools/graph_transforms/transform_graph \
+--in_graph=tensorflow_inception_graph.pb \
+--out_graph=optimized_inception_graph.pb \
+--inputs='Mul' \
+--outputs='softmax' \
+--transforms='
+  strip_unused_nodes(type=float, shape="1,299,299,3")
+  fold_constants(ignore_errors=true)
+  fold_batch_norms
+  fold_old_batch_norms
+  round_weights(num_steps=256)'
+\end{bashcode}
+你应该看到optimized_inception_graph.pb输出文件和输入有同样的尺寸，但是如果你压缩它，大约比原始的文件笑了70\%!关于图的很好的变换是它一点没有改变图的结构，因此他的运行提取同样的操作应该和之前有同样的时延和内存使用。你可以调整num\_steps参数控制每个权重多少值被四舍五入，因此越小的数将增加压缩的损失精度。
+
+正如进一步，你可以存储权重为8位值，这里是清单:
+\begin{bashcode}
+bazel build tensorflow/tools/graph_transforms:transform_graph
+bazel-bin/tensorflow/tools/graph_transforms/transform_graph \
+--in_graph=tensorflow_inception_graph.pb \
+--out_graph=optimized_inception_graph.pb \
+--inputs='Mul' \
+--outputs='softmax' \
+--transforms='
+  strip_unused_nodes(type=float, shape="1,299,299,3")
+  fold_constants(ignore_errors=true)
+  fold_batch_norms
+  fold_old_batch_norms
+  quantize_weights'
+\end{bashcode}
+这应该看到输出图的大小是原始的1/4。下面的这个方法比较round\_weights是额外的解压缩操作插入转换8位值到浮点数，但是在TensorFlow的运行中的优化应该确保结果被缓存以至于我们不能看到图运行更慢。
+
+目前为止我们已经集中注意力在权重上，因为通常它转矩大量空间。如果你有一个有一些小节点的图，这些节点的名字可以转矩一个合理的空间(特别是输入输出)很小，crypitic但是独一无二的ids：
+\begin{bashcode}
+bazel build tensorflow/tools/graph_transforms:transform_graph
+bazel-bin/tensorflow/tools/graph_transforms/transform_graph \
+--in_graph=tensorflow_inception_graph.pb \
+--out_graph=optimized_inception_graph.pb \
+--inputs='Mul:0' \
+--outputs='softmax:0' \
+--transforms='
+  obfuscate_names
+\end{bashcode}
+\subsection{八位计算}
+对于一些平台用8位计算和浮点数相比是很有用的。在TensorFlow中对于它的支持任然是试验性的，但是你通过使用graph transform tool可以转化模型为量化的模型：
+\begin{bashcode}
+bazel build tensorflow/tools/graph_transforms:transform_graph
+bazel-bin/tensorflow/tools/graph_transforms/transform_graph \
+--in_graph=tensorflow_inception_graph.pb \
+--out_graph=optimized_inception_graph.pb \
+--inputs='Mul' \
+--outputs='softmax' \
+--transforms='
+  add_default_attributes
+  strip_unused_nodes(type=float, shape="1,299,299,3")
+  remove_nodes(op=Identity, op=CheckNumerics)
+  fold_constants(ignore_errors=true)
+  fold_batch_norms
+  fold_old_batch_norms
+  quantize_weights
+  quantize_nodes
+  strip_unused_nodes
+  sort_by_execution_order'
+\end{bashcode}
+这处理转换在图中的所有的操作8位量化，剩余的误差被丢掉。仅仅操作的子集支持，在一些操作中量化的代码也许实际上比浮点的运行还慢，但是这是当所有的情况都正确是增加性能的替换方式。
+
+一个完整的优化量化的向导超过了这个导航，但是一件事可以帮助在ConvD2D后使用FakeQuantWithMinMaxVars 操作或者训练中使用类似操作。这训练min/max变量控制量化的范围，以至于范围不需要通过在推理中动态计算。
+\subsection{转换索引}
+--transform字符串被解析为一些变换的名字，每个可以有多个命名的参数在里面。参数被用逗号分隔，如果他们本是包含都好双引号可以用于保存参数的值（例如形状的定义）
+
+--inputs和--outputs通过所有的变换共享，因此通常需要了解图中的忽略和outgoing节点。你应该确保你设置在调用图转化工具前正确的设置了这些，如果你感到疑惑和模型的作者讨论或者使用\href{https://github.com/tensorflow/tensorflow/tree/master/tensorflow/tools/graph_transforms#inspecting-graphs}{summarize\_graph}工具检查可能的输入和输出。
+
+所有的转换乐意传递ignore\_errors标记，值可以使true或者false。但是默认任何错误发生在变换中将终止整个进程，但是如果你开启它错误将被采集转化被跳过。对于可选的转换这时很有用的，这里版本错误和其它不重要的问题也许触发一个错误。
+\subsection{add\_default\_attributes}
+参数:None
+当在新版本的TensorFlow中属性被添加到操作，他们经常确保和之前的版本向后兼容。模型通常在运行的时候图被载入，但是如果你的模型被在TensorFlow框架外继续处理，他可能对于更新处理作为变换很有用。处理发现任何操作属性在当前的TensorFlow操作列表中定义但是不在其中保存，设置他么为属性定义默认值。
+\subsection{backport\_concatv2}
+args:None
+如果你有一个GraphDef文件由新版的包含ConcatV2的TensorFlow框架生成，你想在仅仅支持Cancat的老版本上运行，这转换将考虑这些新的操作的旧版形式。
+\subsection{flatten\_atrous\_conv}
+Args:none\newline
+要求:\href{https://github.com/tensorflow/tensorflow/blob/r1.4/tensorflow/tools/graph_transforms/README.md#fold_constants}{fold\_constants}\newline
+这转换flatten atrous卷积，对应一个SpaceToBatchND-Conv2D-BatchToSpaceND操作序列，结合上采样转化他为一个正规的Conv2D操作。这转化应该被用与在平台上运行atrous卷积对还不支持SpaceToBatchND和BatchToSpaceND操作，你将需要确保在这变换后运行\href{https://github.com/tensorflow/tensorflow/blob/r1.4/tensorflow/tools/graph_transforms/README.md#fold_constants}{fold\_constants}。如果合适，你应该在\href{https://github.com/tensorflow/tensorflow/blob/r1.4/tensorflow/tools/graph_transforms/README.md#fold_batch_norms}{ fold_batch_norms}运行这个变换
+
+
+
+
+
+
+
+
+
+
+
+
+
