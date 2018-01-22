@@ -46,7 +46,7 @@ GBM （boosted trees，增强树）已经有一段时间了，关于这个话题
 XGBoost 用于监督学习问题，我们使用训练数据 $x_i$ 来预测目标变量 $y_i$ 。 在我们深入了解 boosted trees 之前，首先回顾一下监督学习的重要组成部件。
 
 \section{模型和参数}
-监督学习中的 model（模型） 通常是指给定输入 $x_i$ 如何去预测输出 $y_i$ 的数学结构。 例如，一个常见的模型是一个 linear model（线性模型）（如线性回归和 logistic regression），其中的预测是由$ \hat{y}_t=\sum_j w_hx_{ij}$ 给出的，这是加权输入特征的线性组合（线性叠加的方式）。 其实这里的预测 yy 可以有不同的解释，取决于做的任务。 例如，我们可以通过 logistic 转换得到 logistic regression 中 positive 类别的概率，当我们想要对输出结果排序的时候，也可以作为排序得分指标等。
+监督学习中的 model（模型） 通常是指给定输入 $x_i$ 如何去预测输出 $y_i$ 的数学结构。 例如，一个常见的模型是一个 linear model（线性模型）（如线性回归和 logistic regression），其中的预测是由$ \hat{y}_t=\sum_j w_hx_{i}$ 给出的，这是加权输入特征的线性组合（线性叠加的方式）。 其实这里的预测 $\hat{y}_i$ 可以有不同的解释，取决于做的任务。 例如，我们可以通过 logistic 转换得到 logistic regression 中 positive 类别的概率，当我们想要对输出结果排序的时候，也可以作为排序得分指标等。
 
 parameters（参数） 是我们需要从数据中学习的未确定部分。在线性回归问题中，参数是系数 $w$ 。 通常我们使用 $\Theta$ 来表示参数。
 
@@ -58,7 +58,7 @@ parameters（参数） 是我们需要从数据中学习的未确定部分。在
 其中 $L$ 是训练损失函数， $\Omega$ 是正则化项。 training loss （训练损失）衡量我们的数据对训练数据的预测性。 例如，常用的训练损失是 mean squared error（均方误差，MSE）。
 \[L(\Theta)=\sum_i(y-\hat{y}_i)^2\]
 另一个常用的损失函数是 logistic 回归的 logistic 损失。
-\[L(\theta)=\sum_i[y_iln(1+e^{-\hat{y}_i})^2]\]
+\[L(\theta)=\sum_i[y_i\ln(1+e^{-\hat{y}_i})^2]+(1-y_i)\ln(1+e^{\hat{y}_i})\]
 regularization term（正则化项） 是人们通常忘记添加的内容。正则化项控制模型的复杂性，这有助于避免过拟合。 这听起来有些抽象，那么我们在下面的图片中考虑下面的问题。在图像左上角给出输入数据点的情况下，要求您在视觉上 fit（拟合） 一个 step function（阶梯函数）。 您认为三种中的哪一种解决方案是最拟合效果最好的？
 \begin{figure}[H]
 \centering
@@ -94,7 +94,7 @@ Step function
 
 上图是两棵树的集成的例子。将每棵树的预测分数加起来得到最终分数。 如果你看一下这个例子，一个重要的事实就是两棵树互相 complement（补充） 。 在数学表示上，我们可以在表单中编写我们的模型。
 \[\hat{y}_i=\sum_{k=1}^Kf_k(x_i),f_k\in F\]
-其中 KK 是树的数量， ff 是函数空间 FF 的函数， FF 是所有可能的 CARTs 的集合。所以我们优化的目标可以写成
+其中 $K$ 是树的数量， $f$ 是函数空间 $F$ 的函数， $F$ 是所有可能的 CARTs 的集合。所以我们优化的目标可以写成
 \[obj(\Theta)=\sum_i^n l(y_i,\hat{y}_i)+\sum_{k=1}^K\Omega(f_k)\]
 那么问题来了，random forests（随机森林）的 model（模型） 是什么？这正是 tree ensembles（树集成）！所以 random forests 和 boosted trees 在模型上并没有什么不同，不同之处在于我们如何训练它们。这意味着如果你写一个 tree ensembles（树集成）的预测服务，你只需要编写它们中的一个，它们应该直接为 random forests（随机森林）和 boosted trees（增强树）工作。这也是监督学习基石元素的一个例子。
 
@@ -107,14 +107,13 @@ Tree Boosting
 我们想要问的第一件事就是树的 parameters（参数） 是什么。 你可能已经发现了，我们要学习的是那些函数 $f_i$ ，每个函数都包含树的结构和叶子分数。这比传统的你可以找到捷径的优化问题要难得多。在 tree ensemble 中，参数对应了树的结构，以及每个叶子节点上面的预测分数。 一次性训练所有的树并不容易。 相反，我们使用一个附加的策略：优化好我们已经学习完成的树，然后一次添加一棵新的树。 我们通过 $y^{(t)}$ 来关注步骤 $t$ 的预测值，所以我们有
 \begin{equation*}
 	\begin{split}
-		\hat{y}_i^{(0)} = 0\\
-		\hat{y}_i^{(1)} = f_1(x_i)=\hat{y}_i^{(0)}+f_1(x_i)\\
-		\hat{y}_i^{(2)} = f_1(x_i) + f_2(x_i) = \hat{y}_i^{(1)}+f_2(x_i)\\
+		\hat{y}_i^{(0)} &= 0\\
+		\hat{y}_i^{(1)} &= f_1(x_i)=\hat{y}_i^{(0)}+f_1(x_i)\\
+		\hat{y}_i^{(2)} &= f_1(x_i) + f_2(x_i) = \hat{y}_i^{(1)}+f_2(x_i)\\
 		\cdots\\
-		\hat{y}^{(t)}_i=\sum_{k=1}^tf_k(x_i)=\hat{y}_i^{(t-1)}+f_t(x_i)
+		\hat{y}^{(t)}_i&=\sum_{k=1}^tf_k(x_i)=\hat{y}_i^{(t-1)}+f_t(x_i)
 	\end{split}
 \end{equation*}
-另外还有一个问题，每一步我们想要哪棵 tree 呢？一个自然而然的事情就是添加一个优化我们目标的方法。
 \begin{equation*}
 	\begin{split}
 		Obj^{(t)}&=\sum_{i=1}^nl(y_i,\hat{y}_i^{(t)})+\sum_{i=1}^t\Omega(f_i)\\
@@ -124,8 +123,8 @@ Tree Boosting
 如果我们考虑使用 MSE 作为我们的损失函数，它将是下面的形式。
 \begin{equation*}
 	\begin{split}
-		Obj^{(i)}&=\sum_{i=1}^n(y_i-(\hat{y_i}^{(t-1)}))+\sum_{i=1}^t\Omega(f_i)\\
-		&=\sum_{i=1}^n[2(\hat{(t-1)}_i-y_i)f_t(x_i)+f_t(x_i)^2]+\Omega(f_t)+constant 
+		Obj^{(t)}&=\sum_{i=1}^n(y_i-(\hat{y_i}^{(t-1)}+f_t(x_i)))^2+\sum_{i=1}^t\Omega(f_i)\\
+		&=\sum_{i=1}^n[2(\hat{y}^{(t-1)}_i-y_i)f_t(x_i)+f_t(x_i)^2]+\Omega(f_t)+constant 
 	\end{split}
 \end{equation*}
 MSE 的形式比较友好，具有一阶项（通常称为残差）和二次项。 对于其他形式的损失（例如，logistic loss），获得这么好的形式并不是那么容易。 所以在一般情况下，我们把损失函数的泰勒展开到二阶
@@ -134,24 +133,20 @@ MSE 的形式比较友好，具有一阶项（通常称为残差）和二次项�
 		Obj^{(t)}=\sum_{i=1}^n[l(y_i,\hat{y}_i^{(t-1)})+\frac{1}{2}h_if_t^2(x_i)]+\Omega(f_t)+constant 
 	\end{split}
 \end{equation*}
-
 其中 $g_i$ 和 $h_i$ 被定义为
 \begin{equation*}
 	\begin{split}
-		g_i = \partial^2_{\hat{y}_i^{(t-1)}l(y_i,\hat{y_i}^{(t-1)})}\\
-		h_i = \partial^2_{\hat{y}^{(t-1)_i}}l(y_i,\hat{y_i^{(t-1)}})
+		g_i = \partial^2_{\hat{y}_i^{(t-1)}}l(y_i,\hat{y_i}^{(t-1)})\\
+		h_i = \partial^2_{\hat{y}^{(t-1)}_t}l(y_i,\hat{y}_i^{(t-1)})
 	\end{split}
 \end{equation*}
-
-我们删除了所有的常量之后， tt 步骤中的具体目标就变成了
+我们删除了所有的常量之后， $t$ 步骤中的具体目标就变成了
 \begin{equation*}
 	\begin{split}
 		\sum_{i=1}^n[g_if_t(x_i)+\frac{1}{2}h_if_t^2(x_i)]+\Omega(f_t)
 	\end{split}
 \end{equation*}
-
 这成为了新树的优化目标。这个定义的一个重要优点是它只依赖于 $g_i$ 和 $h_i$ 。这就是 xgboost 如何支持自定义损失函数。 我们可以使用完全相同的使用 $g_i$ 和 $h_i$ 作为输入的 solver（求解器）来对每个损失函数进行优化，包括 logistic regression， weighted logistic regression。
-
 \subsection{模型复杂度}
 我们已经介绍了训练步骤，但是等等，还有一个重要的事情，那就是 regularization（正则化） ！ 我们需要定义树的复杂度 $\Omega(f)$ 。为了做到这一点，让我们首先改进一棵树的定义 $f(x)$ 如下
 \begin{equation*}
@@ -159,16 +154,13 @@ MSE 的形式比较友好，具有一阶项（通常称为残差）和二次项�
 		f_t(x) = w_{q(x)},w\in R^T,q:R^d\rightarrow\left\{1,2,\ldots,T\right\}
 	\end{split}
 \end{equation*}
-
 这里 $w$ 是树叶上的分数向量，$q$ 是将每个数据点分配给叶子的函数，$T$ 是树叶的数量。 在 XGBoost 中，我们将复杂度定义为
 \begin{equation*}
 	\begin{split}
 		\Omega(f)=\gamma T+\frac{1}{2}\lambda\sum_{j=1}^Tw^2_j 
 	\end{split}
 \end{equation*}
-
 当然有不止一种方法来定义复杂度，但是这个具体的方法在实践中运行良好。正则化是大多数树的包不那么谨慎或简单忽略的一部分。这是因为对传统的树学习算法的对待只强调提高 impurity（不纯性），而复杂度控制则是启发式的。 通过正式定义，我们可以更好地了解我们正在学习什么，是的，它在实践中运行良好。
-
 \section{The Structure Score（结构分数）}
 这是 derivation（派生）的神奇部分。在对树模型进行重新格式化之后，我们可以用第 $t$ 棵树来编写目标值如 :
 \begin{equation*}
@@ -177,33 +169,27 @@ MSE 的形式比较友好，具有一阶项（通常称为残差）和二次项�
 		&=\sum_{j=1}^T[(\sum_{i\in I_j})w_j+\frac{1}{2}(\sum_{i\in I_j}h_i+\lambda)w^2_j]+\gamma T
 	\end{split}
 \end{equation*}
-
 其中 $I_j={i|q(x_i)=j}$ 是分配给第 $j$ 个叶子的数据点的索引的集合。 请注意，在第二行中，我们更改了总和的索引，因为同一叶上的所有数据点都得到了相同的分数。 我们可以通过定义 $G_j=\sum_{i\in I_j}g_i$ 和 $H_j=\sum_{i\in I_j}h_i$ 来进一步压缩表达式 :
 \begin{equation*}
 	\begin{split}
 		Obj^{(t)}=\sum_{j=1}^T[G_jw_j+\frac{1}{2}(H_j+\lambda)w_j^2]+\gamma T
 	\end{split}
 \end{equation*}
-
-在这个等式中 $w_j$ 是相互独立的，形式 $G_jw_j+\frac{1}{2}(H_j+lambda)w_j^2$ 是二次的，对于给定的结构 $q(x)$ 的最好的 $w_j$，我们可以得到最好的客观规约:
+在这个等式中 $w_j$ 是相互独立的，形式 $G_jw_j+\frac{1}{2}(H_j+\lambda)w_j^2$ 是二次的，对于给定的结构 $q(x)$ 的最好的 $w_j$，我们可以得到最好的客观规约:
 \begin{equation*}
 	\begin{split}
 		w_j^*=-\frac{G_j}{H_j+\lambda}\\
 		Obj*=-\frac{1}{2}\sum_{j=1}^T\frac{G_j^2}{H_j+\lambda}+\gamma T
 	\end{split}
 \end{equation*}
-
 最后一个方程度量一个树结构 $q(x)$ how good（到底有多好） 。
 \begin{figure}[H]
 	\centering
 	\includegraphics[scale=0.5]{struct_score.png}
 	\caption{q(x)}
 \end{figure}
-
 Structure Score
-
 如果这一切听起来有些复杂，我们来看一下图片，看看分数是如何计算的。 基本上，对于一个给定的树结构，我们把统计 $g_i$ 和 $h_i$ push 到它们所属的叶子上，统计数据加和到一起，然后使用公式计算树是多好。 除了考虑到模型的复杂度，这个分数就像决策树中的杂质测量一样（例如，熵/GINI系数）。
-
 \subsection{学习树结构}
 既然我们有了一个方法来衡量一棵树有多好，理想情况下我们会列举所有可能的树并挑选出最好的树。 在实践中，这种方法是比较棘手的，所以我们会尽量一次优化树的一个层次。 具体来说，我们试图将一片叶子分成两片，并得到分数
 \begin{equation*}
@@ -211,11 +197,8 @@ Structure Score
 		Gain=\frac{1}{2}[\frac{G_L^2}{H_L+\lambda}+\frac{G_R^2}{H_R+\lambda}-\frac{(G_L+G_R)^2}{H_L+H_R+\lambda}]-\gamma 
 	\end{split}
 \end{equation*}
-
 这个公式可以分解为 1) 新左叶上的得分 2) 新右叶上的得分 3) 原始叶子上的得分 4) additional leaf（附加叶子）上的正则化。 我们可以在这里看到一个重要的事实：如果增益小于 $\gamma$，我们最好不要添加那个分支。这正是基于树模型的 pruning（剪枝） 技术！通过使用监督学习的原则，我们自然会想出这些技术工作的原因 :)
-
 对于真实有价值的数据，我们通常要寻找一个最佳的分割。为了有效地做到这一点，我们把所有的实例按照排序顺序排列，如下图所示。 Best split
-
 然后从左到右的扫描就足以计算所有可能的拆分解决方案的结构得分，我们可以有效地找到最佳的拆分。
 \begin{figure}[H]
 	\centering
@@ -231,13 +214,11 @@ XGBoost python 模块能够使用以下方式加载数据:
 \item xgboost binary buffer file. （xgboost 二进制缓冲文件）
 \end{itemize}
 这些数据将会被存在一个名为 DMatrix 的对象中.
-
 要加载 ligbsvm 文本格式或者 XGBoost 二进制文件到 DMatrix 对象中. 代码如下:
 \begin{python}
 dtrain = xgb.DMatrix('train.svm.txt')
 dtest = xgb.DMatrix('test.svm.buffer')
 \end{python}
-
 要加载 numpy 的数组到 DMatrix 对象中, 代码如下:
 \begin{python}
 data = np.random.rand(5,10) # 5 entities, each contains 10 features
@@ -265,7 +246,6 @@ dtrain = xgb.DMatrix(data, label=label, missing = -999.0, weight=w)
 \end{python}
 设置参数
 XGBoost 使用 pair 格式的 list 来保存 参数. 例如:
-
 Booster（提升）参数
 \begin{python}
 param = {'bst:max_depth':2, 'bst:eta':1, 'silent':1, 'objective':'binary:logistic' }
@@ -275,7 +255,6 @@ param['eval_metric'] = 'auc'
 您也可以指定多个评估的指标:
 \begin{python}
 param['eval_metric'] = ['auc', 'ams@0'] 
-
 # alternativly:
 # plst = param.items()
 # plst += [('eval_metric', 'ams@0')]
@@ -286,7 +265,6 @@ evallist  = [(dtest,'eval'), (dtrain,'train')]
 \end{python}
 训练
 有用参数列表和数据以后, 您现在可以训练一个模型了.
-
 训练
 \begin{python}
 num_round = 10
@@ -314,11 +292,8 @@ bst.load_model("model.bin") # load data
 train(..., evals=evals, early_stopping_rounds=10)
 \end{python}
 该模型将开始训练, 直到验证得分停止提高为止. 验证错误需要至少每个 early\_stopping\_rounds 减少以继续训练.
-
 如果提前停止，模型将有三个额外的字段: bst.best\_score, bst.best\_iteration 和 bst.best\_ntree\_limit. 请注意 train() 将从上一次迭代中返回一个模型, 而不是最好的一个.
-
 这与两个度量标准一起使用以达到最小化（RMSE, 对数损失等）和最大化（MAP, NDCG, AUC）. 请注意, 如果您指定多个评估指标, 则 param ['eval\_metric'] 中的最后一个用于提前停止.
-
 预测
 当您 训练/加载 一个模型并且准备好数据之后, 即可以开始做预测了.
 \begin{python}
@@ -332,9 +307,7 @@ ypred = bst.predict(xgmat)
 ypred = bst.predict(xgmat,ntree_limit=bst.best_ntree_limit)
 \end{python}
 绘图
-
 您可以使用 plotting（绘图）模块来绘制出 importance（重要性）以及输出的 tree（树）.
-
 要绘制出 importance（重要性）, 可以使用 plot\_importance. 该函数需要安装 matplotlib.
 \begin{python}
 xgb.plot_importance(bst)
