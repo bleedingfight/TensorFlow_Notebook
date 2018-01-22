@@ -5,12 +5,14 @@
 \usepackage[margin=2.5cm]{geometry}
 \usepackage{xcolor}
 \usepackage{float}
+\definecolor{bg}{rgb}{0.95,0.95,0.95}
+\newmintinline{bash}{bgcolor=bg,linenos,breakanywhere,breaklines}
 \begin{document}
 使用FFMPEG从视频文件提取图像
 
 如果你需要从视频文件中提取图像，你可以从视频中提取所有的帧为图像文件。下面的命令行从video.webm提取所有的帧:
 
-\mintinline{bash}{ffmpeg -i video.webm thumb%04d.jpg -hide_banner}
+\bashinline{bash}{ffmpeg -i video.webm thumb%04d.jpg -hide_banner}
 \begin{itemize}
 	\item -i 接输入视频文件
 	\item 	thumb\%04d\%.jpg是输出文件。在这个例子中为jpg文件，因此ffmpeg将输出jpg文件。我们制定thumb\%04d.jpg和"\%04d"在文件名称中，FFMPEG将提取图像按照thumb0000.jpgthumb0001.jpg等等。我们制定ffmpeg输出文件有4维"\%04d，我们可以改变它产生更多，比如"\%6d
@@ -32,7 +34,7 @@
 \end{itemize}
 有时候我们检查图片的质量才发现他们质量和我们想要的不同(从视频文件中提取帧可能导致低质量的帧)。一个好办法是从视频的重要部分提取超过一帧。我们可以使用下面的命令:
 
-\mintinline{bash}{ffmpeg -i video.webm -ss 00:00:07.000 -vframes 3 thumb%04d.jpg -hide_banner}
+\bashinline{bash}{ffmpeg -i video.webm -ss 00:00:07.000 -vframes 3 thumb%04d.jpg -hide_banner}
 这里我们使用\%04d输出，按照我们的要求输出3帧，因此我们得到3张jpg图像。结合这个命令我们将从提示中获得前三帧，之后ffmpeg搜索视频的第二个7秒。
 \section{在规定时间提取帧}
 另一个用于从视频文件提取图像的方法是每x秒提取一张图片。用这个方法我们不会想第一个例子一样得到很多图片，我们不限制从视频的特定时间选择图像。
@@ -40,7 +42,7 @@
 \mintinline{bash}{ffmpeg -i video.webm -vf fps=1 thumb%04d.jpg -hide_banner}
 在这个例子中我们用一个新的参数:
 
-vf:这个参数用于ffmpeg过去视频。我们可以用一个过滤。这个例子中我用"fps=1",因此ffmpeg将过滤视频提取一张图片（每秒一帧）输出。我么使用thumb\%0d.jpg作为输出提取多个文件。
+-vf:这个参数用于ffmpeg过去视频。我们可以用一个过滤。这个例子中我用"fps=1",因此ffmpeg将过滤视频提取一张图片（每秒一帧）输出。我么使用thumb\%04d.jpg作为输出提取多个文件。
 
 因此我们得到视频文件每秒的图像，thumn0000.jpg,thumb0001.jpg等等。
 
@@ -60,9 +62,135 @@ vf:这个参数用于ffmpeg过去视频。我们可以用一个过滤。这个�
 \mintinline{bash}{ffmpeg -i video.webm -vf "select=eq(pict_type\,I)" -vsync vfr thumb%04d.jpg -hide_banner}
 
 \begin{itemize}
-	\item -vf我们用一个视频过滤器，这里的视频过滤器比之前的有点复杂。我们使用"select=eq(pic\_type\,I)"将使得过滤器选择关键帧的所有图片("puc\_type\,I"查找图像类型索引，"eq"查找等于，因此我们可以将它解释为选择索引图像的所有)
+	\item -vf我们用一个视频过滤器，这里的视频过滤器比之前的有点复杂。我们使用"select=eq(pic\_type\,I)"将使得过滤器选择关键帧的所有图片("pic\_type\,I"查找图像类型索引，"eq"查找等于，因此我们可以将它解释为选择索引图像的所有)
 	\item -vsync vfr:这个参数告诉过滤器使用一个变化的比特率视频同步。如果我们不用这个参数ffmpeg将不能找到唯一的关键帧，显示提取其它的帧可能不被正确处理。
 \end{itemize}
 在这个例子中我们从14s的视频中提取6张图像(因此视频每两秒有一个关键帧)但是我们之前已经说过，变量一带与视频文件。
+指令:
+1.从某一个时间段获取数据
+
+\mintinline{bash}{ffmpeg -ss 00:08:14 -t 00:10:31 -i Infernal.Affairs.mkv -vf fps=1 test%04d.jpg -hide_banner}
+\section{ffmpeg官方文档}
+\subsection{语法}
+\mintinline{bash}{ffmpeg [global_options] {[input_file_options] -i input_url} ... {[output_file_options] output_url} ...}
+\subsection{描述}
+ffmpeg是一个非常快的从实时音频视频源频转化工具。它可以用高质量的多想滤波器在任意采样率和resize视频。ffmpeg能通过指定-i读取任意数量的文件(可以使正常文件，pipe，网络流，抓取设备等等)，写任意数量的输出文件，通过输出的url指定。命令行中任何将不能解释为一个选项考虑作为一个输出url。
+
+每个输入或者输出url能在原则上包含一些不同类型的流(video/audio/subtitle/attachment/data)。允许数量和流的类型通过容器的格式限制。从输入选择流将自动进入输出使用-map选项(查看流选择章节)。
+
+为了查询在选项中的输入文件，你必须使用他们的索引(0-based).例如第一个输入文件是0，第二个为1等等。类似的，流结合一个文件通过索引访问。例如2:3访问4个输入流的第三个输入文件。也可以查看流指定章节。
+
+正如一个通常的规则用于下一个指定文件的选项。因此顺序很重要，你可以在命令行中保存同样的选项多次，每个发生然后被应用在下一个输入或者输出文件。这个规则是全局选项，应该首先被指定。
+
+不要混淆输入和输出文件，首先制定所有的输入文件，然后所有的输出文件。不要混合不同文件的选项。所有的选项仅仅用于狭义和输入或者输出文件和两个文件之间的重置。
+\begin{itemize}
+\item 设置输出视频的比特率为64 kbit/s
+	\mintinline{bash}{ffmpeg -i input.avi -b:v 64 -bufsize 64k output.avi}
+\item 强制输出比特率为24fps
+	\mintinline{bash}{ffmpeg -i input.avi -r 24 output.avi}
+\item 强制输入文件的比特率(仅仅对于raw格式)为1fps输出帧率24fps:
+	\bashinline{ffmpeg -r 1 -i input.m2v -r 24 output.avi}
+\end{itemize}
+选项也许需要原始的输入文件。
+\subsection{详细的描述}
+ffmpeg对每个输出的转码过程可以按照下面的图描述:
+\begin{Text}{minted}
+ _______              ______________
+|       |            |              |
+| input |  demuxer   | encoded data |   decoder
+| file  | ---------> | packets      | -----+
+|_______|            |______________|      |
+                                           v
+                                       _________
+                                      |         |
+                                      | decoded |
+                                      | frames  |
+                                      |_________|
+ ________             ______________       |
+|        |           |              |      |
+| output | <-------- | encoded data | <----+
+| file   |   muxer   | packets      |   encoder
+|________|           |______________|
+\end{{minted}
+ffmpeg调用libavformat库（包含解复用器）读输入文件获取包含编码数据的包。当有多个输入文件，ffmpeg尝试保持他们同步通过记录任何激活的流记录更低的时间戳。
+
+编码包被传递给decoder(除非流复制被stream选中，查看详情)。decoder产生没有压缩的帧(raw video/PCM audio/)通过过滤器进一步处理。在过滤后，帧被传递给encoder，编码他们然后输出编码的包。最后这些传递到muxer，muxer写编码的包到输出文件。
+\subsection{Filtering}
+在编码前，ffmpge使用livabfilter库中的filter处理原始的音频和视频帧。一系列链式滤波器形成一个滤波器图。ffmpeg区别不同类型的过滤图和编码:
+简单的filterfraphs有一个输入和输出，类型相同。在上面的图中他们可以通过简单的插入一个额外的步骤编码和解码:
+\begin{Text}{minted}
+ _________                        ______________
+|         |                      |              |
+| decoded |                      | encoded data |
+| frames  |\                   _ | packets      |
+|_________| \                  /||______________|
+             \   __________   /
+  simple     _\||          | /  encoder
+  filtergraph   | filtered |/
+                | frames   |
+                |__________|
+
+\end{minted}
+单独的filtergraphs通过per-stream-filter选项配置(-vf和-af别名对应于音频和视频)。一个filtergraph对于视频可以找到这样的例子:
+\begin{Textcode}
+ _______        _____________        _______        ________
+|       |      |             |      |       |      |        |
+| input | ---> | deinterlace | ---> | scale | ---> | output |
+|_______|      |_____________|      |_______|      |________|
+
+\end{Textcode}
+注意一些滤波器改变帧的属性而不是帧的内容。例如，fps滤波器在上面例子中改变帧的数量，但是步产生帧的内容。另一个例子是setps滤波器，设置时间戳传递没有改变的帧。
+\subsection{复合滤波图}
+复合滤波图有一些不能用简单的线性处理链处理的流。在这情况下，例如，当图有多余一个输入和/或者输出，或者当输出流内省和输入不同。他们可以用下面的图表示:
+\begin{Textcode}
+ _________
+|         |
+| input 0 |\                    __________
+|_________| \                  |          |
+             \   _________    /| output 0 |
+              \ |         |  / |__________|
+ _________     \| complex | /
+|         |     |         |/
+| input 1 |---->| filter  |\
+|_________|     |         | \   __________
+               /| graph   |  \ |          |
+              / |         |   \| output 1 |
+ _________   /  |_________|    |__________|
+|         | /
+| input 2 |/
+|_________|
+
+\end{Textcode}
+复合过滤图通过-filter\_complex选项配置。注意这个选项是全局的，因此一个复杂的滤波器图，自然不能和单个流或者文件任意结合。
+
+-lavfi选项等价-filter\_complex。一个重要的复合滤波图是overlay滤波器，有两个视频输入和一个视频输出，包含一个视频overlaid在其它顶部。他的音频对应是amix滤波器。
+\subsection{Stream复制}
+流复制通过使用copy参数到-codec选项。它使得ffmpeg对于指定流忽略编码和解码步骤，因此它仅仅demux和muxing。他对于改变容器格式或者修改溶剂的级别的metadata很有用。上面的将简化如下:
+\begin{Textcode}
+ _______              ______________            ________
+|       |            |              |          |        |
+| input |  demuxer   | encoded data |  muxer   | output |
+| file  | ---------> | packets      | -------> | file   |
+|_______|            |______________|          |________|
+
+\end{Textcode}
+因为没有编码或者解码。它速度很快质量很小损失。然而，它也许在一些情况下不起作用应为一些原因。应用滤波器明显是可能的，因此滤波器工作在没有压缩的数据上。
+\subsection{流选择}
+默认ffmpeg包含仅仅一个类型的流(video,audio,subtitle)呈现在输入文件中添加他们到每个输出文件中。它基于下面的标准选择最好的base：对于视频，它是高分辨率的流。对于音频结合多数通道，对于字母，他是第一个字母。你可以使用-vn/-an/-sn/dn选项禁用默认的选项。反正得控制使用-map选项，警用描述的默认。
+\subsection{选项}
+所有的数值选项，如果没有制定，接受一个字符串表示一个数作为输入，跟着SI单元前缀，例如'K','M','G'。如果i添加到SI单位前缀，符合的前缀将对于二进制乘法被解释为一个单元前缀它基于1024作为立方而不是1000.添加B到SI浅醉乘上值8.允许使用:'KB','MiB','G'和'B'作为数字下表。
+
+选项步接受参数是bool选项，设置对应的值为true。他们可以被设置为false。他们可以通过prefix选项no设置false。对于使用"-nofoo"将设置bool选项foo为false。
+\subsection{流指定}
+一些选项被用于per-stream。例如比特率或者codec。流指定用于精确地指定一个给定的选项属于那个流。一个流指定其是一个字符创添加到选项名字后通过冒号隔开。例如-codec:a:1 ac3包含a:1流指定器，匹配第二个音频流。因此，他讲选择ac3codec用于第二个音频流。一个流指定器可以匹配一些流。例如,-codec copy或者-codec:copy将不变吗复制所有的流，可能的流制定器格式是:
+\begin{itemize}
+\item stream\_index:匹配流和索引。例如-threads:1 4将为第二个流设置线程4
+\item stream\_type[stream\_index]:stream\_type为下面的的:'v'或者'V'用于视频，'a'用于音频，'s'用于字母，'t'用于附件。'v'匹配所有的视频流。'V'仅仅匹配没有附加图片的流，视频缩略图或者封面。如果stream\_index给定，然后它匹配这个类型stream\_index数量。否则，它匹配所有的这个类型的流
+\item p:program\_id[:stream\_index]如果stream\_index被给定，然后它匹配程序中id为program\_id的流和stream\_index数量。否则，它匹配程序中所有的流。
+\item \#stream\_id或者stream\_id:通过流id匹配流(例如MPEG-TS容器)
+\item m:key[:value]匹配流和metadata tag key有指定的值。如果值没有给定，匹配的流包含任何值的给定的tag。
+\item u匹配流是可用的配置，codec必须定义重要的信息像视频维度或者音频采样率必须呈现。注意ffmpeg通过metadata匹配将仅仅对输入文件合理的工作
+\end{itemize}
+
 
 \end{document}

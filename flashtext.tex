@@ -1,0 +1,276 @@
+\documentclass{article}
+\usepackage[space]{ctex}
+\usepackage{graphicx}
+\usepackage{minted}
+\usepackage[margin=2.5cm]{geometry}
+\usepackage{xcolor}
+\usepackage{float}
+\definecolor{bg}{rgb}{0.95,0.95,0.95}
+\newmintinline{bash}{bgcolor=bg,linenos,breakanywhere,breaklines}
+\newminted{bash}{bgcolor=bg,linenos,breakanywhere,breaklines}
+\newmintinline{ipython}{bgcolor=bg,linenos,python3,breakanywhere,breaklines}
+\newminted{ipython}{bgcolor=bg,linenos,python3,breakanywhere,breaklines}
+\begin{document}
+\section{安装}
+\ipythoninline{pip install flashtext}
+\section{提取关键字}
+\begin{ipythoncode}
+>>> from flashtext import KeywordProcessor
+>>> keyword_processor = KeywordProcessor()
+>>> # keyword_processor.add_keyword(<unclean name>, <standardised name>)
+>>> keyword_processor.add_keyword('Big Apple', 'New York')
+>>> keyword_processor.add_keyword('Bay Area')
+>>> keywords_found = keyword_processor.extract_keywords('I love Big Apple and Bay Area.')
+>>> keywords_found
+>>> # ['New York']
+\end{ipythoncode}
+\section{替换关键字}
+\begin{ipythoncode}
+
+>>> keyword_processor.add_keyword('New Delhi', 'NCR region')
+>>> new_sentence = keyword_processor.replace_keywords('I love Big Apple and new delhi.')
+>>> new_sentence
+>>> # 'I love New York and NCR region.'
+\end{ipythoncode}
+
+\subsection{Case Sensitive example}
+\begin{ipythoncode}
+>>> from flashtext import KeywordProcessor
+>>> keyword_processor = KeywordProcessor(case_sensitive=True)
+>>> keyword_processor.add_keyword('Big Apple', 'New York')
+>>> keyword_processor.add_keyword('Bay Area')
+>>> keywords_found = keyword_processor.extract_keywords('I love big Apple and Bay Area.')
+>>> keywords_found
+>>> # ['Bay Area']
+\end{ipythoncode}
+
+\subsection{关键字空格信息}
+\begin{ipythoncode}
+
+>>> from flashtext import KeywordProcessor
+>>> keyword_processor = KeywordProcessor()
+>>> keyword_processor.add_keyword('Big Apple', 'New York')
+>>> keyword_processor.add_keyword('Bay Area')
+>>> keywords_found = keyword_processor.extract_keywords('I love big Apple and Bay Area.', span_info=True)
+>>> keywords_found
+>>> # [('New York', 7, 16), ('Bay Area', 21, 29)]
+\end{ipythoncode}
+
+\subsection{用关键字提取额外的信息}
+\begin{ipythoncode}
+
+>>> from flashtext import KeywordProcessor
+>>> kp = KeywordProcessor()
+>>> kp.add_keyword('Taj Mahal', ('Monument', 'Taj Mahal'))
+>>> kp.add_keyword('Delhi', ('Location', 'Delhi'))
+>>> kp.extract_keywords('Taj Mahal is in Delhi.')
+>>> # [('Monument', 'Taj Mahal'), ('Location', 'Delhi')]
+>>> # NOTE: replace_keywords feature won't work with this.
+\end{ipythoncode}
+
+No clean name for Keywords
+\begin{ipythoncode}
+
+>>> from flashtext import KeywordProcessor
+>>> keyword_processor = KeywordProcessor()
+>>> keyword_processor.add_keyword('Big Apple')
+>>> keyword_processor.add_keyword('Bay Area')
+>>> keywords_found = keyword_processor.extract_keywords('I love big Apple and Bay Area.')
+>>> keywords_found
+>>> # ['Big Apple', 'Bay Area']
+\end{ipythoncode}
+
+\subsection{同时添加多个关键字}
+\begin{ipythoncode}
+
+>>> from flashtext import KeywordProcessor
+>>> keyword_processor = KeywordProcessor()
+>>> keyword_dict = {
+>>>     "java": ["java_2e", "java programing"],
+>>>     "product management": ["PM", "product manager"]
+>>> }
+>>> # {'clean_name': ['list of unclean names']}
+>>> keyword_processor.add_keywords_from_dict(keyword_dict)
+>>> # Or add keywords from a list:
+>>> keyword_processor.add_keywords_from_list(["java", "python"])
+>>> keyword_processor.extract_keywords('I am a product manager for a java_2e platform')
+>>> # output ['product management', 'java']
+\end{ipythoncode}
+
+\subsection{移除关键字}
+\begin{ipythoncode}
+
+>>> from flashtext import KeywordProcessor
+>>> keyword_processor = KeywordProcessor()
+>>> keyword_dict = {
+>>>     "java": ["java_2e", "java programing"],
+>>>     "product management": ["PM", "product manager"]
+>>> }
+>>> keyword_processor.add_keywords_from_dict(keyword_dict)
+>>> print(keyword_processor.extract_keywords('I am a product manager for a java_2e platform'))
+>>> # output ['product management', 'java']
+>>> keyword_processor.remove_keyword('java_2e')
+>>> # you can also remove keywords from a list/ dictionary
+>>> keyword_processor.remove_keywords_from_dict({"product management": ["PM"]})
+>>> keyword_processor.remove_keywords_from_list(["java programing"])
+>>> keyword_processor.extract_keywords('I am a product manager for a java_2e platform')
+>>> # output ['product management']
+\end{ipythoncode}
+
+\subsection{To check Number of terms in KeywordProcessor}
+\begin{ipythoncode}
+
+>>> from flashtext import KeywordProcessor
+>>> keyword_processor = KeywordProcessor()
+>>> keyword_dict = {
+>>>     "java": ["java_2e", "java programing"],
+>>>     "product management": ["PM", "product manager"]
+>>> }
+>>> keyword_processor.add_keywords_from_dict(keyword_dict)
+>>> print(len(keyword_processor))
+>>> # output 4
+\end{ipythoncode}
+
+\subsection{To check if term is present in KeywordProcessor}
+\begin{ipythoncode}
+
+>>> from flashtext import KeywordProcessor
+>>> keyword_processor = KeywordProcessor()
+>>> keyword_processor.add_keyword('j2ee', 'Java')
+>>> 'j2ee' in keyword_processor
+>>> # output: True
+>>> keyword_processor.get_keyword('j2ee')
+>>> # output: Java
+>>> keyword_processor['colour'] = 'color'
+>>> keyword_processor['colour']
+>>> # output: color
+\end{ipythoncode}
+
+\subsection{Get all keywords in dictionary}
+\begin{ipythoncode}
+
+>>> from flashtext import KeywordProcessor
+>>> keyword_processor = KeywordProcessor()
+>>> keyword_processor.add_keyword('j2ee', 'Java')
+>>> keyword_processor.add_keyword('colour', 'color')
+>>> keyword_processor.get_all_keywords()
+>>> # output: {'colour': 'color', 'j2ee': 'Java'}
+\end{ipythoncode}
+
+For detecting Word Boundary currently any character other than this \newmintinline{Text}{\w [A-Za-z0-9_]} is considered a word boundary.
+
+To set or add characters as part of word characters
+\begin{ipythoncode}
+
+>>> from flashtext import KeywordProcessor
+>>> keyword_processor = KeywordProcessor()
+>>> keyword_processor.add_keyword('Big Apple')
+>>> print(keyword_processor.extract_keywords('I love Big Apple/Bay Area.'))
+>>> # ['Big Apple']
+>>> keyword_processor.add_non_word_boundary('/')
+>>> print(keyword_processor.extract_keywords('I love Big Apple/Bay Area.'))
+>>> # []
+\end{ipythoncode}
+
+API doc
+KeywordProcessor
+
+API Doc
+Import and initialize module
+Add Keywords to module
+Extract keywords
+Replace keywords
+Add keywords from File
+Add keywords from dict
+Add keywords from list
+KeywordProcessor Class Doc
+Test
+\begin{bashcode}
+$ git clone https://github.com/vi3k6i5/flashtext
+$ cd flashtext
+$ pip install pytest
+$ python setup.py test
+\end{bashcode}
+Build Docs
+\begin{bashcode}
+$ git clone https://github.com/vi3k6i5/flashtext
+$ cd flashtext/docs
+$ pip install sphinx
+$ make html
+$ # open _build/html/index.html in browser to view it locally
+\end{bashcode}
+Why not Regex?
+It’s a custom algorithm based on Aho-Corasick algorithm and Trie Dictionary.
+
+Benchmark
+Time taken by FlashText to find terms in comparison to Regex.
+
+https://thepracticaldev.s3.amazonaws.com/i/xruf50n6z1r37ti8rd89.png
+Time taken by FlashText to replace terms in comparison to Regex.
+
+https://thepracticaldev.s3.amazonaws.com/i/k44ghwp8o712dm58debj.png
+Link to code for benchmarking the Find Feature and Replace Feature.
+
+The idea for this library came from the following StackOverflow question.
+
+Citation
+The original paper published on FlashText algorithm.
+\section{flashtext API}
+\subsection{Import and initialize module}
+\begin{ipythoncode}
+>>> from flashtext import KeywordProcessor
+>>> keyword_processor = KeywordProcessor()
+>>> # if match has to be case sensitive
+>>> keyword_processor = KeywordProcessor(case_sensitive=True)
+\end{ipythoncode}
+
+\subsection{Add Keywords to module}
+\begin{ipythoncode}
+
+>>> keyword_processor.add_keyword('Big Apple', 'New York')
+>>> keyword_processor.add_keyword('Bay Area')
+Extract keywords
+>>> keywords_found = keyword_processor.extract_keywords('I love Big Apple and Bay Area.')
+>>> keywords_found
+>>> ['New York', 'Bay Area']
+\end{ipythoncode}
+
+\subsection{Replace keywords}
+\begin{ipythoncode}
+
+>>> keyword_processor.add_keyword('New Delhi', 'NCR region')
+>>> new_sentence = keyword_processor.replace_keywords('I love Big Apple and new delhi.')
+>>> new_sentence
+>>> 'I love New York and NCR region.'
+\end{ipythoncode}
+
+\subsection{Add keywords from File}
+\begin{ipythoncode}
+
+>>> # Option 1: keywords.txt content
+>>> # java_2e=>java
+>>> # java programing=>java
+>>> # product management=>product management
+>>> # product management techniques=>product management
+>>> # Option 2: keywords.txt content
+>>> # java
+>>> # python
+>>> # c++
+>>> keyword_processor.add_keyword_from_file('keywords.txt')
+\end{ipythoncode}
+
+\subsection{Add keywords from dict}
+\begin{ipythoncode}
+
+>>> keyword_dict = {
+        "java": ["java_2e", "java programing"],
+        "product management": ["PM", "product manager"]
+    }
+>>> keyword_processor.add_keywords_from_dict(keyword_dict)
+\end{ipythoncode}
+\subsection{Add keywords from list}
+\begin{ipythoncode}
+>>> keyword_processor.add_keywords_from_list(["java", "python"]})
+\end{ipythoncode}
+
+\end{document}
