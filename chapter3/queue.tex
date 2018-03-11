@@ -1,0 +1,92 @@
+队列模块实现了multi-producer,multi-consumer队列。在不同的线程交换信息的时候特别有用。在模块中的队列类实现所有要求的锁语义(locking sematic)。依赖Python中可用的线程支持，查看\href{https://docs.python.org/2/library/threading.html#module-threading}{线程}模块。
+
+模块实现三种类型的队列，不同仅仅在入口被检索的顺序。在一个FIFO队列中，首要的任务是添加第一个检索。在LIFO队列，先进先出(像栈)。结合之前的队列进入被保持顺序(使用\href{https://docs.python.org/2/library/heapq.html#module-heapq}{heapq}模块)最低的值首先出来。
+
+模块使用所暂时阻塞线程竞争，然而没有设计去处理在线程中处理重新进入。
+
+队列模块定义了下面的类和异常:\\
+class queue.Queue(maxsize=0)\\
+FIFO队列的构造体，maxsize是一个整数设置可以被放在队列中的成员的上限。当达到上限的时候插入将被阻塞，知道队列成员小号。如果maxsize小于或者等于0，队列的大小是无限的。\\
+class queue.LifoQueue(maxsize)
+
+LIFO队列的构造体，maxsize是一个设置队列成员个数上线的整数，达到队列上线的时候队列将被阻塞，直到队列成员被消耗。如果maxsize小于等于0，队列大小是无限的。
+
+class queue.PriorityQueue(maxsize)
+
+priority队列构造体。maxsize是一个设置队列成员个数上线的整数，达到队列上线的时候队列将被阻塞，直到队列成员被消耗。如果maxsize小于等于0，队列大小是无限的。
+
+最低的值首先被获取(最低的至通过sorted(list(entries))[0]),一个通常的样式是一个元祖(priority\_number,data)
+
+exeption queue.Empty
+
+当non-blocking在空队列对象中被\href{https://docs.python.org/2/library/queue.html#Queue.Queue.get}{get()}调用时出现。
+
+exeption queue.Full
+
+当\href{https://docs.python.org/3.6/library/queue.html#queue.Queue.put}{put()}在满的队列中被调用的时候出现。
+
+\subsection{队列对象}
+队列对象提供了下面的公共函数方法
+Queue.qsize():返回队列的大概大小。注意qsize>0不保证子序列get()不阻塞也不保证qsize()<maxsizeput()不阻塞。
+
+Queue.empty():如果对列为空返回True，否则返回False。如果empty()返回True不能保证子对序列调用put()不阻塞，如果empty()返回False他不保证子序列的get()不阻塞。
+
+Queue.full()返回如果队列是满的返回True，否则返回False。True不能保证子系列调用get()不阻塞。类似，如果full()返回False不保证子序列调用put()将步阻塞。
+
+
+Queue.put(item,block=True,timeout=None):仿item到队列中。如果选项参数block为True同时timeout为None(默认)，阻塞知道有可用的空隙。如果timeout是一个整数，它阻塞在最多timeout秒，如果没有可用的slot将报出\href{}{Full}异常。否则(block是false)，仿一个item在队列如果中间有空隙，别的义仓\href{}{Full}报出(在这种情况下timeout被忽略)
+
+Queue.put\_nowait(item):等效于put(item,False)
+
+Queue.get(block=True,timeout=None):重队列删除和返回一个item。如果可选参数block是true，timeout是None(默认)，阻塞知道一个item可用的时候。如果timeout是一个正数，阻塞timeout秒在这段是没没有可用对象报出\href{}{Empty}异常，如果一个item可用返回一个对象，否则报出\href{}{Empty}异常(在这种情况下timeout被忽略)。
+
+Queue.get\_nowait():等效于get(False)
+
+两个方法提供支持最终是否出队人夫被守护comsumer进程完全处理。
+
+Queue.task\_done():指示如对任务完成。用于队列comsumer进程使用。对每个\href{}{get()}用于获取一个任务，子序列调用\href{}{task\_done}告诉队列任务处理完成，如果一个\href{}{join()}当前被阻塞，他将当所有的对象被处理完成后恢复(意味着\href{}{task\_done}调用对每个被用\href{}{put()}放进队列的item接收)
+
+Queue.join()
+
+阻塞到所有的items被处理后。当一个item被添加到队列中没有完成的任务数量上升。消耗线程调用\href{}{task\_done()}指示获取item和工作是否完成。当未完成的任务数量下降到0的时候，\href{}{join()}解开阻塞下面是一个如何使等待入队任务完成的例子:
+\begin{minted}{python}
+def worker():
+    while True:
+        item = q.get()
+        if item is None:
+            break
+        do_work(item)
+        q.task_done()
+
+q = queue.Queue()
+threads = []
+for i in range(num_worker_threads):
+    t = threading.Thread(target=worker)
+    t.start()
+    threads.append(t)
+
+for item in source():
+    q.put(item)
+
+# block until all tasks are done
+q.join()
+
+# stop workers
+for i in range(num_worker_threads):
+    q.put(None)
+for t in threads:
+    t.join()
+\end{minted}
+
+
+
+
+
+
+
+
+
+
+
+
+
