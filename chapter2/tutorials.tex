@@ -99,6 +99,8 @@ sess.close()
 \subsection{训练花}
 \begin{center}
 \begin{figure}
+
+\centering
 \includegraphics[scale=0.5]{daisies.jpg}
 \end{figure}
 \end{center}
@@ -124,38 +126,40 @@ bazel build --config opt tensorflow/examples/image_retraining:retrain
 \begin{lstlisting}[language=Python]
 bazel-bin/tensorflow/examples/image_retraining/retrain --image_dir ~/flower_photos
 \end{lstlisting}
-这个脚本载入先前incption v3模型，删除顶层，在新的flower photos训练新的模型。在原始ImageNet类中没有一种花完整网络被完整的训练过了，transfer学习是低层已经被训练好
+这个脚本载入先前incption v3模型，删除顶层，在新的flower photos训练新的模型。在原始ImageNet类中没有一种花完整网络被完整的训练过了，transfer学习是底层已经被训练好
 区别不修改任何不同对象。
 \subsection{瓶颈}
 训练花费30分钟甚至更长时间取决于你的机器的速度。第一个时期分析所有磁盘上的图像和计算它们的瓶颈，瓶颈是一个信息对术语
 我们经常在最后一层前一层，倒数第二层已经训练区别输出要求分类的值，这意味着这必须是有意义的，因此对于分类器它必须包含足够的信息在一些小的值得集合中做选择，这意味着我们的最终层训练可以在新的类中工作证明在ImageNet中1000类对于区别新的对象是有用的。
-因为每个图像在训练和计算花费时间瓶颈时被多次使用，它的速度达到缓存起的瓶颈因此不能被重复计算。默认它们存储在/tmp/bottleneck陌路，如果你仍然会脚本它们将被重用，因此你不是必须再次等待这部分。
+因为每个图像在训练和计算花费时间瓶颈时被多次使用，它的速度达到缓存起的瓶颈因此不能被重复计算。默认它们存储在/tmp/bottleneck目录，如果你仍然会脚本它们将被重用，因此你不是必须再次等待这部分处理。
 \subsection{训练}
-当瓶颈计算完成时，实际顶层训练开始。你讲看到输出，显示精度，可用精度，交叉熵。训练精度显示在当前训练批中多少被分类正确，验证训练精度从图像数据集随机选中精度的值，不同之处在于训练精度基于网络已经学习到的参数，在训练中可能过拟合到为噪声。验证精确度用不在训练集中的数据性能测量精确度，如果训练精确度很高，测试精确度很低说明网络过拟合训练图像存储的部分参数没有用。交叉熵损失函数查看学习进程处理的增么样，训练对象使得损失尽可能小，因此你可以分辨出如果学习起作用，忽略损失噪声损失保持下降的趋势。默认脚本运行4000步，每一步从训练集中随机选择10张图像找到缓冲器的瓶颈，输入数据仅最终层预测。预测然后比较实际label和真实值差距反向传递误差。当你继续的时候你应该看到精确度的提高。你应该能看到精确度在90\%到95\%之间，通过提取值将随机的一次次训练，这个数完全训练好模型后基于在给定测试集中正确标签的百分比。
+当瓶颈计算完成时，实际顶层训练开始。你将看到输出，显示精度，可用精度，交叉熵。训练精度显示在当前训练批中多少被分类正确，验证训练精度从图像数据集随机选中精度的值，不同之处在于训练精度基于网络已经学习到的参数，在训练中可能过拟合到噪声。验证精确度用不在训练集中的数据性能测量精确度，如果训练精确度很高，测试精确度很低说明网络过拟合,训练图像存储的部分参数没有用。交叉熵损失函数查看学习进程处理的怎么样，训练对象使得损失尽可能小，因此你可以分辨出如果学习起作用，忽略损失噪声损失保持下降的趋势。默认脚本运行4000步，每一步从训练集中随机选择10张图像找到缓冲器的瓶颈，输入数据仅最终层预测。预测然后比较实际label和真实值差距反向传递误差。当你继续的时候你应该看到精确度的提高。你应该能看到精确度在90\%到95\%之间，通过提取值将随机的一次次训练模型完全训练好在给定测试集给出中正确标签的百分比。
 \subsection{用TensorBoard可视化}
-包含TensorBaord总结的脚本吗很容易理解，调试，优化。例如，你可以可视化图和统计，例如在训练中权重和精度变化:
+包含TensorBaord总结的脚本很容易理解，调试，优化。例如，你可以可视化图和统计，例如在训练中权重和精度变化:
 \begin{lstlisting}[language=Python]
 tensorbaord --logdir /tmp/retrain_logs
 \end{lstlisting}
 TensorBoard运行后导航到localhost:6006查看TensorBoard，脚本将默认采集TensorBoard总结到/tmp/retain\_logs，你可以通过summaries\_dir标志指定采集目录。
 \subsection{用重新训练的模型}
 脚本将用训练好的最后一层写出你的一个Inception v3版本到/tmp/output\_graph,text文件在/tmp/output\_labels.txt包含标签,两个格式见
-\href{https://www.tensorflow.org/tutorials/image_recognition}{C++ and Python image classification examples},因此你可以立即开始新的模型。你去带最顶层，你将需要在脚本中指定新的名字，例如你用label\_image,用--outout\_layer=final\_result.
+\href{https://www.tensorflow.org/tutorials/image_recognition}{C++ and Python image classification examples},因此你可以立即开始新的模型。你去掉最顶层，你将需要在脚本中指定新的名字，例如你用label\_image,用--outout\_layer=final\_result.
 你可以用下面的代码重新训练图:
 \begin{lstlisting}[language=Python]
-bazel build tensorflow/examples/image\_retraining:label\_image && \
+bazel build tensorflow/examples/image_retraining:label_image && \
 bazel-bin/tensorflow/examples/image_retraining/label_image \
---graph=/tmp/output_graph.pb --labels=/tmp/output\_labels.txt \
+--graph=/tmp/output_graph.pb --labels=/tmp/output_labels.txt \
 --image=$Home/flower_photos/daisy/21625746_cc379eea_m.jpg
 \end{lstlisting}
-你应该看到花的标签的列表在大说书情况下daisy在顶层(尽管重新训练的模型被可能会一点不同)，你可以用在你的图片上--image参数
+你应该看到花的标签的列表在大多数情况下daisy在顶层(尽管重新训练的模型可能会一点不同)，你可以用在你的图片上使用--image参数
 用c++代码作为模板整合你自己的应用。
 如果你想在自己的Python程序中用你训练好的模型，上面的\href{https://www.github.com/tensorflow/tensorflow/blob/r1.3/tensorflow/examples/image_retraining/label_image.py}{label\_image script}
-如果你发现默认的Inception v3模型对你的应用太大或者太慢，看看\href{https://www.tensorflow.org/tutorials/image_retraining#other_model_architectures}{Other Model Architechtures section}
+如果你发现默认的Inception v3模型对你的应用太大或者太慢，看看\ref{subsec:Other Model Architechtures}
 \subsection{在你自己的分类上训练}
-如果你已经成功的让脚本在花的例子上工作，你可以教它认识其它你想它认识的东西。理论上你需要设置一个子文件夹，命名分类，每个文件夹包含分类的图像。如果你传递子文件夹的根文件夹作为参数给--image\_dir,脚本像上面训练花一样训练。
+如果你已经成功的让脚本在花的例子上工作，你可以教它认识其它你想它认识的东西。理论上你需要设置一个子文件夹，命名分类，每个文件夹包含分类的图像。如果你传递子文件夹的根文件夹作为参数给--image\_dir,脚本像上面训练花一样训练你的模型。
 \begin{center}
 \begin{figure}
+	
+\centering
 \includegraphics[scale=0.5]{folder_structure.png}
 \end{figure}
 \end{center}
@@ -163,38 +167,37 @@ bazel-bin/tensorflow/examples/image_retraining/label_image \
 \subsection{创建一个训练图像集合}
 首先我们需要查看收集到的图像，常见的问题是训练过程中数据的输入。
 
-为了训练能起作用，每个你想要识别的图像你必须至少手机100张图片，你收集到的图片越多，训练的精确度可能越好。例如你拍摄一些蓝色的房间，另一些是绿色的房间模型的预测最终基于背景颜色，没有对象特征被考虑。为了避免这种情况，拍摄不同颜色的，没有一些实际能看到的的特征。如果你想了解更多这类问题你需要读\href{http://www.jefftk.com/p/detecting-tanks}{tank recognition}
+为了训练能起作用，每个你想要识别的图像你必须至少收集100张图片，你收集到的图片越多，训练的精确度可能越好。例如你拍摄一些蓝色的房间，另一些是绿色的房间模型的预测最终基于背景颜色，没有对象特征被考虑。为了避免这种情况，拍摄不同颜色的，没有一些实际能看到的的特征。如果你想了解更多这类问题你需要读\href{http://www.jefftk.com/p/detecting-tanks}{tank recognition}
 如果你想考虑你用的分类。分隔大的数据集发现一些不同的物理形式为小的可以通过视觉区分的数据集，例如你可以用'vehicle'可以用来替代
-'car','motobike'和'truck',考虑你有一个开放的世界还是封闭的世界将是很有价值的，在封闭的世界你唯一需要考虑的是识别已有的对象，例如一个植物识别的app你应该知道用户可能拍摄的花的图片，英雌你必须决定花的种类，相比之下一个巡逻机器人可能通过摄像头看到不同的事物。在这种情况下你想要分类器报告是否确认它看到的，这可能很难，但是你经常收集一些典型的和主体对象不相关的背景图像，，你可能会让它增加一些图片文件夹中未知的分类。
-检查确保你的图像被正确的标记也是很重要的。经常用生成的标签对于你的目的来说是不可靠的，例如你用\#daisy命名一个叫Daisy的人。如果你想你的图像如果你了解你的图像，扫除任何错误将可能导致最后精确度提高。
+'car','motobike'和'truck',考虑你有一个开放的世界还是封闭的世界将是很有价值的，在封闭的世界你唯一需要考虑的是识别已有的对象，例如一个植物识别的app你应该知道用户可能拍摄的花的图片，因此你必须决定花的种类，相比之下一个巡逻机器人可能通过摄像头看到不同的事物。在这种情况下你想要分类器报告是否确认它看到的，这可能很难，但是你经常收集一些典型的和主体对象不相关的背景图像，，你可能会让它增加一些图片文件夹中未知的分类。
+检查确保你的图像被正确的标记也是很重要的。经常用生成的标签对于你的目的来说是不可靠的，例如你用\#daisy命名一个叫Daisy的人。如果你想了解你的图像，扫除任何错误将可能导致最后精确度提高。
 \subsection{训练步骤}
 如果你为你的图片感到高兴，你可以通过修改学习进程中的细节提升你的结果。最简单的方法是用--how\_many\_training\_steps。默认是4000.但是如果你增加到8000，它的训练时间将增加到两倍。精确度提高的比率显示你训练的越长一些点将停止，但是你可以试验什么时候达到你的模型的限制。
 \subsection{扭曲}
-随机通过变形，剪裁，变化输入图像的亮度是一个提高结果的常用方法，这样扩展了训练数据的大小，帮助网络学习
-真是生活分类器所有的扭曲，在脚本中使用扭曲最大的缺点是缓冲瓶颈不再有用，因此输入图像将不能重用。这意味着训练京城可能花费更多时间，因此我推荐当着作为一个调节方法调节你的模型到合理。
-你可以传递--random\_corp,--random\_scale和--random\_brightness给脚本扭曲图片。百分比值用来控制图片上扭曲用多少部分。，合理的值时5或者10.--flip\_left\_right将在水平方向随机的镜像图像的一半，有助有你的应用能理解翻转的图像。例如如果你想识别字母这将不是一个好的办法，因为翻转它们会毁掉原来的含义。
+随机通过变形，剪裁，变化输入图像的亮度是一个改进结果的常用方法，这样扩展了训练数据的大小，帮助网络学习真实生活分类器所有的扭曲，在脚本中使用扭曲最大的缺点是缓冲瓶颈不再有用，因此输入图像将不能重用。这意味着训练进程可能花费更多时间，因此我推荐当这作为一个调节方法调节你的模型到合理。
+你可以传递--random\_corp,--random\_scale和--random\_brightness给脚本扭曲图片。百分比值用来控制图片上扭曲用多少部分。合理的值是5或者10。--flip\_left\_right将在水平方向随机的镜像图像的一半，有助有你的应用能理解翻转的图像。如果你想识别字母这将不是一个好的办法，因为翻转它们会毁掉原来的含义。
 \subsection{超参数}
 你可以调整一些参数查看是否对你的结果有帮助，--learning\_rate控制最终层训练更新的幅度。直观理解，如果这个值变小训练时间将边长，但是它可能对精度有帮助，你需要小心试验得到查看什么对于你的case生效了。--train\_batch\_size控制每一训练步多少图像被检查，因为学习率应用到每批上，如果你有更大的批得到相同的效果你将需要减小它。
 \subsection{训练，验证，测试集}
-当你为你的脚本指定图像文件夹时，文件夹被分成不同的数据集。最大的数据及是训练集，训练集包含用于训练网络的数据，用于更新权重。你也许很想知道为什么我们不用所有的图像训练？一个道德潜在的问题是当我们做机器学习算法时我们的模型会记住接近正确答案的不相关信息，你可以想想你的图像可能记住了一些照片的背景，通过标签匹配对象，它在训练时所有的图像可能产生一个好的结果，但是不能再新的图像产生好的结果因为它不能泛化对象的特征，仅仅在训练图像的时候记住了一些不重要的特征。
+当你为你的脚本指定图像文件夹时，文件夹被分成不同的数据集。最大的数据集是训练集，训练集包含用于训练网络的数据，用于更新权重。你也许很想知道为什么我们不用所有的图像训练？一个潜在的问题是当我们做机器学习算法时我们的模型会记住接近正确答案的不相关信息，你可以想想你的图像可能记住了一些照片的背景，通过标签匹配对象，它在训练时所有的图像可能产生一个好的结果，但是不能在新的图像产生好的结果因为它不能泛化对象的特征，仅仅在训练图像的时候记住了一些不重要的特征。
 这个问题被称为过拟合，为了避免过拟合我们保持我们的一些数据不再训练进程中，因此模型不能记住它们，我们用这些图像作为检察确保过拟合没有发生，当我们在看模型在这些数据上有一个好的精度说明过拟合没有发生，通常80\%的数据被用来作为训练集10\%的数据集用来验证最后10\%的数据用做测试集预测分类器在真实世界的性能，通过--testing\_percentage和--validation\_percentage标志用来控制比例。通常你应该能留下一些值作为默认，不应该找到任何好处训练调整它们。
-注意这个脚本用图象的文件名区分训练集，验证集，测试集中的图像（不是一个随机的函数），这样保证运行时图片不会再训练集和测试集之间移动，因为当用于训练模型的图像被验证集中的图像取代时可能会出现一些问题。
-你也需注意到了在迭代过程中验证正确度的波动。多数波动是验证集的子集的随机性引起的，选择的验证集用来验证精确度。波动能能被最大层度减少，花费的训练时间增长，通过选择--validation\_batch\_size=-1用整个验证集计算精度。
-当训练结束后你将能检查测试集中错误分类图像，这可以通过增加--print\_misclassified\_test\_images标记，这对于找到那些什么类型的图片让模型困惑（很难区别的）是很有帮助的例如你也许发现了一些种类一些常见的图像角度是特别难是别的，这样是鼓励你增加更多类型的分类训练子类，检查催哦五分类图片也指出输入数据中的错误，向错误标签，其质量魔术的照片。然而，你应该避免测试集固定点单个误差，因为它们仅仅反映在训练集中更多的问题。
-\subsection{更对模型架构}
-这个脚本默认用Inception v3模型架构作为预先训练脚本。这是一个好的开始的地方，因为它提供了高精度的训练结果，但是如果你想部署你的模型到手机设备或者其它的资源限制的环境你也许想要这种精确度换区更小的文件尺寸和更快的速度。
+注意这个脚本用图象的文件名区分训练集，验证集，测试集中的图像（不是一个随机的函数），这样保证运行时图片不会在训练集和测试集之间移动，因为当用于训练模型的图像被验证集中的图像取代时可能会出现一些问题。
+你也需注意到了在迭代过程中验证正确度的波动。多数波动是验证集的子集的随机性引起的，选择的验证集用来验证精确度。波动能被最大层度减少，花费的训练时间增长，通过选择--validation\_batch\_size=-1用对整个验证集计算精度。
+当训练结束后你将能检查测试集中错误分类图像，这可以通过增加--print\_misclassified\_test\_images标记，这对于找到那些什么类型的图片让模型困惑（很难区别的）是很有帮助的，例如你也许发现了一些种类一些常见的图像角度是特别难是别的，这样是鼓励你增加更多类型的分类训练子类，检查错误分类图片也指出输入数据中的错误，像错误标签，底质量模糊的照片。然而，你应该避免单个测试集固定点误差，因为它们仅仅反映在训练集中更多的问题。
+\subsection{更多模型架构}\label{subsec:Other Model Architechtures}
+这个脚本默认用Inception v3模型架构作为预先训练脚本。这是一个好的开始的地方，因为它提供了高精度的训练结果，但是如果你想部署你的模型到手机设备或者其它的资源有限的环境，你也许想要用精确度获取更小的文件尺寸和更快的速度。
 为了帮助这个\href{https://github.com/tensorflow/tensorflow/blob/master/tensorflow/examples/image_retraining/retrain.py}{retrain}
 在\href{https://research.googleblog.com/2017/06/mobilenets-open-source-models-for.html}{移动架构}上支持30个不同的变量。
-这里有一些比Inception v3更小精度的，但是可以得到更小的文件大小(下载小于兆字节)运行快乐几倍。为了训练这个模型，传递--architecture标志，例如:
+这里有一些比Inception v3更小精度的，但是可以得到更小的文件大小(下载小于兆字节)运行快了几倍。为了训练这个模型，传递--architecture标志，例如:
 \begin{lstlisting}[language=Python]{language={ANSI}C}
 python tensorflow/examples/image_retraining/retrain.py \
     --image_dir ~/flower_photos -- architecture mobilenet_0.25_128_quantized
 \end{lstlisting}
 这将在/temp/创建一个941KB模型文件output\_graphi.pb.Mobilenet的25\%的参数，占据$128\times128$大小的输入图像，权重在磁盘中量化为8位，你可以选择'1.0','0.75','0.50','0.25'控制权重参数的数量，因此文件尺寸(和一些扩展速度),'224','192','160'或者'128'对于输入图像的尺寸，更小的尺寸更快的速度，选项'\_quantized'预示着是否文件应该包含8位或者32位浮点权重。速度和大小好处带来的是精确度的损失，但是对于一些用途来说是不重要的，它可以通过训练数据提高、例如用扭曲在花数据集允许你得到得到80\%的精度，甚至0.25/128、quantized图。
-如果你在你的程序或者label\_image中用Mobilenet模型，你讲需要一个输入一个指定大小的图像转换一个浮点让位到'input' tensor，典型的24位乳香范围[0,255]你必须用(image-128.)/128转化它到[-1,1]范围。
+如果你在你的程序或者label\_image中用Mobilenet模型，你将需要一个输入,一个指定大小的图像转换一个浮点范围到'input' tensor中，典型的24位图像范围[0,255]，你必须用(image-128.)/128转化它到[-1,1]范围。
 
 \section{TF layer向导：建立一个卷积神经网络}
-TensorFlow\href{https://www.tensorflow.org/api_docs/python/tf/layers}{layers module}是一个用于轻松建立神经网络的高级API，它提供了一个方法促进创建dense(全连接)层和卷积层，增加激活函数，应用dropout规则。在这个导航中，你讲学习如何用layers建立一个卷积神经网络模型识别手写体数据集。
+TensorFlow\href{https://www.tensorflow.org/api_docs/python/tf/layers}{layers module}是一个用于轻松建立神经网络的高级API，它提供了一个方法促进创建dense(全连接)层和卷积层，增加激活函数，应用dropout规则。在这个导航中，你将学习如何用layers建立一个卷积神经网络模型识别手写体数据集。
 \textbf{手写体数据集包含0-9，60000个训练样本10000个测试样本，图像格式为}$28\times28$
 \subsection{开始}
 创建文件cnn\_mnist.py,在手写体程序中添加如下代码:
@@ -589,7 +592,7 @@ CIFAR-10 网络模型部分的代码位于\href{https://www.tensorflow.org/code/
 \end{figure}
 
 练习: inference的输出是未归一化的logits，尝试使用tf.softmax()修改网络架构后返回归一化的预测值。
-inputs() 和 inference() 函数提供了评估模型时所需的所有构件，现在我们把讲解的重点从构建一个模型转向训练一个模型。
+inputs() 和 inference() 函数提供了评估模型时所需的所有构件，现在我们把将解的重点从构建一个模型转向训练一个模型。
 
 \begin{quote}
 练习: inference() 中的模型跟\href{https://code.google.com/p/cuda-convnet/}{cuda-convnet}中描述的CIFAR-10模型有些许不同，其差异主要在于其顶层不是全连接层而是局部连接层，可以尝试修改网络架构来准确的复制全连接模型。
@@ -836,7 +839,7 @@ sigmod Layer输出0到1之间的数，描述多少组件应该被通过，0表�
 
 其中它们的区别在如下论文中又详细阐述 \href{http://clic.cimec.unitn.it/marco/publications/acl2014/baroni-etal-countpredict-acl2014.pdf}{Baroni :et al}，不过简而言之：基于计数的方法计算某词汇与其邻近词汇在一个大型语料库中共同出现的频率及其它统计量，然后将这些统计量映射到一个小型且稠密的向量中。预测方法则试图直接从某词汇的邻近词汇对其进行预测，在此过程中利用已经学习到的小型且稠密的嵌套向量。
 
-Word2vec是一种可以进行高效率词嵌套学习的预测模型。其两种变体分别为：连续词袋模型（CBOW）及Skip-Gram模型。从算法角度看，这两种方法非常相似，其区别为CBOW根据源词上下文词汇（'the cat sits on the'）来预测目标词汇（例如，‘mat’），而Skip-Gram模型做法相反，它通过目标词汇来预测源词汇。Skip-Gram模型采取CBOW的逆过程的动机在于：CBOW算法对于很多分布式信息进行了平滑处理（例如将一整段上下文信息视为一个单一观察量）。很多情况下，对于小型的数据集，这一处理是有帮助的。相形之下，Skip-Gram模型将每个“上下文-目标词汇”的组合视为一个新观察量，这种做法在大型数据集中会更为有效。本教程余下部分将着重讲解Skip-Gram模型。
+Word2vec是一种可以进行高效率词嵌套学习的预测模型。其两种变体分别为：连续词袋模型（CBOW）及Skip-Gram模型。从算法角度看，这两种方法非常相似，其区别为CBOW根据源词上下文词汇（'the cat sits on the'）来预测目标词汇（例如，‘mat’），而Skip-Gram模型做法相反，它通过目标词汇来预测源词汇。Skip-Gram模型采取CBOW的逆过程的动机在于：CBOW算法对于很多分布式信息进行了平滑处理（例如将一整段上下文信息视为一个单一观察量）。很多情况下，对于小型的数据集，这一处理是有帮助的。相形之下，Skip-Gram模型将每个“上下文-目标词汇”的组合视为一个新观察量，这种做法在大型数据集中会更为有效。本教程余下部分将着重将解Skip-Gram模型。
 \subsection{处理噪声的对比训练}
 神经概率化语言模型通常使用极大似然法 (ML) 进行训练，其中通过 softmax function 来最大化当提供前一个单词 h (代表 "history")，后一个单词的概率$w_t$(目标词概率)
 \begin{equation*}
@@ -894,7 +897,7 @@ J_{NEG}^{(t)}=logQ_{\theta}(D=1|the,quick)+log(Q_{\theta}(D=0|sleep,quick))
 \includegraphics[scale=0.5]{linear-relationships.png}
 \end{figure}
 \end{center}
-这也解释了为什么这些向量在传统的NLP问题中可作为特性使用，比如用在对一个演讲章节打个标签，或者对一个专有名词的识别 (看看如下这个例子 \href{https://arxiv.org/pdf/1103.0398v1.pdf}{Collobert et al.}或者 \href{http://www.aclweb.org/anthology/P10-1040}{Turian et al.})。
+这也解释了为什么这些向量在传统的NLP问题中可作为特性使用，比如用在对一个演将章节打个标签，或者对一个专有名词的识别 (看看如下这个例子 \href{https://arxiv.org/pdf/1103.0398v1.pdf}{Collobert et al.}或者 \href{http://www.aclweb.org/anthology/P10-1040}{Turian et al.})。
 
 不过现在让我们用它们来画漂亮的图表吧！
 
@@ -1060,10 +1063,11 @@ bazel-bin/tensorflow/models/rnn/ptb/ptb_word_lm \
 但是计算机解决这个问题却很难。最近几年机器学习已经在这个问题上取得了很大的进步，事实上我们已经发现了一个称谓CNN的模型可以在很难的视觉认知邻域上获得匹敌甚至超过人类的性能。研究人员在ImageNet上展示它们的计算机视觉的成果，模型性能持续提升从\href{http://static.googleusercontent.com/media/research.google.com/en//archive/unsupervised_icml2012.pdf}{QuocNet},\href{http://www.cs.toronto.edu/~fritz/absps/imagenet.pdf}{AlexNet},\href{http://arxiv.org/abs/1409.4842}{Inception(GoogleNet)},\href{http://arxiv.org/abs/1502.03167}{BN-inception-v2}，Google累不和外部的研究人员都已经出版了一些论文描述这些模型，但是结果任然河南再次提升，我们用下面的代码实现我们最新的模型\href{http://arxiv.org/abs/1512.00567}{Inception-v3},Inception-v3 2012年在Imagenet的LVRC上训练，这对计算机来说是一个基本的任务，这里模型尝试着分类整个图形为1000中分类像"斑马","大麦町犬","洗碗机"，下面是AlexNet分类的一些图像:
 \begin{center}
 \begin{figure}[H]
-\includegraphics{AlexClassification.png}
+	\centering
+	\includegraphics[scale=0.3]{AlexClassification.png}
 \end{figure}
 \end{center}
-为了对比模型，我们检查迷行预测正确结果为"top-5 error rate",AlexNet2012年的验证数据及上得到top-5 error rate 15.3\%,Inception(GoogleLeNet)得到6.67\%,BN-Inception-v2得到4.9\%,Inception-v3得到3.46\%。
+为了对比模型，我们检查迷行预测正确结果为"top-5 error rate",AlexNet2012年的验证数据集上得到top-5 error rate 15.3\%,Inception(GoogleLeNet)得到6.67\%,BN-Inception-v2得到4.9\%,Inception-v3得到3.46\%。
 \begin{quote}
 \emph{人类在ImageNet中做的怎么样，由 Andrej Karpathy 的\href{http://karpathy.github.io/2014/09/02/what-i-learned-from-competing-against-a-convnet-on-imagenet/}{博客}尝试测量人们的性能，它得到了5.1\%的top-5 error rate}
 \end{quote}
@@ -1076,7 +1080,8 @@ python classify_image.py
 \end{lstlisting}
 上面的命令将分类下面的熊猫图片。
 \begin{center}
-\begin{figure}[h]
+\begin{figure}[H]
+\centering
 \includegraphics{cropped_panda.jpg}
 \end{figure}
 \end{center}
@@ -1116,6 +1121,7 @@ I tensorflow/examples/label_image/main.cc:206] bulletproof vest (466): 0.0053508
 在这个例子中你用一张默认的图片\href{https://en.wikipedia.org/wiki/Grace_Hopper}{Admiral Grace Hopper},你可以看到网络正确识别她的军官制服，得分0.8。
 \begin{center}
 \begin{figure}[H]
+\centering
 \includegraphics{grace_hopper.jpg}
 \end{figure}
 \end{center}
@@ -1133,7 +1139,7 @@ Status ReadTensorFromImageFile(string file_name, const int input_height,
                                std::vector<Tensor>* out_tensors) {
   tensorflow::GraphDefBuilder b;
 \end{lstlisting}
-我们开始撞见亿个GraphDefBuilder对象指定一个运行或者载入的模型。
+我们开始创建一个GraphDefBuilder对象指定一个运行或者载入的模型。
 \begin{lstlisting}[language=Python][language=C++]
   string input_name = "file_reader";
   string output_name = "normalized";
@@ -1342,14 +1348,14 @@ tf.estimator API 提供了一些丰富的工具在TensorFlow中处理线性模�
 线性模型:
 \begin{itemize}
   \item 比深度神经网络训练快速
-  \item 在大型数据及上也能工作的很好
+  \item 在大型数据集上也能工作的很好
   \item 训练的时候不要求微小的学习率
   \item 相比神经网络能更简单轻松地调试，你可以检查付给给个特征的权重找出那个对于预测结果的影响最大。
   \item 对于了解机器学习提供了很好的起点
   \item 工业上广泛的使用
 \end{itemize}
 \subsection{tf.estimator将如何构建线性模型}
-你可以通过TensorFlow建立线性模型不需要特殊的API，但是tf.estimator提供了一些工具帮助你更轻松地构建搞笑的大规模线性模型。
+你可以通过TensorFlow建立线性模型不需要特殊的API，但是tf.estimator提供了一些工具帮助你更轻松地构建高效的大规模线性模型。
 \subsubsection{特征列和线性模型}
 设计的线性模型的大部分工作是转化原始数据为合适的输入特征，TensorFlow用FeatureColumn概念启动这些转换，一个FeatureColumn代表你的数据的单个特征，一个FeatureColumn也许代表一些像"height"或者也许代表一个像"eye\_color"的种类这里的值是来自离散的可能性像{'blue', 'brown', 'green'}。连续的特征像'height'和绝对的特征'eye\_color',在输入模型前一个单个的值可能被转化为数值序列。FeatureColumn概念让你用但一个语义单元操作特征，你可以转化选择特征来包含没有用指定索引处理的处理。
 \subsubsection{稀疏列}
@@ -1452,7 +1458,7 @@ e = tf.estimator.DNNLinearCombinedClassifier(
   \end{lstlisting}
 \end{itemize}
 \subsection{读取调查数据}
-我们将要使用的数据集是\href{https://archive.ics.uci.edu/ml/datasets/Census+Income}{ Census Income Dataset},你讲需要手动下载\href{https://archive.ics.uci.edu/ml/machine-learning-databases/adult/adult.data}{训练集}和\href{https://archive.ics.uci.edu/ml/machine-learning-databases/adult/adult.test}{测试集}或者用下面的代码:
+我们将要使用的数据集是\href{https://archive.ics.uci.edu/ml/datasets/Census+Income}{ Census Income Dataset},你将需要手动下载\href{https://archive.ics.uci.edu/ml/machine-learning-databases/adult/adult.data}{训练集}和\href{https://archive.ics.uci.edu/ml/machine-learning-databases/adult/adult.test}{测试集}或者用下面的代码:
 \begin{lstlisting}[language=Python][language=Python]
 import tempfile
 import urllib
@@ -1483,24 +1489,44 @@ test_labels = (df_test["income_bracket"].apply(lambda x: ">50K" in x)).astype(in
   \item 如果它的值可以是任何连续的范围这一列称为连续的，例如一个人的资本所得（例如\$14084）是一个连续的列。
 \end{itemize}
 下面是一个连续的收入数据的调查
-\begin{tabular}{ |p{1cm}||p{1cm}|p{8cm}|}
+\begin{table}[H]
+\centering
+\begin{tabular}{ |p{4cm}||p{2cm}|p{6cm}|}
+\hline
 列的名字&类型&描述\\
+\hline
 age&Continuous&人的名字\\
+\hline
 workclass&  Categorical&雇主的类型(政府，军队，私人等等)\\
+\hline
 fnlwgt& Continuous& 人们相信观察表示（相同的权重）的数量，这个变量将被使用\\
+\hline
 education&  Categorical&对个人获得最高的学历\\
+\hline
 education\_num& Continuous& 数字形式的学历\\
+\hline
 marital\_status&  Categorical&婚姻状况\\
+\hline
 occupation& Categorical&个人职位\\
+\hline
 relationship& Categorical &妻子，小孩，丈夫，没有家庭，其它相关等等或者没有结婚\\
+\hline
 race& Categorical&白人，亚洲人，爱斯基摩人，其它，黑人\\
+\hline
 gender& Categorical&男，女\\
+\hline
 capital\_gain&  Continuous& 资本收入记录\\
+\hline
 capital\_loss&  Continuous& 资本损失记录\\
+\hline
 hours\_per\_week& Continuous& 每周工作小时数\\
+\hline
 native\_country&  Categorical&  来自的国家\\
-income& Categorical&">50K"或者"<=50K",意味着一个人是否能赚超过50K\$
+\hline
+income& Categorical&">50K"或者"<=50K",意味着一个人是否能赚超过50K\$\\
+\hline
 \end{tabular}
+\end{table}
 \subsection{转换数据为Tensors}
 当建立一个tf.estimator模型的时候，输入数据通过输入Builder函数指定。Builder函数不被调用知道传入方法train或者evaluate。这个函数的目的是构造代表tf.Tensor或者tf.SparseTensor的输入数据，输入Builder函数返回下面对:
 \begin{itemize}
@@ -1531,19 +1557,21 @@ def input_fn(data_file, num_epochs, shuffle):
       num_threads=5)
 \end{lstlisting}
 \subsubsection{为模型选择工程特征}
-选择加工正确的特征列是一个高校学习模型的关键，一个feature column可以是原始dataframe中的原始列(我们称之基于特征列)或者任何新的基于一列或者多列变形的derived feature.基本的feature column是一个原始数据和衍生数据的抽象概念来预测目标标签。
+选择加工正确的特征列是一个高效学习模型的关键，一个feature column可以是原始dataframe中的原始列(我们称之基于特征列)或者任何新的基于一列或者多列变形的derived feature.基本的feature column是一个原始数据和衍生数据的抽象概念来预测目标标签。
 \subsubsection{基于绝对特征列}
-为了定义基于绝对特征的特征列，我们用tf.feature\_column API创建一个CategoricalColumn，如归哦你知道可能的列的特征有一些值，你可以用categorical\_column\_width\_vocabulary\_list。每个列表中的key将得到赋值从0开始自动增加ID。例如对于性别列我们可以复制特征字符串"Female"为整数ID 0“Male”赋值为1。
-\begin{lstlisting}[language=Python]{language=Python}
+为了定义基于绝对特征的特征列，我们用tf.feature\_column API创建一个CategoricalColumn，如果你知道可能的列的特征有一些值，你可以用categorical\_column\_width\_vocabulary\_list。每个列表中的key将得到赋值从0开始自动增加ID。例如对于性别列我们可以复制特征字符串"Female"为整数ID 0“Male”赋值为1。
+\begin{lstlisting}[language=Python]
 gender = tf.feature_column.categorical_column_with_vocabulary_list(
     "gender", ["Female", "Male"])
 \end{lstlisting}
 如果你预先不知道可能值做怎么办?没问题你可以用categorical\_column\_width\_hash\_bucket代替:
-\begin{lstlisting}[language=Python][language=Python]
+\begin{lstlisting}[language=Python]
 occupation = tf.feature_column.categorical_column_with_hash_bucket(
     "occupation", hash_bucket_size=1000)
 \end{lstlisting}
 当我们在训练中遇到它们时在列中的每个值每散列到一个整数ID:
+\begin{table}[H]
+\centering
 \begin{tabular}{|c|c|}
 \hline
 ID&feature\\
@@ -1563,6 +1591,7 @@ ID&feature\\
 \ldots&\\
 \hline
 \end{tabular}
+\end{table}
 无论我们选择哪种方法定义一个SparseTensor。每个特征字符创将通过查找一个固定的映射或者散列特征字符串将被映射为一个整数ID。注意散列冲突可能会发生，但是对于模型的质量影响不大。在hood下，LinearModel类掉膘管理映射和为每个特征ID创建tf.Variable存储模型参量。模型参数将通过模型训练过程被学习到。我们将在定义的其它绝对特征做类似的模型训练:
 \begin{lstlisting}[language=Python][language=Python]
 education = tf.feature_column.categorical_column_with_vocabulary_list(
@@ -1682,7 +1711,7 @@ m = tf.estimator.LinearClassifier(
       l2_regularization_strength=1.0),
     model_dir=model_dir)
 \end{lstlisting}
-L1和L2正则化一个重要的区别是L1正则化尝试使得模型的权重保持在0，创建系数模型，由于L2证这话也尝试使得模型权重更接近于0但是不需要0.因此如果如果你增强L1正则化的强度你讲有一个小的模型尺寸因为一些模型的权重变为了0.因此，特征空间和大却不稀疏时和有一些资源限制阻止你离开一个太大的模型时需要，事实上你讲尝试多种L1，L2正则化组合强度找到最好的参数最好的控制过拟合给你一个想要的模型尺寸。
+L1和L2正则化一个重要的区别是L1正则化尝试使得模型的权重保持在0，创建系数模型，由于L2证这话也尝试使得模型权重更接近于0但是不需要0.因此如果如果你增强L1正则化的强度你将有一个小的模型尺寸因为一些模型的权重变为了0.因此，特征空间和大却不稀疏时和有一些资源限制阻止你离开一个太大的模型时需要，事实上你将尝试多种L1，L2正则化组合强度找到最好的参数最好的控制过拟合给你一个想要的模型尺寸。
 \subsection{逻辑回归如何工作}
 最后让我们花几分钟了解一下实际的逻辑回归模型看起来像什么。我们用Y表示标签，观察值$\mathbf{x}={x_1,x_2,\ldots,d_d}$我们定义如果个人所得超过50K\$,Y=1,否则Y=0。
 \begin{equation*}
@@ -1700,6 +1729,7 @@ P(Y=1|\mathbf{x})=\frac{1}{1+exp(-(\mathbf{W^Tx}+b)}
 在先前的TensorFlow线性模型教程中，我们训练了一个逻辑回归模型，以使用\href{https://archive.ics.uci.edu/ml/datasets/Census+Income}{人口普查收入数据集}预测个人年收入超过5万美元的概率 。TensorFlow也适用于训练深层神经网络，您可能会考虑选择哪一个 - 那么为什么不这两个呢？是否可以将两者的优势结合在一个模型中？
 在本教程中，我们将介绍如何使用TF.Learn API联合训练广泛的线性模型和深入的前馈神经网络。这种方法结合了记忆和泛化的优势。它对于具有稀疏输入特征的通用大规模回归和分类问题（例如，具有大量可能特征值的分类特征）是有用的。如果您有兴趣了解Wide＆Deep Learning如何运作，请查看我们的\href{http://arxiv.org/abs/1606.07792}{研究论文}。
 \begin{figure}[H]
+	\centering
 	\includegraphics[scale=0.4]{wide_n_deep.png}
 \end{figure}
 上图显示了宽模型（具有稀疏特征和变换的逻辑回归），深度模型（具有嵌入层和多个隐藏层的前馈神经网络）的比较，以及宽＆深度模型（两者的联合训练）。在高层次上，只需3个步骤即可使用TF.Learn API来配置宽，深或宽和深的模型：

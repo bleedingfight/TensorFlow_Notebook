@@ -10,7 +10,7 @@ TensorFlow对于移动平台被设计为一个好的深度学习解决方案。
 \end{itemize}
 TensorFlow Lite为移动平台提供了更好的性能和更小的文件尺寸如果在它们的平台上一些硬件加速功能可以使用的话。另外，它有更少的依赖以至于它可能被构建运行在更简单的，资源有限的设备上。TensorFlow Lite可允许通过\href{https://developer.android.com/ndk/guides/neuralnetworks/index.html?hl=zh-cn}{Neural Networks API}加速。
 
-TensorFlow Lite当前已经覆盖了有限的一些操作。尽管默认TensorFlow Mobile仅仅支持有限的操作，原则上如果你用TensorFlow的任意操作，它能被自定义构建kernel。这样用不支持TensorFlow Lite的情况将继续支持TensorFlow Mobile。正如TensorFlow Lite设计的，它将添加额外的操作，将被很容易决定。
+TensorFlow Lite当前已经覆盖了有限的一些操作。尽管默认TensorFlow Mobile仅仅支持有限的操作，原则上如果你用TensorFlow的任意操作，它能被自定义构建kernel。这样用不支持TensorFlow Lite的情况将继续支持TensorFlow Mobile。随着TensorFlow Lite的发展，他讲添加额外的操作，决策也更容易。
 \subsection{介绍TensorFlow Lite}
 TensorFlow Lite是针对移动设备和嵌入式设备的TensorFlow的轻量级的解决方案。它以很低的代价和小的二进制文件尺寸在设备上进行机器学习推理。TensorFlow Lite也支持用\href{https://developer.android.com/ndk/guides/neuralnetworks/index.html?hl=zh-cn}{Android Neural Networks API}进行加速。
 
@@ -31,28 +31,32 @@ TensorFlow被设计成为在像Android和iOS的移动平台上的一个好的深
 \end{itemize}
 \subsection{常用的机器学习情景}
 \textbf{为什么在移动设备上运行TensorFlow？}
-通常的深度学习结合数据中心和大型的高性能GPU集群。然而，通过网络连接发送设备数据这可能很昂贵耗费时间。运行在移动设备上是可能的当你继续不可能必须等待网络处理传送每个交互。下面是在设备上运行深度学习的常见情景。
+
+通常的深度学习结合数据中心和大型的高性能GPU集群。然而，通过网络连接发送设备数据这耗费时间的代价很大。运行在移动设备上时可能的当你不必等待网络处理传送每个交互。下面是在设备上运行深度学习的常见情景。
 \subsection{语音识别}
-一些有趣的应用可能构建在一个语义驱动的接口上，这些请求在设备上处理。很多时候长时间不给任何指令，持续和远程服务器通信将浪费带宽，因为很多情况下很安静或者有背景噪声。为了解决这个问题一个常见的通常是运行一个小的神经网络在设备上\href{https://www.tensorflow.org/tutorials/audio_recognition?hl=zh-cn}{ listening out for a particular keyword}当关键字被发现，一些剩下的场景可能是如果需要更多的计算力则发送给服务器进一步处理。
+一些有趣的应用可能构建在一个语义驱动的接口上，这些请求在设备上处理。很多时候长时间不给任何指令，持续和远程服务器通信将浪费带宽，因为很多情况下很安静或者有背景噪声。为了解决这个问题一个常见的通常是运行一个小的神经网络在设备上\href{https://www.tensorflow.org/tutorials/audio_recognition?hl=zh-cn}{ listening out for a particular keyword},当关键字被发现，一些剩下的场景可能是如果需要更多的计算力则发送给服务器进一步处理。
 \subsection{图像识别}
-对于移动app理解摄像头场景是很有用的。如果你的用户拍摄了照片，识别它们可能帮助你的相机app更好的过滤或者标记相片以至于它们能轻松地找到。这对于嵌入式应用来说也是很重要的，因此你可以用图像传感器检测一些感兴趣的条件，是否动物在野生环境下或者\href{https://svds.com/tensorflow-image-recognition-raspberry-pi/}{报告你的训练运行多晚}
+对于移动app理解摄像头场景是很有用的。如果你的用户拍摄了照片，识别它们可能帮助你的相机app更好的过滤或者标记相片以至于它们能轻松地找到。这对于嵌入式应用来说也是很重要的，因此你可以用图像传感器检测一些感兴趣的情况:是否动物在野生环境下或者\href{https://svds.com/tensorflow-image-recognition-raspberry-pi/}{报告你的训练运行多晚}。
+
 TensorFlow结合一些预先训练好的目标识别的模型，它们可以运行在你的移动设备上。你可以尝试\href{https://codelabs.developers.google.com/codelabs/tensorflow-for-poets/index.html?hl=zh-cn#0}{ Tensorflow for Poets }和\href{https://codelabs.developers.google.com/codelabs/tensorflow-for-poets-2/index.html?hl=zh-cn#0}{Tensorflow for Poets 2: Optimize for Mobile }代码实验室，查看如何获取已经训练好的运行非常快，轻量级的模型训练教它识别特殊物体，优化它在手机端的运行。
 \subsection{对象定位}
 有时候知道对象在图像中的位置和对象是什么一样重要。一些参数使用情景可能从一个移动app获益，比如说指导用户到正确的组件提供帮助修复它们的无线网络或者在一些特殊的场景提供信息覆盖其上。嵌入式应用经常需要计数传给它们的对象，是否宠物在庄稼地里或者人，汽车，自行车将通过街道信号灯。
-TensorFlow提供一个预先训练好的模型描绘在图像中检测到的人一个框，结合追踪代码实时跟踪它们。最终对于你尝试统计多少对象被实时呈现是很重要的，因此放一个新的对象进入或者离开场景时它给你一个好的想法。对于Android设备我们给了一个可用的代码在\href{https://github.com/tensorflow/tensorflow/tree/master/tensorflow/examples/android}{Github},更多以\href{https://github.com/tensorflow/models/tree/master/object_detection/README.md}{常用的对象检测模型}也可用
+
+TensorFlow提供一个预先训练好的模型描绘在图像中检测到的人一个框，结合追踪代码实时跟踪它们。最终对于你尝试统计多少对象被实时呈现是很重要的，因此放一个新的对象进入或者离开场景时它给你一个好的想法。对于Android设备我们给了一个可用的代码在\href{https://github.com/tensorflow/tensorflow/tree/master/tensorflow/examples/android}{Github},更多以\href{https://github.com/tensorflow/models/tree/master/object_detection/README.md}{常用的对象检测模型}也可用。
 \subsection{手势识别}
 不论是用手或者其它的姿势控制应用，从图像中识别或者分析加速度传感器数据是很有用的。创建这些模型超过了这个向导的内容，但是TensorFlow能高效的部署它们。
 \subsection{光学字符识别}
-Google翻译的实时相机查看是一个设备检测文字的交互高效的好的例子。在图像中识别文字有一些步骤，首先识别文字呈现的区域，就是目标定位，可以使用类似的技术解决。当你有文字区域后你将需要解释它为字符，然后用语言模型猜测它们表达的是什么意思。最简单的评估文字表达的意思是分割文本行为单个的文字然后使用简单的神经网络框住每个字符。你可以用MNIST模型（TensorFlow导航）获得一个好的结果，你也可以像一个更高级的方案解决输入。一个高级的使用是用LSTM模型处理一行文本，模型自己处理片段为不同的字符。
+Google翻译的实时相机查看是一个设备检测文字的交互高效的好的例子。在图像中识别文字有一些步骤，首先识别文字呈现的区域，就是目标定位，可以使用类似的技术解决。当你有文字区域后你将需要解释它为字符，然后用语言模型猜测它们表达的是什么意思。最简单的评估文字表达的意思是分割文本行为单个的文字然后使用简单的神经网络框住每个字符。你可以用MNIST模型（TensorFlow导航）获得一个好的结果，你也可以想一个更高级的方案解决输入。一个高级的使用是用LSTM模型处理一行文本，模型自己处理片段为不同的字符。
 \subsection{翻译}
 即使在没有网络的情况下准确的翻译一种语言到另一种语言是很重要的使用场景。深度网络在这些任务上很高效，你能找到一些不同的文学模型描述。经常seq2seq循环模型能运行单个图处理整个翻译，结合需要运行分割的解析场景。
 \subsection{文本分类}
-如果你想在用户输入和阅读的基础上给出相关的建议，理解文本的意思将变得很有用。文本分类是一个包含了从语义分析到主题发现。你可能有自己想应用的策略或者标签，因此最好的地方是开始一个想\href{https://github.com/tensorflow/models/tree/master/skip_thoughts/}{Skip-Thoughts}然后在你自己的例子上训练。
+如果你想在用户输入和阅读的基础上给出相关的建议，理解文本的意思将变得很有用。文本分类包含了从语义分析到主题发现。你可能有自己想应用的策略或者标签，因此最好的地方是开始一个想\href{https://github.com/tensorflow/models/tree/master/skip_thoughts/}{Skip-Thoughts}然后在你自己的例子上训练。
 \subsection{语音合成}
 语音合成可能是一个好的方法给予用户返回或者帮助，最近的像\href{https://deepmind.com/blog/wavenet-generative-model-raw-audio/}{WaveNet}显示了深度学习可以提供非常自然的声音。
 \subsection{移动机器学习和云}
-一些使用场景的例子在设备网络结合云服务上给出一个想法。云在控制的环境中有强大的计算力，但是运行在设备上可以提供更高效的交互。在这种情况下云是不可用的或者你的云能力有限，你可以提供一个离线的试验或者通过在设备上处理减少云负载。
-在设备上计算也是一个信号当它的时间交换了云上的工作。一个好的例子是语音中的关键词检测，因为设备能直接听关键词，一旦识别然后触发了一些通信和基于云的语音识别。没有在设备上的组件，整个应用将不可用，这些样本存在通过一些其它的应用识别一些sensor的输入对于更进一步的处理以创建一些有趣的产品是足够感兴趣的。
+一些使用场景的例子在设备网络结合云服务上给出一个想法。云在控制的环境中有强大的计算力，但是运行在设备上可以提供更高效的交互。在这种情况下云是不可用的或者你的云能力有限，你可以提供一个离线的试验,通过在设备上处理减少云负载。
+
+在设备上计算也是一个转换云上的工作的信号。一个好的例子是语音中的关键词检测，因为设备能直接听关键词，一旦识别然后触发了一些通信和基于云的语音识别。没有在设备上的组件，整个应用将不可用，识别一些传感器输入对于更进一步的处理创建一些有趣的产品是足够有趣的。
 \subsection{你应该拥有什么软件和硬件?}
 TensorFlow运行在Ubuntu，Windows10，OS X上。详细的所有支持的操作系统和安装说明查看\href{https://www.tensorflow.org/install/index?hl=zh-cn}{Installing tensorFlow}
 注意我们为移动TensorFlow提供多个示例代码要求你从源代码编译TensorFlow，因此你将需要pip install在示例代码上工作。为了试验移动例子，你将需要一个设备用于开发，用\href{https://developer.android.com/studio/install.html?hl=zh-cn}{Android Studio}如果你开发iOS使用\href{https://developer.apple.com/xcode/}{XCode}
@@ -65,7 +69,8 @@ TensorFlow运行在Ubuntu，Windows10，OS X上。详细的所有支持的操作
 \end{enumerate}
 \subsection{你的问题是否是移动机器学习能解决的？}
 关于你想解决的问题当你有一个想法时，你需要计划如何构建你的解。最重要的一步是确保你的问题实际上是可解的，最好的方法是用人力循环测试。
-例如如果你想用语音驱动机器人玩具车。尝试从设备记录一些声音，监听如果你可以理解说了什么返回它。经常你将在捕获处理上找到一些问题，像电机淹没了声音或者因为距离不能被听到，你应该在模型处理调查前处理这些问题。
+例如如果你想用语音驱动机器人玩具车。尝试从设备记录一些声音，监听,如果你可以理解说了什么,返回它。经常你将在捕获处理上找到一些问题，像电机淹没了声音或者因为距离不能被听到，你应该在模型处理调查前处理这些问题。
+
 另一个例子是给一张从你的app拍的照片给人看看是否人能分辨它们是什么。用这种方法寻找。如果它们不能做到（例如尝试从照片估计食物的热量也许是不可能的,因为所有的白色的汤都是一样的，然后你将重新设计你的试验处理它。）一个好的原则是如果一个人不能处理这个任务，希望训练机器人做到更好是很困难的。
 \subsection{创建标记的数据集}
 在你解决了一些基本的问题后，你需要创建一个标记的数据集来定义你尝试解决的问题。这一步是极其重要的，甚至比选择使用的模型还要重要。你想它能作为你的实际场景下的表达，因此模型将在你教它的任务下变得高效。调查工具尽可能高效和精确地标记数据也是很有价值的。例如，如果你能转化在web接口的点击为键盘上的快捷键，你也许能加速生成过程。你应该自己初始化标记，因此你可以了解它的难度和可能的错误，可能改变你的标记和数据捕获处理来避免它。当你和你的团队能组合标记样本(对多数的样本生成相同的标签表示赞同)，你可以尝试捕获你的只是在一个手册相互交流而不是如何运行相同的过程。
@@ -75,7 +80,7 @@ TensorFlow运行在Ubuntu，Windows10，OS X上。详细的所有支持的操作
 我么你建议你从我们给的\href{https://www.tensorflow.org/mobile/android_build?hl=zh-cn}{Android}和\href{https://www.tensorflow.org/mobile/ios_build?hl=zh-cn}{iOS} demo中开始。
 TensorFlow Lite定义了一个新的基于\href{https://google.github.io/flatbuffers/}{FlatBuffers}模型文件格式。FlatBuffers是一个开源，高效，跨平台的序列化库。类似\href{https://developers.google.com/protocol-buffers/?hl=en}{Protocol buffers}，但是主要的不同是在访问数据时FlatBuffers不需要解析/解包步骤为一个二次表达，经常和对象内存分配成对出现。FlatBuffers代码尺寸比protocal buffers更小。
 
-TensorFlow Lite是一个新的移动量化平台，目标是跟踪app的负载和速度。解释器用一个静态图和一个自定义的（少量动态）内存分配器期待最小的载入，初始化，和高效执行。
+TensorFlow Lite是一个新的移动量化平台，目标是跟踪app的负载和速度。解释器用一个静态图和一个自定义的（少量动态）内存分配器以期待最小的载入，初始化和高效执行。
 
 TensorFlow Lite 提供一个接口用于硬件加速，如果硬件加速在设备上可用。它通过Android Neural Network库（Android O-MR1）加速。
 \subsection{为什么需要一个新的专为移动平台设计的库？}
@@ -97,10 +102,10 @@ TensorFlow Lite 提供一个接口用于硬件加速，如果硬件加速在设�
 \item 结合核心优化在移动设备上更快的执行
 \item TensorFlow转化器转化TensorFlow-trained的模型为TensorFlow Lite格式
 \item 更小的尺寸：TensorFlow Lite当所有的操作被连接小于300KB，当用操作需要支持Inception V3和MobileNet时小于200KB
-\item 预先测试的模型：所有的模型被确保效果\begin{itemize}
+\item 预先测试的模型：所有的模型确保效果\begin{itemize}
 \item Inception V3，一个流行在图像上的侦测对象的模型
 \item \href{https://github.com/tensorflow/models/blob/master/research/slim/nets/mobilenet_v1.md}{MobileNets}一个设计用来高效的在最大化在资源受限或者嵌入式应用中的熟悉的移动端优先的计算机视觉模型。它们能被构建用于分类，检测，嵌入和分割。MobileNet模型很小但是相比Inception V3\href{https://research.googleblog.com/2017/06/mobilenets-open-source-models-for.html}{精度低}
-\item 在设备智能回复，在设备模型上对输入文本信息给出相关的建议信息回复。模型被构建用于内存有限的设备像手表和手机等设备上并且它对于第一方和第三方app已经被成功的用于\href{https://research.googleblog.com/2017/02/on-device-machine-intelligence.html}{Smart Replies onAndroid Wear}
+\item 在设备智能回复，在设备模型上对输入文本信息给出相关的建议信息回复。模型被构建用于内存有限的设备像手表和手机等设备上,并且它对于第一方和第三方app已经被成功的用于\href{https://research.googleblog.com/2017/02/on-device-machine-intelligence.html}{Smart Replies onAndroid Wear}
 \item 量化的MobileNet模型版本，运行比没有量化的版本在CPU上运行更快
 \item 新的Android示例程序解释TensorFlow Lite结合量化的MobileNet模型用于目标检测是如何使用的
 \item Java 和C++ API支持
@@ -126,7 +131,7 @@ TensorFlow Lite 提供一个接口用于硬件加速，如果硬件加速在设�
 部署TensorFlow Lite模型文件:
 \begin{itemize}
 \item Java API:一个方便的在Android上围绕C++ API的包装器
-\item C++ API:载入TEnsorFlow Lite模型文件，调用解释器，相同的库在Android和IOS上都可用
+\item C++ API:载入TensorFlow Lite模型文件，调用解释器，相同的库在Android和IOS上都可用
 \item 解释器：用一些可执行模型。解释器支持选择核心载入；没有核心仅仅100KB，全部载入核心300KB。这是从TensorFlow Mobile要求的1.5M重要的减小
 \item 在选择的Android设备上，解释器将用Android Neural Network API用于硬件加速，或者如果没有可用的默认使用CPU执行。
 \end{itemize}
@@ -190,16 +195,15 @@ dependencies {
 \item 使用\href{https://developer.android.com/studio/command-line/adb.html?hl=zh-cn#move}{ADB}安装到你的设备上\lstinline[language=Bash]{adb install -r bazel-bin/tensorflow/examples/android/tensorflow_demo.apk}
 \end{itemize}
 \begin{quote}
-注意:当使用Bazel为你的Android编译你需要在Bazel命令行添加--config=android,然而在这个例子是Android-only，所以你不需要它
+注意:当使用Bazel为你的Android编译时，你需要在Bazel命令行添加--config=android,然而在这个例子是Android-only，所以你不需要它
 \end{quote}
 安装三个应用到你的手机上是TensorFlow Demo的一部分。查看\href{https://www.tensorflow.org/mobile/android_build?hl=zh-cn#android_sample_apps}{Android Sample Apps}获取更多关于它们的信息。
 \subsection{Android样例App}
 \href{https://www.github.com/tensorflow/tensorflow/blob/r1.4/tensorflow/examples/android/}{Android example code}是一个简单的工程用相同的代码构建和安装三个app。样例app通过手机的摄像头获取视频。
 \begin{itemize}
-\item TF Classify使用Inception V3模型标记对象指出Imagenet的分类。这里仅仅有1000个种类，失去了大多数常见的目标包含一些你在真实生活中不太可能碰到的目标，因此结果可能仅供娱乐。例如没有人的分类，因此它将不知到如何结合人的图片猜测，像一个座椅或者氧气罩。如果你想自定义这个例子识别你关心的对象，你可以使用\href{https://codelabs.developers.google.com/codelabs/tensorflow-for-poets/index.html?hl=zh-cn#0}{TensorFlow for Poets codelab }作为一个例子如何在你自己的数据上训练一个模型。
+\item TF Classify使用Inception V3模型标记对象指出Imagenet的分类。这里仅仅有1000个种类，失去了大多数常见的目标,包含一些你在真实生活中不太可能碰到的目标，因此结果可能仅供娱乐。例如没有人的分类，因此它将不知到如何结合人的图片猜测，像一个座椅或者氧气罩。如果你想自定义这个例子识别你关心的对象，你可以使用\href{https://codelabs.developers.google.com/codelabs/tensorflow-for-poets/index.html?hl=zh-cn#0}{TensorFlow for Poets codelab }作为一个例子如何在你自己的数据上训练一个模型。
 \item TF Detect用多个盒子尝试绘制摄像头中人的位置的边界盒子。这个盒子给出每个侦测结果的置信度。这个demo也包含追踪两帧间物体的移动，因此运行比TensorFlow推理更频繁。显然帧率越高用户体验越好，但是它估计哪个盒子两帧之间涉及相同的对象，对于实时统计对象很重要。
-\item TF Stylize通过摄像头实现一个实时风格迁移算法。你可以选择屏幕中那个风格
-混合它们，因此转化分辨率到更高或者更低
+\item TF Stylize通过摄像头实现一个实时风格迁移算法。你可以选择屏幕中的风格混合它们，因此转化分辨率到更高或者更低
 \end{itemize}
 当你构建安装demo，你将在你的手机上看到三个app图标。触摸它们应该打开app让你体验它们做了什么。你能当它们运行的时候通过触摸音量键上激活侧边键。
 \subsection{Android Inference Library}
@@ -261,7 +265,7 @@ open tf_simple_example.xcworkspace   # note .xcworkspace, not .xcodeproj
 \subsection{从源代码构建TensorFlow iOS库}
 尽管Cocapods是最简单和最容易的开始方式，你有时候需要更灵活的决定TensorFlow在你的app中应该被传递。例如，你可以从源代码构建iOS库。\href{https://github.com/tensorflow/tensorflow/tree/master/tensorflow/examples/ios#building-the-tensorflow-ios-libraries-from-source}{导航}包含了如何去做。
 \section{整合TensorFlow库}
-当你在模型上做了一些进步处理了一些你正尝试解决的问题，在你的应用上立即测试是很重要的。经常在你的训练数据和实际上真实世界碰到的问题有些不同，得到一个干净的图像提高产品的体验。
+当你在模型上做了一些改进，处理了一些你正尝试解决的问题，在你的应用上立即测试是很重要的。经常在你的训练数据和实际上真实世界碰到的问题有些不同，得到一个干净的图像提高产品的体验。
 
 这页讨论当你已经成功的构建和部署TensorFlow移动demo app后整个TensorFlow库进入你自己的移动应用模型。
 \subsection{链接库}
@@ -393,7 +397,7 @@ tensorflow::Tensor* output = &outputs[0];
 \end{lstlisting}
 你将访问它们作为/tmp/model/chkpt-1000
 \item GraphDef:有一个NodeDefs列表，结合定义计算图执行。在训练中一些节点将为Variables，因此如果你想有一个完整的可运行的图，包含权重，你将需要调用恢复操作从checkpoint文件获取这些值。因为checkpoint载入必须灵活的处理所有的训练请求，这可能是一个在移动端和嵌入式设备实现的技巧，特别是像iOS没有合适的文件系统可用的情况。这里的手写脚本\href{https://www.github.com/tensorflow/tensorflow/blob/r1.4/tensorflow/python/tools/freeze_graph.py}{freeze\_graph.py}。正如上面提到的，常数操作存储它们的值作为NodeDef的一部分，因此如果所有的Variable权重被转化为常数节点。你可以在单次调用中载入结果文件,不需要从checkpoint中恢复变量值。GraphDef文件有时候你已经存储在文本格式以方便查看。这个版本通常有.pbtxt文件后缀，正如二进制文件的.pb后缀一样
-\item \href{https://www.github.com/tensorflow/tensorflow/blob/r1.4/tensorflow/core/framework/function.proto}{FunctionDefLibrary}：在GraphDef出现，是高效的设置子图，关于输入输出的信息。每个子图可以用作主图的操作，运行简单的实例化不同的节点，用泪水的方式用其它语言包装代码
+\item \href{https://www.github.com/tensorflow/tensorflow/blob/r1.4/tensorflow/core/framework/function.proto}{FunctionDefLibrary}：在GraphDef出现，是高效的设置子图，关于输入输出的信息。每个子图可以用作主图的操作，运行简单的实例化不同的节点，用类似的方式用其它语言包装代码
 \item \href{https://www.github.com/tensorflow/tensorflow/blob/r1.4/tensorflow/core/protobuf/meta_graph.proto}{MetaGraphDef}:一个空白的GraphDef仅仅有关于计算网络的信息，但是没有额外的关于模型的信息或者模型如何使用的信息。MetaGraphDef包含一个GraphDef定义模型的部分计算，而且包含像signatures的信息（暗示你想要调用的的输入输出，数据和Checkpoint文件存储地），对于一组操作方便的标签
 \item SavedModel：通常享有不同版本的图依赖一些chechpoint的变量。例如，你也许在一张图上需要需要GPU和CPU版本为两者保存权重。你也许需要额外的文件(像标记文件)作为你的模型的一部分。SavedModel文件通过存放你保存的多版本的图不复制变量，也在同一个bundle存储assert文件处理这些需要。在hood下，用MetaGraphDef和checkpoint文件，伴随着额外的metadata文件。如果你用TensorFlow Serving部署web API它的格式你将想使用它。
 \end{itemize}
@@ -413,7 +417,7 @@ input\_checkpoint应该是最近保存的checkpoint文件。正如checkpoint章�
 
 output\_graph定义frozen GraphDef将被存储在哪里。因为它可能包含一些占据较大磁盘空间的权重值，通常它总是保存为二进制的protobuf。
 
-output\_node\_names是一个你想从图中提取的节点的名称列表。这时需要的是因为freezing进程需要明白图的哪一部分是实际需要的，哪一部分需要人工训练的，像一些总结操作一样。唯一的贡献计算给输出节点将被保存的操作。如果你知道你的图正在被使用。这些应该是节点的名字你传递进Session::run()作为你的获取目标。最简单的摘到节点名称的方法是在Python中构建你的图查看节点对象。在TensorBoard是另一个简单的方法。你可以通过\href{https://github.com/tensorflow/tensorflow/tree/master/tensorflow/tools/graph_transforms/README#inspecting-graphs}{summarize\_graph tool}获取可能的输出建议。
+output\_node\_names是一个你想从图中提取的节点的名称列表。这是需要的是因为freezing进程需要明白图的哪一部分是实际需要的，哪一部分需要人工训练的，像一些总结操作一样。唯一的贡献计算给输出节点将被保存的操作。如果你知道你的图正在被使用。这些应该是节点的名字你传递进Session::run()作为你的获取目标。最简单的得到节点名称的方法是在Python中构建你的图查看节点对象。在TensorBoard是另一个简单的方法。你可以通过\href{https://github.com/tensorflow/tensorflow/tree/master/tensorflow/tools/graph_transforms/README#inspecting-graphs}{summarize\_graph tool}获取可能的输出建议。
 
 因为TensorFlow的输出格式已经随着时间改变，有一些通常比较少使用的的flag也可以使用，像input\_saver,但是希望你不要用现代的框架版本在图上训练。
 \subsection{用图转换工具}
