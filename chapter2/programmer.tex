@@ -725,7 +725,7 @@ INFO:tensorflow:Stopping. Best step: 800 with loss = 0.048313818872.
 % \caption{MNIST的TensorBoard图}
 % \end{figure}
 \section{TensorBoard}
- \subsection{Visualizing Learning}
+ \subsection{Visualizing Learning}\label{subsec:visualize}
  当你使用TensorFlow训练大规模深度神经网络的时候计算可能很复杂难以理解。为了更容易理解，调试，优化TensorFlow程序，我们包含了一个称为TensorBoard的可视化工具。你可以使用TensorBoard可视化你的TensorFlow图，画出关于你的图执行的一些度量，显示像图像之类的额外信息。TensorBoard配置好后看起来像这样:
  \begin{figure}[!ht]
  \centering
@@ -903,7 +903,155 @@ INFO:tensorflow:Stopping. Best step: 800 with loss = 0.048313818872.
  更多深入的关于如何使用graph可视化你的图的信息，查看\href{https://www.tensorflow.org/programmers_guide/graph_viz}{TensorBoard:Graph Visualization}。
  
  更多在TensorBoard上的使用信息查看\href{https://github.com/tensorflow/tensorboard}{TensorBoard's Github}
- 
+\subsection{Graph 可视化} 
+TensorFlow计算图很强大但是很复杂。图的可视化可以帮助你理解和调试他们。为了查看你的>图，运行TensorBoard指定job的采集目录，点击图上面板选择合适的运行。更多的关于如何运>行TensorBoard确保你采集所有需要的数据，查看\ref{subsec:visualize}
+\subsection{名称scoping和nodes}
+通常TensorFlow图可以有成千上万节点，多到甚至是用标准的绘图工具都难以查看，为了简化，变量名称可以被scoped和用图中的节点定义可视化信息。默认，仅仅显示层级结构。这里有一个例子在hidden scope下使用\href{https://www.tensorflow.org/api_docs/python/tf/name_scope}{tf.name\_scope}定义的hidden scope:
+\begin{pythoncode}
+import tensorflow as tf
+
+with tf.name_scope('hidden') as scope:
+  a = tf.constant(5, name='alpha')
+  W = tf.Variable(tf.random_uniform([1, 2], -1.0, 1.0), name='weights')
+  b = tf.Variable(tf.zeros([1]), name='biases')
+\end{pythoncode}
+下面的结果有三个操作名称:
+\begin{itemize}
+\item hidden/alpha
+\item hidden/weights
+\item hidden/biases
+\end{itemize}
+默认，可视化将压缩三个节点到一个hidden节点，详细信息没有丢失，双击橙色的+展开节点，然后你将看到子节点alpha,weights和biases。
+
+这里是一个真实的立即展开的状态:
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.5\textwidth]{pool1_expanded.png}
+\caption{左边:pool\_1,右边:展开的内容}
+\end{figure}
+通过名字组合节点使得图更清晰。如果你构建一个模型，名称scope给你基于可视化之上的控制。你的名称scope越好，你的可视化越好。
+
+上面的阐述可视化比率。TensorFlow图有两种连接:数据依赖和控制依赖。数据依赖显示两个操作之间的流，用实体箭头表示,控制依赖使用虚线箭头。在展开的视图(上图右)所有的连接是数据依赖结合虚线连接CheckNumerics和control\_dependencuies。
+
+第二个简化布局的技巧。多数TensorFlow图有一些节点连接其他的节点。例如，一些节点也许在初始化的时候有一些控制依赖。画所有的边在init节点和他的依赖将看起来很杂乱。
+
+为了减少咋暖，可视化分割所有的高级节点到右边的一个辅助区域没有画线代表他们的边。相对于先，我们话晓得节点图标表示连接。分割辅助节点步移除重要的信息，因此节点通常和bookkeeping函数相关。查看\href{https://www.tensorflow.org/programmers_guide/graph_viz#interaction}{Interaction}了解如何在主图和辅助区域移动节点。
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.5\textwidth]{save.png}
+\caption{节点conv\_1连接到save，save为高级节点将在辅助区域显示}
+\end{figure}
+最后的结构简化是序列压缩。序列图，节点的名称有不同的数字结尾和同样的结构被压缩进一个简单的节点栈，正如下面显示。对于网络有唱的序列，这简化了试图。正如层叠节点，双击展开序列。查看\href{https://www.tensorflow.org/programmers_guide/graph_viz#interaction}{Interaction}了解如何禁用/开启层叠指定系列节点。
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.5\textwidth]{series_expanded.png}
+\caption{左边:压缩节点序列,右边:双击展开的视图}
+\end{figure}
+最后，可视化使用特殊的图标表示常数和总结节点。为了总结，这里有一些节点符号:b
+
+\begin{table}[H]\label{fig:tensorboard_op}
+\centering 
+\begin{tabular}{|c|c|}
+\hline
+符号&含义\\
+\hline 
+\includegraphics{namespace_node.png}&高级节点表示一个name scope，双击展开节点\\
+\hline
+\includegraphics{horizontal_stack.png}&没有相互连接的序列节点\\
+\hline
+\includegraphics{vertical_stack.png}&相互连接的序列节点\\
+\hline
+\includegraphics{op_node.png}&一个单独的操作\\
+\hline
+\includegraphics{constant.png}&一个常数\\
+\hline
+\includegraphics{summary.png}&一个总结操作\\
+\hline
+\includegraphics{dataflow_edge.png}&显示数据在两个操作流动的边\\
+\hline
+\includegraphics{control_edge.png}&两个操作的控制依赖的边\\
+\hline
+\includegraphics{reference_edge.png}&参考边显示输出操作节点可以改变输入tensor\\
+\hline
+\end{tabular}
+\end{table}
+\subsection{交互}
+通过缩放拖动图。点击或者拖动使用scroll缩放。双击在一个节点，或者点击+按钮，展开一个name scope表示操作集合。为了缩放的时候轻易地跟踪当前的视角，有一个minimap在右上角。
+
+为了关闭一个开放的节点，双击它点击-按钮。你可以点击一次选择一个节点，它将变节点。它将编程灰色，详细的和节点连接将出现在右上角的信息card。
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.5\textwidth]{infocard_op.png}
+\caption{左边:信息卡显示conv2的名称scope。输入和输出结合scope的输入输出操作节点。右图:显示DecodeRaw操作的详细信息，额外的输入和输出，卡片显示设备和当前操作的属性}
+\end{figure}
+TensorBoard提供一些方法改变图的可视化布局。步改变图的计算语意学，但是它可以带来一些清晰地网络结构。通过右击节点的信息card节点，你可以做下面的布局更高:
+\begin{itemize}
+\item 节点可以在主图和辅助区域移动
+\item 一些节点可以被解开组以至于在序列中的节点不出现在组中。解开组序列可以被重组。
+\end{itemize}
+选择可能在理解高级节点上很有用。选择任何高级节点，对应的节点图标对于其他连接将也被选中。这使得它很容易，例如，查看每个正在被保存的节点或者没有保存的。
+
+点击一个信息卡片上节点名称。如果需要，视角将自动缩放以至于节点可视。
+
+最后，你可以为你的图选择两种颜色方案，使用上面的颜色菜单。默认的结构视图:当两个高级节点有相同的结构时，他们出现在彩虹色中的同样颜色。特别的结构节点是灰色的。有第二个视图显示在不同设备上运行的操作。名称scope颜色比例被按不同设备分开着色。
+
+下面的图给定一个真实图的细节:
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.5\textwidth]{colorby_device.png}
+\caption{结构视图:灰色节点有特殊结构，橙色conv1和conv2节点有同样的结构，其他颜色节点类似。设备视图:名称scope分开着色不同设备上的操作，紫色为GPU绿色为CPU}
+\end{figure}
+\subsection{Tensor形状信息}
+当序列的GraphDef包含tensor形状，图可视化器用tensor的维度标记边,边的宽反映了tensor的大小。为了包含tensor形状在GraphDef当序列化图的时候传递实际的图对象(正如在sess.graph)到FileWriter。下图显示CIFAR-10模型的tensor形状信息:
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.5\textwidth]{tensor_shapes.png}
+\caption{CIFAR-10模型的tensor信息}
+\end{figure}
+\subsection{运行统计}
+经常为运行收集一些运行时的信息是有用的，想总内存使用，总计算时间，节点的tensor形状。下面的示例代码是\href{simple MINST tutorial}{https://www.tensorflow.org/tutorials/layers}的片段，在代码中我们记录了总结和运行统计。查看\href{https://www.tensorflow.org/programmers_guide/summaries_and_tensorboard#serializing-the-data}{Summary Tutorial}了解如何记录总结的详细信息。完整的源代码在\href{https://www.github.com/tensorflow/tensorflow/blob/r1.6/tensorflow/examples/tutorials/mnist/mnist_with_summaries.py}{这里}
+\begin{pythoncode}
+# Train the model, and also write summaries.
+  # Every 10th step, measure test-set accuracy, and write test summaries
+  # All other steps, run train_step on training data, & add training summaries
+
+  def feed_dict(train):
+    """Make a TensorFlow feed_dict: maps data onto Tensor placeholders."""
+    if train or FLAGS.fake_data:
+      xs, ys = mnist.train.next_batch(100, fake_data=FLAGS.fake_data)
+      k = FLAGS.dropout
+    else:
+      xs, ys = mnist.test.images, mnist.test.labels
+      k = 1.0
+    return {x: xs, y_: ys, keep_prob: k}
+
+  for i in range(FLAGS.max_steps):
+    if i % 10 == 0:  # Record summaries and test-set accuracy
+      summary, acc = sess.run([merged, accuracy], feed_dict=feed_dict(False))
+      test_writer.add_summary(summary, i)
+      print('Accuracy at step %s: %s' % (i, acc))
+    else:  # Record train set summaries, and train
+      if i % 100 == 99:  # Record execution stats
+        run_options = tf.RunOptions(trace_level=tf.RunOptions.FULL_TRACE)
+        run_metadata = tf.RunMetadata()
+        summary, _ = sess.run([merged, train_step],
+                              feed_dict=feed_dict(True),
+                              options=run_options,
+                              run_metadata=run_metadata)
+        train_writer.add_run_metadata(run_metadata, 'step%d' % i)
+        train_writer.add_summary(summary, i)
+        print('Adding run metadata for', i)
+      else:  # Record a summary
+        summary, _ = sess.run([merged, train_step], feed_dict=feed_dict(True))
+        train_writer.add_summary(summary, i)
+\end{pythoncode}
+这段代码每100步发送运行统计，在step99时发送。当你启动tensorboard和其他的Graph tab，你将现在查看选项"Session runs",它对应运行meta被添加的步骤。选择一个运行将给你显示这一步网络的快照，隐去无用的节点。在左边的控制区域，你将能通过统计计算时间着色节点。另外，检查节点将显示总共的内存，计算时间和tensor输出大小。
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.5\textwidth]{run_metadata_graph.png}
+\end{figure}
+
+
  % 当你启动tensorboard到Graph，你现在将在Session runs下看到运行metadada被添加的对应的步骤。选择一个运行将现实给你关于网络的快照，无用节点为灰色。在左边的控制面板，你将能着色memory或者总共的计算时间。例外，点击节点将显示准确的的memory，计算时间和tensor输出尺寸
  % \begin{figure}[!ht]
  % \centering
